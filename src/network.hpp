@@ -1,0 +1,7 @@
+#ifndef NETWORK_HPP_INCLUDED
+#define NETWORK_HPP_INCLUDED
+
+#define CLIENT_PORT 20020
+#define SERVER_PORT 20021
+
+#endif
