@@ -29,6 +29,14 @@ float Vector2D::Magnitude() const
 }
 
 //-----------------------------------------------------------------------------
+// Purpose:	Get vector rotation
+//-----------------------------------------------------------------------------
+float Vector2D::Rotation() const
+{
+	return Vector2D::Angle( Vector2D(1, 0), Vector2D(x, y));
+}
+
+//-----------------------------------------------------------------------------
 // Purpose:	Convert vector to a unit vector and return previous magnitude
 //-----------------------------------------------------------------------------
 float Vector2D::Normalize()
@@ -74,6 +82,31 @@ Vector2D Vector2D::Zero()
 float Vector2D::Distance( const Vector2D& v1, const Vector2D& v2)
 {
 	return sqrtf( pow((v2.x - v1.x), 2 ) + pow((v2.y - v1.y), 2) );
+}
+
+//-----------------------------------------------------------------------------
+// Purpose:	Get angle between two vectors
+//-----------------------------------------------------------------------------
+float Vector2D::Angle( const Vector2D& v1, const Vector2D& v2)
+{
+	return acosf( v1.DotProduct(v2) / (v1.Magnitude()*v2.Magnitude()));
+}
+
+
+//-----------------------------------------------------------------------------
+// Purpose:	Converts radians to degrees
+//-----------------------------------------------------------------------------
+float Vector2D::rad2Deg( const float rad )
+{
+	return rad/PI*180;
+}
+
+//-----------------------------------------------------------------------------
+// Purpose:	Converts degress to radians
+//-----------------------------------------------------------------------------
+float Vector2D::deg2Rad( const float rad )
+{
+	return deg/180*PI;
 }
 
 Vector2D& Vector2D::operator= ( const Vector2D& v2 )

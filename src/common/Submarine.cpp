@@ -4,8 +4,10 @@ Submarine::Submarine(float pos_x, float pos_y) {
 	mPosition = Engine::Vector2D(pos_x, pos_y);
 }
 	
-void Submarine::FireTorpedoTo(Engine::Vector2D Pos) {
+const Engine::Entity& Submarine::FireTorpedoTo(const Engine::Vector2D Pos) {
 	// Calculate the Direction-Vector to the mouse position
+	Torpedo tp = Torpedo(mPosition, mSpeed, Pos);
+	return Torpedo;
 }
 
 void Submarine::PingTo(ENgine::Vector2D Pos) {
