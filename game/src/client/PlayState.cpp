@@ -1,6 +1,6 @@
 #include "PlayState.hpp"
 
-
+PlayState::PlayState() {}
 PlayState::PlayState(Engine::Root* root){
     mRoot = root;
 }

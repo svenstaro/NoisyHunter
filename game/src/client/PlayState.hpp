@@ -7,6 +7,7 @@
 
 class PlayState : Engine::State{
 public:
+    PlayState();
     PlayState(Engine::Root* root);
     ~PlayState();
 
@@ -22,7 +23,6 @@ public:
     void OnFireTorpedo(const Engine::Coordinates& mouse_position);
 
 private:
-    PlayState() {}
 
     Submarine* mPlayerSubmarine;
 };
