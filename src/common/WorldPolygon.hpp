@@ -1,0 +1,6 @@
+#ifndef WORLDPOLYGON_HPP
+#define WORLDPOLYGON_HPP
+
+// CODE LOL
+
+#endif
