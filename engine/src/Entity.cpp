@@ -19,8 +19,27 @@ namespace Engine {
 		target->Draw(*mDrawable);
 	}
 
+
+    void Entity::SetSpeed(const float x, const float y) {
+        mSpeed = Vector2D(x, y);
+    }
+	void Entity::SetPosition(const float x, const float y) {
+        mPosition = Vector2D(x, y);
+	}
+	const Vector2D Entity::GetSpeed() const {
+        return mSpeed;
+	}
+	const Vector2D Entity::GetPosition() const {
+        return mPosition;
+	}
+
+
+
+
+
 	const Entity::Layer Entity::GetLayer() const {
         return mLayer;
     }
+
 
 }

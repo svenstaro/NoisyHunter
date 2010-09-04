@@ -30,3 +30,11 @@ void Torpedo::Update(const float time_delta) {
 
 	mPosition += mSpeed * time_delta;
 }
+
+
+void Torpedo::OnCollide(const Engine::Entity& ent) {
+
+}
+void Torpedo::OnDeath() {
+
+}

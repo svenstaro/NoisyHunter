@@ -18,3 +18,14 @@ const Engine::Entity* Submarine::PingTo(const Engine::Vector2D Pos) {
 	return new SonarPing();
 }
 
+
+
+void Submarine::OnCollide(const Engine::Entity& ent){
+
+}
+void Submarine::OnDamage(const float dmg){
+
+}
+void Submarine::OnFire(){
+
+}

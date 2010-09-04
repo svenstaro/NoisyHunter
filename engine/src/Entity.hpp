@@ -22,15 +22,15 @@ public:
 	Entity();
 	virtual ~Entity() = 0;
 
-	virtual void OnCollide(const Entity& ent);
+	// callbacks
+	virtual void OnCollide(const Entity& ent) = 0;
+	// TODO: All the other callbacks
 
 	virtual void Update(const float time_delta);
-
-	void SetSpeed(const float x, const float y);
-	void SetPosition(const float x, const float y);
-
 	virtual void Draw(sf::RenderTarget* target) const;
 
+    void SetSpeed(const float x, const float y);
+	void SetPosition(const float x, const float y);
 	const Vector2D GetSpeed() const;
 	const Vector2D GetPosition() const;
 	const Layer GetLayer() const;
