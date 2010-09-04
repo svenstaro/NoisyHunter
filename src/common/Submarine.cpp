@@ -1,2 +1,13 @@
 #include "Submarine.hpp"
 
+Submarine::Submarine(float pos_x, float pos_y) {
+	mPosition = Engine::Vector2D(pos_x, pos_y);
+}
+	
+void Submarine::FireTorpedoTo(Engine::Vector2D Pos) {
+	// Calculate the Direction-Vector to the mouse position
+}
+
+void Submarine::PingTo(ENgine::Vector2D Pos) {
+	// Calculate the Cirection-Vector to the mouse position
+}
