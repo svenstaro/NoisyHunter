@@ -4,7 +4,9 @@
 
 namespace Engine{
 
-    State::State() {}
+    State::State() {
+
+    }
 
     void State::Update(const float time_delta){
         UpdateAllEntities(time_delta);
