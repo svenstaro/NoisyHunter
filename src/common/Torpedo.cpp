@@ -1,3 +1,5 @@
 #include "Torpedo.hpp"
 
-// CODE LOL
+Torpedo::Torpedo(Engine::Vector2D Pos, Engine::Vector2D Speed) {
+	
+}

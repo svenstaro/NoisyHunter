@@ -2,10 +2,9 @@
 
 namespace Engine {
 
-class Entity {
+	Entity::operator < (const Entity& other){
+		return mLayer < other.GetLayer();
+	}
 
-private:
-
-}
 
 }

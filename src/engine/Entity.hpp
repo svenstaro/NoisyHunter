@@ -6,9 +6,8 @@
 namespace Engine {
 
 class Entity {
-
 public:
-	Entity();
+	Entity() {}
 	virtual ~Entity() = 0;
 
 	virtual void OnCollide(const Entity& ent);
@@ -19,6 +18,15 @@ public:
 	const Vector2D GetSpeed() const;
 	const Vector2D GetPosition() const;
 
+	enum Layer {
+		LAYER_BACKGROUND = 1000,
+		LAYER_WORLD = 1001,
+		LAYER_REGULAR = 1002,
+		LAYER_GUI = 1003,
+		LAYER_TOOLTIP = 1004
+	}
+
+	bool operator < (const Entity& other);
 private:
 
 	Vector2D mPosition;

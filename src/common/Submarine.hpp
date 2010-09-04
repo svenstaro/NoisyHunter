@@ -3,6 +3,7 @@
 
 #include "Entity.hpp"
 #include "Vector2D.hpp"
+#include "Torpedo.hpp"
 
 class Submarine : Engine::Entity {
 public:
@@ -14,9 +15,12 @@ public:
     void OnDamage(const float dmg);
     void OnFire();
 
+	const Engine::Entity& FireTorpedoTo(const Engine::Vector2D Pos);
+	const Engine::Entity& PingTo(const Engine::Vector2D Pos);
+
 	enum Mode {
-		MODE_SILENT = 0,
-		MODE_NOISY = 1
+		MODE_SILENT = 2000,
+		MODE_NOISY = 2001
 	}
 
 private:

@@ -6,7 +6,7 @@
 class Torpedo : Engine::Entity {
 
 public:
-	Torpedo();
+	Torpedo(Engine::Vector2D Pos, Engine::Vector2D Speed);
 	~Torpedo();
 
 	// callbacks
