@@ -1,3 +1,3 @@
 #include "SonarPing.hpp"
 
-// CODE LOL
+SonarPing::~SonarPing() {}

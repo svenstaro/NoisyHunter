@@ -2,8 +2,12 @@
 
 namespace Engine{
 
-ResourceManager::ResourceManager() {};
-ResourceManager::~ResourceManager() {};
+ResourceManager::ResourceManager() {
+
+}
+ResourceManager::~ResourceManager() {
+
+}
 
 bool ResourceManager::AddImage(const boost::filesystem::path& path, const std::string& imgname,
     const sf::Uint16 width, const sf::Uint16 height, const std::string& key) {

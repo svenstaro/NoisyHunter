@@ -2,6 +2,9 @@
 
 namespace Engine {
 
+    Entity::Entity() {}
+    Entity::~Entity() {}
+
 	bool Entity::operator < (const Entity& other){
 		return mLayer < other.GetLayer();
 	}

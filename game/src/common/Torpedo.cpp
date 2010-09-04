@@ -15,6 +15,8 @@ Torpedo::Torpedo(Engine::Vector2D pos, Engine::Vector2D speed, Engine::Vector2D 
 	mTargetPosition = target_position;
 }
 
+Torpedo::~Torpedo() {}
+
 void Torpedo::Update(const float time_delta) {
 	Engine::Vector2D relative_target = mTargetPosition - mPosition;
 	float angle = Engine::Vector2D::Angle(mSpeed, relative_target);

@@ -1,3 +1,3 @@
 #include "WorldPolygon.hpp"
 
-// CODE LOL
+WorldPolygon::~WorldPolygon() {}
