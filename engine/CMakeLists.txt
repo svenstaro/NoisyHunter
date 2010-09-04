@@ -1,0 +1,12 @@
+aux_source_directory(src/ engine_sources)
+
+add_library(engine STATIC
+	${engine_sources}
+)
+
+target_link_libraries(engine
+	${Boost_LIBRARIES}
+    ${SFML_LIBRARY}
+    ${BULLET_LIBRARIES}
+	${ImageMagick_LIBRARIES}
+)
