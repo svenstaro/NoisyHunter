@@ -8,8 +8,9 @@
 
 #include <ImageMagick/Magick++.h>
 
-#include <boost/ptr_map.hpp>
+#include <boost/ptr_container/ptr_map.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/filesystem.hpp>
 
 namespace Engine {
 
@@ -20,7 +21,7 @@ public:
 
     bool AddImage(const boost::filesystem::path& path, const std::string& imgname,
         const sf::Uint16 width, const sf::Uint16 height, const std::string& key="");
-    const sf::Image& GetImage(const std::string& img) const;
+    const sf::Image& GetImage(const std::string& img);
 
 private:
 	boost::ptr_map<std::string, sf::Image> mImages;

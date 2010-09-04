@@ -1,6 +1,10 @@
 #ifndef PLAYSTATE_HPP
 #define PLAYSTATE_HPP
 
+#include "State.hpp"
+#include "Input.hpp"
+#include "Submarine.hpp"
+
 class PlayState : Engine::State{
 public:
     PlayState(Engine::Root* root);
@@ -9,7 +13,6 @@ public:
     // state control
     void Initialize();
     void Shutdown();
-
 
     // input callbacks
     void OnSetNoisyMode();
@@ -20,7 +23,8 @@ public:
 
 private:
     PlayState() {}
-    Submarine& mPlayerSubmarine;
+
+    Submarine* mPlayerSubmarine;
 };
 
 #endif

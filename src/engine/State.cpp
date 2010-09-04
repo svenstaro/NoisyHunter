@@ -1,5 +1,7 @@
 #include "State.hpp"
 
+#include <boost/foreach.hpp>
+
 namespace Engine{
 
     void State::Update(const float time_delta){
@@ -12,21 +14,21 @@ namespace Engine{
         }
 
         if (mEntityListNeedsSorting) {
-            mEntities.sort();
+            //mEntities.sort();
             mEntityListNeedsSorting = false;
         }
     }
 
 
-    void State::Draw(const sf::RenderTarget& target) const {
-        BOOST_FOREACH(Entity& entity, mEntities){
+    void State::Draw(sf::RenderTarget* target) const {
+        BOOST_FOREACH(const Entity& entity, mEntities){
             entity.Draw(target);
         }
     }
 
 
-    void State::AddEntity(const Entity& entity){
-        mEntities.push_back(&entity);
+    void State::AddEntity(Entity* entity){
+        mEntities.push_back( entity );
         mEntityListNeedsSorting = true;
     }
 

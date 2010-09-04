@@ -1,18 +1,19 @@
 #include "Submarine.hpp"
-#include "Root.hpp"
+
 
 Submarine::Submarine(float pos_x, float pos_y) {
 	mPosition = Engine::Vector2D(pos_x, pos_y);
-	mDrawable = mRoot.GetResourceManager().GetImage("submarine");
-}
-	
-const Engine::Entity& Submarine::FireTorpedoTo(const Engine::Vector2D Pos) {
-	// Calculate the Direction-Vector to the mouse position
-	Torpedo tp = Torpedo(mPosition, mSpeed, Pos);
-	return Torpedo;
+	mLayer = Engine::Entity::LAYER_REGULAR;
+	//mDrawable = mRoot.GetResourceManager().GetImage("submarine");
 }
 
-void Submarine::PingTo(ENgine::Vector2D Pos) {
+const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D Pos) {
+	// Calculate the Direction-Vector to the mouse position
+	return new Torpedo(mPosition, mSpeed, Pos);
+}
+
+const Engine::Entity* Submarine::PingTo(const Engine::Vector2D Pos) {
 	// Calculate the Cirection-Vector to the mouse position
+	return new SonarPing();
 }
 

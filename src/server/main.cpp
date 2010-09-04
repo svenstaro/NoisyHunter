@@ -1,5 +1,8 @@
+#include "ServerRoot.hpp"
+/*
 int main(){
-    ServerRoot root;
+    Engine::ServerRoot root;
     root.StartMainLoop();
     return 0;
 }
+*/

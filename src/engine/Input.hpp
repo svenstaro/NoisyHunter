@@ -1,6 +1,7 @@
 #ifndef INPUT_HPP
 #define INPUT_HPP
 
+namespace Engine{
 
 // Structure holding screen and game coordinates
 
@@ -11,4 +12,5 @@ public:
 };
 
 
+}
 #endif

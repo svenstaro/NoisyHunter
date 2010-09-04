@@ -2,7 +2,7 @@
 
 namespace Engine {
 
-void ClientRoot::Initialize(sf::VideoMode video_mode, std::string window_title, bool fullsreen){
+void ClientRoot::Initialize(sf::VideoMode video_mode, std::string window_title, bool fullscreen){
     mShutdownRequested = false;
 
     if (fullscreen){
@@ -15,19 +15,19 @@ void ClientRoot::Initialize(sf::VideoMode video_mode, std::string window_title, 
 
 void ClientRoot::StartMainLoop(){
     while (mRenderWindow.IsOpened()){
-        mInputManager.HandleEvents();
+        //mInputManager.HandleEvents();
 
-        mStateManager.Update();
+        //mStateManager.Update();
 
         // Clear screen
         mRenderWindow.Clear();
-        mStateManager.Draw();
+        //mStateManager.Draw();
         // Update the window
         mRenderWindow.Display();
 
         // check if a shutdown has been requested
         if (mShutdownRequested)
-            mRenderWindow->Close();
+            mRenderWindow.Close();
 
     }
 
@@ -37,13 +37,13 @@ void ClientRoot::StartMainLoop(){
 
 
 
-ResourceManager& ClientRoot::GetResourceManager() const {
+/*ResourceManager& ClientRoot::GetResourceManager() const {
     return mResourceManager;
 }
 
 InputManager& ClientRoot::GetInputManger() const {
     return mInputManager;
-}
+}*/
 
 
 }

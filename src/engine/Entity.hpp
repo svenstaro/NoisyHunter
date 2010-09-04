@@ -9,6 +9,16 @@ namespace Engine {
 
 class Entity {
 public:
+
+	enum Layer {
+		LAYER_BACKGROUND = 1000,
+		LAYER_WORLD = 1001,
+		LAYER_REGULAR = 1002,
+		LAYER_GUI = 1003,
+		LAYER_TOOLTIP = 1004
+	};
+
+
 	Entity();
 	virtual ~Entity() = 0;
 
@@ -18,22 +28,17 @@ public:
 
 	void SetSpeed(const float x, const float y);
 	void SetPosition(const float x, const float y);
-	
-	virtual void Draw(const sf::RenderTarget& target) const;
+
+	virtual void Draw(sf::RenderTarget* target) const;
 
 	const Vector2D GetSpeed() const;
 	const Vector2D GetPosition() const;
-
-	enum Layer {
-		LAYER_BACKGROUND = 1000,
-		LAYER_WORLD = 1001,
-		LAYER_REGULAR = 1002,
-		LAYER_GUI = 1003,
-		LAYER_TOOLTIP = 1004
-	}
+	const Layer GetLayer() const;
 
 	bool operator < (const Entity& other);
-private:
+
+protected:
+    Layer mLayer;
 
 	Vector2D mPosition;
 	Vector2D mSpeed;

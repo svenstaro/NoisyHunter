@@ -3,14 +3,14 @@
 
 #include "Entity.hpp"
 
-class WorldPolygon : Engine::Entity {
+class WorldPolygon : public Engine::Entity {
 public:
 	WorldPolygon();
 	~WorldPolygon();
 
 	// callbacks
 	void OnCollide(const Engine::Entity& ent);
-	
+
 private:
 
 };

@@ -1,5 +1,7 @@
 #include "ResourceManager.hpp"
 
+namespace Engine{
+
 ResourceManager::ResourceManager() {};
 ResourceManager::~ResourceManager() {};
 
@@ -31,7 +33,7 @@ bool ResourceManager::AddImage(const boost::filesystem::path& path, const std::s
 	std::cout << "Caching image " << originalFile << std::endl;
 
 	// Create cache directory
-	boost::filesystem::make_dir(cacheDir.string());
+	boost::filesystem::create_directory(cacheDir.string());
 
 	// Load, convert and save image (originalFile > cacheFile)
 	Magick::Image mimage;
@@ -47,11 +49,16 @@ bool ResourceManager::AddImage(const boost::filesystem::path& path, const std::s
 	sfimage.SetSmooth(false);
 
 	// Save loaded Image in Dictionary
-	mImages.insert(new std::pair<std::string, sf::Image>(image_key, sfimage));
+	// mImages.insert(new std::pair<std::string, sf::Image>(image_key, sfimage));
+	mImages[image_key] = sfimage;
 
     return true;
 }
 
-const sf::Image& ResourceManager::GetImage(const std::string& img) const {
-    return &mImages[img];
-};
+const sf::Image& ResourceManager::GetImage(const std::string& img) {
+    // TODO: if not in map argh!!!
+    return mImages[img];
+}
+
+
+}

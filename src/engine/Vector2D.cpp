@@ -104,7 +104,7 @@ float Vector2D::rad2Deg( const float rad )
 //-----------------------------------------------------------------------------
 // Purpose:	Converts degress to radians
 //-----------------------------------------------------------------------------
-float Vector2D::deg2Rad( const float rad )
+float Vector2D::deg2Rad( const float deg )
 {
 	return deg/180*PI;
 }

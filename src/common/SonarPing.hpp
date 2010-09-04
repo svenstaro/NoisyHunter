@@ -1,9 +1,9 @@
 #ifndef SONARPING_HPP
 #define SONARPING_HPP
 
-#include "Entitiy.hpp"
+#include "Entity.hpp"
 
-class SonarPing : Engine::Entity {
+class SonarPing : public Engine::Entity {
 
 public:
 	SonarPing();
@@ -11,9 +11,9 @@ public:
 
 	// callbacks
 	void OnCollide(const Engine::Entity& ent);
-	
 
-private:	
+
+private:
 
 };
 

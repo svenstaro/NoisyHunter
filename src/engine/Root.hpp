@@ -1,6 +1,9 @@
 #ifndef ROOT_HPP
 #define ROOT_HPP
 
+//#include "NetworkManager.hpp"
+//#include "StateManager.hpp"
+
 namespace Engine{
 
 class Root {
@@ -11,15 +14,15 @@ public:
     // Request a Shutdown. Engine will stop at the end of current loop iteration
     void RequestShutdown();
 
-    NetworkManager& GetNetworkManager() const;
-    StateManager& GetStateManger() const;
+  /*  NetworkManager& GetNetworkManager() const;
+    StateManager& GetStateManger() const;*/
 
 protected:
     bool mShutdownRequested;
 
 private:
-    NetworkManager mNetworkManager;
-    StateManager mStateManager;
+    /*NetworkManager mNetworkManager;
+    StateManager mStateManager;*/
 };
 
 }
