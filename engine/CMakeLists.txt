@@ -8,4 +8,5 @@ target_link_libraries(engine
 	${Boost_LIBRARIES}
     ${SFML_LIBRARY}
     ${BULLET_LIBRARIES}
+	${ImageMagick_LIBRARIES}
 )

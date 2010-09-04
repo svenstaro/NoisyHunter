@@ -9,7 +9,8 @@ set(Boost_USE_MULTITHREADED ON)
 
 find_package(SFML REQUIRED)
 find_package(Bullet REQUIRED)
-find_package(Boost COMPONENTS filesystem system python date_time REQUIRED)
+find_package(Boost COMPONENTS filesystem program_options system python date_time REQUIRED)
+find_package(ImageMagick COMPONENTS Magick++ REQUIRED)
 
 add_definitions(-Wall -Wextra -pedantic)
 set(CMAKE_BUILD_TYPE "Debug")
@@ -22,6 +23,7 @@ include_directories(
 	${Boost_INCLUDE_DIRS}
 	${SFML_INCLUDE_DIRS}
 	${BULLET_INCLUDE_DIRS}
+	${ImageMagick_INCLUDE_DIRS}
 )
 
 add_subdirectory("${CMAKE_SOURCE_DIR}/engine/")

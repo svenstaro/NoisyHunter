@@ -1,3 +1,5 @@
 *.bin
+bin/
 build/
+lib/
 *.cbp
