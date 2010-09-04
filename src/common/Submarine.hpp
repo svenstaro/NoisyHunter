@@ -1,6 +1,8 @@
 #ifndef SUBMARINE_HPP
 #define SUBMARINE_HPP
 
+#include <SFML/Graphics.hpp>
+
 #include "Entity.hpp"
 #include "Vector2D.hpp"
 #include "Torpedo.hpp"
@@ -24,7 +26,6 @@ public:
 	}
 
 private:
-	
 	
 };
 

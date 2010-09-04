@@ -4,6 +4,7 @@ Torpedo::Torpedo() {
 	mPosition = Engine::Vector2D(0, 0);
 	mTargetPosition = Engine::Vector2D(0, 0);
 	mSpeed = Engine::Vector2D(0, 0);
+	mDrawable = mRoot.GetResourceManager().GetImage("torpedo");
 }
 
 Torpedo::Torpedo(Engine::Vector2D pos, Engine::Vector2D speed, Engine::Vector2D target_position) {
