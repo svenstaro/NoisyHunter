@@ -61,7 +61,7 @@ bool ResourceManager::AddImage(const boost::filesystem::path& path, const std::s
 
 const sf::Image& ResourceManager::GetImage(const std::string& img) {
     // TODO: if not in map argh!!!
-    return mImages[img];
+	return mImages[img];
 }
 
 

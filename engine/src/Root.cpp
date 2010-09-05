@@ -22,8 +22,8 @@ StateManager& Root::GetStateManger() const {
 
 /*ResourceManager& ClientRoot::GetResourceManager() const {
     return mResourceManager;
-}
-*/
+}*/
+
 
 InputManager* Root::GetInputMangerPtr() {
     return &mInputManager;

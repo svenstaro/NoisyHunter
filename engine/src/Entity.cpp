@@ -2,7 +2,9 @@
 
 namespace Engine {
 
-    Entity::Entity() {}
+    Entity::Entity() {
+		mDrawable = mRoot.GetResourceManager().GetImage("default");
+	}
     Entity::~Entity() {}
 
 	bool Entity::operator < (const Entity& other){
