@@ -1,11 +1,12 @@
 #include "Entity.hpp"
+#include "Root.hpp"
 
 #include <iostream>
 
 namespace Engine {
 
     Entity::Entity() {
-		mDrawable = mRoot.GetResourceManager().GetImage("default");
+		mDrawable = &sf::Sprite(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("default"));
 	}
     Entity::~Entity() {}
 
