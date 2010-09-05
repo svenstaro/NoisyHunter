@@ -33,7 +33,7 @@ public:
 	void SetPosition(const float x, const float y);
 	const Vector2D GetSpeed() const;
 	const Vector2D GetPosition() const;
-	const Layer GetLayer() const;
+	Layer GetLayer() const;
 
 	bool operator < (const Entity& other);
 

@@ -15,7 +15,11 @@ void ClientRoot::Initialize(sf::VideoMode video_mode, std::string window_title, 
 
 void ClientRoot::StartMainLoop(){
     while (mRenderWindow.IsOpened()){
-        //mInputManager.HandleEvents();
+
+        sf::Event e;
+        while (mRenderWindow.GetEvent(e)){
+            mInputManager.HandleEvent(e);
+        }
 
         //mStateManager.Update();
 
@@ -36,14 +40,8 @@ void ClientRoot::StartMainLoop(){
 
 
 
-
-/*ResourceManager& ClientRoot::GetResourceManager() const {
-    return mResourceManager;
+const NetworkManager* ClientRoot::GetNetworkManager() const{
+    return &mNetworkClient;
 }
-
-InputManager& ClientRoot::GetInputManger() const {
-    return mInputManager;
-}*/
-
 
 }

@@ -2,7 +2,7 @@
 #define PLAYSTATE_HPP
 
 #include "State.hpp"
-#include "Input.hpp"
+#include "InputManager.hpp"
 #include "Submarine.hpp"
 
 class PlayState : Engine::State{
@@ -22,6 +22,8 @@ public:
     void OnNavigateTo(const Engine::Coordinates& mouse_position);
     void OnFireTorpedo(const Engine::Coordinates& mouse_position);
 
+
+    void OnLeaveGame();
 private:
 
     Submarine* mPlayerSubmarine;
