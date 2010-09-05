@@ -36,5 +36,5 @@ void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position){
 }
 
 void PlayState::OnLeaveGame() {
-    mRoot.RequestShutdown();
+    mRoot->RequestShutdown();
 }

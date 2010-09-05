@@ -9,7 +9,7 @@ void RootServer::StartMainLoop(){
 }
 
 
-const NetworkManager* ServerRoot::GetNetworkManager() const{
+NetworkManager* RootServer::GetNetworkManager(){
     return &mNetworkServer;
 }
 

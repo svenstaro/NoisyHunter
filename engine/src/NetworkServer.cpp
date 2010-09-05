@@ -2,52 +2,43 @@
 
 namespace Engine {
 
-	NetworkServer::Initialize(const sf::Uint16 port) {
-	
-		if (!Listener.Bind(port)) {
-			std::cerr << "Your penis was broken by the NetworkManager while binding the listening socket" << std::endl;
-			exit(1);
-		}
-	
-		Selector.Add(Listener);
+void NetworkServer::Initialize(const sf::Uint16 port) {
+    if (!Listener.Bind(port)) {
+        std::cerr << "Your penis was broken by the NetworkManager while binding the listening socket" << std::endl;
+        exit(1);
+    }
 
-	}
+    mSelector.Add(Listener);
+}
 
-	NetworkManager::HandleClients() {
-	
-		unsigned int NBSockets = Selector.Wait();
+void NetworkServer::HandleClients() {
+    unsigned int nb_sockets = mSelector.Wait();
 
-		for (unsigned int i=0;i < NBSockets; ++i) {
-		
-			sf::SocketUDP Socket = Selector.GetSocketReady(i);
+    for (unsigned int i=0;i < nb_sockets; ++i) {
+        sf::SocketUDP socket = mSelector.GetSocketReady(i);
 
-			if (Socket == Listener) {
-			
-				sf::IPAddress Address;
-				sf::SocketUDP Client;
-				std::cout << "[NETWORK] Your penis shots out a client from [" << Address << "]." << std::endl;
+        if (socket == Listener) {
+            sf::IPAddress address;
+            sf::SocketUDP client;
+            std::cout << "[NETWORK] Your penis shots out a client from [" << address << "]." << std::endl;
 
-				Selector.Add(Client);
+            mSelector.Add(client);
+        } else { // Handle a connected client
+            sf::Packet packet;
+            sf::IPAddress client_address;
+            sf::Uint16 client_port;
 
-			} else { // Handle a connected client
-			 
-				sf::Packet Packet;
-
-				if (Socket.Receive(Packet) == sf::Socket::Done) {
-					sf::Uint16 x;
-					sf::Uint16 y;
-					Packet >> x >> y;
-					std::cout << "Your penis looks quite interested at you and says :\"" << x << y << "\"" << std::endl;
-					Packet.Clear();
-					// TODO: Handle client later here
-				} else {
-				
-					Selector.Remove(Socket);
-				
-				}
-			 
-			}
-		
-		}
-	}	
+            if (socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
+                sf::Uint16 x;
+                sf::Uint16 y;
+                packet >> x >> y;
+                std::cout << "Your penis looks quite interested at you and says :\"" << x << y << "\"" << std::endl;
+                packet.Clear();
+                // TODO: Handle client later here
+            } else {
+                mSelector.Remove(socket);
+            }
+        }
+    }
+}
 }

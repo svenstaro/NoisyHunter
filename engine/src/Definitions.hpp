@@ -1,0 +1,10 @@
+#ifndef DEFINITIONS_HPP
+#define DEFINITIONS_HPP
+
+#define CLIENT_PORT 12010
+#define SERVER_PORT 12011
+
+#define CLIENT_ADDRESS 127.0.0.1
+#define SERVER_ADDRESS 127.0.0.1
+
+#endif

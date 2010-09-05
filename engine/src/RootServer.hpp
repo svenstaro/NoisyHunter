@@ -2,6 +2,8 @@
 #define ROOTSERVER_HPP
 
 #include "Root.hpp"
+#include "NetworkServer.hpp"
+
 
 namespace Engine{
 
@@ -9,7 +11,7 @@ class RootServer : public Root{
 public:
     void StartMainLoop();
 
-    const NetworkManager* GetNetworkManager() const;
+    NetworkManager* GetNetworkManager();
 
 private:
     NetworkServer mNetworkServer;

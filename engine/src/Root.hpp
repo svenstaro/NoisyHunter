@@ -9,6 +9,9 @@ namespace Engine{
 
 class Root {
 public:
+    Root();
+    ~Root();
+
     //void Initialize(sf::VideoMode video_mode, std::string window_title, bool fullsreen = false);
     virtual void StartMainLoop() = 0;
 
@@ -18,8 +21,8 @@ public:
   /*
     StateManager& GetStateManger() const;
     ResourceManager& GetResourceManager() const;*/
-    virtual const InputManager* GetInputMangerPtr() const;
-    virtual const NetworkManager* GetNetworkManager() const = 0;
+    virtual InputManager* GetInputMangerPtr();
+    virtual NetworkManager* GetNetworkManager() = 0;
 
 protected:
     bool mShutdownRequested;

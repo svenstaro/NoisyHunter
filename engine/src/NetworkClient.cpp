@@ -2,20 +2,13 @@
 
 namespace Engine {
 
-class NetworkClient {
+void NetworkClient::SendEntity(Entity* ent) {
+    sf::Uint16 x = ent->GetPosition().x;
+    sf::Uint16 y = ent->GetPosition().y;
 
-public:
-	void SendEntity(Engine::Entity* ent) {
-	
-		sf::Uint16 x = ent->Position.x;
-		sf::Uint16 y = ent->Position.y;
-
-		SendPacket << x << y;
-		Listener.Send(SendPacket, "127.0.0.1", 12345);
-		SendPacket.Clear();
-	
-	}
-
+    SendPacket << x << y;
+    Listener.Send(SendPacket, "127.0.0.1", 12345);
+    SendPacket.Clear();
 }
 
 }

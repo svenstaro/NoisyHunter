@@ -2,6 +2,10 @@
 
 namespace Engine{
 
+Root::Root() {}
+Root::~Root() {}
+
+
 void Root::RequestShutdown(){
     mShutdownRequested = true;
 }
@@ -21,7 +25,7 @@ StateManager& Root::GetStateManger() const {
 }
 */
 
-const InputManager* Root::GetInputMangerPtr() const {
+InputManager* Root::GetInputMangerPtr() {
     return &mInputManager;
 }
 

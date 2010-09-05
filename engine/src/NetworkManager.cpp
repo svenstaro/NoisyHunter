@@ -1,26 +1,14 @@
-#ifndef NETWORK_HPP
-#define NETWORK_HPP
-
-#include <iostream>
-
-#include <SFML/Network.hpp>
+#include "NetworkManager.hpp"
 
 namespace Engine {
 
-class NetworkManager {
-public:
-	NetworkManager() {}
-	~NetworkManager() {}
+void NetworkManager::Initialize(sf::Uint16 port) {
 
-	virtual void Initialize(const sf::Uint16 port);
-	
-
-private:
-	sf::SocketUDP Listener;
-	sf::Packet SendPacket;
-
-};
+    if (!Listener.Bind(port)) {
+        std::cerr << "Your penis was broken by the NetworkManager while binding the listening socket" << std::endl;
+        exit(1);
+    }
 
 }
 
-#endif
+}

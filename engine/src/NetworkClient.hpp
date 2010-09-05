@@ -1,5 +1,5 @@
-#ifndef NETWORKCLIENT
-#define NETWORKCLIENT
+#ifndef NETWORKCLIENT_HPP
+#define NETWORKCLIENT_HPP
 
 
 #include "Entity.hpp"
@@ -8,11 +8,9 @@
 namespace Engine {
 
 class NetworkClient : public NetworkManager {
-
 public:
-	void SendEntitiy(Engine::Entity* ent);
-
-}
+	void SendEntity(Entity* ent);
+};
 
 }
 

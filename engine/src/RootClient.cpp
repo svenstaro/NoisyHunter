@@ -40,7 +40,7 @@ void RootClient::StartMainLoop(){
 
 
 
-const NetworkManager* ClientRoot::GetNetworkManager() const{
+NetworkManager* RootClient::GetNetworkManager(){
     return &mNetworkClient;
 }
 

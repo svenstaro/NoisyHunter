@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "Root.hpp"
 #include "InputManager.hpp"
+#include "NetworkClient.hpp"
 
 namespace Engine{
 
@@ -12,8 +13,7 @@ public:
     void Initialize(sf::VideoMode video_mode, std::string window_title, bool fullscreen = false);
     void StartMainLoop();
 
-    const NetworkManager* GetNetworkManager() const:
-}
+    NetworkManager* GetNetworkManager();
 
 private:
     sf::RenderWindow mRenderWindow;
