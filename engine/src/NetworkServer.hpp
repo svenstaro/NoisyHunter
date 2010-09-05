@@ -11,7 +11,7 @@ public:
 	void Initialize(const sf::Uint16 port);
 	void HandleClients();	
 private:
-	sf::SelectorUDP;
+	sf::SelectorUDP Selector;
 }
 
 }

@@ -17,6 +17,9 @@ public:
 
 	void Update(const float time_delta);
 
+	friend sf::Packet& operator<<(sf::Packet& Packet, const Torpedo& ent);
+	friend sf::Packet& operator>>(sf::Packet& Packet, Torpedo& ent);
+
 private:
 	Engine::Vector2D mTargetPosition;
 };
