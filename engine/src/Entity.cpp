@@ -38,7 +38,7 @@ namespace Engine {
 
 
 
-	const Entity::Layer Entity::GetLayer() const {
+	Entity::Layer Entity::GetLayer() const {
         return mLayer;
     }
 

@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Root.hpp"
+#include "InputManager.hpp"
 
 namespace Engine{
 
@@ -11,13 +12,12 @@ public:
     void Initialize(sf::VideoMode video_mode, std::string window_title, bool fullscreen = false);
     void StartMainLoop();
 
-    /*ResourceManager& GetResourceManager() const;
-    InputManager& GetInputManger() const;*/
+    const NetworkManager* GetNetworkManager() const:
+}
+
 private:
     sf::RenderWindow mRenderWindow;
-/*
-    ResourceManager mResourceManager;
-    InputManager mInputManager;*/
+    NetworkClient mNetworkClient;
 };
 
 }

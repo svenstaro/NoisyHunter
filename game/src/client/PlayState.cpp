@@ -12,6 +12,8 @@ void PlayState::Initialize(){
     // create entities
 
     // bind keys
+    Engine::KeyBindingCallback cb = boost::bind(&PlayState::OnLeaveGame, this);
+    mRoot->GetInputMangerPtr()->BindKey( sf::Key::Escape, sf::Event::KeyPressed, cb );
 }
 void PlayState::Shutdown(){
     // hm, what do we need shutdown for!?
@@ -31,4 +33,8 @@ void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position){
     Torpedo* torpedo = (Torpedo*)mPlayerSubmarine->FireTorpedoTo(target);
 
     AddEntity(torpedo);
+}
+
+void PlayState::OnLeaveGame() {
+    mRoot.RequestShutdown();
 }

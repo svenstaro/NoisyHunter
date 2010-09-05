@@ -9,7 +9,10 @@ class RootServer : public Root{
 public:
     void StartMainLoop();
 
+    const NetworkManager* GetNetworkManager() const;
+
 private:
+    NetworkServer mNetworkServer;
 };
 
 }
