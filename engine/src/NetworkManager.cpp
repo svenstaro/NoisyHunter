@@ -12,13 +12,11 @@ public:
 	NetworkManager() {}
 	~NetworkManager() {}
 
-	void Initialize(sf::Uint16 port);
-	void HandleClients();	
+	virtual void Initialize(const sf::Uint16 port);
 	
 
 private:
 	sf::SocketUDP Listener;
-	sf::SelectorUDP Selector;
 	sf::Packet SendPacket;
 
 };
