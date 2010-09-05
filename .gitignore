@@ -4,3 +4,4 @@ build/
 lib/
 *.cbp
 *.depend
+game/gfx/cached/
