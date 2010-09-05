@@ -1,7 +1,10 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
+#include <string>
+
 #include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
 
 #include "Vector2D.hpp"
 
@@ -37,6 +40,9 @@ public:
 
 	bool operator < (const Entity& other);
 
+	friend sf::Packet& operator<<(sf::Packet& Packet, const Entitiy& ent);
+	friend sf::Packet& operator>>(sf::Packet& Packet, Entitiy& ent);
+	
 protected:
     Layer mLayer;
 

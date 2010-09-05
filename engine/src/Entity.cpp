@@ -34,6 +34,7 @@ namespace Engine {
 	}
 
 
+	
 
 
 
@@ -41,5 +42,16 @@ namespace Engine {
         return mLayer;
     }
 
-
 }
+
+	sf::Packet& operator <<(sf::Packet& Packet, const Entity& ent) {
+
+		return Packet << ent.mPosition.x << ent.mPosition.y << ent.mSpeed.x << ent.mSpeed.y << ent.mLayer;
+	
+	}
+
+	sf::Packet& operator >>(sf::Packet& Packet, Entity& ent) {
+		
+		return Packet >> ent.mPosition.x >> ent.mPosition.y >> ent.mSpeed.x >> ent.mSpeed.y >> ent.mLayer;
+	
+	}

@@ -38,3 +38,15 @@ void Torpedo::OnCollide(const Engine::Entity& ent) {
 void Torpedo::OnDeath() {
 
 }
+
+sf::Packet& operator<<(sf::Packet& Packet, const Torpedo& ent) {
+
+	return Packet << ent.mPosition.x << ent.mPosition.y << ent.mSpeed.x << ent.mSpeed.y << ent.mLayer << ent.mTargetPosition.x << ent.mTargetPosition.y;
+
+}
+
+sf::Packet& operator>>(sf::Packet& Packet, Torpedo& ent) {
+
+	return Packet >> ent.mPosition.x >> ent.mPosition.y >> ent.mSpeed.x >> ent.mSpeed.y >> ent.mLayer >> ent.mTargetPosition.x >> ent.mTargetPosition.y;
+
+}
