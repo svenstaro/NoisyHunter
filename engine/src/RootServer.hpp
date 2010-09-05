@@ -1,11 +1,11 @@
-#ifndef SERVERROOT_HPP
-#define SERVERROOT_HPP
+#ifndef ROOTSERVER_HPP
+#define ROOTSERVER_HPP
 
 #include "Root.hpp"
 
 namespace Engine{
 
-class ServerRoot : public Root{
+class RootServer : public Root{
 public:
     void StartMainLoop();
 

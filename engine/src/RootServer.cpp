@@ -1,8 +1,8 @@
-#include "ServerRoot.hpp"
+#include "RootServer.hpp"
 
 namespace Engine{
 
-void ServerRoot::StartMainLoop(){
+void RootServer::StartMainLoop(){
     while (!mShutdownRequested){
         //mStateManager.Update();
     }
