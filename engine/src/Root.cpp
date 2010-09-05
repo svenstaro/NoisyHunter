@@ -20,12 +20,19 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode, const std::string
 
     mIsServer = false;
 
+
+
+    sf::WindowSettings Settings;
+    Settings.DepthBits         = 24; // Request a 24 bits depth buffer
+    Settings.StencilBits       = 8;  // Request a 8 bits stencil buffer
+    Settings.AntialiasingLevel = 8;  // Request 2 levels of antialiasing
+
     // Create Render Window
     if (is_fullscreen){
-        mRenderWindow.Create(video_mode, window_title, sf::Style::Fullscreen);
+        mRenderWindow.Create(video_mode, window_title, sf::Style::Fullscreen, Settings);
     }
     else {
-        mRenderWindow.Create(video_mode, window_title);
+        mRenderWindow.Create(video_mode, window_title, sf::Style::Close, Settings);
     }
 
     //mInputManager = InputManager();
@@ -55,9 +62,10 @@ void Root::StartMainLoop(){
     else {
 
         // CLIENT MAIN LOOP
-
+        mClock.Reset();
         while (mRenderWindow.IsOpened()){
-            float time_delta = 0.2;
+            float time_delta = mClock.GetElapsedTime();
+            mClock.Reset();
 
             sf::Event e;
             while (mRenderWindow.GetEvent(e)){
@@ -67,7 +75,7 @@ void Root::StartMainLoop(){
 
             // Render the image
             mRenderWindow.Clear();
-            // mStateManager.Draw();
+            mStateManager.Draw(&mRenderWindow);
             mRenderWindow.Display();
 
             // Check if a shutdown has been requested...

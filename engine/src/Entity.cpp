@@ -1,5 +1,7 @@
 #include "Entity.hpp"
 
+#include <iostream>
+
 namespace Engine {
 
     Entity::Entity() {}
@@ -16,7 +18,7 @@ namespace Engine {
         ar & mPosition.y;
         ar & mSpeed.x;
         ar & mSpeed.y;
-        ar & (sf::Uint16)mLayer;
+        ar & mLayer;
     }
 
 
@@ -26,7 +28,10 @@ namespace Engine {
 
 	void Entity::Draw(sf::RenderTarget* target) const {
 		mDrawable->SetPosition(mPosition.x, mPosition.y);
-		mDrawable->SetRotation(Vector2D::rad2Deg(mSpeed.Rotation()));
+		float rotation = 0;
+		if (mSpeed.x != 0 && mSpeed.y != 0) rotation = mSpeed.Rotation();
+		mDrawable->SetRotation(Vector2D::rad2Deg(rotation));
+
 		target->Draw(*mDrawable);
 	}
 

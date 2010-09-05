@@ -10,9 +10,15 @@ PlayState::PlayState() {}
 PlayState::~PlayState() {}
 
 void PlayState::Initialize(){
+    // load resources
+
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gfx"),
+                                                                           "submarine1.svg", 80, 53, "submarine");
+
     // create GUI
 
     // create entities
+    AddEntity(new Submarine(100,100));
 
     // bind keys
     Engine::KeyBindingCallback cb = boost::bind(&PlayState::OnLeaveGame, this);

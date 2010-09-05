@@ -17,6 +17,8 @@ public:
     State();
     virtual ~State() = 0;
 
+    virtual void Initialize() = 0;
+
 
     virtual void Update(const float time_delta);
     void UpdateAllEntities(const float time_delta);

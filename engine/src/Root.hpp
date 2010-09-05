@@ -48,6 +48,7 @@ private:
     sf::RenderWindow mRenderWindow;
     ResourceManager mResourceManager;
 
+    sf::Clock mClock;
     StateManager mStateManager;
     NetworkManager mNetworkManager;
 

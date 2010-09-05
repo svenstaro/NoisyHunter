@@ -42,13 +42,10 @@ void NetworkManager::PreparePacket(){
     mPacket.Clear();
 }
 void NetworkManager::AddEntity(Entity& entity){
-    /*std::ostringstream os;
+    std::ostringstream os;
     boost::archive::binary_oarchive oa(os, boost::archive::no_header);
-
     oa << entity;
-
     mPacket << os.str();
-    */
 }
 
 void NetworkManager::SendPacket(){
