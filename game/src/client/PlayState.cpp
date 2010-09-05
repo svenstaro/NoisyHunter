@@ -1,23 +1,49 @@
 #include "PlayState.hpp"
+#include "Root.hpp"
+#include "Entity.hpp"
+#include <boost/foreach.hpp>
 
 PlayState::PlayState() {}
-PlayState::PlayState(Engine::Root* root){
+/*PlayState::PlayState(Engine::Root* root){
     mRoot = root;
-}
+}*/
 PlayState::~PlayState() {}
 
 void PlayState::Initialize(){
+    // load resources
+
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gfx"),
+                                                                           "submarine1.svg", 80, 53, "submarine");
+
     // create GUI
 
     // create entities
+    AddEntity(new Submarine(100,100));
 
     // bind keys
     Engine::KeyBindingCallback cb = boost::bind(&PlayState::OnLeaveGame, this);
-    mRoot->GetInputMangerPtr()->BindKey( sf::Key::Escape, sf::Event::KeyPressed, cb );
+    Engine::Root::get_mutable_instance().GetInputMangerPtr()->BindKey( sf::Key::Escape, sf::Event::KeyPressed, cb );
 }
 void PlayState::Shutdown(){
     // hm, what do we need shutdown for!?
 }
+
+void PlayState::Update(float time_delta){
+    UpdateAllEntities(time_delta);
+
+    // TODO: Networking
+    Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->PreparePacket();
+    BOOST_FOREACH(Engine::Entity& entity, mEntities){
+        if (entity.GetLayer() == Engine::Entity::LAYER_REGULAR){
+            Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->AddEntity(entity);
+        }
+    }
+    Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket();
+
+}
+
+
+
 void PlayState::OnSetNoisyMode(){
     //mPlayerSubmarine->SetMode(Submarine::MODE_NOISY);
 }
@@ -36,5 +62,5 @@ void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position){
 }
 
 void PlayState::OnLeaveGame() {
-    mRoot->RequestShutdown();
+    Engine::Root::get_mutable_instance().RequestShutdown();
 }

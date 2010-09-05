@@ -1,9 +1,13 @@
 #include "Submarine.hpp"
 
+#include "Root.hpp"
+#include <SFML/Graphics.hpp>
+
 Submarine::Submarine(float pos_x, float pos_y) {
 	mPosition = Engine::Vector2D(pos_x, pos_y);
 	mLayer = Engine::Entity::LAYER_REGULAR;
-	mDrawable = mRoot.GetResourceManager().GetImage("submarine");
+	mDrawable = new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("submarine"));
+	mSpeed = Engine::Vector2D(100,100);
 }
 
 Submarine::~Submarine() {}

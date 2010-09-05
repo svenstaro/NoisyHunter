@@ -5,7 +5,7 @@
 #include "InputManager.hpp"
 #include "Submarine.hpp"
 
-class PlayState : Engine::State{
+class PlayState : public Engine::State{
 public:
     PlayState();
     PlayState(Engine::Root* root);
@@ -15,6 +15,8 @@ public:
     void Initialize();
     void Shutdown();
 
+    void Update(float time_delta);
+
     // input callbacks
     void OnSetNoisyMode();
     void OnSetSilentMode();
@@ -22,10 +24,9 @@ public:
     void OnNavigateTo(const Engine::Coordinates& mouse_position);
     void OnFireTorpedo(const Engine::Coordinates& mouse_position);
 
-
     void OnLeaveGame();
-private:
 
+private:
     Submarine* mPlayerSubmarine;
 };
 

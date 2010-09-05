@@ -1,4 +1,5 @@
 #include "Vector2D.hpp"
+#include <assert.h>
 namespace Engine {
 //-----------------------------------------------------------------------------
 // Purpose:	Constructor
@@ -33,6 +34,8 @@ float Vector2D::Magnitude() const
 //-----------------------------------------------------------------------------
 float Vector2D::Rotation() const
 {
+    assert (x != 0 && y != 0); // Zero vector has no rotation.
+
 	return Vector2D::Angle( Vector2D(1, 0), Vector2D(x, y));
 }
 
@@ -89,7 +92,7 @@ float Vector2D::Distance( const Vector2D& v1, const Vector2D& v2)
 //-----------------------------------------------------------------------------
 float Vector2D::Angle( const Vector2D& v1, const Vector2D& v2)
 {
-	return acosf( v1.DotProduct(v2) / (v1.Magnitude()*v2.Magnitude()));
+	return -acosf( v1.DotProduct(v2) / (v1.Magnitude()*v2.Magnitude()));
 }
 
 

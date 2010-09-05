@@ -3,15 +3,21 @@
 
 #include <SFML/Graphics.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
-#include "Root.hpp"
+//#include "Root.hpp"
 #include "Entity.hpp"
 
+
+
 namespace Engine{
+
+class Root;
 
 class State{
 public:
     State();
     virtual ~State() = 0;
+
+    virtual void Initialize() = 0;
 
 
     virtual void Update(const float time_delta);
@@ -23,11 +29,12 @@ public:
     void AddEntity(Entity* entity);
 
 protected:
-    Root* mRoot;
+    //Root* mRoot;
 
-private:
     // Entity list
     boost::ptr_vector<Entity> mEntities;
+
+private:
     // Saves if there are new Entities, so the list has to be sorted for correct order while drawing.
     bool mEntityListNeedsSorting;
 

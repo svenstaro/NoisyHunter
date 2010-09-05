@@ -23,7 +23,7 @@ namespace Engine{
     }
 
 
-    void State::Draw(sf::RenderTarget* target) const {
+    void State::Draw(sf::RenderTarget* const target) const {
         BOOST_FOREACH(const Entity& entity, mEntities){
             entity.Draw(target);
         }

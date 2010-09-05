@@ -1,5 +1,7 @@
 #include "Entity.hpp"
 
+#include <iostream>
+
 namespace Engine {
 
     Entity::Entity() {
@@ -11,13 +13,27 @@ namespace Engine {
 		return mLayer < other.GetLayer();
 	}
 
+
+	template<class Archive>
+    void Entity::serialize(Archive & ar, const unsigned int version){
+        ar & mPosition.x;
+        ar & mPosition.y;
+        ar & mSpeed.x;
+        ar & mSpeed.y;
+        ar & mLayer;
+    }
+
+
 	void Entity::Update(const float time_delta) {
 		mPosition += mSpeed * time_delta;
 	}
 
 	void Entity::Draw(sf::RenderTarget* target) const {
 		mDrawable->SetPosition(mPosition.x, mPosition.y);
-		mDrawable->SetRotation(Vector2D::rad2Deg(mSpeed.Rotation()));
+		float rotation = 0;
+		if (mSpeed.x != 0 && mSpeed.y != 0) rotation = mSpeed.Rotation();
+		mDrawable->SetRotation(Vector2D::rad2Deg(rotation));
+
 		target->Draw(*mDrawable);
 	}
 
@@ -36,7 +52,7 @@ namespace Engine {
 	}
 
 
-	
+
 
 
 
@@ -44,16 +60,10 @@ namespace Engine {
         return mLayer;
     }
 
+
+
 }
 
-	sf::Packet& operator <<(sf::Packet& Packet, const Entity& ent) {
 
-		return Packet << ent.mPosition.x << ent.mPosition.y << ent.mSpeed.x << ent.mSpeed.y << ent.mLayer;
-	
-	}
 
-	sf::Packet& operator >>(sf::Packet& Packet, Entity& ent) {
-		
-		return Packet >> ent.mPosition.x >> ent.mPosition.y >> ent.mSpeed.x >> ent.mSpeed.y >> ent.mLayer;
-	
-	}
+

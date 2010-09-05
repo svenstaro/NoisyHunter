@@ -17,10 +17,12 @@ public:
 
 	void Update(const float time_delta);
 
-	friend sf::Packet& operator<<(sf::Packet& Packet, const Torpedo& ent);
-	friend sf::Packet& operator>>(sf::Packet& Packet, Torpedo& ent);
-
 private:
+  /*  friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version);
+*/
+
 	Engine::Vector2D mTargetPosition;
 };
 
