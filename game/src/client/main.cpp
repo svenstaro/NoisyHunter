@@ -1,8 +1,8 @@
-#include "ClientRoot.hpp"
+#include "RootClient.hpp"
 
 int main(){
 
-    Engine::ClientRoot root;
+    Engine::RootClient root;
     root.Initialize(sf::VideoMode(800,600), "NoisyHunter");
 
     root.StartMainLoop();

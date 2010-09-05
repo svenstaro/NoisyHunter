@@ -1,8 +1,8 @@
-#include "ClientRoot.hpp"
+#include "RootClient.hpp"
 
 namespace Engine {
 
-void ClientRoot::Initialize(sf::VideoMode video_mode, std::string window_title, bool fullscreen){
+void RootClient::Initialize(sf::VideoMode video_mode, std::string window_title, bool fullscreen){
     mShutdownRequested = false;
 
     if (fullscreen){
@@ -13,7 +13,7 @@ void ClientRoot::Initialize(sf::VideoMode video_mode, std::string window_title, 
 }
 
 
-void ClientRoot::StartMainLoop(){
+void RootClient::StartMainLoop(){
     while (mRenderWindow.IsOpened()){
 
         sf::Event e;
