@@ -9,6 +9,17 @@ namespace Engine {
 		return mLayer < other.GetLayer();
 	}
 
+
+	template<class Archive>
+    void Entity::serialize(Archive & ar, const unsigned int version){
+        ar & mPosition.x;
+        ar & mPosition.y;
+        ar & mSpeed.x;
+        ar & mSpeed.y;
+        ar & (sf::Uint16)mLayer;
+    }
+
+
 	void Entity::Update(const float time_delta) {
 		mPosition += mSpeed * time_delta;
 	}
@@ -34,7 +45,7 @@ namespace Engine {
 	}
 
 
-	
+
 
 
 
@@ -42,16 +53,10 @@ namespace Engine {
         return mLayer;
     }
 
+
+
 }
 
-	sf::Packet& operator <<(sf::Packet& Packet, const Entity& ent) {
 
-		return Packet << ent.mPosition.x << ent.mPosition.y << ent.mSpeed.x << ent.mSpeed.y << ent.mLayer;
-	
-	}
 
-	sf::Packet& operator >>(sf::Packet& Packet, Entity& ent) {
-		
-		return Packet >> ent.mPosition.x >> ent.mPosition.y >> ent.mSpeed.x >> ent.mSpeed.y >> ent.mLayer;
-	
-	}
+

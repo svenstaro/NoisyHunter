@@ -6,6 +6,7 @@
 #include <boost/function.hpp>
 #include <SFML/Graphics.hpp>
 
+//#include "Root.hpp"
 
 namespace Engine{
 
@@ -47,6 +48,7 @@ public:
 class InputManager {
 public:
     InputManager();
+    //InputManager(Root* root);
     ~InputManager();
 
     void HandleEvent(sf::Event e);
@@ -54,6 +56,7 @@ public:
     void BindKey(sf::Key::Code key, sf::Event::EventType type,  KeyBindingCallback callback );
 
 private:
+    //Root* mRoot;
     boost::ptr_list<KeyBinding> mKeyBindings;
 
 };

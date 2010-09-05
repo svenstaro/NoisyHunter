@@ -1,36 +1,57 @@
 #ifndef ROOT_HPP
 #define ROOT_HPP
 
+
+#include <boost/shared_ptr.hpp>
+#include <boost/serialization/singleton.hpp>
+
+/*// TODO: Get rid of forward declaration!!!
+namespace Engine{
+    class Root;
+}*/
+
 #include "NetworkManager.hpp"
-//#include "StateManager.hpp"
+#include "StateManager.hpp"
+#include "ResourceManager.hpp"
 #include "InputManager.hpp"
 
 namespace Engine{
 
-class Root {
+
+class Root : public boost::serialization::singleton<Root> {
 public:
     Root();
     ~Root();
 
+    void InitializeAsServer(const sf::Uint16 server_port);
+    void InitializeAsClient(const sf::VideoMode& video_mode, const std::string& window_title, const bool is_fullscreen,
+                            const sf::IPAddress& server_ip, const sf::Uint16 server_port);
+
     //void Initialize(sf::VideoMode video_mode, std::string window_title, bool fullsreen = false);
-    virtual void StartMainLoop() = 0;
+    void StartMainLoop();
 
     // Request a Shutdown. Engine will stop at the end of current loop iteration
     void RequestShutdown();
 
-  /*
-    StateManager& GetStateManger() const;
-    ResourceManager& GetResourceManager() const;*/
-    virtual InputManager* GetInputMangerPtr();
-    virtual NetworkManager* GetNetworkManager() = 0;
+    // Manager Getter
+    InputManager* GetInputMangerPtr();
+    NetworkManager* GetNetworkManagerPtr();
+    StateManager* GetStateManagerPtr();
+    ResourceManager* GetResourceManagerPtr();
 
-protected:
+private:
+    bool mIsServer;
     bool mShutdownRequested;
 
-    /*
-    StateManager mStateManager;
-    ResourceManager mResourceManager; */
+    // these members are for use in client mode only !
     InputManager mInputManager;
+    sf::RenderWindow mRenderWindow;
+    ResourceManager mResourceManager;
+
+    StateManager mStateManager;
+    NetworkManager mNetworkManager;
+
+
 };
 
 }

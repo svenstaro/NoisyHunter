@@ -4,7 +4,7 @@ Torpedo::Torpedo() {
 	mPosition = Engine::Vector2D(0, 0);
 	mTargetPosition = Engine::Vector2D(0, 0);
 	mSpeed = Engine::Vector2D(0, 0);
-	//mDrawable = mRoot.GetResourceManager().GetImage("torpedo");
+	//mDrawable = Root::get_mutable_instance().GetResourceManager().GetImage("torpedo");
 
 	mLayer = Engine::Entity::LAYER_REGULAR;
 }
@@ -39,14 +39,12 @@ void Torpedo::OnDeath() {
 
 }
 
-sf::Packet& operator<<(sf::Packet& Packet, const Torpedo& ent) {
 
-	return Packet << ent.mPosition.x << ent.mPosition.y << ent.mSpeed.x << ent.mSpeed.y << ent.mLayer << ent.mTargetPosition.x << ent.mTargetPosition.y;
+/*template<class Archive>
+void Torpedo::serialize(Archive & ar, const unsigned int version) {
 
-}
+    //ar & boost::serialization::base_object<Engine::Entity>(*this);
 
-sf::Packet& operator>>(sf::Packet& Packet, Torpedo& ent) {
-
-	return Packet >> ent.mPosition.x >> ent.mPosition.y >> ent.mSpeed.x >> ent.mSpeed.y >> ent.mLayer >> ent.mTargetPosition.x >> ent.mTargetPosition.y;
-
-}
+    ar & mTargetPosition.x;
+    ar & mTargetPosition.y;
+}*/

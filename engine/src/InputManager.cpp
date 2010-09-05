@@ -4,6 +4,9 @@
 namespace Engine{
 
 InputManager::InputManager() {}
+/*InputManager::InputManager(Root* root) {
+    mRoot = root;
+}*/
 InputManager::~InputManager() {}
 
 void InputManager::BindKey(sf::Key::Code key, sf::Event::EventType type,  KeyBindingCallback callback) {
