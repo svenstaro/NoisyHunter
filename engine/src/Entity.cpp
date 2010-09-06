@@ -14,17 +14,6 @@ namespace Engine {
 		return mLayer < other.GetLayer();
 	}
 
-
-	template<class Archive>
-    void Entity::serialize(Archive & ar, const unsigned int version){
-        ar & mPosition.x;
-        ar & mPosition.y;
-        ar & mSpeed.x;
-        ar & mSpeed.y;
-        ar & mLayer;
-    }
-
-
 	void Entity::Update(const float time_delta) {
 		mPosition += mSpeed * time_delta;
 	}

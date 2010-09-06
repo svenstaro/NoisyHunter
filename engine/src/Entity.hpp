@@ -45,7 +45,13 @@ public:
 private:
     friend class boost::serialization::access;
     template<class Archive>
-    void serialize(Archive & ar, const unsigned int version);
+    void serialize(Archive & ar, const unsigned int version) {
+        ar & mPosition.x;
+        ar & mPosition.y;
+        ar & mSpeed.x;
+        ar & mSpeed.y;
+        ar & mLayer;
+	}
 
 protected:
     Layer mLayer;
