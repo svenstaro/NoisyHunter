@@ -92,7 +92,21 @@ float Vector2D::Distance( const Vector2D& v1, const Vector2D& v2)
 //-----------------------------------------------------------------------------
 float Vector2D::Angle( const Vector2D& v1, const Vector2D& v2)
 {
-	return -acosf( v1.DotProduct(v2) / (v1.Magnitude()*v2.Magnitude()));
+    Vector2D v1n = v1;
+    v1n.Normalize();
+
+    Vector2D v2n = v2;
+    v2n.Normalize();
+
+
+	float abs = acosf( v1n.DotProduct(v2n) );
+
+	Vector2D diff = v2n - v1n;
+	if (diff.x < 0) abs *= -1;
+	if (diff.y < 0) abs *= -1;
+
+    return abs;
+
 }
 
 
