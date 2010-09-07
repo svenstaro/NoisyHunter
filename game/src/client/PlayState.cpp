@@ -2,6 +2,7 @@
 #include "Root.hpp"
 #include "Entity.hpp"
 #include <boost/foreach.hpp>
+#include <iostream>
 
 PlayState::PlayState() {}
 /*PlayState::PlayState(Engine::Root* root){
@@ -20,9 +21,15 @@ void PlayState::Initialize(){
     // create entities
     AddEntity(new Submarine(100,100));
 
+
+    Engine::InputManager* in = Engine::Root::get_mutable_instance().GetInputMangerPtr();
     // bind keys
     Engine::KeyBindingCallback cb = boost::bind(&PlayState::OnLeaveGame, this);
-    Engine::Root::get_mutable_instance().GetInputMangerPtr()->BindKey( sf::Key::Escape, sf::Event::KeyPressed, cb );
+    in->BindKey( cb, Engine::KEY_PRESSED, sf::Key::Escape );
+    // bind mouse
+    Engine::MouseBindingCallback mcb = boost::bind(&PlayState::OnClick, this, _1);
+    in->BindMouse(mcb, Engine::BUTTON_PRESSED, sf::Mouse::Left);
+    in->BindMouse(mcb, Engine::BUTTON_RELEASED, sf::Mouse::Middle);
 }
 void PlayState::Shutdown(){
     // hm, what do we need shutdown for!?
@@ -63,4 +70,8 @@ void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position){
 
 void PlayState::OnLeaveGame() {
     Engine::Root::get_mutable_instance().RequestShutdown();
+}
+void PlayState::OnClick(Engine::MouseEventArgs args){
+    std::cout << "Mouse clicked at position " << args.ScreenX << "|" << args.ScreenY << std::endl;
+    //OnFireTorpedo(args);
 }

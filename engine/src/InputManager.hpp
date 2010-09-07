@@ -12,54 +12,81 @@ namespace Engine{
 
 
 
-// Structure holding screen and game coordinates
-
-struct Coordinates{
-public:
-    float X, Y;
-    int ScreenX, ScreenY;
-};
-
-
-typedef boost::function<void()> KeyBindingCallback;
-
-class KeyBinding{
-public:
-    KeyBinding(sf::Key::Code key, sf::Event::EventType event_type, KeyBindingCallback callback ) {
-        Key = key;
-        EventType = event_type;
-        Callback = callback;
-    }
-
-    sf::Key::Code Key;
-    sf::Event::EventType EventType;
-    KeyBindingCallback Callback;
-};
-
-/*struct MouseBinding{
-public:
-    sf::Key::Code Button;
-    sf::Event::Type EventType;
-    void (*Callback)(const Coordinates);
-}*/
+    // Structure holding screen and game coordinates
+    class Coordinates{
+    public:
+        float X, Y;
+        int ScreenX, ScreenY;
+    };
 
 
 
-class InputManager {
-public:
-    InputManager();
-    //InputManager(Root* root);
-    ~InputManager();
+    class MouseEventArgs : public Coordinates{
+    public:
+        int WheelDelta;
+    };
 
-    void HandleEvent(sf::Event e);
 
-    void BindKey(sf::Key::Code key, sf::Event::EventType type,  KeyBindingCallback callback );
+    // callback function typedefs
+    typedef boost::function<void()> KeyBindingCallback;
+    typedef boost::function<void(MouseEventArgs args)> MouseBindingCallback;
 
-private:
-    //Root* mRoot;
-    boost::ptr_list<KeyBinding> mKeyBindings;
 
-};
+    enum KeyboardEventType{
+        KEY_PRESSED,
+        KEY_RELEASED
+    };
+    enum MouseEventType{
+        BUTTON_PRESSED,
+        BUTTON_RELEASED,
+        MOUSE_MOVED,
+        WHEEL_MOVED
+    };
+
+
+    class KeyBinding{
+    public:
+        KeyBinding( KeyBindingCallback callback, KeyboardEventType event_type, sf::Key::Code key ) {
+            Callback = callback;
+            EventType = event_type;
+            Key = key;
+        }
+
+        sf::Key::Code Key;
+        KeyboardEventType EventType;
+        KeyBindingCallback Callback;
+    };
+
+    class MouseBinding{
+    public:
+        MouseBinding(MouseBindingCallback callback, MouseEventType event_type, sf::Mouse::Button button = sf::Mouse::Left){
+            Callback = callback;
+            EventType = event_type;
+            Button = button;
+        }
+
+        MouseBindingCallback Callback;
+        MouseEventType EventType;
+        sf::Mouse::Button Button;
+    };
+
+
+    class InputManager {
+    public:
+        InputManager();
+        //InputManager(Root* root);
+        ~InputManager();
+
+        void HandleEvent(sf::Event e);
+
+        void BindKey(KeyBindingCallback callback, KeyboardEventType type, sf::Key::Code key);
+        void BindMouse(MouseBindingCallback callback, MouseEventType type,sf::Mouse::Button button = sf::Mouse::Left);
+
+    private:
+        boost::ptr_list<KeyBinding> mKeyBindings;
+        boost::ptr_list<MouseBinding> mMouseBindings;
+
+    };
 
 
 }

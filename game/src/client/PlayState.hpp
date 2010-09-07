@@ -25,7 +25,7 @@ public:
     void OnFireTorpedo(const Engine::Coordinates& mouse_position);
 
     void OnLeaveGame();
-
+    void OnClick(Engine::MouseEventArgs args);
 private:
     Submarine* mPlayerSubmarine;
 };
