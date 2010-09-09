@@ -87,8 +87,8 @@ void InputManager::HandleEvent(sf::Event e) {
             }
             else if (i->EventType == MOUSE_MOVED and e.Type == sf::Event::MouseMoved){
                 MouseEventArgs a;
-                a.ScreenX = e.MouseButton.X;
-                a.ScreenY = e.MouseButton.Y;
+                a.ScreenX = e.MouseMove.X;
+                a.ScreenY = e.MouseMove.Y;
                 Coordinates c = GetWorldCoordinates(a.ScreenX, a.ScreenY);
                 a.X = c.X;
                 a.Y = c.Y;

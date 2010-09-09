@@ -15,6 +15,8 @@ void PlayState::Initialize(){
 
     Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gfx"),
                                                                            "submarine1.svg", 80, 53, "submarine");
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gfx"),
+                                                                           "aim.svg", 80, 53, "aim");
 
     // create GUI
 
@@ -22,6 +24,9 @@ void PlayState::Initialize(){
     mPlayerSubmarine = new Submarine(0.5,0.5);
     AddEntity(mPlayerSubmarine);
     mPlayerSubmarine->SetTarget(Engine::Vector2D(1,1));
+
+    mCrosshair = new Crosshair();
+    AddEntity(mCrosshair);
 
 
     Engine::InputManager* in = Engine::Root::get_mutable_instance().GetInputManagerPtr();
@@ -33,6 +38,9 @@ void PlayState::Initialize(){
     in->BindMouse(mcb, Engine::BUTTON_PRESSED, sf::Mouse::Left);
     Engine::MouseBindingCallback right = boost::bind(&PlayState::OnRightClick, this, _1);
     in->BindMouse(right, Engine::BUTTON_PRESSED, sf::Mouse::Right);
+
+    Engine::MouseBindingCallback mv = boost::bind(&PlayState::OnMouseMove, this, _1);
+    in->BindMouse(mv, Engine::MOUSE_MOVED);
 }
 void PlayState::Shutdown(){
     // hm, what do we need shutdown for!?
@@ -81,4 +89,7 @@ void PlayState::OnClick(Engine::MouseEventArgs args){
 }
 void PlayState::OnRightClick(Engine::MouseEventArgs args){
     OnFireTorpedo(args);
+}
+void PlayState::OnMouseMove(Engine::MouseEventArgs args){
+    mCrosshair->SetPosition(args.X, args.Y);
 }

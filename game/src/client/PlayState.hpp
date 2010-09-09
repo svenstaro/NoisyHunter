@@ -3,6 +3,7 @@
 
 #include "State.hpp"
 #include "InputManager.hpp"
+#include "Crosshair.hpp"
 #include "Submarine.hpp"
 
 class PlayState : public Engine::State{
@@ -27,8 +28,10 @@ public:
     void OnLeaveGame();
     void OnClick(Engine::MouseEventArgs args);
     void OnRightClick(Engine::MouseEventArgs args);
+    void OnMouseMove(Engine::MouseEventArgs args);
 private:
     Submarine* mPlayerSubmarine;
+    Crosshair* mCrosshair;
 };
 
 #endif

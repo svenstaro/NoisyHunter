@@ -6,7 +6,7 @@
 namespace Engine {
 
     Entity::Entity() {
-		mDrawable = &sf::Sprite(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("default"));
+		mDrawable = new sf::Sprite(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("default"));
 	}
     Entity::~Entity() {}
 
