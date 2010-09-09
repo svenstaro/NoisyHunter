@@ -14,10 +14,15 @@ public:
     Submarine(float pos_x, float pos_y);
 	~Submarine();
 
+
+    void Update(float time_delta);
     // callbacks
     void OnCollide(const Engine::Entity& ent);
     void OnDamage(const float dmg);
     void OnFire();
+
+    // controlling
+    void SetTarget(const Engine::Vector2D target);
 
 	const Engine::Entity* FireTorpedoTo(const Engine::Vector2D Pos);
 	const Engine::Entity* PingTo(const Engine::Vector2D Pos);
@@ -28,7 +33,7 @@ public:
 	};
 
 private:
-
+    Engine::Vector2D mTarget;
 };
 
 #endif

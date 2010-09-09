@@ -26,6 +26,7 @@ public:
 
     void OnLeaveGame();
     void OnClick(Engine::MouseEventArgs args);
+    void OnRightClick(Engine::MouseEventArgs args);
 private:
     Submarine* mPlayerSubmarine;
 };

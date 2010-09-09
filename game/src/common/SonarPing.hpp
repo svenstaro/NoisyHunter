@@ -7,6 +7,7 @@ class SonarPing : public Engine::Entity {
 
 public:
 	SonarPing();
+	SonarPing(float direction_angle);
 	~SonarPing();
 
 	// callbacks

@@ -19,17 +19,20 @@ void PlayState::Initialize(){
     // create GUI
 
     // create entities
-    AddEntity(new Submarine(100,100));
+    mPlayerSubmarine = new Submarine(0.5,0.5);
+    AddEntity(mPlayerSubmarine);
+    mPlayerSubmarine->SetTarget(Engine::Vector2D(1,1));
 
 
-    Engine::InputManager* in = Engine::Root::get_mutable_instance().GetInputMangerPtr();
+    Engine::InputManager* in = Engine::Root::get_mutable_instance().GetInputManagerPtr();
     // bind keys
     Engine::KeyBindingCallback cb = boost::bind(&PlayState::OnLeaveGame, this);
     in->BindKey( cb, Engine::KEY_PRESSED, sf::Key::Escape );
     // bind mouse
     Engine::MouseBindingCallback mcb = boost::bind(&PlayState::OnClick, this, _1);
     in->BindMouse(mcb, Engine::BUTTON_PRESSED, sf::Mouse::Left);
-    in->BindMouse(mcb, Engine::BUTTON_RELEASED, sf::Mouse::Middle);
+    Engine::MouseBindingCallback right = boost::bind(&PlayState::OnRightClick, this, _1);
+    in->BindMouse(right, Engine::BUTTON_PRESSED, sf::Mouse::Right);
 }
 void PlayState::Shutdown(){
     // hm, what do we need shutdown for!?
@@ -57,21 +60,25 @@ void PlayState::OnSetNoisyMode(){
 void PlayState::OnSetSilentMode(){
     //mPlayerSubmarine->SetMode(Submarine::MODE_SILENT);
 }
-void PlayState::OnNavigateTo(const Engine::Coordinates& mouse_position){
-    //const Engine::Vector2D target = Engine::Vector2D(mouse_position.X, mouse_position.Y);
-    //mPlayerSubmarine->SetTarget(target);
-}
-void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position){
-    const Engine::Vector2D target = Engine::Vector2D(mouse_position.X, mouse_position.Y);
-    Torpedo* torpedo = (Torpedo*)mPlayerSubmarine->FireTorpedoTo(target);
 
-    AddEntity(torpedo);
+void PlayState::OnNavigateTo(const Engine::Coordinates& mouse_position){
+    const Engine::Vector2D target = Engine::Vector2D(mouse_position.X, mouse_position.Y);
+
+    mPlayerSubmarine->SetTarget(target);
+}
+
+void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position){
+    /*const Engine::Vector2D target = Engine::Vector2D(mouse_position.X, mouse_position.Y);
+    Torpedo* torpedo = (Torpedo*)mPlayerSubmarine->FireTorpedoTo(target);
+    AddEntity(torpedo);*/
 }
 
 void PlayState::OnLeaveGame() {
     Engine::Root::get_mutable_instance().RequestShutdown();
 }
 void PlayState::OnClick(Engine::MouseEventArgs args){
-    std::cout << "Mouse clicked at position " << args.ScreenX << "|" << args.ScreenY << std::endl;
-    //OnFireTorpedo(args);
+    OnNavigateTo(args);
+}
+void PlayState::OnRightClick(Engine::MouseEventArgs args){
+    OnFireTorpedo(args);
 }

@@ -19,10 +19,15 @@ namespace Engine {
 	}
 
 	void Entity::Draw(sf::RenderTarget* target) const {
-		mDrawable->SetPosition(mPosition.x, mPosition.y);
+
+	    // get position
+	    Coordinates pos = Root::get_mutable_instance().GetInputManagerPtr()->GetScreenCoordinates(mPosition.x, mPosition.y);
+		mDrawable->SetPosition(pos.ScreenX, pos.ScreenY);
 		float rotation = 0;
-		if (mSpeed.x != 0 && mSpeed.y != 0) rotation = mSpeed.Rotation();
-		mDrawable->SetRotation(Vector2D::rad2Deg(rotation));
+		if (mSpeed.x != 0 && mSpeed.y != 0)
+            rotation = mSpeed.Rotation();
+
+		mDrawable->SetRotation(- Vector2D::rad2Deg(rotation));
 
 		target->Draw(*mDrawable);
 	}

@@ -1,5 +1,6 @@
 #include "Vector2D.hpp"
 #include <assert.h>
+#include <iostream>
 namespace Engine {
 //-----------------------------------------------------------------------------
 // Purpose:	Constructor
@@ -34,7 +35,11 @@ float Vector2D::Magnitude() const
 //-----------------------------------------------------------------------------
 float Vector2D::Rotation() const
 {
-    assert (x != 0 && y != 0); // Zero vector has no rotation.
+    //assert (x != 0 && y != 0); // Zero vector has no rotation.
+    if (x==0 && y==0) {
+        std::cout << "ERROR: Tried to get angle of zero vector. Returning 0." << std::endl;
+        return 0;
+    }
 
 	return Vector2D::Angle( Vector2D(1, 0), Vector2D(x, y));
 }
@@ -105,7 +110,7 @@ float Vector2D::Angle( const Vector2D& v1, const Vector2D& v2)
 	if (diff.x < 0) abs *= -1;
 	if (diff.y < 0) abs *= -1;
 
-    return abs;
+    return -abs;
 
 }
 

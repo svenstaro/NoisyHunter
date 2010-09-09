@@ -6,7 +6,7 @@
 #include <boost/function.hpp>
 #include <SFML/Graphics.hpp>
 
-//#include "Root.hpp"
+#include "Vector2D.hpp"
 
 namespace Engine{
 
@@ -78,6 +78,9 @@ namespace Engine{
         ~InputManager();
 
         void HandleEvent(sf::Event e);
+
+        const Coordinates GetScreenCoordinates(const float world_x, const float world_y) const;
+        const Coordinates GetWorldCoordinates(const int screen_x, const int screen_y) const;
 
         void BindKey(KeyBindingCallback callback, KeyboardEventType type, sf::Key::Code key);
         void BindMouse(MouseBindingCallback callback, MouseEventType type,sf::Mouse::Button button = sf::Mouse::Left);

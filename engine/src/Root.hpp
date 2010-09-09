@@ -5,11 +5,6 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/serialization/singleton.hpp>
 
-/*// TODO: Get rid of forward declaration!!!
-namespace Engine{
-    class Root;
-}*/
-
 #include "NetworkManager.hpp"
 #include "StateManager.hpp"
 #include "ResourceManager.hpp"
@@ -34,11 +29,12 @@ public:
     void RequestShutdown();
 
     // Manager Getter
-    InputManager* GetInputMangerPtr();
+    InputManager* GetInputManagerPtr();
     NetworkManager* GetNetworkManagerPtr();
     StateManager* GetStateManagerPtr();
     ResourceManager* GetResourceManagerPtr();
 
+    const Vector2D GetWindowSize() const;
 private:
     bool mIsServer;
     bool mShutdownRequested;

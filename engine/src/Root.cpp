@@ -100,7 +100,7 @@ void Root::RequestShutdown(){
 ResourceManager* Root::GetResourceManagerPtr() {
     return &mResourceManager;
 }
-InputManager* Root::GetInputMangerPtr() {
+InputManager* Root::GetInputManagerPtr() {
     return &mInputManager;
 }
 StateManager* Root::GetStateManagerPtr(){
@@ -108,6 +108,10 @@ StateManager* Root::GetStateManagerPtr(){
 }
 NetworkManager* Root::GetNetworkManagerPtr() {
     return &mNetworkManager;
+}
+
+const Vector2D Root::GetWindowSize() const {
+    return Vector2D( mRenderWindow.GetWidth(), mRenderWindow.GetHeight() );
 }
 
 
