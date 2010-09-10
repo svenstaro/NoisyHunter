@@ -1,6 +1,7 @@
 *.bin
 bin/
 build/
+build2/
 lib/
 *.cbp
 *.depend
