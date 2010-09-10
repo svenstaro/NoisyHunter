@@ -39,8 +39,14 @@ void PlayState::Initialize(){
     Engine::MouseBindingCallback right = boost::bind(&PlayState::OnRightClick, this, _1);
     in->BindMouse(right, Engine::BUTTON_PRESSED, sf::Mouse::Right);
 
+    // mouse cursor
     Engine::MouseBindingCallback mv = boost::bind(&PlayState::OnMouseMove, this, _1);
     in->BindMouse(mv, Engine::MOUSE_MOVED);
+    // hide original cursor
+    Engine::Root::get_mutable_instance().SetMouseHidden(true);
+
+
+
 }
 void PlayState::Shutdown(){
     // hm, what do we need shutdown for!?

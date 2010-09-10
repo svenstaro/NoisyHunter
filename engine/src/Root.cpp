@@ -113,6 +113,10 @@ NetworkManager* Root::GetNetworkManagerPtr() {
 const Vector2D Root::GetWindowSize() const {
     return Vector2D( mRenderWindow.GetWidth(), mRenderWindow.GetHeight() );
 }
+void Root::SetMouseHidden(const bool mouse_hidden){
+	mRenderWindow.ShowMouseCursor(!mouse_hidden);
+}
+
 
 
 }

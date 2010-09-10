@@ -34,6 +34,7 @@ public:
     StateManager* GetStateManagerPtr();
     ResourceManager* GetResourceManagerPtr();
 
+	void SetMouseHidden(const bool mouse_hidden);
     const Vector2D GetWindowSize() const;
 private:
     bool mIsServer;
