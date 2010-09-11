@@ -20,21 +20,39 @@ namespace Engine{
             //mEntities.sort();
             mEntityListNeedsSorting = false;
         }
+
+
+        BOOST_FOREACH(GuiSystem& system, mGuiSystems){
+            system.Update(time_delta);
+        }
+
     }
 
 
-    void State::Draw(sf::RenderTarget* const target) const {
-        BOOST_FOREACH(const Entity& entity, mEntities){
+    void State::Draw(sf::RenderTarget* target) {
+        BOOST_FOREACH(Entity& entity, mEntities){
             entity.Draw(target);
+        }
+
+        BOOST_FOREACH(GuiSystem& system, mGuiSystems){
+            system.Draw(target);
         }
     }
 
+    void State::HandleEvent(sf::Event e) {
+        BOOST_FOREACH(GuiSystem& system, mGuiSystems){
+            system.HandleEvent(e);
+        }
+    }
 
     void State::AddEntity(Entity* entity){
         mEntities.push_back( entity );
         mEntityListNeedsSorting = true;
     }
 
+    void State::CreateGuiSystem() {
+        mGuiSystems.push_back(new GuiSystem());
+    }
 
 
 

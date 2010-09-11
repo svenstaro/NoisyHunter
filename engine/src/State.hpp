@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
-//#include "Root.hpp"
+#include "GuiSystem.hpp"
 #include "Entity.hpp"
 
 
@@ -24,15 +24,19 @@ public:
     void UpdateAllEntities(const float time_delta);
 
     // Draws all entities to render target.
-    void Draw(sf::RenderTarget* const target) const;
+    void HandleEvent(sf::Event e);
+    void Draw(sf::RenderTarget* const target);
 
     void AddEntity(Entity* entity);
-
+    void CreateGuiSystem();
 protected:
     //Root* mRoot;
 
     // Entity list
     boost::ptr_vector<Entity> mEntities;
+
+    // Gui Systems
+    boost::ptr_vector<GuiSystem> mGuiSystems;
 
 private:
     // Saves if there are new Entities, so the list has to be sorted for correct order while drawing.

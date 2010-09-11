@@ -10,6 +10,9 @@ namespace Engine {
 	}
     Entity::~Entity() {}
 
+
+    void Entity::OnCollide(const Entity& ent) {}
+
 	bool Entity::operator < (const Entity& other){
 		return mLayer < other.GetLayer();
 	}

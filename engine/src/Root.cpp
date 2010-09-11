@@ -70,6 +70,7 @@ void Root::StartMainLoop(){
             sf::Event e;
             while (mRenderWindow.GetEvent(e)){
                 mInputManager.HandleEvent(e);
+                mStateManager.HandleEvent(e);
             }
             mStateManager.Update(time_delta);
 

@@ -1,6 +1,7 @@
 #include "LoadingState.hpp"
 
 #include "Root.hpp"
+#include "GuiControl.hpp"
 
 LoadingState::LoadingState() {}
 LoadingState::~LoadingState() {}
@@ -9,7 +10,14 @@ LoadingState::~LoadingState() {}
 void LoadingState::Initialize() {
     // load gui resources
 
+
     // create gui
+    CreateGuiSystem();
+
+    Engine::GuiControl* c = new Engine::GuiControl("test");
+    c->SetDimension(Engine::Vector2D(100,30));
+    c->SetPosition(Engine::Vector2D(20,20));
+    mGuiSystems.begin()->AddControl(c);
 
     // (create entities)
 

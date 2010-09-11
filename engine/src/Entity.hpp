@@ -19,8 +19,7 @@ public:
 		LAYER_BACKGROUND = 1000,
 		LAYER_WORLD = 1001,
 		LAYER_REGULAR = 1002,
-		LAYER_GUI = 1003,
-		LAYER_TOOLTIP = 1004
+		LAYER_FOREGROUND = 1003
 	};
 	enum PositionType{
         POSITIONTYPE_SCREEN,
@@ -32,7 +31,7 @@ public:
 	virtual ~Entity() = 0;
 
 	// callbacks
-	virtual void OnCollide(const Entity& ent) = 0;
+	virtual void OnCollide(const Entity& ent);
 	// TODO: All the other callbacks
 
 	virtual void Update(const float time_delta);

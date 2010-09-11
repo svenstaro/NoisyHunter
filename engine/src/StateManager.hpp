@@ -13,6 +13,7 @@ public:
     ~StateManager();
 
     void Update(float time_delta);
+    void HandleEvent(sf::Event e);
     void Draw(sf::RenderTarget* target);
     void Add(State* state);
     void Pop(int amount = 1);
