@@ -22,6 +22,10 @@ public:
 		LAYER_GUI = 1003,
 		LAYER_TOOLTIP = 1004
 	};
+	enum PositionType{
+        POSITIONTYPE_SCREEN,
+        POSITIONTYPE_WORLD
+	};
 
 
 	Entity();
@@ -39,8 +43,10 @@ public:
 	const Vector2D GetSpeed() const;
 	const Vector2D GetPosition() const;
 	Layer GetLayer() const;
+    virtual PositionType GetPositionType();
 
 	bool operator < (const Entity& other);
+
 
 private:
     friend class boost::serialization::access;

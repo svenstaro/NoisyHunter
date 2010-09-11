@@ -20,9 +20,18 @@ namespace Engine {
 
 	void Entity::Draw(sf::RenderTarget* target) const {
 
-	    // get position
-	    Coordinates pos = Root::get_mutable_instance().GetInputManagerPtr()->GetScreenCoordinates(mPosition.x, mPosition.y);
-		mDrawable->SetPosition(pos.ScreenX, pos.ScreenY);
+	    // set screen position
+	    if (GetPositionType() == Entity::POSITIONTYPE_WORLD){
+            // convert to world coordinates
+            Coordinates pos = Root::get_mutable_instance().GetInputManagerPtr()->GetScreenCoordinates(mPosition.x, mPosition.y);
+            mDrawable->SetPosition(pos.ScreenX, pos.ScreenY);
+		}
+		else if (GetPositionType() == Entity::POSITIONTYPE_SCREEN){
+            // simply use screen coordinates
+            mDrawable->SetPosition(mPosition.x, mPosition.y);
+		}
+
+
 		float rotation = 0;
 		if (mSpeed.x != 0 && mSpeed.y != 0)
             rotation = mSpeed.Rotation();
@@ -54,7 +63,9 @@ namespace Engine {
 	Entity::Layer Entity::GetLayer() const {
         return mLayer;
     }
-
+    Entity::PositionType GetPositionType() {
+        return Entity::POSITIONTYPE_WORLD;
+    }
 
 
 }
