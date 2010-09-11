@@ -1,7 +1,7 @@
 #include "LoadingState.hpp"
 
 #include "Root.hpp"
-#include "GuiControl.hpp"
+#include "GuiButton.hpp"
 
 LoadingState::LoadingState() {}
 LoadingState::~LoadingState() {}
@@ -14,7 +14,7 @@ void LoadingState::Initialize() {
     // create gui
     CreateGuiSystem();
 
-    Engine::GuiControl* c = new Engine::GuiControl("test");
+    Engine::GuiButton* c = new Engine::GuiButton("test");
     c->SetDimension(Engine::Vector2D(100,30));
     c->SetPosition(Engine::Vector2D(20,20));
     mGuiSystems.begin()->AddControl(c);

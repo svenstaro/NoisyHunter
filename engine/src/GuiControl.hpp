@@ -10,6 +10,7 @@ namespace Engine{
 
 class GuiControl : public Entity {
 public:
+    GuiControl();
     GuiControl(std::string name);
     ~GuiControl();
 
@@ -50,7 +51,7 @@ public:
 
     // set / get name
     const std::string GetName() const;
-private:
+protected:
     std::string mName;
     std::string mText;
     bool mIsFocused;

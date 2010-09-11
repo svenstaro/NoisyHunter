@@ -4,6 +4,7 @@
 
 namespace Engine{
 
+GuiControl::GuiControl() {}
 GuiControl::GuiControl(std::string name) {
     mName = name;
     SetFocus(false);
@@ -29,9 +30,7 @@ void GuiControl::Draw(sf::RenderTarget* target){
     target->Draw(s);
 }
 
-void GuiControl::OnType(sf::Uint32 unicode_char) {
-    mText += (wchar_t)unicode_char;
-}
+void GuiControl::OnType(sf::Uint32 unicode_char) {}
 void GuiControl::OnClick() {
     std::cout << "Clicked on element" << std::endl;
 }
