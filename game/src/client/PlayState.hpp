@@ -9,7 +9,6 @@
 class PlayState : public Engine::State{
 public:
     PlayState();
-    PlayState(Engine::Root* root);
     ~PlayState();
 
     // state control

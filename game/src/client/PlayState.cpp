@@ -5,9 +5,6 @@
 #include <iostream>
 
 PlayState::PlayState() {}
-/*PlayState::PlayState(Engine::Root* root){
-    mRoot = root;
-}*/
 PlayState::~PlayState() {}
 
 void PlayState::Initialize(){
