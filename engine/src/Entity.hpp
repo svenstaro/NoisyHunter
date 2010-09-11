@@ -43,7 +43,7 @@ public:
 	const Vector2D GetSpeed() const;
 	const Vector2D GetPosition() const;
 	Layer GetLayer() const;
-    virtual PositionType GetPositionType();
+    virtual PositionType GetPositionType() const;
 
 	bool operator < (const Entity& other);
 

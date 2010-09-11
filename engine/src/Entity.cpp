@@ -63,7 +63,7 @@ namespace Engine {
 	Entity::Layer Entity::GetLayer() const {
         return mLayer;
     }
-    Entity::PositionType GetPositionType() {
+    Entity::PositionType Entity::GetPositionType() const {
         return Entity::POSITIONTYPE_WORLD;
     }
 
