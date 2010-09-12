@@ -2,6 +2,7 @@
 #define GUIBUTTON_HPP
 
 #include "GuiControl.hpp"
+#include "TiledSprite.hpp"
 
 namespace Engine{
 
@@ -18,7 +19,8 @@ public:
     void OnClick();
 private:
     sf::String mString;
-    sf::Shape mShape;
+    //sf::Shape mShape;
+    TiledSprite mSprite;
 };
 
 

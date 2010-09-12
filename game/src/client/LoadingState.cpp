@@ -10,6 +10,10 @@ LoadingState::~LoadingState() {}
 void LoadingState::Initialize() {
     // load gui resources
 
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),
+                                                                           "button.svg", 80, 53, "gui.button");
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),
+                                                                           "button_hover.svg", 80, 53, "gui.button_hover");
 
     // create gui
     CreateGuiSystem();
