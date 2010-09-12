@@ -35,6 +35,9 @@ const Coordinates InputManager::GetWorldCoordinates(const int screen_x, const in
 void InputManager::BindKey(KeyBindingCallback callback, KeyboardEventType type, sf::Key::Code key) {
     mKeyBindings.push_back(new KeyBinding(callback, type, key));
 }
+void InputManager::BindKey(KeyBindingCallback callback, KeyboardEventType type) {
+    mKeyBindings.push_back(new KeyBinding(callback, type));
+}
 
 void InputManager::BindMouse(MouseBindingCallback callback, MouseEventType type, sf::Mouse::Button button) {
     mMouseBindings.push_back(new MouseBinding(callback, type, button));
@@ -47,7 +50,7 @@ void InputManager::HandleEvent(sf::Event e) {
         e.Type == sf::Event::KeyReleased){
 
         for (boost::ptr_list<KeyBinding>::iterator i = mKeyBindings.begin(); i != mKeyBindings.end(); ++i) {
-            if ( i->Key == e.Key.Code){
+            if ( i->Key == e.Key.Code or i->UseAnyKey){
 
                 if ((i->EventType == KEY_PRESSED and e.Type == sf::Event::KeyPressed ) or
                     (i->EventType == KEY_RELEASED and e.Type == sf::Event::KeyReleased ))

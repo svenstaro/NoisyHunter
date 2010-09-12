@@ -46,15 +46,22 @@ namespace Engine{
 
     class KeyBinding{
     public:
+        KeyBinding( KeyBindingCallback callback, KeyboardEventType event_type){
+            Callback = callback;
+            EventType = event_type;
+            UseAnyKey = true;
+        }
         KeyBinding( KeyBindingCallback callback, KeyboardEventType event_type, sf::Key::Code key ) {
             Callback = callback;
             EventType = event_type;
             Key = key;
+            UseAnyKey = false;
         }
 
         sf::Key::Code Key;
         KeyboardEventType EventType;
         KeyBindingCallback Callback;
+        bool UseAnyKey;
     };
 
     class MouseBinding{
@@ -82,6 +89,7 @@ namespace Engine{
         const Coordinates GetScreenCoordinates(const float world_x, const float world_y) const;
         const Coordinates GetWorldCoordinates(const int screen_x, const int screen_y) const;
 
+        void BindKey(KeyBindingCallback callback, KeyboardEventType type);
         void BindKey(KeyBindingCallback callback, KeyboardEventType type, sf::Key::Code key);
         void BindMouse(MouseBindingCallback callback, MouseEventType type,sf::Mouse::Button button = sf::Mouse::Left);
 
