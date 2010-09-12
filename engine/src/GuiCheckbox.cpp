@@ -55,8 +55,9 @@ void GuiCheckbox::Draw(sf::RenderTarget* target) {
     mString.SetPosition(mPosition.x + 20,mPosition.y);
 
 
-    if (mIsChecked) mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button_hover"));
-    else            mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button"));
+    if (mIsChecked)  mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.checkbox_checked"));
+    else if (mHover) mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.checkbox_hover"));
+    else             mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.checkbox"));
 
     mSprite.SetPosition(mPosition.x, mPosition.y);
     mSprite.Resize(16,16);

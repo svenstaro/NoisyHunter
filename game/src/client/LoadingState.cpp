@@ -11,10 +11,11 @@ LoadingState::~LoadingState() {}
 void LoadingState::Initialize() {
     // load gui resources
 
-    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),
-                                                                           "button.svg", 80, 53, "gui.button");
-    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),
-                                                                           "button_hover.svg", 80, 53, "gui.button_hover");
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"button.svg",             100, 100, "gui.button");
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"button_hover.svg",       100, 100, "gui.button_hover");
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"checkbox.svg",           16, 16, "gui.checkbox");
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"checkbox_checked.svg",   16, 16, "gui.checkbox_checked");
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"checkbox_hover.svg",     16, 16, "gui.checkbox_hover");
 
     // load font
     sf::Font font;

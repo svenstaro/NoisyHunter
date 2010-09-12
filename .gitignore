@@ -6,3 +6,4 @@ lib/
 *.cbp
 *.depend
 game/gfx/cached/
+game/gui/cached/

@@ -10,12 +10,12 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="24"
-   height="24"
+   width="16"
+   height="16"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.0 r9654"
-   sodipodi:docname="button.svg"
+   sodipodi:docname="checkbox.svg"
    inkscape:export-filename="/home/paul/src/games/NoisyHunter/game/gui/button.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
@@ -68,11 +68,11 @@
     <linearGradient
        id="linearGradient3755">
       <stop
-         style="stop-color:#4bb5ff;stop-opacity:1;"
+         style="stop-color:#73c5ff;stop-opacity:1;"
          offset="0"
          id="stop3757" />
       <stop
-         style="stop-color:#b9e2ff;stop-opacity:1;"
+         style="stop-color:#e1f3ff;stop-opacity:1;"
          offset="1"
          id="stop3759" />
     </linearGradient>
@@ -85,25 +85,7 @@
        x2="0"
        y2="1028.3622"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.9201279,0,0,0.92012714,0.95846646,83.096793)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3957"
-       id="linearGradient3963"
-       x1="5"
-       y1="1047.3622"
-       x2="5"
-       y2="1032.3622"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-0.55766783,0.13941696)" />
-    <filter
-       inkscape:collect="always"
-       id="filter4003">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.64749999"
-         id="feGaussianBlur4005" />
-    </filter>
+       gradientTransform="matrix(0.61204151,0,0,0.612041,0.63754317,407.59997)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -112,9 +94,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="14.345457"
-     inkscape:cx="12.068967"
-     inkscape:cy="12.310198"
+     inkscape:zoom="16.130873"
+     inkscape:cx="0.57057576"
+     inkscape:cy="8.5879016"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -127,7 +109,11 @@
      inkscape:window-maximized="1">
     <inkscape:grid
        type="xygrid"
-       id="grid3798" />
+       id="grid3798"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
   </sodipodi:namedview>
   <metadata
      id="metadata7">
@@ -137,7 +123,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -145,14 +131,14 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-1028.3622)">
+     transform="translate(0,-1036.3622)">
     <rect
-       style="fill:url(#linearGradient3761);fill-opacity:1;fill-rule:nonzero;stroke:#23a4ff;stroke-width:1.91693294;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:url(#linearGradient3761);fill-opacity:1;fill-rule:nonzero;stroke:#4bb5ff;stroke-width:1.27508639999999995;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect3753"
-       width="22.083067"
-       height="22.083067"
-       x="0.95846647"
-       y="1029.3207"
-       rx="3.4930174" />
+       width="14.688994"
+       height="14.688994"
+       x="0.6375432"
+       y="1036.9998"
+       rx="2.3234506" />
   </g>
 </svg>
