@@ -1,6 +1,7 @@
 #ifndef GUIBUTTON_HPP
 #define GUIBUTTON_HPP
 
+#include <SFML/Graphics.hpp>
 #include "GuiControl.hpp"
 #include "TiledSprite.hpp"
 
@@ -15,11 +16,15 @@ public:
     // main callbacks
     virtual void Draw(sf::RenderTarget* target);
 
+    void SetFont(const sf::Font& font);
+    void SetFontSize(const float size);
+    void SetFontStyle(unsigned long style);
+    void SetFontColor(const sf::Color& color);
+
     // event callbacks
     void OnClick();
 private:
     sf::String mString;
-    //sf::Shape mShape;
     TiledSprite mSprite;
 };
 

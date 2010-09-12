@@ -64,4 +64,12 @@ const sf::Image& ResourceManager::GetImage(const std::string& img) {
 }
 
 
+void ResourceManager::AddFont(sf::Font& font, std::string key) {
+    mFonts[key] = font;
+}
+const sf::Font& ResourceManager::GetFont(const std::string& key) {
+    return mFonts[key];
+}
+
+
 }

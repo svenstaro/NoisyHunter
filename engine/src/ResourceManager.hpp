@@ -23,9 +23,11 @@ public:
         const sf::Uint16 width, const sf::Uint16 height, const std::string& key="");
     const sf::Image& GetImage(const std::string& img);
 
+    void AddFont(sf::Font& font, std::string key);
+    const sf::Font& GetFont(const std::string& key);
 private:
-    //Root* mRoot;
 	boost::ptr_map<std::string, sf::Image> mImages;
+	boost::ptr_map<std::string, sf::Font> mFonts;
 };
 
 }

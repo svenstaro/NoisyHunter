@@ -7,8 +7,26 @@ namespace Engine{
 GuiButton::GuiButton() {}
 GuiButton::GuiButton(std::string name) {
     mName = name;
+    mHover = false;
+    mIsFocused = false;
+    SetFontSize(16);
+    SetFontStyle(sf::String::Bold);
+    SetFontColor(sf::Color(0,0,0));
 }
 GuiButton::~GuiButton() {}
+
+void GuiButton::SetFont(const sf::Font& font) {
+    mString.SetFont(font);
+}
+void GuiButton::SetFontSize(const float size) {
+    mString.SetSize(size);
+}
+void GuiButton::SetFontStyle(unsigned long style) {
+    mString.SetStyle(style);
+}
+void GuiButton::SetFontColor(const sf::Color& color) {
+    mString.SetColor(color);
+}
 
 // main callbacks
 void GuiButton::Draw(sf::RenderTarget* target) {

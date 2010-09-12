@@ -15,12 +15,20 @@ void LoadingState::Initialize() {
     Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),
                                                                            "button_hover.svg", 80, 53, "gui.button_hover");
 
+    // load font
+    sf::Font font;
+    font.LoadFromFile("../game/fonts/kingthings_trypewriter_2.ttf");
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddFont(font, "default");
+
+
     // create gui
     CreateGuiSystem();
 
     Engine::GuiButton* c = new Engine::GuiButton("test");
     c->SetDimension(Engine::Vector2D(100,30));
     c->SetPosition(Engine::Vector2D(20,20));
+    c->SetText("Play!");
+    c->SetFont(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetFont("default"));
     mGuiSystems.begin()->AddControl(c);
 
     // (create entities)
