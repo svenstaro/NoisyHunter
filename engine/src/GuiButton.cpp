@@ -35,11 +35,15 @@ void GuiButton::Draw(sf::RenderTarget* target) {
                         mPosition.y + mDimension.y / 2 - mString.GetRect().GetHeight() / 2);
 
 
-    if (mHover) mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button_hover"));
-    else        mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button"));
+    if (mHover)
+        mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button_hover"));
+    else
+        mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button"));
 
-    if (mIsFocused) mString.SetColor(sf::Color(255,0,0));
-    else    mString.SetColor(sf::Color(0,0,0));
+    if (mIsFocused)
+        mString.SetColor(sf::Color(255,0,0));
+    else
+        mString.SetColor(sf::Color(0,0,0));
 
     /*sf::Color shape_color;
     if (mHover) shape_color = sf::Color(200,200,255);
