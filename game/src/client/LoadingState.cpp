@@ -3,6 +3,7 @@
 #include "Root.hpp"
 #include "GuiButton.hpp"
 #include "GuiCheckbox.hpp"
+#include "GuiTextfield.hpp"
 
 LoadingState::LoadingState() {}
 LoadingState::~LoadingState() {}
@@ -11,16 +12,19 @@ LoadingState::~LoadingState() {}
 void LoadingState::Initialize() {
     // load gui resources
 
-    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"button.svg",             100, 100, "gui.button");
-    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"button_hover.svg",       100, 100, "gui.button_hover");
-    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"checkbox.svg",           16, 16, "gui.checkbox");
-    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"checkbox_checked.svg",   16, 16, "gui.checkbox_checked");
-    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"checkbox_hover.svg",     16, 16, "gui.checkbox_hover");
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"button.svg",             100, 100,   "gui.button");
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"button_hover.svg",       100, 100,   "gui.button_hover");
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"checkbox.svg",           16, 16,     "gui.checkbox");
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"checkbox_checked.svg",   16, 16,     "gui.checkbox_checked");
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"checkbox_hover.svg",     16, 16,     "gui.checkbox_hover");
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"textfield.svg",          100, 100,   "gui.textfield");
 
     // load font
     sf::Font font;
     font.LoadFromFile("../game/fonts/kingthings_trypewriter_2.ttf");
     Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddFont(font, "default");
+    font.LoadFromFile("../game/fonts/ParmaPetit-Normal.ttf");
+    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddFont(font, "serif");
 
 
     // create gui
@@ -32,6 +36,21 @@ void LoadingState::Initialize() {
     c->SetText("Play!");
     c->SetFont(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetFont("default"));
     mGuiSystems.begin()->AddControl(c);
+
+    c = new Engine::GuiButton("test2");
+    c->SetDimension(Engine::Vector2D(760,100));
+    c->SetPosition(Engine::Vector2D(20,480));
+    c->SetText("I am a huge button!!! Did you notice that?");
+    c->SetFont(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetFont("serif"));
+    c->SetFontSize(20);
+    mGuiSystems.begin()->AddControl(c);
+
+    Engine::GuiTextfield* f = new Engine::GuiTextfield("roflcopter");
+    f->SetPosition(Engine::Vector2D(20,100));
+    f->SetText("Roflcopter");
+    f->SetFont(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetFont("serif"));
+    f->SetDimension(Engine::Vector2D(200,40));
+    mGuiSystems.begin()->AddControl(f);
 
     Engine::GuiCheckbox* b = new Engine::GuiCheckbox("test");
     b->SetPosition(Engine::Vector2D(20,60));

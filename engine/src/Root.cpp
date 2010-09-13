@@ -81,8 +81,8 @@ void Root::StartMainLoop(){
             
 			mNetworkManager.SendPacket();
 
-			// Render the image
-            mRenderWindow.Clear();
+            // Render the image
+            mRenderWindow.Clear(sf::Color(200,200,200));
             mStateManager.Draw(&mRenderWindow);
             mRenderWindow.Display();
 			
