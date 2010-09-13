@@ -18,6 +18,8 @@ public:
     // Draws all controls to render target.
     void Draw(sf::RenderTarget* target);
 
+    void SetFocus(GuiControl* control);
+
 
     void AddControl(GuiControl* control);
 

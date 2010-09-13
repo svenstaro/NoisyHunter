@@ -1,6 +1,7 @@
 #include "State.hpp"
 
 #include <boost/foreach.hpp>
+#include <SFML/Graphics.hpp>
 
 namespace Engine{
 
