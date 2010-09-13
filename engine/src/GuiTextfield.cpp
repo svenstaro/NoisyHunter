@@ -45,14 +45,15 @@ void GuiTextfield::OnKeyDown(sf::Key::Code key_code) {
     if (key_code == sf::Key::Back){
         if (mText.length() > 0){
             mText.erase(mText.length() - 1, 1);
-            if (mText.length() > 0)
-                mText.resize(mText.length() - 1);
         }
     }
 
 }
 void GuiTextfield::OnType(sf::Uint32 unicode_char){
-    mText += (char)unicode_char;
+    if (unicode_char != 8 and // backspace
+        unicode_char != 123)  // delete
+
+        mText += (char)unicode_char;
 }
 
 }
