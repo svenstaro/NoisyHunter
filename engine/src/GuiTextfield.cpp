@@ -44,8 +44,9 @@ void GuiTextfield::OnKeyDown(sf::Key::Code key_code) {
 
     if (key_code == sf::Key::Back){
         if (mText.length() > 0){
-            mText.erase(mText.capacity() - 1, 1);
-            mText.resize(mText.capacity() - 1);
+            mText.erase(mText.length() - 1, 1);
+            if (mText.length() > 0)
+                mText.resize(mText.length() - 1);
         }
     }
 
