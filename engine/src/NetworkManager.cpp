@@ -20,6 +20,7 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
     }
 
     mServer_Selector.Add(mListener);
+	mClientManager = ClientManager(2);
 }
 
 
@@ -28,12 +29,14 @@ void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip, const sf:
 
     mClient_ServerIp = server_ip;
     mClient_ServerPort = server_port;
-/*
-    if (!mListener.Bind(client_bind)) {
+	
+
+	/*
+    if (!mListener.Bind(client_port)) {
         std::cerr << "Your penis was broken by the NetworkManager while binding the listening socket" << std::endl;
         exit(1);
     }
-*/
+	*/
 
     // TODO: Handshake
 }
@@ -50,7 +53,9 @@ void NetworkManager::AddEntity(Entity& entity){
 
 void NetworkManager::SendPacket(){
     if (mIsServer){
-        // TODO: Send packet to all clients.
+		BOOST_FOREACH(sf::Uint16 id, mClientManager.GetIDs()) {
+			mListener.Send(mPacket, mClientManager.GetIP(id), mClientManager.GetPort(id));
+		}
     }
     else{
         mListener.Send(mPacket, mClient_ServerIp, mClient_ServerPort);

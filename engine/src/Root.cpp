@@ -11,8 +11,8 @@ Root::~Root() {}
 void Root::InitializeAsServer(const sf::Uint16 server_port){
     mIsServer = true;
     //mStateManager = StateManager();
-    //mNetworkManager = NetworkManager();
-    mNetworkManager.InitializeAsServer(server_port);
+    mNetworkManager = NetworkManager();
+	mNetworkManager.InitializeAsServer(server_port);
 }
 
 void Root::InitializeAsClient(const sf::VideoMode& video_mode, const std::string& window_title, const bool is_fullscreen,
@@ -40,7 +40,7 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode, const std::string
     //mResourceManager = ResourceManager();
 
     // Create and Initialize Network Manager
-    //mNetworkManager = NetworkManager();
+    mNetworkManager = NetworkManager();
     mNetworkManager.InitializeAsClient(server_ip, server_port);
 }
 
@@ -55,6 +55,8 @@ void Root::StartMainLoop(){
 
         while (!mShutdownRequested){
             //mStateManager.Update();
+			mNetworkManager.PreparePacket();
+			mNetworkManager.SendPacket();
         }
 
 
@@ -72,12 +74,18 @@ void Root::StartMainLoop(){
                 mInputManager.HandleEvent(e);
                 mStateManager.HandleEvent(e);
             }
-            mStateManager.Update(time_delta);
+			// Network-Sync
+			mNetworkManager.PreparePacket();
 
-            // Render the image
+            mStateManager.Update(time_delta);
+            
+			mNetworkManager.SendPacket();
+
+			// Render the image
             mRenderWindow.Clear();
             mStateManager.Draw(&mRenderWindow);
             mRenderWindow.Display();
+			
 
             // Check if a shutdown has been requested...
             if (mShutdownRequested)

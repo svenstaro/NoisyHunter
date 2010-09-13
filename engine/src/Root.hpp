@@ -2,6 +2,7 @@
 #define ROOT_HPP
 
 
+#include <boost/foreach.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/serialization/singleton.hpp>
 

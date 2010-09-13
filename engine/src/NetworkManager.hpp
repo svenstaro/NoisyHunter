@@ -2,10 +2,13 @@
 #define NETWORKMANAGER_HPP
 
 #include <iostream>
+
+#include <boost/foreach.hpp>
 #include <SFML/Network.hpp>
 
 //#include "Root.hpp"
 #include "Entity.hpp"
+#include "ClientManager.hpp"
 
 
 namespace Engine {
@@ -39,6 +42,8 @@ private:
     // members used when in client mode
     sf::IPAddress mClient_ServerIp;
     sf::Uint16 mClient_ServerPort;
+
+	ClientManager mClientManager;
 
 };
 
