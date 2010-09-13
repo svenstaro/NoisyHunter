@@ -23,6 +23,7 @@ public:
 
     // event callbacks
     void OnClick();
+    void OnKeyDown(sf::Key::Code key_code);
 private:
     sf::String mString;
     TiledSprite mSprite;

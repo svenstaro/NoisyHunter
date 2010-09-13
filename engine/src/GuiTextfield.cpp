@@ -42,6 +42,13 @@ void GuiTextfield::OnClick() {
 }
 void GuiTextfield::OnKeyDown(sf::Key::Code key_code) {
 
+    if (key_code == sf::Key::Back){
+        if (mText.length() > 0){
+            mText.erase(mText.capacity() - 1, 1);
+            mText.resize(mText.capacity() - 1);
+        }
+    }
+
 }
 void GuiTextfield::OnType(sf::Uint32 unicode_char){
     mText += (char)unicode_char;
