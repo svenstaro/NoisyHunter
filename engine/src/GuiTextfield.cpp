@@ -101,8 +101,6 @@ void GuiTextfield::OnKeyDown(sf::Key::Code key_code) {
 void GuiTextfield::OnType(sf::Uint32 unicode_char){
     // the following IF statement saves us from unwanted and not interpreted escape
     // sequences like "\b" which would be added when hitting <Backspace>
-    std::cout << unicode_char << std::endl;
-
     if (unicode_char != 8 and   // backspace
         unicode_char != 9 and   // tab
         unicode_char != 13 and  // return

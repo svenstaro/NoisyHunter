@@ -1,6 +1,7 @@
 #include "GuiSystem.hpp"
 
 #include <boost/foreach.hpp>
+#include <iostream>
 
 namespace Engine{
 
@@ -21,7 +22,6 @@ void GuiSystem::Update(const float time_delta) {
 }
 
 void GuiSystem::HandleEvent(sf::Event e) {
-
     if (e.Type == sf::Event::KeyPressed and e.Key.Code == sf::Key::Tab){
         bool back = e.Key.Shift;
         // focus next / prev element
@@ -29,8 +29,10 @@ void GuiSystem::HandleEvent(sf::Event e) {
         boost::ptr_vector<GuiControl>::iterator i;
         for (i = mControls.begin(); i != mControls.end(); i++) {
             if (i->HasFocus()){
+
                 if (back) i--;
                 else i++;
+
                 if (i == mControls.end()) SetFocus( &(mControls.front()) );
                 else if (i == mControls.begin()) SetFocus( &(mControls.back()) );
                 else SetFocus( &(*i) );
