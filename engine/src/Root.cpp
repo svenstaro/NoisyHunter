@@ -8,6 +8,11 @@ Root::Root() {
 }
 Root::~Root() {}
 
+Vector2D Root::GetMousePosition() const {
+    return Vector2D(mRenderWindow.GetInput().GetMouseX(),
+                    mRenderWindow.GetInput().GetMouseY());
+}
+
 void Root::InitializeAsServer(const sf::Uint16 server_port){
     mIsServer = true;
     //mStateManager = StateManager();
@@ -78,14 +83,14 @@ void Root::StartMainLoop(){
 			mNetworkManager.PreparePacket();
 
             mStateManager.Update(time_delta);
-            
+
 			mNetworkManager.SendPacket();
 
             // Render the image
             mRenderWindow.Clear(sf::Color(200,200,200));
             mStateManager.Draw(&mRenderWindow);
             mRenderWindow.Display();
-			
+
 
             // Check if a shutdown has been requested...
             if (mShutdownRequested)

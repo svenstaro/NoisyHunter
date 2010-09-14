@@ -37,14 +37,20 @@ public:
 
 	void SetMouseHidden(const bool mouse_hidden);
     const Vector2D GetWindowSize() const;
+
+    Vector2D GetMousePosition() const;
+
 private:
     bool mIsServer;
     bool mShutdownRequested;
 
     // these members are for use in client mode only !
+    sf::RenderWindow mRenderWindow; // create Render Window first as Input Manager needs it in constructor
     InputManager mInputManager;
-    sf::RenderWindow mRenderWindow;
     ResourceManager mResourceManager;
+
+
+
 
     sf::Clock mClock;
     StateManager mStateManager;

@@ -5,11 +5,11 @@
 namespace Engine{
 
 InputManager::InputManager() {}
-/*InputManager::InputManager(Root* root) {
-    mRoot = root;
-}*/
 InputManager::~InputManager() {}
 
+Vector2D InputManager::GetMousePosition() const {
+    return Root::get_mutable_instance().GetMousePosition();
+}
 
 // TODO: Offset
 const Coordinates InputManager::GetScreenCoordinates(const float world_x, const float world_y) const{
@@ -107,7 +107,6 @@ void InputManager::HandleEvent(sf::Event e) {
     }
 
 }
-
 
 
 

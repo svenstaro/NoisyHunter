@@ -93,10 +93,10 @@ namespace Engine{
         void BindKey(KeyBindingCallback callback, KeyboardEventType type, sf::Key::Code key);
         void BindMouse(MouseBindingCallback callback, MouseEventType type,sf::Mouse::Button button = sf::Mouse::Left);
 
+        Vector2D GetMousePosition() const;
     private:
         boost::ptr_list<KeyBinding> mKeyBindings;
         boost::ptr_list<MouseBinding> mMouseBindings;
-
     };
 
 
