@@ -49,7 +49,6 @@ void LoadingState::Initialize() {
     f->SetPosition(Engine::Vector2D(20,100));
     f->SetText("Roflcopter");
     f->SetFont(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetFont("serif"));
-    f->SetDimension(Engine::Vector2D(200,40));
     mGuiSystems.begin()->AddControl(f);
 
     Engine::GuiCheckbox* b = new Engine::GuiCheckbox("test");

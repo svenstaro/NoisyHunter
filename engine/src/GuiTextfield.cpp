@@ -12,6 +12,11 @@ GuiTextfield::GuiTextfield(std::string name) {
     mIsFocused = false;
     SetFontSize(16);
     SetFontColor(sf::Color(0,0,0));
+    SetDimension(Vector2D(200,20));
+    mMultiline = false;
+    SetPassword(true);
+
+    SetFont(sf::Font::GetDefaultFont());
 }
 GuiTextfield::~GuiTextfield() {}
 
@@ -21,7 +26,13 @@ void GuiTextfield::Draw(sf::RenderTarget* target) {
     mSprite.Resize(mDimension.x, mDimension.y);
     target->Draw(mSprite);
 
-    mString.SetText(mText);
+    if (mHideCharacters) {
+        mString.SetText(std::string(mText.length(), '?'));
+        mString.SetFont(sf::Font::GetDefaultFont());
+    } else {
+        mString.SetText(mText);
+        mString.SetFont(*mFont);
+    }
     mString.SetPosition(mPosition.x+3, mPosition.y + mDimension.y / 2 - mString.GetRect().GetHeight() / 2);
     target->Draw(mString);
 
@@ -34,8 +45,15 @@ void GuiTextfield::Draw(sf::RenderTarget* target) {
         target->Draw(cursor);
     }
 }
+void GuiTextfield::SetMultiline(bool multiline) {
+    mMultiline = multiline;
+}
+void GuiTextfield::SetPassword(bool password) {
+    mHideCharacters = password;
+}
 void GuiTextfield::SetFont(const sf::Font& font) {
     mString.SetFont(font);
+    mFont = &font;
 }
 void GuiTextfield::SetFontSize(const float size) {
     mString.SetSize(size);

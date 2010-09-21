@@ -15,6 +15,9 @@ public:
     // main callbacks
     void Draw(sf::RenderTarget* target);
 
+    void SetMultiline(bool multiline);
+    void SetPassword(bool password);
+
     void SetFont(const sf::Font& font);
     void SetFontSize(const float size);
     void SetFontStyle(unsigned long style);
@@ -26,9 +29,12 @@ public:
     void OnType(sf::Uint32 unicode_char);
 private:
     sf::String mString;
+    const sf::Font* mFont;
     TiledSprite mSprite;
 
     int mCursorPosition;
+    bool mMultiline;
+    bool mHideCharacters;
 };
 
 }
