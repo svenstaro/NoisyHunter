@@ -60,7 +60,16 @@ namespace Engine{
     void State::CreateGuiSystem() {
         mGuiSystems.push_back(new GuiSystem());
     }
-
+	
+	void State::HandleEntityInfo(sf::Packet packet) {
+		// Stream Entity info out of the packet.
+		sf::Uint16 uuid;
+		packet >> uuid;
+		// Get corresponding entity
+		//Entity* e = GetEntityByUniqueId(uuid);
+		// Put data into entity
+		//packet >> &e;	
+	}
 
 
 }

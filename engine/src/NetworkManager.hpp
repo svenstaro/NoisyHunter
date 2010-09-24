@@ -9,6 +9,7 @@
 //#include "Root.hpp"
 #include "Entity.hpp"
 #include "ClientManager.hpp"
+#include "NetworkCommands.hpp"
 
 
 namespace Engine {
@@ -24,6 +25,7 @@ public:
 
     // method used when in server mode
     void HandleClients();
+	void HandlePacket(sf::Packet packet);
 
     void PreparePacket();
     void AddEntity(Entity& entity);

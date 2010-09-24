@@ -29,6 +29,7 @@ public:
 
     void AddEntity(Entity* entity);
     void CreateGuiSystem();
+	void HandleEntityInfo(sf::Packet packet);
 protected:
     //Root* mRoot;
 

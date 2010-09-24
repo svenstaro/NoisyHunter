@@ -36,6 +36,9 @@ void StateManager::Pop(int amount){
     }
 }
 
-
+State& StateManager::GetCurrentState() {
+	// TODO: will break when there is no state (in the future)
+	return mStates.back();
+}
 
 }

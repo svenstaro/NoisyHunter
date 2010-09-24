@@ -1,4 +1,5 @@
 #include "NetworkManager.hpp"
+#include "Root.hpp"
 
 #include <boost/archive/binary_oarchive.hpp>
 #include <sstream>
@@ -89,16 +90,24 @@ void NetworkManager::HandleClients() {
 
 			if (socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
 				std::cout << "[NETWORK/SERVER] Received a packet" << std::endl;
-				sf::Uint16 x;
-				sf::Uint16 y;
-				packet >> x >> y;
-				std::cout << "[NETWORK/SERVER] Client says: \"" << x << " - " << y << "\"" << std::endl << std::endl;
+				HandlePacket(packet);
 				packet.Clear();
-				// TODO: Handle client later here
             }
         }
     }
 }
 
+void NetworkManager::HandlePacket(sf::Packet packet) {
+	if (!mIsServer) {
+	} else {
+		sf::Uint16 net_cmd;
+		while (!packet.EndOfPacket()) {
+			packet >> net_cmd;
+			if (net_cmd == NETCMD_ENTITYINFO) {
+				Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().HandleEntityInfo(packet);
+			}
+		}
+	}
+}
 
 }
