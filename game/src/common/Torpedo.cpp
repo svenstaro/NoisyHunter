@@ -1,6 +1,6 @@
 #include "Torpedo.hpp"
 
-Torpedo::Torpedo(const sf::Uint16 unique_id, 
+Torpedo::Torpedo(const sf::Uint16 unique_id,
 				 const Engine::Vector2D& pos,
 				 const Engine::Vector2D& speed,
 				 const Engine::Vector2D& target_position) {
@@ -45,3 +45,16 @@ void Torpedo::serialize(Archive & ar, const unsigned int version) {
     ar & mTargetPosition.x;
     ar & mTargetPosition.y;
 }*/
+
+
+void Torpedo::serialize(Engine::IOPacket& packet) {
+packet & mUniqueId;
+    packet & mPosition.x;
+    packet & mPosition.y;
+    packet & mSpeed.x;
+    packet & mSpeed.y;
+    sf::Uint16 l = mLayer;
+    packet & l;
+    packet & mTargetPosition.x;
+    packet & mTargetPosition.y;
+}

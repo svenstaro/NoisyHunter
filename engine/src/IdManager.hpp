@@ -3,7 +3,6 @@
 
 #include "Entity.hpp"
 #include <SFML/System.hpp>
-#include <boost/scoped_ptr.hpp>
 
 namespace Engine {
 

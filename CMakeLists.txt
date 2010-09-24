@@ -9,7 +9,7 @@ set(Boost_USE_MULTITHREADED ON)
 
 find_package(SFML REQUIRED)
 find_package(Bullet REQUIRED)
-find_package(Boost COMPONENTS filesystem program_options system date_time serialization REQUIRED)
+find_package(Boost COMPONENTS filesystem program_options system date_time REQUIRED)
 find_package(ImageMagick COMPONENTS Magick++ REQUIRED)
 
 add_definitions(-Wall -Wextra -g -pedantic -fPIC)

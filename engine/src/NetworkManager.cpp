@@ -52,11 +52,10 @@ void NetworkManager::PreparePacket(){
 }
 
 void NetworkManager::AddEntity(Entity& entity){
-    std::ostringstream os;
-    boost::archive::binary_oarchive oa(os, boost::archive::no_header);
-    oa << entity;
-	mPacket << entity.GetEntityId();
-    mPacket << os.str();
+    mPacket << entity.GetEntityId();
+    Engine::IOPacket p(true,mPacket);
+    entity.serialize(p);
+    mPacket = p.GetPacket();
 }
 
 void NetworkManager::SendPacket(){

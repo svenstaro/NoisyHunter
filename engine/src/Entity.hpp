@@ -6,9 +6,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 
-#include <boost/serialization/base_object.hpp>
-
 #include "Vector2D.hpp"
+#include "IOPacket.hpp"
 
 namespace Engine {
 
@@ -56,18 +55,8 @@ public:
 
 	bool operator < (const Entity& other);
 
+    virtual void serialize(IOPacket& packet);
 
-private:
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version) {
-        ar & mUniqueId;
-        ar & mPosition.x;
-        ar & mPosition.y;
-        ar & mSpeed.x;
-        ar & mSpeed.y;
-        ar & mLayer;
-	}
 
 protected:
 	sf::Uint16 mUniqueId;

@@ -14,6 +14,16 @@ void Entity::OnCollide(const Entity& ent) {}
 bool Entity::operator < (const Entity& other){
 	return mLayer < other.GetLayer();
 }
+void Entity::serialize(IOPacket& packet) {
+    packet & mUniqueId;
+    packet & mPosition.x;
+    packet & mPosition.y;
+    packet & mSpeed.x;
+    packet & mSpeed.y;
+    sf::Uint16 l = mLayer;
+    packet & l;
+}
+
 
 void Entity::Update(const float time_delta) {
 	mPosition += mSpeed * time_delta;
