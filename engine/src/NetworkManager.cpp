@@ -24,6 +24,8 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
 
     mServer_Selector.Add(mListener);
 	mClientManager = ClientManager(2);
+
+	mListener.SetBlocking(1);
 }
 
 
@@ -69,42 +71,30 @@ void NetworkManager::SendPacket(){
 
 }
 
-
-
-
-
 void NetworkManager::HandleClients() {
-    if (!mIsServer){
-        std::cout << "[NETWORK/CLIENT] Client cannot execute server methods." << std::endl;
+    if (!mIsServer) {
+        std::cerr << "[NETWORK/CLIENT] Client cannot execute server methods." << std::endl;
         exit(1);
     }
-    else{
+    else {
+		std::cout << "[NETWORK/SERVER] Server::HandleClients()" << std::endl;
         unsigned int nb_sockets = mServer_Selector.Wait();
 
         for (unsigned int i=0;i < nb_sockets; ++i) {
             sf::SocketUDP socket = mServer_Selector.GetSocketReady(i);
 
-            if (socket == mListener) {
-                sf::IPAddress address;
-                sf::SocketUDP client;
-                std::cout << "[NETWORK/SERVER] New client connected from [" << address << "]." << std::endl;
+			sf::Packet packet;
+			sf::IPAddress client_address;
+			sf::Uint16 client_port;
 
-                mServer_Selector.Add(client);
-            } else { // Handle a connected client
-                sf::Packet packet;
-                sf::IPAddress client_address;
-                sf::Uint16 client_port;
-
-                if (socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
-                    sf::Uint16 x;
-                    sf::Uint16 y;
-                    packet >> x >> y;
-                    std::cout << "[NETWORK/SERVER] Client says: \"" << x << y << "\"" << std::endl;
-                    packet.Clear();
-                    // TODO: Handle client later here
-                } else {
-                    mServer_Selector.Remove(socket);
-                }
+			if (socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
+				std::cout << "[NETWORK/SERVER] Received a packet" << std::endl;
+				sf::Uint16 x;
+				sf::Uint16 y;
+				packet >> x >> y;
+				std::cout << "[NETWORK/SERVER] Client says: \"" << x << " - " << y << "\"" << std::endl << std::endl;
+				packet.Clear();
+				// TODO: Handle client later here
             }
         }
     }
