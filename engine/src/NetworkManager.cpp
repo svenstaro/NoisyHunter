@@ -18,6 +18,9 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
         std::cerr << "[NETWORK/SERVER] NetworkManager was broken while binding the listening SERVER socket." << std::endl;
         exit(1);
     }
+    else{
+        std::cout << "[SERVER] Binding to port " << server_port << " successful." << std::endl;
+    }
 
     mServer_Selector.Add(mListener);
 	mClientManager = ClientManager(2);
@@ -29,7 +32,7 @@ void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip, const sf:
 
     mClient_ServerIp = server_ip;
     mClient_ServerPort = server_port;
-	
+
 
 	/*
     if (!mListener.Bind(client_port)) {
@@ -94,7 +97,7 @@ void NetworkManager::HandleClients() {
                     sf::Uint16 x;
                     sf::Uint16 y;
                     packet >> x >> y;
-                    std::cout << "[NETWORK/SERVER] Your penis looks quite interested at you and says :\"" << x << y << "\"" << std::endl;
+                    std::cout << "[NETWORK/SERVER] Client says: \"" << x << y << "\"" << std::endl;
                     packet.Clear();
                     // TODO: Handle client later here
                 } else {
