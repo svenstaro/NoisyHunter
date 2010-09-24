@@ -47,10 +47,12 @@ void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip, const sf:
 void NetworkManager::PreparePacket(){
     mPacket.Clear();
 }
+
 void NetworkManager::AddEntity(Entity& entity){
     std::ostringstream os;
     boost::archive::binary_oarchive oa(os, boost::archive::no_header);
     oa << entity;
+	mPacket << entity.GetEntityId();
     mPacket << os.str();
 }
 
