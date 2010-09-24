@@ -9,7 +9,6 @@ PlayState::~PlayState() {}
 
 void PlayState::Initialize(){
     // load resources
-
     Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gfx"),
                                                                            "submarine1.svg", 80, 53, "submarine");
     Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gfx"),

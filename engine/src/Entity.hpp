@@ -61,6 +61,7 @@ private:
     friend class boost::serialization::access;
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) {
+        ar & mUniqueId;
         ar & mPosition.x;
         ar & mPosition.y;
         ar & mSpeed.x;
@@ -69,14 +70,14 @@ private:
 	}
 
 protected:
-    Layer mLayer;
+	sf::Uint16 mUniqueId;
 
 	Vector2D mPosition;
 	Vector2D mSpeed;
 
-	sf::Drawable* mDrawable;
+    Layer mLayer;
 
-	sf::Uint16 mUniqueId;
+	sf::Drawable* mDrawable;
 };
 
 }

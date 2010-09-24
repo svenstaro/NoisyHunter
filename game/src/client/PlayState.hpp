@@ -6,7 +6,7 @@
 #include "Crosshair.hpp"
 #include "Submarine.hpp"
 
-class PlayState : public Engine::State{
+class PlayState : public Engine::State {
 public:
     PlayState();
     ~PlayState();

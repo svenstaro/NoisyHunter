@@ -31,11 +31,9 @@ namespace Engine{
     }
 	
 	void State::SendAllEntities() {
-	
 		BOOST_FOREACH(Entity& entity, mEntities) {
 			Root::get_mutable_instance().GetNetworkManagerPtr()->AddEntity(entity);
 		}
-	
 	}
 
     void State::Draw(sf::RenderTarget* target) {
