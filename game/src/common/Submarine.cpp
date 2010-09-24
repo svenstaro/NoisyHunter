@@ -3,7 +3,10 @@
 #include "Root.hpp"
 #include <SFML/Graphics.hpp>
 
-Submarine::Submarine(float pos_x, float pos_y) {
+Submarine::Submarine(const sf::Uint16 unique_id,
+					 const float pos_x,
+					 const float pos_y) {
+	mUniqueId = unique_id;
 	mPosition = Engine::Vector2D(pos_x, pos_y);
 	mLayer = Engine::Entity::LAYER_REGULAR;
 	sf::Sprite* d = new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("submarine"));
@@ -13,7 +16,6 @@ Submarine::Submarine(float pos_x, float pos_y) {
 }
 
 Submarine::~Submarine() {}
-
 
 void Submarine::Update(float time_delta){
     Engine::Vector2D relative_target = mTarget - mPosition;
@@ -36,7 +38,7 @@ void Submarine::Update(float time_delta){
 
 const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D Pos) {
 	// Calculate the Direction-Vector to the mouse position
-	return new Torpedo(mPosition, mSpeed, Pos);
+	return new Torpedo(0, mPosition, mSpeed, Pos);
 }
 
 const Engine::Entity* Submarine::PingTo(const Engine::Vector2D Pos) {
@@ -45,18 +47,18 @@ const Engine::Entity* Submarine::PingTo(const Engine::Vector2D Pos) {
 	return new SonarPing(diff.Rotation());
 }
 
-
-
 void Submarine::OnCollide(const Engine::Entity& ent){
-
 }
+
 void Submarine::OnDamage(const float dmg){
-
 }
+
 void Submarine::OnFire(){
-
 }
 
+sf::Uint16 Submarine::GetEntityId() const {
+	return 2;
+}
 
 void Submarine::SetTarget(const Engine::Vector2D target) {
     mTarget = target;

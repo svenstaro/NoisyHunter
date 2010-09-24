@@ -11,20 +11,28 @@
 
 class Submarine : public Engine::Entity {
 public:
-    Submarine(float pos_x, float pos_y);
+    Submarine(const sf::Uint16 unique_id = 0, 
+			  const float pos_x = 0, 
+			  const float pos_y = 0);
+
 	~Submarine();
 
-
     void Update(float time_delta);
+
     // callbacks
     void OnCollide(const Engine::Entity& ent);
+
     void OnDamage(const float dmg);
+
     void OnFire();
+
+	sf::Uint16 GetEntityId() const;
 
     // controlling
     void SetTarget(const Engine::Vector2D target);
 
 	const Engine::Entity* FireTorpedoTo(const Engine::Vector2D Pos);
+
 	const Engine::Entity* PingTo(const Engine::Vector2D Pos);
 
 	enum Mode {

@@ -1,15 +1,10 @@
 #include "Torpedo.hpp"
 
-Torpedo::Torpedo() {
-	mPosition = Engine::Vector2D(0, 0);
-	mTargetPosition = Engine::Vector2D(0, 0);
-	mSpeed = Engine::Vector2D(0, 0);
-	//mDrawable = Root::get_mutable_instance().GetResourceManager().GetImage("torpedo");
-
-	mLayer = Engine::Entity::LAYER_REGULAR;
-}
-
-Torpedo::Torpedo(Engine::Vector2D pos, Engine::Vector2D speed, Engine::Vector2D target_position) {
+Torpedo::Torpedo(const sf::Uint16 unique_id, 
+				 const Engine::Vector2D& pos,
+				 const Engine::Vector2D& speed,
+				 const Engine::Vector2D& target_position) {
+	mUniqueId = unique_id;
 	mPosition = pos;
 	mSpeed = speed;
 	mTargetPosition = target_position;
@@ -33,12 +28,14 @@ void Torpedo::Update(const float time_delta) {
 
 
 void Torpedo::OnCollide(const Engine::Entity& ent) {
-
 }
+
 void Torpedo::OnDeath() {
-
 }
 
+sf::Uint16 Torpedo::GetEntityId() const {
+	return 3;
+}
 
 /*template<class Archive>
 void Torpedo::serialize(Archive & ar, const unsigned int version) {
