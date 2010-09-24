@@ -60,8 +60,10 @@ void Root::StartMainLoop(){
 
         while (!mShutdownRequested){
             //mStateManager.Update();
-			mNetworkManager.PreparePacket();
-			mNetworkManager.SendPacket();
+			//mNetworkManager.PreparePacket();
+			//mNetworkManager.SendPacket();
+			mNetworkManager.HandleClients();
+
         }
 
 
