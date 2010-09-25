@@ -58,13 +58,23 @@ void NetworkManager::AddEntity(Entity& entity) {
 }
 
 void NetworkManager::SendPacket() {
+    SendPacket(mPacket);
+}
+
+void NetworkManager::SendPacket(sf::Packet& packet) {
     if(mIsServer) {
 		BOOST_FOREACH(sf::Uint16 id, mClientManager.GetIDs()) {
-			mListener.Send(mPacket, mClientManager.GetIP(id), mClientManager.GetPort(id));
+			mListener.Send(packet, mClientManager.GetIP(id), mClientManager.GetPort(id));
 		}
     } else {
-        mListener.Send(mPacket, mClient_ServerIp, mClient_ServerPort);
+        mListener.Send(packet, mClient_ServerIp, mClient_ServerPort);
     }
+}
+
+void NetworkManager::SendClientAdd(const std::string& client_name) {
+    sf::Packet packet;
+    packet << sf::Uint16(NETCMD_CLIENTADD) << client_name;
+    SendPacket(packet);
 }
 
 void NetworkManager::HandleClients() {
@@ -83,21 +93,38 @@ void NetworkManager::HandleClients() {
 			sf::Uint16 client_port;
 
 			if(socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
-				std::cout << "[NETWORK/SERVER] Received a packet." << std::endl;
-				HandlePacket(packet);
+				std::cout << "[NETWORK/SERVER] Received a packet" << std::endl;
+				HandlePacket(packet, client_address, client_port);
 				packet.Clear();
             }
         }
     }
 }
 
-void NetworkManager::HandlePacket(sf::Packet packet) {
+void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::Uint16 port) {
 	if(!mIsServer) {
 		// TODO: Actually do stuff here.
 	} else {
 		sf::Uint16 net_cmd;
 		while(!packet.EndOfPacket()) {
 			packet >> net_cmd;
+			if(net_cmd == NETCMD_CLIENTADD) {
+				std::string name;
+				packet >> name;
+
+				if(!mClientManager.IsKnown(address)) {
+
+					if(mClientManager.IsSlotAvailable()) {
+						mClientManager.Add(address, port, name); 
+						SendClientAdd(name);
+						std::cout << "[NETWORK/SERVER] Client [" + name + "] was added successfully." << std::endl;
+					} else {
+						std::cerr << "[NETWORK/SERVER] No slot available." << std::endl;
+					}
+				}
+
+			}
+
 			if(net_cmd == NETCMD_ENTITYINFO) {
 				Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().HandleEntityInfo(packet);
 			}

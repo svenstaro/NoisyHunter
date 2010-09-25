@@ -61,6 +61,7 @@ void PlayState::Update(float time_delta) {
             Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->AddEntity(entity);
         }
     }
+    
     Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket();
 
 }
