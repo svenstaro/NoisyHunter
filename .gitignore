@@ -1,8 +1,7 @@
 *.bin
 bin/
 build/
-build2/
-docs/
+doc/
 lib/
 *.cbp
 *.depend
