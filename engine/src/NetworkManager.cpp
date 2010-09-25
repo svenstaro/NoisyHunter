@@ -49,7 +49,7 @@ void NetworkManager::PreparePacket() {
     mPacket.Clear();
 }
 
-void NetworkManager::AddEntity(Entity& entity) {
+void NetworkManager::AppendEntityToPacket(Entity& entity) {
     mPacket << entity.GetEntityId();
     Engine::IOPacket p(true,mPacket);
     entity.serialize(p);

@@ -28,7 +28,7 @@ enum NetworkCommand {
 	// entity's action. This is useful for interpolating.
 	NETCMD_ENTITYACTION = 0x11,
 
-	// If this is sent client->server, ALL HELL BREAKS LOSE
+	// If this is sent client->server, ALL HELL BREAKS LOSE!
 	// If this is sent server->client, the client is being notified of the
 	// complete data of an entity. This info needs to be deserialized.
 	NETCMD_ENTITYINFO = 0x12,

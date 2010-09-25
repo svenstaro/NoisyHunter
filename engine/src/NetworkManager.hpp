@@ -30,7 +30,7 @@ public:
 	void HandlePacket(sf::Packet packet, sf::IPAddress address, sf::Uint16 port);
 
     void PreparePacket();
-    void AddEntity(Entity& entity);
+    void AppendEntityToPacket(Entity& entity);
     void SendPacket();
     void SendPacket(sf::Packet& packet);
     
