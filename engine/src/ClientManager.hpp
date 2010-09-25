@@ -18,18 +18,18 @@ class ClientManager {
 
         ~ClientManager();
 
-        void Add(const sf::IPAddress address, const sf::Uint16 port, const std::string name);
+        void Add(const sf::IPAddress& address, const sf::Uint16 port, const std::string& name);
 
         void Remove(const sf::Uint16 id);
 
-        bool IsKnown(const sf::IPAddress address);
+        bool IsKnown(const sf::IPAddress& address);
 
         bool IsSlotAvailable();
 
         // Returns vector of currently active (connected) client IDs
         std::vector<sf::Uint16> GetIDs();
 
-        sf::Uint16 GetID(const sf::IPAddress address);
+        sf::Uint16 GetID(const sf::IPAddress& address);
 
         // Get IP of client ID
         sf::IPAddress GetIP(const sf::Uint16 id);
@@ -44,13 +44,13 @@ class ClientManager {
         sf::Uint16 GetActiveClients();
 
         // Set name of client ID
-        void SetName(const sf::Uint16 id, const std::string name);
+        void SetName(const sf::Uint16 id, const std::string& name);
 
         void SetMaxPlayers(const sf::Uint16 max_players);
 
     private:
-        sf::Uint16 m_max_players;
-        std::map<sf::Uint16, Client> m_clients;
+        sf::Uint16 mMaxPlayers;
+        std::map<sf::Uint16, Client> mClients;
 };
 
 #endif
