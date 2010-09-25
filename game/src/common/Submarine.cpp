@@ -27,9 +27,9 @@ void Submarine::Update(float time_delta) {
 		angle += Engine::Vector2D::deg2Rad(360);
 
 	float max_angle = 2 * time_delta;
-	if (angle > max_angle)
+	if(angle > max_angle)
 		angle = max_angle;
-	else if (angle < -max_angle)
+	else if(angle < -max_angle)
 		angle = -max_angle;
 
     mSpeed.Rotate(angle);

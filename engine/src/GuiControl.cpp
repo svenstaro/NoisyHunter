@@ -18,9 +18,9 @@ void GuiControl::Update(const float time_delta) {
 
 void GuiControl::Draw(sf::RenderTarget* target) {
     sf::Color col(255,128,0);
-    if (mHover)
+    if(mHover)
         col = sf::Color(255,255,0);
-    if (mIsFocused)
+    if(mIsFocused)
         col = sf::Color(255,255,255);
 
     sf::Shape s = sf::Shape::Rectangle(mPosition.x,
@@ -44,7 +44,7 @@ void GuiControl::OnRightClick() {
 }
 
 void GuiControl::OnKeyDown(sf::Key::Code key_code) {
-    if (key_code == sf::Key::Return){
+    if(key_code == sf::Key::Return){
         OnClick();
     }
 }

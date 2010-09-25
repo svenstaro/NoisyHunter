@@ -20,7 +20,7 @@ void State::UpdateAllEntities(const float time_delta) {
 		entity.Update(time_delta);
 	}
 
-	if (mEntityListNeedsSorting) {
+	if(mEntityListNeedsSorting) {
 		//mEntities.sort();
 		mEntityListNeedsSorting = false;
 	}

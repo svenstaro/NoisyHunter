@@ -37,7 +37,7 @@ void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip,
     mClient_ServerPort = server_port;
 
 	/*
-    if (!mListener.Bind(client_port)) {
+    if(!mListener.Bind(client_port)) {
         std::cerr << "Your penis was broken by the NetworkManager while binding the listening socket" << std::endl;
         exit(1);
     }
@@ -82,7 +82,7 @@ void NetworkManager::HandleClients() {
 			sf::IPAddress client_address;
 			sf::Uint16 client_port;
 
-			if (socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
+			if(socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
 				std::cout << "[NETWORK/SERVER] Received a packet" << std::endl;
 				HandlePacket(packet);
 				packet.Clear();
@@ -92,7 +92,7 @@ void NetworkManager::HandleClients() {
 }
 
 void NetworkManager::HandlePacket(sf::Packet packet) {
-	if (!mIsServer) {
+	if(!mIsServer) {
 		// TODO: Actually do stuff here.
 	} else {
 		sf::Uint16 net_cmd;

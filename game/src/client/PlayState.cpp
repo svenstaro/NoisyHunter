@@ -57,7 +57,7 @@ void PlayState::Update(float time_delta) {
     // TODO: Networking
     Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->PreparePacket();
     BOOST_FOREACH(Engine::Entity& entity, mEntities){
-        if (entity.GetLayer() == Engine::Entity::LAYER_REGULAR){
+        if(entity.GetLayer() == Engine::Entity::LAYER_REGULAR){
             Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->AddEntity(entity);
         }
     }

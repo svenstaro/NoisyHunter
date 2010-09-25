@@ -88,7 +88,7 @@ void Root::StartMainLoop() {
             mRenderWindow.Display();
 
             // Check if a shutdown has been requested...
-            if (mShutdownRequested)
+            if(mShutdownRequested)
                 mRenderWindow.Close();
         }
     }

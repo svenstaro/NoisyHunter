@@ -41,7 +41,7 @@ void Entity::Draw(sf::RenderTarget* target) const {
 	}
 
 	float rotation = 0;
-	if (mSpeed.x != 0 && mSpeed.y != 0)
+	if(mSpeed.x != 0 && mSpeed.y != 0)
 		rotation = mSpeed.Rotation();
 
 	mDrawable->SetRotation(- Vector2D::rad2Deg(rotation));
