@@ -83,7 +83,7 @@ void NetworkManager::HandleClients() {
 			sf::Uint16 client_port;
 
 			if(socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
-				std::cout << "[NETWORK/SERVER] Received a packet" << std::endl;
+				std::cout << "[NETWORK/SERVER] Received a packet." << std::endl;
 				HandlePacket(packet);
 				packet.Clear();
             }

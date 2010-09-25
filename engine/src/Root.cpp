@@ -53,16 +53,16 @@ void Root::StartMainLoop() {
 		sf::Clock Clock;
 		const float tickrate = 20.f;
 		const float timebudget = 1/tickrate;
-        while (!mShutdownRequested){
+        while(!mShutdownRequested) {
             //mStateManager.Update();
 			//mNetworkManager.PreparePacket();
 			//mNetworkManager.SendPacket();
 
-				while (Clock.GetElapsedTime() < timebudget) {
-					mNetworkManager.HandleClients();
-					//Server.Update();
-				}
-				Clock.Reset();
+			while(Clock.GetElapsedTime() < timebudget) {
+				mNetworkManager.HandleClients();
+				//Server.Update();
+			}
+			Clock.Reset();
         }
     } else {
         // CLIENT MAIN LOOP
