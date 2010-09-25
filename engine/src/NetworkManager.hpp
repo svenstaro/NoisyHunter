@@ -26,7 +26,7 @@ public:
 
     // method used when in server mode
     void HandleClients();
-	void HandlePacket(sf::Packet packet);
+	void HandlePacket(sf::Packet packet, sf::IPAddress address, sf::Uint16 port);
 
     void PreparePacket();
     void AddEntity(Entity& entity);
