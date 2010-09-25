@@ -37,6 +37,7 @@ enum NetworkCommand {
 	// to be posted to all other clients.
 	// If this is sent server->client, the client is being sent a chat message.
 	NETCMD_CHATMESSAGE = 0x06
+	
 };
 
 }
