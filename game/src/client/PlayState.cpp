@@ -15,7 +15,7 @@ void PlayState::Initialize() {
 	auto resmgr = Engine::Root::get_mutable_instance().GetResourceManagerPtr();
 	resmgr->AddImage(boost::filesystem::path("../game/gfx"), 
 					 "submarine1.svg", 80, 53, "submarine");
-    resmgr->AddImage(boost::filesystem::path("../game/gfx", 
+    resmgr->AddImage(boost::filesystem::path("../game/gfx"), 
 					 "aim.svg", 80, 53, "aim");
 
     // create GUI
