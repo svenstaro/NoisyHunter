@@ -30,7 +30,8 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
 }
 
 void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip, 
-										const sf::Uint16 server_port) {
+										const sf::Uint16 server_port,
+										const std::string name) {
     mIsServer = false;
 
     mClient_ServerIp = server_ip;
@@ -43,7 +44,7 @@ void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip,
     }
 	*/
 
-    // TODO: Handshake
+	SendClientAdd(name);	
 }
 
 void NetworkManager::PreparePacket() {
@@ -58,7 +59,9 @@ void NetworkManager::AddEntity(Entity& entity) {
 }
 
 void NetworkManager::SendPacket() {
-    SendPacket(mPacket);
+	if(mPacket.GetDataSize() != 0)
+		std::cout << "[NETWORK/SERVER] DataSize: " << mPacket.GetDataSize() << std::endl;
+	    SendPacket(mPacket);
 }
 
 void NetworkManager::SendPacket(sf::Packet& packet) {

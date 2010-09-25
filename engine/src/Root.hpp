@@ -1,6 +1,8 @@
 #ifndef ROOT_HPP
 #define ROOT_HPP
 
+#include <string>
+
 #include <boost/foreach.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/serialization/singleton.hpp>
@@ -22,7 +24,8 @@ public:
 							const std::string& window_title, 
 							const bool is_fullscreen,
                             const sf::IPAddress& server_ip, 
-							const sf::Uint16 server_port);
+							const sf::Uint16 server_port,
+							const std::string name);
 
     //void Initialize(sf::VideoMode video_mode, std::string window_title, bool fullsreen = false);
     void StartMainLoop();
