@@ -58,13 +58,23 @@ void NetworkManager::AddEntity(Entity& entity) {
 }
 
 void NetworkManager::SendPacket() {
+    SendPacket(mPacket);
+}
+
+void NetworkManager::SendPacket(const sf::Packet& packet) {
     if(mIsServer) {
 		BOOST_FOREACH(sf::Uint16 id, mClientManager.GetIDs()) {
-			mListener.Send(mPacket, mClientManager.GetIP(id), mClientManager.GetPort(id));
+			mListener.Send(packet, mClientManager.GetIP(id), mClientManager.GetPort(id));
 		}
     } else {
-        mListener.Send(mPacket, mClient_ServerIp, mClient_ServerPort);
+        mListener.Send(packet, mClient_ServerIp, mClient_ServerPort);
     }
+}
+
+void NetworkManager::SendClientAdd(const std::string& client_name) {
+    sf::Packet packet;
+    packet << sf::Uint16(NETCMD_CLIENTADD) << client_name;
+    SendPacket(packet);
 }
 
 void NetworkManager::HandleClients() {
