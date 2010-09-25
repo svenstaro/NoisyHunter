@@ -1,7 +1,5 @@
 #include <sstream>
 
-#include <boost/archive/binary_oarchive.hpp>
-
 #include "NetworkManager.hpp"
 #include "Root.hpp"
 
@@ -62,13 +60,13 @@ void NetworkManager::SendPacket() {
 }
 
 void NetworkManager::SendPacket(sf::Packet& packet) {
-    if(mIsServer) {
+	if(mIsServer) {
 		BOOST_FOREACH(sf::Uint16 id, mClientManager.GetIDs()) {
 			mListener.Send(packet, mClientManager.GetIP(id), mClientManager.GetPort(id));
 		}
-    } else {
-        mListener.Send(packet, mClient_ServerIp, mClient_ServerPort);
-    }
+	} else {
+		mListener.Send(packet, mClient_ServerIp, mClient_ServerPort);
+	}
 }
 
 void NetworkManager::SendClientAdd(const std::string& client_name) {
@@ -111,9 +109,7 @@ void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::
 			if(net_cmd == NETCMD_CLIENTADD) {
 				std::string name;
 				packet >> name;
-
 				if(!mClientManager.IsKnown(address)) {
-
 					if(mClientManager.IsSlotAvailable()) {
 						mClientManager.Add(address, port, name); 
 						SendClientAdd(name);
@@ -122,7 +118,6 @@ void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::
 						std::cerr << "[NETWORK/SERVER] No slot available." << std::endl;
 					}
 				}
-
 			}
 
 			if(net_cmd == NETCMD_ENTITYINFO) {
