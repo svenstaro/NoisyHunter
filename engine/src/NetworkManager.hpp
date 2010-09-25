@@ -31,7 +31,7 @@ public:
     void PreparePacket();
     void AddEntity(Entity& entity);
     void SendPacket();
-    void SendPacket(const sf::Packet& packet);
+    void SendPacket(sf::Packet& packet);
     
     // Sends a packet containing NETCMD_CLIENTADD to server / all clients
     void SendClientAdd(const std::string& client_name);

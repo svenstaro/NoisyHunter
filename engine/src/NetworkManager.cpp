@@ -61,7 +61,7 @@ void NetworkManager::SendPacket() {
     SendPacket(mPacket);
 }
 
-void NetworkManager::SendPacket(const sf::Packet& packet) {
+void NetworkManager::SendPacket(sf::Packet& packet) {
     if(mIsServer) {
 		BOOST_FOREACH(sf::Uint16 id, mClientManager.GetIDs()) {
 			mListener.Send(packet, mClientManager.GetIP(id), mClientManager.GetPort(id));
@@ -94,7 +94,7 @@ void NetworkManager::HandleClients() {
 
 			if(socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
 				std::cout << "[NETWORK/SERVER] Received a packet" << std::endl;
-				HandlePacket(packet);
+				HandlePacket(packet, client_address, client_port);
 				packet.Clear();
             }
         }
@@ -117,7 +117,7 @@ void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::
 					if(mClientManager.IsSlotAvailable()) {
 						mClientManager.Add(address, port, name); 
 						SendClientAdd(name);
-						std::cout << "[NETWORK/SERVER] Client [" + name + "] was added successfully."
+						std::cout << "[NETWORK/SERVER] Client [" + name + "] was added successfully." << std::endl;
 					} else {
 						std::cerr << "[NETWORK/SERVER] No slot available." << std::endl;
 					}
