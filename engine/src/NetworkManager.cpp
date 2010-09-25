@@ -59,9 +59,7 @@ void NetworkManager::AddEntity(Entity& entity) {
 }
 
 void NetworkManager::SendPacket() {
-	if(mPacket.GetDataSize() != 0)
-		std::cout << "[NETWORK/SERVER] DataSize: " << mPacket.GetDataSize() << std::endl;
-	    SendPacket(mPacket);
+	SendPacket(mPacket);
 }
 
 void NetworkManager::SendPacket(sf::Packet& packet) {
@@ -70,13 +68,17 @@ void NetworkManager::SendPacket(sf::Packet& packet) {
 			mListener.Send(packet, mClientManager.GetIP(id), mClientManager.GetPort(id));
 		}
     } else {
-        mListener.Send(packet, mClient_ServerIp, mClient_ServerPort);
+		if(packet.GetDataSize() > 2) {
+			std::cout << "[NETWORK] DataSize: " << packet.GetDataSize() << std::endl;
+			mListener.Send(packet, mClient_ServerIp, mClient_ServerPort);
+		}
     }
 }
 
 void NetworkManager::SendClientAdd(const std::string& client_name) {
     sf::Packet packet;
     packet << sf::Uint16(NETCMD_CLIENTADD) << client_name;
+	std::cout << "[NETWORK] DataSize: " << packet.GetDataSize() << std::endl;
     SendPacket(packet);
 }
 
@@ -96,7 +98,7 @@ void NetworkManager::HandleClients() {
 			sf::Uint16 client_port;
 
 			if(socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
-				std::cout << "[NETWORK/SERVER] Received a packet" << std::endl;
+				std::cout << "[NETWORK/SERVER] Received a packet from " << client_address << ":" << client_port << std::endl;
 				HandlePacket(packet, client_address, client_port);
 				packet.Clear();
             }
