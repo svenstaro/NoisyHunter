@@ -7,7 +7,7 @@
 #include "ClientManager.hpp"
 
 ClientManager::ClientManager(sf::Uint16 max_players) {
-    m_max_players = max_players;
+    mMaxPlayers = max_players;
 }
 
 ClientManager::~ClientManager() {}
@@ -30,7 +30,7 @@ void ClientManager::Remove(const sf::Uint16 id) {
 bool ClientManager::IsKnown(const sf::IPAddress& address) {
     bool isknown = false;
     std::map<sf::Uint16, Client>::iterator it;
-    for(it=m_clients.begin(); it != m_clients.end(); ++it) {
+    for(it = mClients.begin(); it != mClients.end(); ++it) {
 		if(it->second.address == address) {
 			isknown = true;
 			break;
