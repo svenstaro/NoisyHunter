@@ -101,13 +101,30 @@ void NetworkManager::HandleClients() {
     }
 }
 
-void NetworkManager::HandlePacket(sf::Packet packet) {
+void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::Uint16 port) {
 	if(!mIsServer) {
 		// TODO: Actually do stuff here.
 	} else {
 		sf::Uint16 net_cmd;
 		while(!packet.EndOfPacket()) {
 			packet >> net_cmd;
+			if(net_cmd == NETCMD_CLIENTADD) {
+				std::string name;
+				packet >> name;
+
+				if(!mClientManager.IsKnown(address)) {
+
+					if(mClientManager.IsSlotAvailable()) {
+						mClientManager.Add(address, port, name); 
+						SendClientAdd(name);
+						std::cout << "[NETWORK/SERVER] Client [" + name + "] was added successfully."
+					} else {
+						std::cerr << "[NETWORK/SERVER] No slot available." << std::endl;
+					}
+				}
+
+			}
+
 			if(net_cmd == NETCMD_ENTITYINFO) {
 				Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().HandleEntityInfo(packet);
 			}
