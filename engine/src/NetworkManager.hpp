@@ -22,7 +22,8 @@ public:
 
 	void InitializeAsServer(const sf::Uint16 server_port);
 	void InitializeAsClient(const sf::IPAddress server_ip, 
-							const sf::Uint16 server_port);
+							const sf::Uint16 server_port,
+							const std::string name);
 
     // method used when in server mode
     void HandleClients();

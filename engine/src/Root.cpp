@@ -23,7 +23,8 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 							  const std::string& window_title, 
 							  const bool is_fullscreen,
 							  const sf::IPAddress& server_ip, 
-							  const sf::Uint16 server_port) {
+							  const sf::Uint16 server_port,
+							  const std::string name) {
 
     mIsServer = false;
 
@@ -44,7 +45,7 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 
     // Create and Initialize Network Manager
     mNetworkManager = NetworkManager();
-    mNetworkManager.InitializeAsClient(server_ip, server_port);
+    mNetworkManager.InitializeAsClient(server_ip, server_port, name);
 }
 
 void Root::StartMainLoop() {
@@ -66,7 +67,9 @@ void Root::StartMainLoop() {
         }
     } else {
         // CLIENT MAIN LOOP
-        mClock.Reset();
+		sf::Clock Clock;
+		const float tickrate = 20.f;
+		const float timebudget = 1/tickrate;
         while (mRenderWindow.IsOpened()) {
             float time_delta = mClock.GetElapsedTime();
             mClock.Reset();
@@ -90,6 +93,12 @@ void Root::StartMainLoop() {
             // Check if a shutdown has been requested...
             if(mShutdownRequested)
                 mRenderWindow.Close();
+
+
+			while(Clock.GetElapsedTime() < timebudget) {
+
+			}
+			Clock.Reset();
         }
     }
 }
