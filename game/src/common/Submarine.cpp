@@ -1,7 +1,7 @@
-#include "Submarine.hpp"
-
-#include "Root.hpp"
 #include <SFML/Graphics.hpp>
+
+#include "Submarine.hpp"
+#include "Root.hpp"
 
 Submarine::Submarine(const sf::Uint16 unique_id,
 					 const float pos_x,
@@ -17,24 +17,24 @@ Submarine::Submarine(const sf::Uint16 unique_id,
 
 Submarine::~Submarine() {}
 
-void Submarine::Update(float time_delta){
+void Submarine::Update(float time_delta) {
     Engine::Vector2D relative_target = mTarget - mPosition;
     float angle = relative_target.Rotation() - mSpeed.Rotation();
 
-    if ( Engine::Vector2D::rad2Deg(angle) > 180 ) angle -= Engine::Vector2D::deg2Rad(360);
-    else if ( Engine::Vector2D::rad2Deg(angle) < -180 ) angle += Engine::Vector2D::deg2Rad(360);
+    if(Engine::Vector2D::rad2Deg(angle) > 180) 
+		angle -= Engine::Vector2D::deg2Rad(360);
+    else if(Engine::Vector2D::rad2Deg(angle) < -180) 
+		angle += Engine::Vector2D::deg2Rad(360);
 
 	float max_angle = 2 * time_delta;
-	if (angle > max_angle) {
+	if (angle > max_angle)
 		angle = max_angle;
-	} else if (angle < -max_angle) {
+	else if (angle < -max_angle)
 		angle = -max_angle;
-	}
 
     mSpeed.Rotate(angle);
     mPosition += mSpeed * time_delta;
 }
-
 
 const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D Pos) {
 	// Calculate the Direction-Vector to the mouse position
@@ -47,13 +47,16 @@ const Engine::Entity* Submarine::PingTo(const Engine::Vector2D Pos) {
 	return new SonarPing(diff.Rotation());
 }
 
-void Submarine::OnCollide(const Engine::Entity& ent){
+void Submarine::OnCollide(const Engine::Entity& ent) {
+	// TODO: Do stuff
 }
 
-void Submarine::OnDamage(const float dmg){
+void Submarine::OnDamage(const float dmg) {
+	// TODO: Do stuff
 }
 
-void Submarine::OnFire(){
+void Submarine::OnFire() {
+	// TODO: Do stuff
 }
 
 sf::Uint16 Submarine::GetEntityId() const {
@@ -63,7 +66,6 @@ sf::Uint16 Submarine::GetEntityId() const {
 void Submarine::SetTarget(const Engine::Vector2D target) {
     mTarget = target;
 }
-
 
 void Submarine::serialize(Engine::IOPacket& packet) {
     packet & mUniqueId;
@@ -76,4 +78,3 @@ void Submarine::serialize(Engine::IOPacket& packet) {
     packet & mTarget.x;
     packet & mTarget.y;
 }
-

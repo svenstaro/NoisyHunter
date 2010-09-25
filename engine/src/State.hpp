@@ -1,18 +1,18 @@
 #ifndef STATE_HPP
 #define STATE_HPP
 
-#include <SFML/Graphics.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
+
+#include <SFML/Graphics.hpp>
+
 #include "GuiSystem.hpp"
 #include "Entity.hpp"
 
-
-
-namespace Engine{
+namespace Engine {
 
 class Root;
 
-class State{
+class State {
 public:
     State();
     virtual ~State() = 0;
@@ -30,6 +30,7 @@ public:
     void AddEntity(Entity* entity);
     void CreateGuiSystem();
 	void HandleEntityInfo(sf::Packet packet);
+
 protected:
     //Root* mRoot;
 
@@ -42,7 +43,6 @@ protected:
 private:
     // Saves if there are new Entities, so the list has to be sorted for correct order while drawing.
     bool mEntityListNeedsSorting;
-
 };
 
 }

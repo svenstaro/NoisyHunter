@@ -1,8 +1,9 @@
-#include "NetworkManager.hpp"
-#include "Root.hpp"
+#include <sstream>
 
 #include <boost/archive/binary_oarchive.hpp>
-#include <sstream>
+
+#include "NetworkManager.hpp"
+#include "Root.hpp"
 
 namespace Engine {
 
@@ -15,11 +16,10 @@ NetworkManager::~NetworkManager() {}
 void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
     mIsServer = true;
 
-    if (!mListener.Bind(server_port)) {
+    if(!mListener.Bind(server_port)) {
         std::cerr << "[NETWORK/SERVER] NetworkManager was broken while binding the listening SERVER socket." << std::endl;
         exit(1);
-    }
-    else{
+    } else {
         std::cout << "[SERVER] Binding to port " << server_port << " successful." << std::endl;
     }
 
@@ -29,13 +29,12 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
 	mListener.SetBlocking(1);
 }
 
-
-void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip, const sf::Uint16 server_port) {
+void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip, 
+										const sf::Uint16 server_port) {
     mIsServer = false;
 
     mClient_ServerIp = server_ip;
     mClient_ServerPort = server_port;
-
 
 	/*
     if (!mListener.Bind(client_port)) {
@@ -47,36 +46,32 @@ void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip, const sf:
     // TODO: Handshake
 }
 
-void NetworkManager::PreparePacket(){
+void NetworkManager::PreparePacket() {
     mPacket.Clear();
 }
 
-void NetworkManager::AddEntity(Entity& entity){
+void NetworkManager::AddEntity(Entity& entity) {
     mPacket << entity.GetEntityId();
     Engine::IOPacket p(true,mPacket);
     entity.serialize(p);
     mPacket = p.GetPacket();
 }
 
-void NetworkManager::SendPacket(){
-    if (mIsServer){
+void NetworkManager::SendPacket() {
+    if(mIsServer) {
 		BOOST_FOREACH(sf::Uint16 id, mClientManager.GetIDs()) {
 			mListener.Send(mPacket, mClientManager.GetIP(id), mClientManager.GetPort(id));
 		}
-    }
-    else{
+    } else {
         mListener.Send(mPacket, mClient_ServerIp, mClient_ServerPort);
     }
-
-
 }
 
 void NetworkManager::HandleClients() {
-    if (!mIsServer) {
+    if(!mIsServer) {
         std::cerr << "[NETWORK/CLIENT] Client cannot execute server methods." << std::endl;
         exit(1);
-    }
-    else {
+    } else {
 		std::cout << "[NETWORK/SERVER] Server::HandleClients()" << std::endl;
         unsigned int nb_sockets = mServer_Selector.Wait();
 
@@ -98,11 +93,12 @@ void NetworkManager::HandleClients() {
 
 void NetworkManager::HandlePacket(sf::Packet packet) {
 	if (!mIsServer) {
+		// TODO: Actually do stuff here.
 	} else {
 		sf::Uint16 net_cmd;
-		while (!packet.EndOfPacket()) {
+		while(!packet.EndOfPacket()) {
 			packet >> net_cmd;
-			if (net_cmd == NETCMD_ENTITYINFO) {
+			if(net_cmd == NETCMD_ENTITYINFO) {
 				Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().HandleEntityInfo(packet);
 			}
 		}

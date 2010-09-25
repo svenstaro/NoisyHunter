@@ -13,7 +13,9 @@ Crosshair::Crosshair(const sf::Uint16 unique_id) {
 
 Crosshair::~Crosshair() {}
 
-void Crosshair::OnCollide(const Entity& ent) {}
+void Crosshair::OnCollide(const Entity& ent) {
+	// TODO: Do stuff
+}
 
 sf::Uint16 Crosshair::GetEntityId() const {
 	return 5;

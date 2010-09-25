@@ -1,7 +1,7 @@
+#include <iostream>
+
 #include "Entity.hpp"
 #include "Root.hpp"
-
-#include <iostream>
 
 namespace Engine {
 
@@ -11,9 +11,10 @@ Entity::~Entity() {}
 
 void Entity::OnCollide(const Entity& ent) {}
 
-bool Entity::operator < (const Entity& other){
+bool Entity::operator<(const Entity& other) {
 	return mLayer < other.GetLayer();
 }
+
 void Entity::serialize(IOPacket& packet) {
     packet & mUniqueId;
     packet & mPosition.x;
@@ -24,24 +25,20 @@ void Entity::serialize(IOPacket& packet) {
     packet & l;
 }
 
-
 void Entity::Update(const float time_delta) {
 	mPosition += mSpeed * time_delta;
 }
 
 void Entity::Draw(sf::RenderTarget* target) const {
-
 	// set screen position
-	if (GetPositionType() == Entity::POSITIONTYPE_WORLD){
+	if(GetPositionType() == Entity::POSITIONTYPE_WORLD) {
 		// convert to world coordinates
 		Coordinates pos = Root::get_mutable_instance().GetInputManagerPtr()->GetScreenCoordinates(mPosition.x, mPosition.y);
 		mDrawable->SetPosition(pos.ScreenX, pos.ScreenY);
-	}
-	else if (GetPositionType() == Entity::POSITIONTYPE_SCREEN){
+	} else if(GetPositionType() == Entity::POSITIONTYPE_SCREEN) {
 		// simply use screen coordinates
 		mDrawable->SetPosition(mPosition.x, mPosition.y);
 	}
-
 
 	float rotation = 0;
 	if (mSpeed.x != 0 && mSpeed.y != 0)

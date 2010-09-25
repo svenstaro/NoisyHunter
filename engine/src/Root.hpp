@@ -1,7 +1,6 @@
 #ifndef ROOT_HPP
 #define ROOT_HPP
 
-
 #include <boost/foreach.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/serialization/singleton.hpp>
@@ -11,8 +10,7 @@
 #include "ResourceManager.hpp"
 #include "InputManager.hpp"
 
-namespace Engine{
-
+namespace Engine {
 
 class Root : public boost::serialization::singleton<Root> {
 public:
@@ -20,8 +18,11 @@ public:
     ~Root();
 
     void InitializeAsServer(const sf::Uint16 server_port);
-    void InitializeAsClient(const sf::VideoMode& video_mode, const std::string& window_title, const bool is_fullscreen,
-                            const sf::IPAddress& server_ip, const sf::Uint16 server_port);
+    void InitializeAsClient(const sf::VideoMode& video_mode, 
+							const std::string& window_title, 
+							const bool is_fullscreen,
+                            const sf::IPAddress& server_ip, 
+							const sf::Uint16 server_port);
 
     //void Initialize(sf::VideoMode video_mode, std::string window_title, bool fullsreen = false);
     void StartMainLoop();
@@ -49,14 +50,9 @@ private:
     InputManager mInputManager;
     ResourceManager mResourceManager;
 
-
-
-
     sf::Clock mClock;
     StateManager mStateManager;
     NetworkManager mNetworkManager;
-
-
 };
 
 }

@@ -17,5 +17,4 @@ public:
 	sf::Uint16 GetEntityId() const;
 };
 
-
 #endif

@@ -13,9 +13,10 @@ GuiControl::GuiControl(const sf::Uint16 unique_id,
 GuiControl::~GuiControl() {}
 
 void GuiControl::Update(const float time_delta) {
+	// TODO: Do stuff
 }
 
-void GuiControl::Draw(sf::RenderTarget* target){
+void GuiControl::Draw(sf::RenderTarget* target) {
     sf::Color col(255,128,0);
     if (mHover)
         col = sf::Color(255,255,0);
@@ -30,13 +31,17 @@ void GuiControl::Draw(sf::RenderTarget* target){
     target->Draw(s);
 }
 
-void GuiControl::OnType(sf::Uint32 unicode_char) {}
+void GuiControl::OnType(sf::Uint32 unicode_char) {
+	// TODO: Do stuff
+}
 
 void GuiControl::OnClick() {
     std::cout << "Clicked on element" << std::endl;
 }
 
-void GuiControl::OnRightClick() {}
+void GuiControl::OnRightClick() {
+	// TODO: Do stuff
+}
 
 void GuiControl::OnKeyDown(sf::Key::Code key_code) {
     if (key_code == sf::Key::Return){

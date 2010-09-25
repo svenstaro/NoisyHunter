@@ -4,13 +4,13 @@
 #include <iostream>
 
 #include <boost/foreach.hpp>
+
 #include <SFML/Network.hpp>
 
 //#include "Root.hpp"
 #include "Entity.hpp"
 #include "ClientManager.hpp"
 #include "NetworkCommands.hpp"
-
 
 namespace Engine {
 
@@ -21,7 +21,8 @@ public:
 	~NetworkManager();
 
 	void InitializeAsServer(const sf::Uint16 server_port);
-	void InitializeAsClient(const sf::IPAddress server_ip, const sf::Uint16 server_port);
+	void InitializeAsClient(const sf::IPAddress server_ip, 
+							const sf::Uint16 server_port);
 
     // method used when in server mode
     void HandleClients();
@@ -46,7 +47,6 @@ private:
     sf::Uint16 mClient_ServerPort;
 
 	ClientManager mClientManager;
-
 };
 
 }

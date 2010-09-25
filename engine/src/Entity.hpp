@@ -20,7 +20,7 @@ public:
 		LAYER_FOREGROUND = 1003
 	};
 
-	enum PositionType{
+	enum PositionType {
         POSITIONTYPE_SCREEN,
         POSITIONTYPE_WORLD
 	};
@@ -53,10 +53,9 @@ public:
 
     virtual PositionType GetPositionType() const;
 
-	bool operator < (const Entity& other);
+	bool operator<(const Entity& other);
 
     virtual void serialize(IOPacket& packet);
-
 
 protected:
 	sf::Uint16 mUniqueId;
