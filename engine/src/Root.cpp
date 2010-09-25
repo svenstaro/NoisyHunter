@@ -58,12 +58,19 @@ void Root::StartMainLoop(){
 
         // SERVER MAIN LOOP
 
+		sf::Clock Clock;
+		const float tickrate = 20.f;
+		const float timebudget = 1/tickrate;
         while (!mShutdownRequested){
             //mStateManager.Update();
 			//mNetworkManager.PreparePacket();
 			//mNetworkManager.SendPacket();
-			mNetworkManager.HandleClients();
 
+				while (Clock.GetElapsedTime() < timebudget) {
+					mNetworkManager.HandleClients();
+					//Server.Update();
+				}
+				Clock.Reset();
         }
 
 
@@ -89,7 +96,7 @@ void Root::StartMainLoop(){
 			mNetworkManager.SendPacket();
 
             // Render the image
-            mRenderWindow.Clear(sf::Color(200,200,200));
+            mRenderWindow.Clear(sf::Color(0,0,0));
             mStateManager.Draw(&mRenderWindow);
             mRenderWindow.Display();
 
