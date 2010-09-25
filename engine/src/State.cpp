@@ -32,7 +32,7 @@ void State::UpdateAllEntities(const float time_delta) {
 
 void State::SendAllEntities() {
 	BOOST_FOREACH(Entity& entity, mEntities) {
-		Root::get_mutable_instance().GetNetworkManagerPtr()->AddEntity(entity);
+		Root::get_mutable_instance().GetNetworkManagerPtr()->AppendEntityToPacket(entity);
 	}
 }
 
