@@ -68,7 +68,7 @@ void Root::StartMainLoop() {
                 timebudget -= dt;
 			}
             // do networking stuff
-            mNetworkManager.HandleClients();
+            mNetworkManager.Receive();
             
             mNetworkManager.PreparePacket();
             mStateManager.AppendAllEntitiesToPacket();
@@ -91,7 +91,7 @@ void Root::StartMainLoop() {
             
             // Handle events.
             sf::Event e;
-            while (mRenderWindow.GetEvent(e)) {
+            while(mRenderWindow.GetEvent(e)) {
                 mInputManager.HandleEvent(e);
                 mStateManager.HandleEvent(e);
             }

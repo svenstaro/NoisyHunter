@@ -28,6 +28,7 @@ public:
     void OnClick(Engine::MouseEventArgs args);
     void OnRightClick(Engine::MouseEventArgs args);
     void OnMouseMove(Engine::MouseEventArgs args);
+
 private:
     Submarine* mPlayerSubmarine;
     Crosshair* mCrosshair;
