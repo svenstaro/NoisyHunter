@@ -80,11 +80,8 @@ void NetworkManager::SendClientAdd(const std::string& client_name) {
     SendPacket(packet);
 }
 
-void NetworkManager::HandleClients() {
-    if(!mIsServer) {
-        std::cerr << "[NETWORK/CLIENT] Client cannot execute server methods." << std::endl;
-        exit(1);
-    } else {
+void NetworkManager::Receive() {
+    if(mIsServer) {
 		std::cout << "[NETWORK/SERVER] Server::HandleClients()" << std::endl;
         unsigned int nb_sockets = mServer_Selector.Wait();
 
@@ -101,19 +98,23 @@ void NetworkManager::HandleClients() {
 				packet.Clear();
             }
         }
+    } else {
+        // TODO: Client receiving        
     }
 }
 
 void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::Uint16 port) {
-	if(!mIsServer) {
-		// TODO: Actually do stuff here.
-	} else {
-		sf::Uint16 net_cmd;
-		while(!packet.EndOfPacket()) {
-			packet >> net_cmd;
-			if(net_cmd == NETCMD_CLIENTADD) {
+    sf::Uint16 net_cmd;
+    while(!packet.EndOfPacket()) {
+        packet >> net_cmd;
+        
+        if(mIsServer) {
+            // Server packet handling
+            if(net_cmd == NETCMD_CLIENTADD) {
+                // Fetch name from packet
 				std::string name;
 				packet >> name;
+                // Add new client if unknown
 				if(!mClientManager.IsKnown(address)) {
 					if(mClientManager.IsSlotAvailable()) {
 						mClientManager.Add(address, port, name); 
@@ -123,13 +124,57 @@ void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::
 						std::cerr << "[NETWORK/SERVER] No slot available." << std::endl;
 					}
 				}
-			}
-
-			if(net_cmd == NETCMD_ENTITYINFO) {
-				Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().HandleEntityInfo(packet);
-			}
-		}
-	}
+			} else if(net_cmd == NETCMD_CHATMESSAGE) {
+                // Fetch the message
+                std::string msg;
+                packet >> msg;
+                // Output the message.
+                std::cout << "Client [" << address << ":" << port << "] said: " << msg;
+                // Send back to everyone.
+                sf::Packet p;
+                p << sf::Uint16(NETCMD_CHATMESSAGE);
+                p << msg;
+                SendPacket(p);
+            } else if(net_cmd == NETCMD_CLIENTPING) {
+                // The client pinged back! 
+                // TODO: Calculate the latency.
+            } else if(net_cmd == NETCMD_SERVERPING) {
+                // OMG! You got pinged by the server!
+                // Just send it back.
+                sf::Packet p;
+                p << sf::Uint16(NETCMD_SERVERPING);
+                SendPacket(p);
+            }
+		} else {
+            // Client packet handling
+            // TODO: Do client stuff here.
+            if(net_cmd == NETCMD_CLIENTADD) {
+                // Fetch username of new client from packet
+                std::string name;
+                packet >> name;
+                // If name is username of THIS client, then you have beed added
+                // successfully to server.
+                // Otherwise, there just was a new client being connected, 
+                // so update scoreboard list.
+            } else if(net_cmd == NETCMD_CLIENTPING) {
+                // OMG! You got pinged by the server!
+                // Just send it back.
+                sf::Packet p;
+                p << sf::Uint16(NETCMD_CLIENTPING);
+                SendPacket(p);
+            } else if(net_cmd == NETCMD_SERVERPING) {
+                // The server pinged back! 
+                // TODO: Calculate the latency.
+            } else if(net_cmd == NETCMD_CHATMESSAGE) {
+                // TODO: Output into GUI
+                std::string msg;
+                packet >> msg;
+                std::cout << "Someone said: " << msg;
+            }
+        }
+        
+        
+    }
 }
 
 }

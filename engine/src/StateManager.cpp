@@ -35,6 +35,10 @@ void StateManager::Pop(int amount){
         Root::get_mutable_instance().RequestShutdown();
     }
 }
+void StateManager::AppendAllEntitiesToPacket() {
+    if (mStates.size() > 0)
+        mStates.back().AppendAllEntitiesToPacket();
+}
 
 State& StateManager::GetCurrentState() {
 	// TODO: will break when there is no state (in the future)

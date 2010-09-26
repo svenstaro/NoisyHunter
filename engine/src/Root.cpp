@@ -52,53 +52,73 @@ void Root::StartMainLoop() {
     if(mIsServer) {
         // SERVER MAIN LOOP
 		sf::Clock Clock;
-		const float tickrate = 20.f;
-		const float timebudget = 1/tickrate;
+        
+		const float fps = 60.f;
+		const float dt = 1/fps;
+        float timebudget = 0.f;
+        
         while(!mShutdownRequested) {
-            //mStateManager.Update();
-			//mNetworkManager.PreparePacket();
-			//mNetworkManager.SendPacket();
-
-			while(Clock.GetElapsedTime() < timebudget) {
-				mNetworkManager.HandleClients();
-				//Server.Update();
+            float time_delta = Clock.GetElapsedTime();
+            Clock.Reset();
+            timebudget += time_delta;
+                       
+            // update simulation
+			while(time_delta < timebudget) {
+                mStateManager.Update(dt);
+                timebudget -= dt;
 			}
-			Clock.Reset();
+            // do networking stuff
+            mNetworkManager.HandleClients();
+            
+            mNetworkManager.PreparePacket();
+            mStateManager.AppendAllEntitiesToPacket();
+			mNetworkManager.SendPacket();
         }
     } else {
         // CLIENT MAIN LOOP
 		sf::Clock Clock;
-		const float tickrate = 20.f;
-		const float timebudget = 1/tickrate;
+		const float fps = 60.f;
+		const float dt = 1/fps;
+        float timebudget = 0.f;
+        
         while (mRenderWindow.IsOpened()) {
             float time_delta = mClock.GetElapsedTime();
             mClock.Reset();
-
+            
+            // Always prepare packet before handling events, as there 
+            // might be actions to be inserted into packet.
+            mNetworkManager.PreparePacket();
+            
+            // Handle events.
             sf::Event e;
             while (mRenderWindow.GetEvent(e)) {
                 mInputManager.HandleEvent(e);
                 mStateManager.HandleEvent(e);
             }
-
-			// Network-Sync
-			mNetworkManager.PreparePacket();
-            mStateManager.Update(time_delta);
+            
+            // TODO: Network receiving.
+            
+            // There will be a snapshot to be processed from time to time,
+            // but this still has to be updated to current time.
+                        
+			// Send the prepared packet.
 			mNetworkManager.SendPacket();
-
-            // Render the image
+            
+            timebudget += time_delta;
+            // Update simulation with fixed timestep.
+			while(time_delta < timebudget) {
+                mStateManager.Update(dt);
+                timebudget -= dt;
+			}          
+            
+            // Render the image.
             mRenderWindow.Clear(sf::Color(0,0,0));
             mStateManager.Draw(&mRenderWindow);
             mRenderWindow.Display();
 
-            // Check if a shutdown has been requested...
+            // Check whether a shutdown has been requested.
             if(mShutdownRequested)
                 mRenderWindow.Close();
-
-
-			while(Clock.GetElapsedTime() < timebudget) {
-
-			}
-			Clock.Reset();
         }
     }
 }

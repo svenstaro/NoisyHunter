@@ -25,8 +25,7 @@ public:
 							const sf::Uint16 server_port,
 							const std::string name);
 
-    // method used when in server mode
-    void HandleClients();
+    void Receive();
 	void HandlePacket(sf::Packet packet, sf::IPAddress address, sf::Uint16 port);
 
     void PreparePacket();

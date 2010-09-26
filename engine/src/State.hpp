@@ -21,7 +21,7 @@ public:
 
     virtual void Update(const float time_delta);
     void UpdateAllEntities(const float time_delta);
-    void SendAllEntities();
+    void AppendAllEntitiesToPacket();
 
     // Draws all entities to render target.
     void HandleEvent(sf::Event e);

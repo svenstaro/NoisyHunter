@@ -17,6 +17,7 @@ public:
     void Draw(sf::RenderTarget* target);
     void Add(State* state);
     void Pop(int amount = 1);
+    void AppendAllEntitiesToPacket();
 	State& GetCurrentState();
 private:
     //Root* mRoot;
