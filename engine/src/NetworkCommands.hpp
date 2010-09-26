@@ -15,6 +15,12 @@ enum NetworkCommand {
 	// If this is sent server->client, the client is forcefully being removed.
 	NETCMD_CLIENTQUIT = 0x01,
 
+	// If this is sent client->server, the client is requesting the server
+	// latency to itself. This doubles as a keep-alive.
+	// If this is sent server->client, the client is being queried for latency.
+	// This doubles as a keep-alive.
+	NETCMD_CLIENTPING = 0x02,
+
 	// If this is sent client->server, a client is requesting an entity to be
 	// added.
 	// If this is sent server->client, the client is being notified of a new 
