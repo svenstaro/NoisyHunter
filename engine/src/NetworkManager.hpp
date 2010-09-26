@@ -10,7 +10,7 @@
 //#include "Root.hpp"
 #include "Entity.hpp"
 #include "ClientManager.hpp"
-#include "NetworkCommands.hpp"
+#include "NetworkCommand.hpp"
 
 namespace Engine {
 
