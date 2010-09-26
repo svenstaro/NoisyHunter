@@ -70,12 +70,12 @@ void Root::StartMainLoop() {
 		sf::Clock Clock;
 		const float tickrate = 20.f;
 		const float timebudget = 1/tickrate;
-        while (mRenderWindow.IsOpened()) {
+        while(mRenderWindow.IsOpened()) {
             float time_delta = mClock.GetElapsedTime();
             mClock.Reset();
 
             sf::Event e;
-            while (mRenderWindow.GetEvent(e)) {
+            while(mRenderWindow.GetEvent(e)) {
                 mInputManager.HandleEvent(e);
                 mStateManager.HandleEvent(e);
             }
