@@ -19,20 +19,12 @@ enum NetworkCommand {
 	// Packet structure is:
 	// [sf::Uint16(NETCMD_CLIENTQUIT)]
 	// If this is sent server->client, the client is being notified that
-	// another client left the server.
+	// another client left the server. If this is the same client, the client
+	// is being forcefully removed.
 	// Packet structure is:
 	// [sf::Uint16(NETCMD_CLIENTQUIT), std::string(client_name),
 	//  std::string(reason)]
 	NETCMD_CLIENTQUIT = 0x01,
-
-	// If this is sent client->server, nothing will happen.
-	// TODO: Kickvote.
-	// Packet structure is:
-	// [sf::Uint16(NETCMD_CLIENTKICK), std::string(client_name)]
-	// If this is sent server->client, the client is being kicked.
-	// Packet structure is:
-	// [sf::Uint16(NETCMD_CLIENTKICK), bool(banned)]
-	NETCMD_CLIENTKICK = 0x02,
 
 	// If this is sent client->server, the client is responding to the server's
 	// last ping request. This is used to measure client latency and doubles
@@ -46,12 +38,14 @@ enum NetworkCommand {
 	// [sf::Uint16(NETCMD_CLIENTPING)]
 	NETCMD_CLIENTPING = 0x03,
 
-	// If this is sent client->server, the client is requesting the server
-	// latency to itself. This doubles as a keep-alive.
+	// If this is sent client->server, the server is being queried for latency.
+	// The server is expected to simply respond with the same package. 
+	// This is used to measure latency and doubles as a keep-alive.
 	// Packet structure is:
 	// [sf::Uint16(NETCMD_SERVERPING)]
 	// If this is sent server->client, the server is responding to a client's
-	// ping request. This doubles as a keep-alive.
+	// last ping request. This is used to measure server latency and doubles
+	// as a keep-alive.
 	// Packet structure is:
 	// [sf::Uint16(NETCMD_SERVERPING)]
 	NETCMD_SERVERPING = 0x10,
