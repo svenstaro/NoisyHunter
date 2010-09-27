@@ -30,8 +30,10 @@ public:
 
     void PreparePacket();
     void AppendEntityToPacket(Entity& entity);
-    void SendPacket();
-    void SendPacket(sf::Packet& packet);
+    void SendPacket(); // TODO: This is not nice!
+    void SendPacket(sf::Packet& packet); // This should probably be private 
+	// if it is never called like this from the outside. It should also probably
+	// be renamed.
     
     // Sends a packet containing NETCMD_CLIENTADD to server / all clients
     void SendClientAdd(const std::string& client_name);
