@@ -1,5 +1,5 @@
-#ifndef NETWORKCOMMANDS_HPP
-#define NETWORKCOMMANDS_HPP
+#ifndef NETWORKCOMMAND_HPP
+#define NETWORKCOMMAND_HPP
 
 namespace Engine {
 
