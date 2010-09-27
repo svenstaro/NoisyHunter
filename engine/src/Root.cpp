@@ -81,7 +81,7 @@ void Root::StartMainLoop() {
 		const float dt = 1/fps;
         float timebudget = 0.f;
         
-        while (mRenderWindow.IsOpened()) {
+        while(mRenderWindow.IsOpened()) {
             float time_delta = mClock.GetElapsedTime();
             mClock.Reset();
             
