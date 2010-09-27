@@ -20,7 +20,8 @@ public:
     virtual void Initialize() = 0;
 
     virtual void Update(const float time_delta);
-    void UpdateAllEntities(const float time_delta);
+    void UpdateAllEntities(const float time_delta); // TODO: This should 
+	// probably be private if it is never called from the outside.
     void AppendAllEntitiesToPacket();
 
     // Draws all entities to render target.
