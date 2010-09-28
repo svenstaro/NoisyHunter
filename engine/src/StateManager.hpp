@@ -4,9 +4,9 @@
 //#include "Root.hpp"
 #include "State.hpp"
 
-namespace Engine{
+namespace Engine {
 
-class StateManager{
+class StateManager {
 public:
     StateManager();
     //StateManager(Root* root);
@@ -19,12 +19,11 @@ public:
     void Pop(int amount = 1);
     void AppendAllEntitiesToPacket();
 	State& GetCurrentState();
+
 private:
     //Root* mRoot;
     boost::ptr_vector<State> mStates;
-
 };
 
 }
-
 #endif
