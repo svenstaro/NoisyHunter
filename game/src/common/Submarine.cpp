@@ -3,16 +3,16 @@
 #include "Submarine.hpp"
 #include "Root.hpp"
 
-Submarine::Submarine(const sf::Uint16 unique_id,
-					 const float pos_x,
-					 const float pos_y) {
-	mUniqueId = unique_id;
+Submarine::Submarine(const float pos_x,
+					 const float pos_y,
+					 const sf::Uint16 cl_id) {
 	mPosition = Engine::Vector2D(pos_x, pos_y);
 	mLayer = Engine::Entity::LAYER_REGULAR;
 	sf::Sprite* d = new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("submarine"));
 	d->SetCenter(d->GetSize().x / 2, d->GetSize().y / 2);
 	mDrawable = d;
 	mSpeed = Engine::Vector2D(0.1,0);
+	mClId = cl_id;
 }
 
 Submarine::~Submarine() {}
@@ -77,4 +77,8 @@ void Submarine::serialize(Engine::IOPacket& packet) {
     packet & l;
     packet & mTarget.x;
     packet & mTarget.y;
+}
+
+sf::Uint16 Submarine::GetClId() {
+	return mClId;
 }

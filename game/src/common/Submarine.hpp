@@ -11,9 +11,9 @@
 
 class Submarine : public Engine::Entity {
 public:
-    Submarine(const sf::Uint16 unique_id = 0,
-			  const float pos_x = 0,
-			  const float pos_y = 0);
+    Submarine(const float pos_x = 0,
+			  const float pos_y = 0,
+			  const sf::Uint16 cl_id = 0);
 
 	~Submarine();
 
@@ -37,6 +37,8 @@ public:
 
     void serialize(Engine::IOPacket& packet);
 
+	sf::Uint16 GetClId();
+
 	enum Mode {
 		MODE_SILENT = 2000,
 		MODE_NOISY = 2001
@@ -44,6 +46,7 @@ public:
 
 private:
     Engine::Vector2D mTarget;
+	sf::Uint16 mClId;
 };
 
 #endif
