@@ -47,7 +47,7 @@ bool ClientManager::IsSlotAvailable() {
     }
 }
 
-std::vector<sf::Uint16> ClientManager::GetIDs() {
+std::vector<sf::Uint16> ClientManager::GetIds() {
     std::vector<sf::Uint16> ids;
     std::map<sf::Uint16, Client>::iterator it;
     sf::Uint16 tmp = 0;
@@ -58,7 +58,7 @@ std::vector<sf::Uint16> ClientManager::GetIDs() {
     return ids;
 }
 
-sf::Uint16 ClientManager::GetID(const sf::IPAddress& address) {
+sf::Uint16 ClientManager::GetId(const sf::IPAddress& address) {
     std::map<sf::Uint16, Client>::iterator it;
     sf::Uint16 tmp = 0;
     for(it = mClients.begin() ; it != mClients.end(); it++) {
@@ -70,7 +70,7 @@ sf::Uint16 ClientManager::GetID(const sf::IPAddress& address) {
     return tmp;
 }
 
-sf::IPAddress ClientManager::GetIP(const sf::Uint16 id) {
+sf::IPAddress ClientManager::GetIp(const sf::Uint16 id) {
 	return mClients[id].address;
 }
 

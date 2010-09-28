@@ -62,8 +62,8 @@ void NetworkManager::SendPacket() {
 
 void NetworkManager::SendPacket(sf::Packet& packet) {
 	if(mIsServer) {
-		BOOST_FOREACH(sf::Uint16 id, mClientManager.GetIDs()) {
-			mListener.Send(packet, mClientManager.GetIP(id), mClientManager.GetPort(id));
+		BOOST_FOREACH(sf::Uint16 id, mClientManager.GetIds()) {
+			mListener.Send(packet, mClientManager.GetIp(id), mClientManager.GetPort(id));
 		}
     } else {
 		if(packet.GetDataSize() > 2) {
@@ -135,11 +135,13 @@ void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::
                 // Fetch the message
                 std::string msg;
                 packet >> msg;
+                // Get username
+                sf::Uint16 id = mClientManager.GetId(address);
+                std::string name = mClientManager.GetName(id);
                 // Output the message.
-                std::cout << "Client [" << address << ":" << port << "] said: " << msg << std::endl;
-                // Send back to everyone.
-                // TODO: 
-                SendChatMessage(msg, "server has to find out username");
+                std::cout << "<" << name << "> [" << address << ":" << port << "] said: " << msg << std::endl;
+                // Send back to everyone
+                SendChatMessage(msg, name);
             } else if(net_cmd == NETCMD_CLIENTPING) {
                 // The client pinged back! 
                 // TODO: Calculate the latency.

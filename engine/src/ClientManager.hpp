@@ -27,12 +27,12 @@ class ClientManager {
         bool IsSlotAvailable();
 
         // Returns vector of currently active (connected) client IDs
-        std::vector<sf::Uint16> GetIDs();
+        std::vector<sf::Uint16> GetIds();
 
-        sf::Uint16 GetID(const sf::IPAddress& address);
+        sf::Uint16 GetId(const sf::IPAddress& address);
 
         // Get IP of client ID
-        sf::IPAddress GetIP(const sf::Uint16 id);
+        sf::IPAddress GetIp(const sf::Uint16 id);
 
         sf::Uint16 GetPort(const sf::Uint16 id);
     
