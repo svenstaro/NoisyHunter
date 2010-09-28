@@ -6,28 +6,27 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 
-#include <boost/serialization/base_object.hpp>
-
 #include "Vector2D.hpp"
+#include "IOPacket.hpp"
 
 namespace Engine {
 
 class Entity {
 public:
-
 	enum Layer {
 		LAYER_BACKGROUND = 1000,
 		LAYER_WORLD = 1001,
 		LAYER_REGULAR = 1002,
 		LAYER_FOREGROUND = 1003
 	};
-	enum PositionType{
+
+	enum PositionType {
         POSITIONTYPE_SCREEN,
         POSITIONTYPE_WORLD
 	};
 
-
 	Entity();
+
 	virtual ~Entity() = 0;
 
 	// callbacks
@@ -35,34 +34,36 @@ public:
 	// TODO: All the other callbacks
 
 	virtual void Update(const float time_delta);
+
 	virtual void Draw(sf::RenderTarget* target) const;
 
+	virtual sf::Uint16 GetEntityId() const = 0;
+
+	sf::Uint16 GetUniqueId() const;
+
     void SetSpeed(const float x, const float y);
+
 	void SetPosition(const float x, const float y);
+
 	const Vector2D GetSpeed() const;
+
 	const Vector2D GetPosition() const;
+
 	Layer GetLayer() const;
+
     virtual PositionType GetPositionType() const;
 
-	bool operator < (const Entity& other);
+	bool operator<(const Entity& other);
 
-
-private:
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version) {
-        ar & mPosition.x;
-        ar & mPosition.y;
-        ar & mSpeed.x;
-        ar & mSpeed.y;
-        ar & mLayer;
-	}
+    virtual void serialize(IOPacket& packet);
 
 protected:
-    Layer mLayer;
+	sf::Uint16 mUniqueId;
 
 	Vector2D mPosition;
 	Vector2D mSpeed;
+
+    Layer mLayer;
 
 	sf::Drawable* mDrawable;
 };

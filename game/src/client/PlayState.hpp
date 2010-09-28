@@ -6,7 +6,7 @@
 #include "Crosshair.hpp"
 #include "Submarine.hpp"
 
-class PlayState : public Engine::State{
+class PlayState : public Engine::State {
 public:
     PlayState();
     ~PlayState();
@@ -28,6 +28,7 @@ public:
     void OnClick(Engine::MouseEventArgs args);
     void OnRightClick(Engine::MouseEventArgs args);
     void OnMouseMove(Engine::MouseEventArgs args);
+
 private:
     Submarine* mPlayerSubmarine;
     Crosshair* mCrosshair;

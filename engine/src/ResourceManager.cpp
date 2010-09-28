@@ -49,7 +49,7 @@ bool ResourceManager::AddImage(const boost::filesystem::path& path, const std::s
 	// Load cached File
 	sf::Image sfimage;
 	sfimage.LoadFromFile(cacheFile);
-	sfimage.SetSmooth(false);
+	sfimage.SetSmooth(true);
 
 	// Save loaded Image in Dictionary
 	// mImages.insert(new std::pair<std::string, sf::Image>(image_key, sfimage));

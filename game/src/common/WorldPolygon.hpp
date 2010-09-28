@@ -5,11 +5,14 @@
 
 class WorldPolygon : public Engine::Entity {
 public:
-	WorldPolygon();
+	WorldPolygon(const sf::Uint16 unique_id = 0);
+
 	~WorldPolygon();
 
 	// callbacks
 	void OnCollide(const Engine::Entity& ent);
+
+	sf::Uint16 GetEntityId() const;
 
 private:
 

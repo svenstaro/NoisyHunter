@@ -1,7 +1,6 @@
 #include "Root.hpp"
 
-
-namespace Engine{
+namespace Engine {
 
 Root::Root() {
     mShutdownRequested = false;
@@ -13,19 +12,21 @@ Vector2D Root::GetMousePosition() const {
                     mRenderWindow.GetInput().GetMouseY());
 }
 
-void Root::InitializeAsServer(const sf::Uint16 server_port){
+void Root::InitializeAsServer(const sf::Uint16 server_port) {
     mIsServer = true;
     //mStateManager = StateManager();
     mNetworkManager = NetworkManager();
 	mNetworkManager.InitializeAsServer(server_port);
 }
 
-void Root::InitializeAsClient(const sf::VideoMode& video_mode, const std::string& window_title, const bool is_fullscreen,
-                        const sf::IPAddress& server_ip, const sf::Uint16 server_port){
+void Root::InitializeAsClient(const sf::VideoMode& video_mode, 
+							  const std::string& window_title, 
+							  const bool is_fullscreen,
+							  const sf::IPAddress& server_ip, 
+							  const sf::Uint16 server_port,
+							  const std::string name) {
 
     mIsServer = false;
-
-
 
     sf::WindowSettings Settings;
     Settings.DepthBits         = 24; // Request a 24 bits depth buffer
@@ -33,12 +34,10 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode, const std::string
     Settings.AntialiasingLevel = 8;  // Request 2 levels of antialiasing
 
     // Create Render Window
-    if (is_fullscreen){
+    if(is_fullscreen)
         mRenderWindow.Create(video_mode, window_title, sf::Style::Fullscreen, Settings);
-    }
-    else {
+    else
         mRenderWindow.Create(video_mode, window_title, sf::Style::Close, Settings);
-    }
 
     //mInputManager = InputManager();
     //mStateManager = StateManager();
@@ -46,91 +45,111 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode, const std::string
 
     // Create and Initialize Network Manager
     mNetworkManager = NetworkManager();
-    mNetworkManager.InitializeAsClient(server_ip, server_port);
+    mNetworkManager.InitializeAsClient(server_ip, server_port, name);
 }
 
-
-
-
-void Root::StartMainLoop(){
-
-    if (mIsServer) {
-
+void Root::StartMainLoop() {
+    if(mIsServer) {
         // SERVER MAIN LOOP
-
-        while (!mShutdownRequested){
-            //mStateManager.Update();
-			mNetworkManager.PreparePacket();
+		sf::Clock Clock;
+        
+		const float fps = 60.f;
+		const float dt = 1/fps;
+        float timebudget = 0.f;
+        
+        while(!mShutdownRequested) {
+            float time_delta = Clock.GetElapsedTime();
+            Clock.Reset();
+            timebudget += time_delta;
+                       
+            // update simulation
+			while(time_delta < timebudget) {
+                mStateManager.Update(dt);
+                timebudget -= dt;
+			}
+            // do networking stuff
+            mNetworkManager.Receive();
+            
+            mNetworkManager.PreparePacket();
+            mStateManager.AppendAllEntitiesToPacket();
 			mNetworkManager.SendPacket();
         }
-
-
-    }
-    else {
-
+    } else {
         // CLIENT MAIN LOOP
-        mClock.Reset();
-        while (mRenderWindow.IsOpened()){
+		sf::Clock Clock;
+		const float fps = 60.f;
+		const float dt = 1/fps;
+        float timebudget = 0.f;
+        
+        while(mRenderWindow.IsOpened()) {
             float time_delta = mClock.GetElapsedTime();
             mClock.Reset();
-
+            
+            // Always prepare packet before handling events, as there 
+            // might be actions to be inserted into packet.
+            mNetworkManager.PreparePacket();
+            
+            // Handle events.
             sf::Event e;
-            while (mRenderWindow.GetEvent(e)){
+            while(mRenderWindow.GetEvent(e)) {
                 mInputManager.HandleEvent(e);
                 mStateManager.HandleEvent(e);
             }
-			// Network-Sync
-			mNetworkManager.PreparePacket();
-
-            mStateManager.Update(time_delta);
-
+            
+            // TODO: Network receiving.
+            
+            // There will be a snapshot to be processed from time to time,
+            // but this still has to be updated to current time.
+                        
+			// Send the prepared packet.
 			mNetworkManager.SendPacket();
-
-            // Render the image
-            mRenderWindow.Clear(sf::Color(200,200,200));
+            
+            timebudget += time_delta;
+            // Update simulation with fixed timestep.
+			while(time_delta < timebudget) {
+                mStateManager.Update(dt);
+                timebudget -= dt;
+			}          
+            
+            // Render the image.
+            mRenderWindow.Clear(sf::Color(0,0,0));
             mStateManager.Draw(&mRenderWindow);
             mRenderWindow.Display();
 
-
-            // Check if a shutdown has been requested...
-            if (mShutdownRequested)
+            // Check whether a shutdown has been requested.
+            if(mShutdownRequested)
                 mRenderWindow.Close();
-
         }
     }
-
 }
 
-
-void Root::RequestShutdown(){
+void Root::RequestShutdown() {
     mShutdownRequested = true;
 }
 
-
-
-
 // MANAGER GETTER
-
 ResourceManager* Root::GetResourceManagerPtr() {
     return &mResourceManager;
 }
+
 InputManager* Root::GetInputManagerPtr() {
     return &mInputManager;
 }
+
 StateManager* Root::GetStateManagerPtr(){
     return &mStateManager;
 }
+
 NetworkManager* Root::GetNetworkManagerPtr() {
     return &mNetworkManager;
 }
 
 const Vector2D Root::GetWindowSize() const {
-    return Vector2D( mRenderWindow.GetWidth(), mRenderWindow.GetHeight() );
+    return Vector2D(mRenderWindow.GetWidth(), mRenderWindow.GetHeight());
 }
-void Root::SetMouseHidden(const bool mouse_hidden){
+
+void Root::SetMouseHidden(const bool mouse_hidden) {
 	mRenderWindow.ShowMouseCursor(!mouse_hidden);
 }
-
-
 
 }

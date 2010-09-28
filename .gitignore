@@ -2,6 +2,7 @@
 bin/
 build/
 build2/
+doc/
 lib/
 *.cbp
 *.depend

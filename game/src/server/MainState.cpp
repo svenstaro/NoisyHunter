@@ -1,5 +1,6 @@
 #include "MainState.hpp"
 
+#include "Root.hpp"
 #include <iostream>
 
 MainState::MainState() {
@@ -17,6 +18,6 @@ void MainState::Shutdown() {
 }
 
 void MainState::Update(float time_delta) {
-
+    //Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->Receive();
 }
 

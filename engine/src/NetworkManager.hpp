@@ -4,12 +4,13 @@
 #include <iostream>
 
 #include <boost/foreach.hpp>
+
 #include <SFML/Network.hpp>
 
 //#include "Root.hpp"
 #include "Entity.hpp"
 #include "ClientManager.hpp"
-
+#include "NetworkCommand.hpp"
 
 namespace Engine {
 
@@ -20,14 +21,22 @@ public:
 	~NetworkManager();
 
 	void InitializeAsServer(const sf::Uint16 server_port);
-	void InitializeAsClient(const sf::IPAddress server_ip, const sf::Uint16 server_port);
+	void InitializeAsClient(const sf::IPAddress server_ip, 
+							const sf::Uint16 server_port,
+							const std::string name);
 
-    // method used when in server mode
-    void HandleClients();
+    void Receive();
+	void HandlePacket(sf::Packet packet, sf::IPAddress address, sf::Uint16 port);
 
     void PreparePacket();
-    void AddEntity(Entity& entity);
-    void SendPacket();
+    void AppendEntityToPacket(Entity& entity);
+    void SendPacket(); // TODO: This is not nice!
+    void SendPacket(sf::Packet& packet); // This should probably be private 
+	// if it is never called like this from the outside. It should also probably
+	// be renamed.
+    
+    // Sends a packet containing NETCMD_CLIENTADD to server / all clients
+    void SendClientAdd(const std::string& client_name);
 
 private:
     // general members
@@ -44,7 +53,6 @@ private:
     sf::Uint16 mClient_ServerPort;
 
 	ClientManager mClientManager;
-
 };
 
 }

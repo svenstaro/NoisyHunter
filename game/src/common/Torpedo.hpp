@@ -3,19 +3,28 @@
 
 #include "Entity.hpp"
 #include "Vector2D.hpp"
+#include "IOPacket.hpp"
 
 class Torpedo : public Engine::Entity {
 
 public:
-	Torpedo();
-	Torpedo(Engine::Vector2D pos, Engine::Vector2D speed, Engine::Vector2D target_position);
+	Torpedo(const sf::Uint16 unique_id = 0,
+			const Engine::Vector2D& pos = Engine::Vector2D(0,0),
+			const Engine::Vector2D& speed = Engine::Vector2D(0,0),
+			const Engine::Vector2D& target_position = Engine::Vector2D(0,0));
+
 	~Torpedo();
+
+	void Update(const float time_delta);
 
 	// callbacks
 	void OnCollide(const Engine::Entity& ent);
+
 	void OnDeath();
 
-	void Update(const float time_delta);
+	sf::Uint16 GetEntityId() const;
+
+    void serialize(Engine::IOPacket& packet);
 
 private:
   /*  friend class boost::serialization::access;
