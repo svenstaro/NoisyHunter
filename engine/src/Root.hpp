@@ -6,6 +6,7 @@
 #include <boost/foreach.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/serialization/singleton.hpp>
+#include <boost/program_options.hpp>
 
 #include "NetworkManager.hpp"
 #include "StateManager.hpp"
