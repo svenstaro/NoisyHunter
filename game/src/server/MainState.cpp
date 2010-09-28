@@ -4,10 +4,9 @@
 #include <iostream>
 
 MainState::MainState() {
-
 }
-MainState::~MainState() {
 
+MainState::~MainState() {
 }
 
 void MainState::Initialize() {
