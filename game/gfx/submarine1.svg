@@ -13,8 +13,8 @@
    height="400"
    id="svg2"
    version="1.1"
-   inkscape:version="0.47 r22583"
-   sodipodi:docname="New document 1">
+   inkscape:version="0.48.0 r9654"
+   sodipodi:docname="submarine1.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -53,13 +53,17 @@
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
-     showguides="false"
+     showguides="true"
      inkscape:snap-bbox="false"
-     inkscape:window-width="1088"
-     inkscape:window-height="681"
-     inkscape:window-x="188"
-     inkscape:window-y="56"
-     inkscape:window-maximized="0">
+     inkscape:window-width="1400"
+     inkscape:window-height="1000"
+     inkscape:window-x="-1"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:snap-global="true"
+     inkscape:object-nodes="true"
+     inkscape:object-paths="true"
+     inkscape:guide-bbox="true">
     <inkscape:grid
        type="xygrid"
        id="grid3590"
@@ -78,7 +82,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -88,9 +92,11 @@
      id="layer1"
      transform="translate(0,-652.36218)">
     <path
-       style="fill:#7aa1ff;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
-       d="M 300 50 L 250 100 L 250 150 L 150 150 L 100 200 L 60 160 L 60 340 L 100 300 L 150 350 L 500 350 L 550 300 L 550 200 L 500 150 L 400 150 L 400 100 L 350 50 L 300 50 z "
+       style="fill:#7aa1ff;fill-opacity:1;stroke:none"
+       d="m 270,40 -50,50 0,60 -40,0 -80,50 -40,-30 0,160 40,-30 80,50 270,0 100,-50 10,-50 -10,-50 -100,-50 -20,0 0,-40 20,-26 0,-34 -50,50 0,50 -50,0 0,-110 z"
        transform="translate(0,652.36218)"
-       id="path3627" />
+       id="path3627"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccccccccccccccc" />
   </g>
 </svg>
