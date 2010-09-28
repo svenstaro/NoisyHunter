@@ -91,6 +91,7 @@ void PlayState::OnLeaveGame() {
 
 void PlayState::OnClick(Engine::MouseEventArgs args) {
     OnNavigateTo(args);
+    Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendChatMessage("I am so glad I just clicked!");
 }
 
 void PlayState::OnRightClick(Engine::MouseEventArgs args) {

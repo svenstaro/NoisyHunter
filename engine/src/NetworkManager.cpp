@@ -67,7 +67,6 @@ void NetworkManager::SendPacket(sf::Packet& packet) {
 		}
     } else {
 		if(packet.GetDataSize() > 2) {
-			std::cout << "[NETWORK] DataSize: " << packet.GetDataSize() << std::endl;
 			mListener.Send(packet, mClient_ServerIp, mClient_ServerPort);
 		}
     }
@@ -76,7 +75,15 @@ void NetworkManager::SendPacket(sf::Packet& packet) {
 void NetworkManager::SendClientAdd(const std::string& client_name) {
     sf::Packet packet;
     packet << sf::Uint16(NETCMD_CLIENTADD) << client_name;
-	std::cout << "[NETWORK] DataSize: " << packet.GetDataSize() << std::endl;
+    SendPacket(packet);
+}
+
+void NetworkManager::SendChatMessage(const std::string& chat_message, const std::string& client_name) {
+    sf::Packet packet;
+    packet << sf::Uint16(NETCMD_CHATMESSAGE);
+    if (mIsServer)
+        packet << client_name;
+    packet << chat_message;
     SendPacket(packet);
 }
 
@@ -129,12 +136,10 @@ void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::
                 std::string msg;
                 packet >> msg;
                 // Output the message.
-                std::cout << "Client [" << address << ":" << port << "] said: " << msg;
+                std::cout << "Client [" << address << ":" << port << "] said: " << msg << std::endl;
                 // Send back to everyone.
-                sf::Packet p;
-                p << sf::Uint16(NETCMD_CHATMESSAGE);
-                p << msg;
-                SendPacket(p);
+                // TODO: 
+                SendChatMessage(msg, "server has to find out username");
             } else if(net_cmd == NETCMD_CLIENTPING) {
                 // The client pinged back! 
                 // TODO: Calculate the latency.
@@ -147,6 +152,7 @@ void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::
             }
 		} else {
             // Client packet handling
+            std::cout << "rofl!!" << std::endl;
             // TODO: Do client stuff here.
             if(net_cmd == NETCMD_CLIENTADD) {
                 // Fetch username of new client from packet
@@ -167,9 +173,11 @@ void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::
                 // TODO: Calculate the latency.
             } else if(net_cmd == NETCMD_CHATMESSAGE) {
                 // TODO: Output into GUI
-                std::string msg;
-                packet >> msg;
-                std::cout << "Someone said: " << msg;
+                std::string username;
+                std::string message;
+                packet >> username;
+                packet >> message;
+                std::cout << "<" << username << ">: " << message << std::endl;
             }
         }
         

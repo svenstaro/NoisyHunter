@@ -17,7 +17,6 @@ namespace Engine {
 class NetworkManager {
 public:
     NetworkManager();
-	//NetworkManager(Root* root);
 	~NetworkManager();
 
 	void InitializeAsServer(const sf::Uint16 server_port);
@@ -25,19 +24,22 @@ public:
 							const sf::Uint16 server_port,
 							const std::string name);
 
+    // Receiving methods
     void Receive();
 	void HandlePacket(sf::Packet packet, sf::IPAddress address, sf::Uint16 port);
 
+    // Sending methods
     void PreparePacket();
     void AppendEntityToPacket(Entity& entity);
-    void SendPacket(); // TODO: This is not nice!
-    void SendPacket(sf::Packet& packet); // This should probably be private 
-	// if it is never called like this from the outside. It should also probably
-	// be renamed.
+    // Sends the prepared packet "mPacket" by calling SendPacket(mPacket);
+    void SendPacket();
+    void SendPacket(sf::Packet& packet);
     
     // Sends a packet containing NETCMD_CLIENTADD to server / all clients
     void SendClientAdd(const std::string& client_name);
 
+    // Sends a packet containing NETCMD_CHATMESSAGE to server / all clients
+    void SendChatMessage(const std::string& chat_message, const std::string& client_name = "");
 private:
     // general members
     bool mIsServer;
