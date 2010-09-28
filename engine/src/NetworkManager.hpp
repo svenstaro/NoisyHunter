@@ -2,8 +2,10 @@
 #define NETWORKMANAGER_HPP
 
 #include <iostream>
+#include <string>
 
 #include <boost/foreach.hpp>
+#include <boost/signals2.hpp>
 
 #include <SFML/Network.hpp>
 
@@ -25,7 +27,7 @@ public:
 
     // Receiving methods
     void Receive();
-	void HandlePacket(sf::Packet packet, sf::IPAddress address, sf::Uint16 port);
+	void HandlePacket(sf::Packet& packet, const sf::IPAddress& address, const sf::Uint16 port);
 
     // Sending methods
     void PreparePacket();
@@ -39,13 +41,16 @@ public:
 
     // Sends a packet containing NETCMD_CHATMESSAGE to server / all clients
     void SendChatMessage(const std::string& chat_message, const std::string& client_name = "");
+    
+    // Signal binding & events
+    void BindOnClientConnected(const boost::signals2::signal<void (const std::string&)>::slot_type& slot);
+    void OnClientConnected(const std::string& client_name);
 
 
 	sf::Uint16 GetPing();
 private:
     // general members
     bool mIsServer;
-    //Root* mRoot;
 	sf::SocketUDP mListener;
 	sf::Packet mPacket;
 
@@ -55,8 +60,12 @@ private:
     // members used when in client mode
     sf::IPAddress mClient_ServerIp;
     sf::Uint16 mClient_ServerPort;
+    sf::Uint16 mClient_ClientPort;
 
 	ClientManager mClientManager;
+    
+    // Signals
+    boost::signals2::signal<void (const std::string&)> mOnClientConnectedSignal;
 
 	// used for calculating pings
 	sf::Clock mPingClock;

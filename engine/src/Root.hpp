@@ -44,6 +44,7 @@ public:
     const Vector2D GetWindowSize() const;
 
     Vector2D GetMousePosition() const;
+    const std::string& GetClientName() const;
 
 private:
     bool mIsServer;
@@ -53,7 +54,8 @@ private:
     sf::RenderWindow mRenderWindow; // create Render Window first as Input Manager needs it in constructor
     InputManager mInputManager;
     ResourceManager mResourceManager;
-
+    std::string mClientName;
+    
     sf::Clock mClock;
     StateManager mStateManager;
     NetworkManager mNetworkManager;

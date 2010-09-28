@@ -35,13 +35,10 @@ void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip,
     mClient_ServerIp = server_ip;
     mClient_ServerPort = server_port;
 
-	/*
-    if(!mListener.Bind(client_port)) {
-        std::cerr << "Your penis was broken by the NetworkManager while binding the listening socket" << std::endl;
-        exit(1);
-    }
-	*/
-
+    mClient_ClientPort = 12357;
+    mListener.Bind(mClient_ClientPort);
+    mListener.SetBlocking(0);
+    
 	SendClientAdd(name);	
 }
 
@@ -106,11 +103,19 @@ void NetworkManager::Receive() {
             }
         }
     } else {
-        // TODO: Client receiving        
+        // TODO: Client receiving
+        sf::Packet packet;
+        sf::IPAddress server_address;
+        sf::Uint16 server_port;
+        
+        if (mListener.Receive(packet, server_address, server_port) == sf::Socket::Done){
+            HandlePacket(packet, server_port, server_port);
+            packet.Clear();
+        }
     }
 }
 
-void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::Uint16 port) {
+void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& address, const sf::Uint16 port) {
     sf::Uint16 net_cmd;
     while(!packet.EndOfPacket()) {
         packet >> net_cmd;
@@ -165,6 +170,7 @@ void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::
                 // successfully to server.
                 // Otherwise, there just was a new client being connected, 
                 // so update scoreboard list.
+                OnClientConnected(name);
             } else if(net_cmd == NETCMD_CLIENTPING) {
                 // OMG! You got pinged by the server!
                 // Just send it back.
@@ -185,8 +191,14 @@ void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::
             }
         }
         
-        
     }
+}
+
+void NetworkManager::BindOnClientConnected(const boost::signals2::signal<void (const std::string&)>::slot_type& slot) {
+    mOnClientConnectedSignal.connect(slot);
+}
+void NetworkManager::OnClientConnected(const std::string& client_name) {
+    mOnClientConnectedSignal(client_name);
 }
 
 sf::Uint16 NetworkManager::GetPing() {

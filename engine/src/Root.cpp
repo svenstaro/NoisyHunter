@@ -15,7 +15,7 @@ Vector2D Root::GetMousePosition() const {
 void Root::InitializeAsServer(const sf::Uint16 server_port) {
     mIsServer = true;
     //mStateManager = StateManager();
-    mNetworkManager = NetworkManager();
+    // mNetworkManager = NetworkManager();
 	mNetworkManager.InitializeAsServer(server_port);
 }
 
@@ -44,7 +44,8 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
     //mResourceManager = ResourceManager();
 
     // Create and Initialize Network Manager
-    mNetworkManager = NetworkManager();
+    // mNetworkManager = NetworkManager();
+    mClientName = name;
     mNetworkManager.InitializeAsClient(server_ip, server_port, name);
 }
 
@@ -97,6 +98,7 @@ void Root::StartMainLoop() {
             }
             
             // TODO: Network receiving.
+            mNetworkManager.Receive();
             
             // There will be a snapshot to be processed from time to time,
             // but this still has to be updated to current time.
@@ -150,6 +152,10 @@ const Vector2D Root::GetWindowSize() const {
 
 void Root::SetMouseHidden(const bool mouse_hidden) {
 	mRenderWindow.ShowMouseCursor(!mouse_hidden);
+}
+
+const std::string& Root::GetClientName() const {
+    return mClientName;
 }
 
 }

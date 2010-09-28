@@ -1,6 +1,8 @@
 #ifndef PLAYSTATE_HPP
 #define PLAYSTATE_HPP
 
+#include <string>
+
 #include "State.hpp"
 #include "InputManager.hpp"
 #include "Crosshair.hpp"
@@ -28,6 +30,9 @@ public:
     void OnClick(Engine::MouseEventArgs args);
     void OnRightClick(Engine::MouseEventArgs args);
     void OnMouseMove(Engine::MouseEventArgs args);
+    
+    // network callbacks
+    void OnClientConnected(const std::string& client_name);
 
 private:
     Submarine* mPlayerSubmarine;

@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include <boost/foreach.hpp>
+#include <boost/bind.hpp>
 
 #include "PlayState.hpp"
 #include "Root.hpp"
@@ -45,6 +46,10 @@ void PlayState::Initialize() {
     inputmgr->BindMouse(mv, Engine::MOUSE_MOVED);
     // hide original cursor
     Engine::Root::get_mutable_instance().SetMouseHidden(true);
+    
+    // Bind connection events
+    auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
+    netmgr->BindOnClientConnected(boost::bind(&PlayState::OnClientConnected, this, _1));
 }
 
 void PlayState::Shutdown() {
@@ -100,4 +105,11 @@ void PlayState::OnRightClick(Engine::MouseEventArgs args) {
 
 void PlayState::OnMouseMove(Engine::MouseEventArgs args) {
     mCrosshair->SetPosition(args.X, args.Y);
+}
+
+void PlayState::OnClientConnected(const std::string& client_name) {
+    std::cout << "Client connected: " << client_name << std::endl;
+    if (client_name == Engine::Root::get_mutable_instance().GetClientName()){
+        std::cout << "THAT'S YOU!!" << std::endl;
+    }
 }
