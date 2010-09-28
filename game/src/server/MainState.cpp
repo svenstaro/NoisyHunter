@@ -20,3 +20,6 @@ void MainState::Update(float time_delta) {
     //Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->Receive();
 }
 
+void MainState::OnClientConnect(sf::Uint16 cl_id) {
+	AddEntity(new Submarine(0.3, 0.4, cl_id));
+}

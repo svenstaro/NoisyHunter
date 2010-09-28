@@ -124,8 +124,11 @@ void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::
                 // Add new client if unknown
 				if(!mClientManager.IsKnown(address)) {
 					if(mClientManager.IsSlotAvailable()) {
+						// Make a signal here wich is connected to mClientManager.Add() and to MainState.OnClientConnect()
 						mClientManager.Add(address, port, name); 
 						SendClientAdd(name);
+						
+
 						std::cout << "[NETWORK/SERVER] Client [" + name + "] was added successfully." << std::endl;
 					} else {
 						std::cerr << "[NETWORK/SERVER] No slot available." << std::endl;
