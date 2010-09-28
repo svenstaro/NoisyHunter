@@ -38,7 +38,7 @@ public:
     // Sends a packet containing NETCMD_CLIENTADD to server / all clients
     void SendClientAdd(const std::string& client_name);
 
-	int getPing();
+	int GetPing();
 
 private:
     // general members
@@ -57,7 +57,7 @@ private:
 	ClientManager mClientManager;
 
 	// used for calculating pings
-	sf::Clock pingClock;
+	sf::Clock mPingClock;
 	sf::Uint16 ping;
 };
 
