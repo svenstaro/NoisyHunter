@@ -49,8 +49,8 @@ std::vector<sf::Uint16> split(const std::string& size_str) {
 
 	sep = size_str.find("x");
 
-	width = size_str.substr(0,sep);
-	height = size_str.substr(sep+1);
+	width = size_str.substr(0, sep);
+	height = size_str.substr(sep + 1);
 
 	size_vec.push_back(boost::lexical_cast<sf::Uint16>(width));
 	size_vec.push_back(boost::lexical_cast<sf::Uint16>(height));
@@ -88,4 +88,3 @@ int main(int argc, char* argv[]) {
     root.StartMainLoop();
     return 0;
 }
-

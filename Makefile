@@ -16,5 +16,5 @@ docs:
 all: build docs runc
 
 clean:
-	rm -r doc
 	rm -r build
+	rm -r doc

@@ -55,4 +55,3 @@ int main(int argc, char* argv[]) {
     root.StartMainLoop();
     return 0;
 }
-

@@ -131,7 +131,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 					if(mClientManager.IsSlotAvailable()) {
 						// Make a signal here wich is connected to mClientManager.Add() and to MainState.OnClientConnect()
 						mClientManager.Add(address, port, name); 
-                        OnClientConnected();
+                        OnClientConnected(name);
 						SendClientAdd(name);
 						
 
@@ -170,7 +170,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 // If name is username of THIS client, then you have beed added
                 // successfully to server.
                 // Otherwise, there just was a new client being connected, 
-                // so update scoreboard list.
+                // so update scoreboard list. (TODO: scoreboard list updating)
                 OnClientConnected(name);
             } else if(net_cmd == NETCMD_CLIENTPING) {
                 // OMG! You got pinged by the server!
