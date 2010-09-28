@@ -131,6 +131,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 					if(mClientManager.IsSlotAvailable()) {
 						// Make a signal here wich is connected to mClientManager.Add() and to MainState.OnClientConnect()
 						mClientManager.Add(address, port, name); 
+                        OnClientConnected();
 						SendClientAdd(name);
 						
 
