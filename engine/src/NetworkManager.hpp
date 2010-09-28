@@ -7,7 +7,6 @@
 
 #include <SFML/Network.hpp>
 
-//#include "Root.hpp"
 #include "Entity.hpp"
 #include "ClientManager.hpp"
 #include "NetworkCommand.hpp"
@@ -40,6 +39,9 @@ public:
 
     // Sends a packet containing NETCMD_CHATMESSAGE to server / all clients
     void SendChatMessage(const std::string& chat_message, const std::string& client_name = "");
+
+
+	sf::Uint16 GetPing();
 private:
     // general members
     bool mIsServer;
@@ -55,6 +57,10 @@ private:
     sf::Uint16 mClient_ServerPort;
 
 	ClientManager mClientManager;
+
+	// used for calculating pings
+	sf::Clock mPingClock;
+	sf::Uint16 mPing;
 };
 
 }

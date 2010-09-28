@@ -152,8 +152,6 @@ void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::
             }
 		} else {
             // Client packet handling
-            std::cout << "rofl!!" << std::endl;
-            // TODO: Do client stuff here.
             if(net_cmd == NETCMD_CLIENTADD) {
                 // Fetch username of new client from packet
                 std::string name;
@@ -165,12 +163,13 @@ void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::
             } else if(net_cmd == NETCMD_CLIENTPING) {
                 // OMG! You got pinged by the server!
                 // Just send it back.
+				mPingClock.Reset();
                 sf::Packet p;
                 p << sf::Uint16(NETCMD_CLIENTPING);
                 SendPacket(p);
             } else if(net_cmd == NETCMD_SERVERPING) {
                 // The server pinged back! 
-                // TODO: Calculate the latency.
+				mPing = mPingClock.GetElapsedTime() * 1000;
             } else if(net_cmd == NETCMD_CHATMESSAGE) {
                 // TODO: Output into GUI
                 std::string username;
@@ -183,6 +182,10 @@ void NetworkManager::HandlePacket(sf::Packet packet, sf::IPAddress address, sf::
         
         
     }
+}
+
+sf::Uint16 NetworkManager::GetPing() {
+	return mPing;
 }
 
 }
