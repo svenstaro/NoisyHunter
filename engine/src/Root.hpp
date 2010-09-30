@@ -43,6 +43,7 @@ public:
     NetworkManager* GetNetworkManagerPtr();
     StateManager* GetStateManagerPtr();
     ResourceManager* GetResourceManagerPtr();
+    LogManager* GetLogManagerPtr();
 
 	void SetMouseHidden(const bool mouse_hidden);
     const Vector2D GetWindowSize() const;

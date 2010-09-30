@@ -150,6 +150,10 @@ NetworkManager* Root::GetNetworkManagerPtr() {
     return &mNetworkManager;
 }
 
+LogManager* Root::GetLogManagerPtr() {
+	return &mLogManager;
+}
+
 const Vector2D Root::GetWindowSize() const {
     return Vector2D(mRenderWindow.GetWidth(), mRenderWindow.GetHeight());
 }
