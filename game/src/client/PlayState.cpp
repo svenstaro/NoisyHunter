@@ -22,11 +22,7 @@ void PlayState::Initialize() {
     // create GUI
 	// TODO: Do stuff
 
-    // create entities
-    mPlayerSubmarine = new Submarine(0.5,0.5);
-    AddEntity(mPlayerSubmarine);
-    mPlayerSubmarine->SetTarget(Engine::Vector2D(1,1));
-
+	// client side only entity
     mCrosshair = new Crosshair();
     AddEntity(mCrosshair);
 
@@ -50,6 +46,14 @@ void PlayState::Initialize() {
     // Bind connection events
     auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
     netmgr->BindOnClientConnected(boost::bind(&PlayState::OnClientConnected, this, _1));
+
+    // create entities
+	// TODO: NEXT TASK
+	//sf::Packet packet;
+	//netmgr
+    //mPlayerSubmarine = new Submarine(0.5,0.5);
+    //AddEntity(mPlayerSubmarine);
+    //mPlayerSubmarine->SetTarget(Engine::Vector2D(1,1));
 }
 
 void PlayState::Shutdown() {

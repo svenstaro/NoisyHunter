@@ -113,7 +113,8 @@ void Root::StartMainLoop() {
             timebudget += time_delta;
             // Update simulation with fixed timestep.
 			while(time_delta < timebudget) {
-                mStateManager.Update(dt);
+				// TODO: NEXT TASK
+                //mStateManager.Update(dt);
                 timebudget -= dt;
 			}          
             
