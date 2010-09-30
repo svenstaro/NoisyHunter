@@ -51,9 +51,6 @@ public:
     Vector2D GetMousePosition() const;
     const std::string& GetClientName() const;
 
-	// LOGGING
-	void Log(enum LogLevel level, enum LogOrigin origin, const std::string& message);
-
 private:
     bool mIsServer;
 	bool mIsVerbose;

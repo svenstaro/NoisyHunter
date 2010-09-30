@@ -167,8 +167,4 @@ const std::string& Root::GetClientName() const {
     return mClientName;
 }
 
-void Root::Log(enum LogLevel level, enum LogOrigin origin, const std::string& message) {
-	mLogManager.Log(level, origin, message);
-}
-
 }
