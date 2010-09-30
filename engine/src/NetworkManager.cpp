@@ -14,11 +14,12 @@ NetworkManager::~NetworkManager() {}
 void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
     mIsServer = true;
 
+	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
     if(!mListener.Bind(server_port)) {
-        std::cerr << "[NETWORK/SERVER] NetworkManager was broken while binding the listening SERVER socket." << std::endl;
+		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "NetworkManager was broken while binding the listening server socket.");
         exit(1);
     } else {
-        std::cout << "[SERVER] Binding to port " << server_port << " successful." << std::endl;
+		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Binding to port "+server_port+" successful.");
     }
 
     mServer_Selector.Add(mListener);
@@ -29,7 +30,7 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
 
 void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip, 
 										const sf::Uint16 server_port,
-										const std::string name) {
+										const std::string client_name) {
     mIsServer = false;
 
     mClient_ServerIp = server_ip;
@@ -39,7 +40,7 @@ void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip,
     mListener.Bind(mClient_ClientPort);
     mListener.SetBlocking(0);
     
-	SendClientAdd(name);	
+	SendClientAdd(client_name);
 }
 
 void NetworkManager::PreparePacket() {
@@ -86,7 +87,7 @@ void NetworkManager::SendChatMessage(const std::string& chat_message, const std:
 
 void NetworkManager::Receive() {
     if(mIsServer) {
-		std::cout << "[NETWORK/SERVER] Server::HandleClients()" << std::endl;
+		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Receiving.");
         unsigned int nb_sockets = mServer_Selector.Wait();
 
         for (unsigned int i=0;i < nb_sockets; ++i) {
@@ -97,19 +98,19 @@ void NetworkManager::Receive() {
 			sf::Uint16 client_port;
 
 			if(socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
-				std::cout << "[NETWORK/SERVER] Received a packet from " << client_address << ":" << client_port << std::endl;
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from "+client_address+":"+client_port);
 				HandlePacket(packet, client_address, client_port);
 				packet.Clear();
             }
         }
     } else {
-        // TODO: Client receiving
         sf::Packet packet;
         sf::IPAddress server_address;
         sf::Uint16 server_port;
         
         if (mListener.Receive(packet, server_address, server_port) == sf::Socket::Done){
-            HandlePacket(packet, server_port, server_port);
+			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from "+server_address+":"+server_port);
+            HandlePacket(packet, server_address, server_port);
             packet.Clear();
         }
     }
@@ -121,77 +122,92 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
         packet >> net_cmd;
         
         if(mIsServer) {
-            // Server packet handling
+            // === SERVER PACKET HANDLING ===
             if(net_cmd == NETCMD_CLIENTADD) {
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTADD.");
                 // Fetch name from packet
-				std::string name;
-				packet >> name;
+				std::string client_name;
+				packet >> client_name;
                 // Add new client if unknown
 				if(!mClientManager.IsKnown(address)) {
 					if(mClientManager.IsSlotAvailable()) {
 						// Make a signal here wich is connected to mClientManager.Add() and to MainState.OnClientConnect()
-						mClientManager.Add(address, port, name); 
-                        OnClientConnected(name);
-						SendClientAdd(name);
+						mClientManager.Add(address, port, client_name);
+                        OnClientConnected(client_name);
+						SendClientAdd(client_name);
 						
-
-						std::cout << "[NETWORK/SERVER] Client [" + name + "] was added successfully." << std::endl;
+						logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Client "+client_name+" was added successfully.");
 					} else {
-						std::cerr << "[NETWORK/SERVER] No slot available." << std::endl;
+						logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "No slot available.");
 					}
 				}
-			} else if(net_cmd == NETCMD_CHATMESSAGE) {
-                // Fetch the message
-                std::string msg;
-                packet >> msg;
-                // Get username
+			} else if(net_cmd == NETCMD_CLIENTQUIT) {
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTQUIT.");
+                sf::Packet packet;
                 sf::Uint16 id = mClientManager.GetId(address);
-                std::string name = mClientManager.GetName(id);
-                // Output the message.
-                std::cout << "<" << name << "> [" << address << ":" << port << "] said: " << msg << std::endl;
-                // Send back to everyone
-                SendChatMessage(msg, name);
+                std::string client_name = mClientManager.GetName(id);
+                packet << sf::Uint16(NETCMD_CLIENTQUIT);
+				packet << client_name;
+				packet << "REASON: LOL";
+                SendPacket(packet);
             } else if(net_cmd == NETCMD_CLIENTPING) {
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTPING.");
                 // The client pinged back! 
                 // TODO: Calculate the latency.
             } else if(net_cmd == NETCMD_SERVERPING) {
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_SERVERPING.");
                 // OMG! You got pinged by the server!
                 // Just send it back.
-                sf::Packet p;
-                p << sf::Uint16(NETCMD_SERVERPING);
-                SendPacket(p);
-            }
+                sf::Packet packet;
+                packet << sf::Uint16(NETCMD_SERVERPING);
+                SendPacket(packet);
+			} else if(net_cmd == NETCMD_CHATMESSAGE) {
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE.");
+                // Fetch the message
+                std::string message;
+                packet >> message;
+                // Get client name
+                sf::Uint16 id = mClientManager.GetId(address);
+                std::string client_name = mClientManager.GetName(id);
+                // Output the message.
+				logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, client_name+" says: "+message);
+                // Send back to everyone
+                SendChatMessage(message, client_name);
+			}
 		} else {
-            // Client packet handling
+            // === CLIENT PACKET HANDLING ===
             if(net_cmd == NETCMD_CLIENTADD) {
-                // Fetch username of new client from packet
-                std::string name;
-                packet >> name;
-                // If name is username of THIS client, then you have beed added
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTADD.");
+                // Fetch client name of new client from packet
+                std::string client_name;
+                packet >> client_name;
+                // If name is client name of THIS client, then you have beed added
                 // successfully to server.
                 // Otherwise, there just was a new client being connected, 
                 // so update scoreboard list. (TODO: scoreboard list updating)
-                OnClientConnected(name);
+                OnClientConnected(client_name);
             } else if(net_cmd == NETCMD_CLIENTPING) {
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTPING.");
                 // OMG! You got pinged by the server!
                 // Just send it back.
 				mPingClock.Reset();
-                sf::Packet p;
-                p << sf::Uint16(NETCMD_CLIENTPING);
-                SendPacket(p);
+                sf::Packet packet;
+                packet << sf::Uint16(NETCMD_CLIENTPING);
+                SendPacket(packet);
             } else if(net_cmd == NETCMD_SERVERPING) {
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_SERVERPING.");
                 // The server pinged back! 
 				mPing = mPingClock.GetElapsedTime() * 1000;
             } else if(net_cmd == NETCMD_CHATMESSAGE) {
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE.");
                 // TODO: Output into GUI
-                std::string username;
+                std::string client_name;
                 std::string message;
-                packet >> username;
+                packet >> client_name;
                 packet >> message;
-                std::cout << "<" << username << ">: " << message << std::endl;
+				logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, client_name+" says: "+message);
             }
         }
-        
     }
 }
 
