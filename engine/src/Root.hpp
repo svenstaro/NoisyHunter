@@ -12,6 +12,8 @@
 #include "StateManager.hpp"
 #include "ResourceManager.hpp"
 #include "InputManager.hpp"
+#include "LogManager.hpp"
+#include "LogCommand.hpp"
 
 namespace Engine {
 
@@ -20,13 +22,15 @@ public:
     Root();
     ~Root();
 
-    void InitializeAsServer(const sf::Uint16 server_port);
+    void InitializeAsServer(const sf::Uint16 server_port,
+							bool is_verbose);
     void InitializeAsClient(const sf::VideoMode& video_mode, 
 							const std::string& window_title, 
 							const bool is_fullscreen,
                             const sf::IPAddress& server_ip, 
 							const sf::Uint16 server_port,
-							const std::string name);
+							const std::string name,
+							bool is_verbose);
 
     //void Initialize(sf::VideoMode video_mode, std::string window_title, bool fullsreen = false);
     void StartMainLoop();
@@ -47,10 +51,11 @@ public:
     const std::string& GetClientName() const;
 
 	// LOGGING
-	static void Log(LogLevel level, LogOrigin origin, std::string message);
+	void Log(enum LogLevel level, enum LogOrigin origin, const std::string& message);
 
 private:
     bool mIsServer;
+	bool mIsVerbose;
     bool mShutdownRequested;
 
     // these members are for use in client mode only !
