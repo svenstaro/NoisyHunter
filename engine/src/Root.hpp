@@ -46,6 +46,9 @@ public:
     Vector2D GetMousePosition() const;
     const std::string& GetClientName() const;
 
+	// LOGGING
+	static void Log(LogLevel level, LogOrigin origin, std::string message);
+
 private:
     bool mIsServer;
     bool mShutdownRequested;
@@ -59,6 +62,7 @@ private:
     sf::Clock mClock;
     StateManager mStateManager;
     NetworkManager mNetworkManager;
+	LogManager mLogManager;
 };
 
 }

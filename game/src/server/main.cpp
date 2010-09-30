@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
     Engine::Root& root = Engine::Root::get_mutable_instance();
 
 	// Initialize Root singleton using parsed values.
-    root.InitializeAsServer(port);
+    root.InitializeAsServer(port, verbose);
     root.GetStateManagerPtr()->Add(new MainState());
     root.StartMainLoop();
     return 0;

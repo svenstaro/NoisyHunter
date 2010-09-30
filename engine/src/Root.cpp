@@ -12,8 +12,10 @@ Vector2D Root::GetMousePosition() const {
                     mRenderWindow.GetInput().GetMouseY());
 }
 
-void Root::InitializeAsServer(const sf::Uint16 server_port) {
+void Root::InitializeAsServer(const sf::Uint16 server_port,
+							  bool verbose) {
     mIsServer = true;
+	mVerbose = verbose;
     //mStateManager = StateManager();
     // mNetworkManager = NetworkManager();
 	mNetworkManager.InitializeAsServer(server_port);
@@ -24,7 +26,8 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 							  const bool is_fullscreen,
 							  const sf::IPAddress& server_ip, 
 							  const sf::Uint16 server_port,
-							  const std::string name) {
+							  const std::string name,
+							  bool verbose) {
 
     mIsServer = false;
 
@@ -46,6 +49,7 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
     // Create and Initialize Network Manager
     // mNetworkManager = NetworkManager();
     mClientName = name;
+	mVerbose = verbose;
     mNetworkManager.InitializeAsClient(server_ip, server_port, name);
 }
 
@@ -97,7 +101,7 @@ void Root::StartMainLoop() {
                 mStateManager.HandleEvent(e);
             }
             
-            // TODO: Network receiving.
+            // Network receiving.
             mNetworkManager.Receive();
             
             // There will be a snapshot to be processed from time to time,
@@ -156,6 +160,10 @@ void Root::SetMouseHidden(const bool mouse_hidden) {
 
 const std::string& Root::GetClientName() const {
     return mClientName;
+}
+
+void Root::Log(LogLevel level, LogOrigin origin, const std::string& message) {
+	mLogManager.Log(LogLevel level, LogOrigin origin, const std::string& message);
 }
 
 }
