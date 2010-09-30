@@ -15,11 +15,12 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
     mIsServer = true;
 
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+
     if(!mListener.Bind(server_port)) {
 		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "NetworkManager was broken while binding the listening server socket.");
         exit(1);
     } else {
-		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Binding to port "+server_port+" successful.");
+		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Binding to port "+boost::lexical_cast<std::string>(server_port)+" successful.");
     }
 
     mServer_Selector.Add(mListener);
@@ -32,6 +33,8 @@ void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip,
 										const sf::Uint16 server_port,
 										const std::string client_name) {
     mIsServer = false;
+
+	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 
     mClient_ServerIp = server_ip;
     mClient_ServerPort = server_port;
@@ -86,6 +89,8 @@ void NetworkManager::SendChatMessage(const std::string& chat_message, const std:
 }
 
 void NetworkManager::Receive() {
+	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+
     if(mIsServer) {
 		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Receiving.");
         unsigned int nb_sockets = mServer_Selector.Wait();
@@ -98,7 +103,7 @@ void NetworkManager::Receive() {
 			sf::Uint16 client_port;
 
 			if(socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from "+client_address+":"+client_port);
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from "+boost::lexical_cast<std::string>(client_address)+":"+boost::lexical_cast<std::string>(client_port));
 				HandlePacket(packet, client_address, client_port);
 				packet.Clear();
             }
@@ -109,7 +114,7 @@ void NetworkManager::Receive() {
         sf::Uint16 server_port;
         
         if (mListener.Receive(packet, server_address, server_port) == sf::Socket::Done){
-			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from "+server_address+":"+server_port);
+			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from "+boost::lexical_cast<std::string>(server_address)+":"+boost::lexical_cast<std::string>(server_port));
             HandlePacket(packet, server_address, server_port);
             packet.Clear();
         }
@@ -117,6 +122,8 @@ void NetworkManager::Receive() {
 }
 
 void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& address, const sf::Uint16 port) {
+	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+
     sf::Uint16 net_cmd;
     while(!packet.EndOfPacket()) {
         packet >> net_cmd;

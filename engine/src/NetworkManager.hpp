@@ -5,6 +5,7 @@
 #include <string>
 
 #include <boost/foreach.hpp>
+#include <boost/lexical_cast.hpp>
 #include <boost/signals2.hpp>
 
 #include <SFML/Network.hpp>
@@ -12,6 +13,7 @@
 #include "Entity.hpp"
 #include "ClientManager.hpp"
 #include "NetworkCommand.hpp"
+#include "LogManager.hpp"
 
 namespace Engine {
 
