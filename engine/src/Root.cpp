@@ -13,9 +13,9 @@ Vector2D Root::GetMousePosition() const {
 }
 
 void Root::InitializeAsServer(const sf::Uint16 server_port,
-							  bool verbose) {
+							  bool is_verbose) {
     mIsServer = true;
-	mVerbose = verbose;
+	mIsVerbose = is_verbose;
     //mStateManager = StateManager();
     // mNetworkManager = NetworkManager();
 	mNetworkManager.InitializeAsServer(server_port);
@@ -27,7 +27,7 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 							  const sf::IPAddress& server_ip, 
 							  const sf::Uint16 server_port,
 							  const std::string name,
-							  bool verbose) {
+							  bool is_verbose) {
 
     mIsServer = false;
 
@@ -49,7 +49,7 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
     // Create and Initialize Network Manager
     // mNetworkManager = NetworkManager();
     mClientName = name;
-	mVerbose = verbose;
+	mIsVerbose = is_verbose;
     mNetworkManager.InitializeAsClient(server_ip, server_port, name);
 }
 
@@ -151,6 +151,10 @@ NetworkManager* Root::GetNetworkManagerPtr() {
     return &mNetworkManager;
 }
 
+LogManager* Root::GetLogManagerPtr() {
+	return &mLogManager;
+}
+
 const Vector2D Root::GetWindowSize() const {
     return Vector2D(mRenderWindow.GetWidth(), mRenderWindow.GetHeight());
 }
@@ -163,8 +167,8 @@ const std::string& Root::GetClientName() const {
     return mClientName;
 }
 
-void Root::Log(LogLevel level, LogOrigin origin, const std::string& message) {
-	mLogManager.Log(LogLevel level, LogOrigin origin, const std::string& message);
+void Root::Log(enum LogLevel level, enum LogOrigin origin, const std::string& message) {
+	mLogManager.Log(level, origin, message);
 }
 
 }
