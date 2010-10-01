@@ -15,7 +15,7 @@ public:
     void Shutdown();
 
     void Update(float time_delta);
-	void OnClientConnect(sf::Uint16 cl_id);
+	void OnClientConnected(std::string client_name);
 };
 
 #endif

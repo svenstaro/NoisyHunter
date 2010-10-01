@@ -34,6 +34,7 @@ class ClientManager {
         std::vector<sf::Uint16> GetIds();
 
         sf::Uint16 GetId(const sf::IPAddress& address);
+        sf::Uint16 GetId(const std::string& name);
 
         // Get IP of client ID
         sf::IPAddress GetIp(const sf::Uint16 id);

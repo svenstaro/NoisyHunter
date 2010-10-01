@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "LogManager.hpp"
 #include "State.hpp"
 #include "InputManager.hpp"
 #include "Crosshair.hpp"

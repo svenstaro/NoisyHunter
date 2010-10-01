@@ -4,6 +4,8 @@
 
 namespace po = boost::program_options;
 po::variables_map usage(int& argc, char* argv[]) {
+	po::variables_map vm;
+
 	try {
 		// Declare the supported options.
 		po::options_description desc("Noisy Hunter - a game in which you are a submarine and use sound to locate your opponents.\
@@ -14,7 +16,6 @@ po::variables_map usage(int& argc, char* argv[]) {
 			("verbose,v", po::value<sf::Uint16>()->implicit_value(1), "be verbose")
 		;
 
-		po::variables_map vm;
 		po::store(po::parse_command_line(argc, argv, desc), vm);
 		po::notify(vm);
 
@@ -22,17 +23,14 @@ po::variables_map usage(int& argc, char* argv[]) {
 			std::cout << desc << "\n";
 			exit(1);
 		}
-
-		return vm;
-
-	}
-    catch(std::exception& e) {
+	} catch(std::exception& e) {
 		std::cerr << "ERROR: " << e.what() << "\n";
         exit(1);
-    }
-    catch(...) {
+    } catch(...) {
 		std::cerr << "Exception of unknown type!\n";
     }
+
+	return vm;
 }
 
 int main(int argc, char* argv[]) {

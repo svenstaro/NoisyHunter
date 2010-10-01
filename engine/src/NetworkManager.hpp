@@ -42,6 +42,9 @@ public:
     // Sends a packet containing NETCMD_CLIENTADD to server / all clients.
     void SendClientAdd(const std::string& client_name);
 
+    // Sends a packet containing NETCMD_ENTITYADD to server / all clients.
+	void SendEntityAdd(Entity* e);
+
     // Sends a packet containing NETCMD_CHATMESSAGE to server / all clients.
     void SendChatMessage(const std::string& chat_message, const std::string& client_name = "");
     
@@ -49,8 +52,9 @@ public:
     void BindOnClientConnected(const boost::signals2::signal<void (const std::string&)>::slot_type& slot);
     void OnClientConnected(const std::string& client_name);
 
-
 	sf::Uint16 GetPing();
+
+	ClientManager* GetClientManagerPtr();
 private:
     // General members
     bool mIsServer;
@@ -59,14 +63,13 @@ private:
 
     // Members used when in server mode
 	sf::SelectorUDP mServer_Selector;
-
+	ClientManager mClientManager;
+    
     // Members used when in client mode
     sf::IPAddress mClient_ServerIp;
     sf::Uint16 mClient_ServerPort;
     sf::Uint16 mClient_ClientPort;
 
-	ClientManager mClientManager;
-    
     // Signals
     boost::signals2::signal<void (const std::string&)> mOnClientConnectedSignal;
 

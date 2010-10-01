@@ -20,12 +20,16 @@ void ClientManager::Add(const sf::IPAddress& address, const sf::Uint16 port, con
     client.address = address;
     client.port = port;
     client.name = name;
-	Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, it->first + " " + mClients.size());
+	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Adding client "+name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+").");
     mClients.insert(std::pair<sf::Uint16, Client>(it->first, client));
+	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Clients online now: "+boost::lexical_cast<std::string>(mClients.size()));
 }
 
 void ClientManager::Remove(const sf::Uint16 id) {
     mClients.erase(id);
+	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Clients online now: "+boost::lexical_cast<std::string>(mClients.size()));
 }
 
 bool ClientManager::IsKnown(const sf::IPAddress& address) {
@@ -64,6 +68,18 @@ sf::Uint16 ClientManager::GetId(const sf::IPAddress& address) {
     sf::Uint16 tmp = 0;
     for(it = mClients.begin() ; it != mClients.end(); it++) {
         if(it->second.address == address) {
+            tmp = it->first;
+            break;
+        }
+    }
+    return tmp;
+}
+
+sf::Uint16 ClientManager::GetId(const std::string& name) {
+    std::map<sf::Uint16, Client>::iterator it;
+    sf::Uint16 tmp = 0;
+    for(it = mClients.begin() ; it != mClients.end(); it++) {
+        if(it->second.name == name) {
             tmp = it->first;
             break;
         }

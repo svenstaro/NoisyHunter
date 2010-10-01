@@ -12,6 +12,9 @@ PlayState::PlayState() {}
 PlayState::~PlayState() {}
 
 void PlayState::Initialize() {
+	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing PlayState.");
+
     // load resources
 	auto resmgr = Engine::Root::get_mutable_instance().GetResourceManagerPtr();
 	resmgr->AddImage(boost::filesystem::path("../game/gfx"), 
@@ -49,35 +52,27 @@ void PlayState::Initialize() {
 
     // create entities
 	// TODO: NEXT TASK
-    Submarine player_submarine(0.5,0.5);
-    //AddEntity(mPlayerSubmarine);
-    player_submarine.SetTarget(Engine::Vector2D(0.2,0.2));
-	sf::Packet packet;
-	packet << sf::Uint16(Engine::NETCMD_ENTITYADD);
-	packet << player_submarine.GetEntityId();
-	Engine::IOPacket iopacket(false, packet);
-	player_submarine.serialize(iopacket);
-	packet = iopacket.GetPacket();
-	netmgr->SendPacket(packet);
+//    Submarine player_submarine(0.5,0.5);
+//    //AddEntity(mPlayerSubmarine);
+//    player_submarine.SetTarget(Engine::Vector2D(0.2,0.2));
+//	sf::Packet packet;
+//	packet << sf::Uint16(Engine::NETCMD_ENTITYADD);
+//	packet << player_submarine.GetEntityId();
+//	Engine::IOPacket iopacket(false, packet);
+//	player_submarine.serialize(iopacket);
+//	packet = iopacket.GetPacket();
+//
+//	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_NETWORK, "Sending packet with NETCMD_ENTITYADD.");
+//	netmgr->SendPacket(packet);
 }
 
 void PlayState::Shutdown() {
-    // hm, what do we need shutdown for!?
+	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Shutting down PlayState.");
 }
 
 void PlayState::Update(float time_delta) {
     UpdateAllEntities(time_delta);
-
-    // TODO: Networking
-    Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->PreparePacket();
-    BOOST_FOREACH(Engine::Entity& entity, mEntities){
-        if(entity.GetLayer() == Engine::Entity::LAYER_REGULAR){
-            Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->AppendEntityToPacket(entity);
-        }
-    }
-    
-    Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket();
-
 }
 
 void PlayState::OnSetNoisyMode() {
@@ -106,6 +101,14 @@ void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position) {
 }
 
 void PlayState::OnLeaveGame() {
+	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Quitting game.");
+	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_NETWORK, "Sending packet with NETCMD_CLIENTQUIT.");
+
+	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
+	sf::Packet packet;
+	packet << sf::Uint16(Engine::NETCMD_CLIENTQUIT);
+	netmgr->SendPacket(packet);
     Engine::Root::get_mutable_instance().RequestShutdown();
 }
 

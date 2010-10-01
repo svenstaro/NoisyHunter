@@ -12,6 +12,7 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
     mIsServer = true;
 
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Initializing NetworkManager as server.");
 
     if(!mListener.Bind(server_port)) {
 		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "NetworkManager was broken while binding the listening server socket.");
@@ -32,6 +33,7 @@ void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip,
     mIsServer = false;
 
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Initializing NetworkManager as client.");
 
     mClient_ServerIp = server_ip;
     mClient_ServerPort = server_port;
@@ -59,21 +61,36 @@ void NetworkManager::SendPacket() {
 }
 
 void NetworkManager::SendPacket(sf::Packet& packet) {
-	if(mIsServer) {
-		BOOST_FOREACH(sf::Uint16 id, mClientManager.GetIds()) {
-			mListener.Send(packet, mClientManager.GetIp(id), mClientManager.GetPort(id));
-		}
-    } else {
-		if(packet.GetDataSize() > 2) {
+	if(packet.GetDataSize() == 0) {
+		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Won't send empty packet.");
+	} else {
+		if(mIsServer) {
+			// We are sending from server, therefore send to all clients.
+			BOOST_FOREACH(sf::Uint16 id, mClientManager.GetIds()) {
+				mListener.Send(packet, mClientManager.GetIp(id), mClientManager.GetPort(id));
+			}
+		} else {
+			// We are sending from client.
 			mListener.Send(packet, mClient_ServerIp, mClient_ServerPort);
 		}
-    }
+	}
 }
 
 void NetworkManager::SendClientAdd(const std::string& client_name) {
     sf::Packet packet;
     packet << sf::Uint16(NETCMD_CLIENTADD) << client_name;
     SendPacket(packet);
+}
+
+void NetworkManager::SendEntityAdd(Entity* entity) {
+	sf::Packet packet;
+	packet << sf::Uint16(NETCMD_ENTITYADD);
+	packet << entity->GetEntityId();
+	IOPacket iopacket(false, packet);
+	entity->serialize(iopacket);
+	packet = iopacket.GetPacket();
+	SendPacket(packet);
 }
 
 void NetworkManager::SendChatMessage(const std::string& chat_message, const std::string& client_name) {
@@ -90,17 +107,20 @@ void NetworkManager::Receive() {
 
     if(mIsServer) {
 		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Receiving.");
-        unsigned int nb_sockets = mServer_Selector.Wait();
+        unsigned int nb_sockets = mServer_Selector.Wait(0.5f);
 
-        for (unsigned int i=0;i < nb_sockets; ++i) {
+        for(unsigned int i=0;i < nb_sockets; ++i) {
             sf::SocketUDP socket = mServer_Selector.GetSocketReady(i);
 
 			sf::Packet packet;
 			sf::IPAddress client_address;
 			sf::Uint16 client_port;
 
+			// TODO: Implement packet queue to handle all sent packets.
 			if(socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from "+boost::lexical_cast<std::string>(client_address)+":"+boost::lexical_cast<std::string>(client_port));
+				sf::Uint16 client_id = mClientManager.GetId(client_address);
+				std::string client_name = mClientManager.GetName(client_id);
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from "+client_name+"("+boost::lexical_cast<std::string>(client_address)+":"+boost::lexical_cast<std::string>(client_port)+")");
 				HandlePacket(packet, client_address, client_port);
 				packet.Clear();
             }
@@ -110,7 +130,9 @@ void NetworkManager::Receive() {
         sf::IPAddress server_address;
         sf::Uint16 server_port;
         
-        if (mListener.Receive(packet, server_address, server_port) == sf::Socket::Done){
+			// TODO: Implement packet queue to handle all sent packets.
+        if(mListener.Receive(packet, server_address, server_port) == sf::Socket::Done){
+			sf::Uint16 client_id = mClientManager.GetId(server_address);
 			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from "+boost::lexical_cast<std::string>(server_address)+":"+boost::lexical_cast<std::string>(server_port));
             HandlePacket(packet, server_address, server_port);
             packet.Clear();
@@ -128,12 +150,15 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
         if(mIsServer) {
             // === SERVER PACKET HANDLING ===
 			if(net_cmd == NETCMD_EMPTY) {
-				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received NETCMD_EMPTY.");
+				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received NETCMD_EMPTY from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
+				exit(1);
 			} else if(net_cmd == NETCMD_CLIENTADD) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTADD.");
-                // Fetch name from packet
+				// Fetch name from packet
 				std::string client_name;
 				packet >> client_name;
+
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTADD from "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");
+
                 // Add new client if unknown
 				if(!mClientManager.IsKnown(address)) {
 					if(mClientManager.IsSlotAvailable()) {
@@ -142,26 +167,33 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                         OnClientConnected(client_name);
 						SendClientAdd(client_name);
 						
-						logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Client "+client_name+" was added successfully.");
+						logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Client "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+") was added successfully.");
 					} else {
-						logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "No slot available.");
+						logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "No slot available for "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+").");
 					}
 				}
 			} else if(net_cmd == NETCMD_CLIENTQUIT) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTQUIT.");
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTQUIT from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
                 sf::Packet packet;
                 sf::Uint16 id = mClientManager.GetId(address);
                 std::string client_name = mClientManager.GetName(id);
-                packet << sf::Uint16(NETCMD_CLIENTQUIT);
-				packet << client_name;
-				packet << "REASON: LOL";
-                SendPacket(packet);
+				// 
+				if(mClientManager.IsKnown(address)) {
+					logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Removing "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");
+					mClientManager.Remove(id);
+				}
+
+				// TODO: Notify other clients of client quit.
+                //packet << sf::Uint16(NETCMD_CLIENTQUIT);
+				//packet << client_name;
+				//packet << "REASON: LOL";
+                //SendPacket(packet);
             } else if(net_cmd == NETCMD_CLIENTPING) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTPING.");
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTPING from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
                 // The client pinged back! 
                 // TODO: Calculate the latency.
             } else if(net_cmd == NETCMD_SERVERPING) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_SERVERPING.");
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_SERVERPING from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
                 // OMG! You got pinged by the server!
                 // Just send it back.
                 sf::Packet p;
@@ -181,7 +213,6 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 //     SendPacket(response);                    
                 // }
 			} else if(net_cmd == NETCMD_CHATMESSAGE) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE.");
                 // Fetch the message
                 std::string message;
                 packet >> message;
@@ -189,6 +220,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 sf::Uint16 id = mClientManager.GetId(address);
                 std::string client_name = mClientManager.GetName(id);
                 // Output the message.
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE from "+client_name+"("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");
 				logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, client_name+" says: "+message);
                 // Send back to everyone
                 SendChatMessage(message, client_name);
@@ -197,6 +229,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
             // === CLIENT PACKET HANDLING ===
 			if(net_cmd == NETCMD_EMPTY) {
 				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received NETCMD_EMPTY.");
+				exit(1);
 			} else if(net_cmd == NETCMD_CLIENTADD) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTADD.");
                 // Fetch client name of new client from packet
@@ -262,6 +295,10 @@ void NetworkManager::OnClientConnected(const std::string& client_name) {
 
 sf::Uint16 NetworkManager::GetPing() {
 	return mPing;
+}
+
+ClientManager* NetworkManager::GetClientManagerPtr() {
+	return &mClientManager;
 }
 
 }

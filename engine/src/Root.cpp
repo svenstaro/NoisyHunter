@@ -16,6 +16,10 @@ void Root::InitializeAsServer(const sf::Uint16 server_port,
 							  bool is_verbose) {
     mIsServer = true;
 	mIsVerbose = is_verbose;
+
+	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_STATE, "Initializing Root as server.");
+
     //mStateManager = StateManager();
     // mNetworkManager = NetworkManager();
 	mNetworkManager.InitializeAsServer(server_port);
@@ -30,6 +34,9 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 							  bool is_verbose) {
 
     mIsServer = false;
+
+	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_STATE, "Initializing Root as client.");
 
     sf::WindowSettings Settings;
     Settings.DepthBits         = 24; // Request a 24 bits depth buffer
@@ -54,6 +61,8 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 }
 
 void Root::StartMainLoop() {
+	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+
     if(mIsServer) {
         // SERVER MAIN LOOP
 		sf::Clock Clock;
@@ -72,12 +81,17 @@ void Root::StartMainLoop() {
                 mStateManager.Update(dt);
                 timebudget -= dt;
 			}
-            // do networking stuff
+
+            // Receive packets from clients.
             mNetworkManager.Receive();
             
-            mNetworkManager.PreparePacket();
-            mStateManager.AppendAllEntitiesToPacket();
-			mNetworkManager.SendPacket();
+			// Only send if there are clients to send packets to.
+			if(mNetworkManager.GetClientManagerPtr()->GetActiveClients() > 0) {
+				mNetworkManager.PreparePacket();
+				mStateManager.AppendAllEntitiesToPacket();
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending snapshot.");
+				mNetworkManager.SendPacket();
+			}
         }
     } else {
         // CLIENT MAIN LOOP
@@ -92,7 +106,7 @@ void Root::StartMainLoop() {
             
             // Always prepare packet before handling events, as there 
             // might be actions to be inserted into packet.
-            mNetworkManager.PreparePacket();
+            //mNetworkManager.PreparePacket();
             
             // Handle events.
             sf::Event e;
@@ -108,7 +122,7 @@ void Root::StartMainLoop() {
             // but this still has to be updated to current time.
                         
 			// Send the prepared packet.
-			mNetworkManager.SendPacket();
+			//mNetworkManager.SendPacket();
             
             timebudget += time_delta;
             // Update simulation with fixed timestep.

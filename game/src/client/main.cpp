@@ -5,6 +5,8 @@
 
 namespace po = boost::program_options;
 po::variables_map usage(int& argc, char* argv[]) {
+	po::variables_map vm;
+
 	try {
 		// Declare the supported options.
 		po::options_description desc("Noisy Hunter - a game in which you are a submarine and use sound to locate your opponents.\
@@ -13,13 +15,12 @@ po::variables_map usage(int& argc, char* argv[]) {
 			("help,h", "this message")
 			("size,s", po::value<std::string>()->default_value("800x600"), "game resolution")
 			("fullscreen,f", po::value<sf::Uint16>()->implicit_value(1), "start in fullscreen")
-			("name,n", po::value<std::string>()->default_value("name"), "client name")
+			("name,n", po::value<std::string>()->default_value("New Player"), "client name")
 			("ip,i", po::value<std::string>()->default_value("localhost"), "server ip address")
 			("port,p", po::value<sf::Uint16>()->default_value(12356), "server port")
 			("verbose,v", po::value<sf::Uint16>()->implicit_value(1), "be verbose")
 		;
 
-		po::variables_map vm;
 		po::store(po::parse_command_line(argc, argv, desc), vm);
 		po::notify(vm);
 
@@ -27,17 +28,14 @@ po::variables_map usage(int& argc, char* argv[]) {
 			std::cout << desc << "\n";
 			exit(1);
 		}
-
-		return vm;
-
-	}
-    catch(std::exception& e) {
+	} catch(std::exception& e) {
 		std::cerr << "ERROR: " << e.what() << "\n";
         exit(1);
-    }
-    catch(...) {
+    } catch(...) {
 		std::cerr << "Exception of unknown type!\n";
     }
+
+	return vm;
 }
 
 std::vector<sf::Uint16> split(const std::string& size_str) {
