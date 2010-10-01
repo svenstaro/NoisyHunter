@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
     Engine::Root& root = Engine::Root::get_mutable_instance();
 
 	// Initialize Root singleton using parsed values.
-    root.InitializeAsClient(sf::VideoMode(width, height), "Noisy Hunter", fullscreen, sf::IPAddress(ip), port, name);
+    root.InitializeAsClient(sf::VideoMode(width, height), "Noisy Hunter", fullscreen, sf::IPAddress(ip), port, name, verbose);
 
     //root.GetStateManagerPtr()->Add(new LoadingState());
     root.GetStateManagerPtr()->Add(new PlayState());

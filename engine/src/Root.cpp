@@ -12,8 +12,10 @@ Vector2D Root::GetMousePosition() const {
                     mRenderWindow.GetInput().GetMouseY());
 }
 
-void Root::InitializeAsServer(const sf::Uint16 server_port) {
+void Root::InitializeAsServer(const sf::Uint16 server_port,
+							  bool is_verbose) {
     mIsServer = true;
+	mIsVerbose = is_verbose;
     //mStateManager = StateManager();
     // mNetworkManager = NetworkManager();
 	mNetworkManager.InitializeAsServer(server_port);
@@ -24,7 +26,8 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 							  const bool is_fullscreen,
 							  const sf::IPAddress& server_ip, 
 							  const sf::Uint16 server_port,
-							  const std::string name) {
+							  const std::string name,
+							  bool is_verbose) {
 
     mIsServer = false;
 
@@ -46,6 +49,7 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
     // Create and Initialize Network Manager
     // mNetworkManager = NetworkManager();
     mClientName = name;
+	mIsVerbose = is_verbose;
     mNetworkManager.InitializeAsClient(server_ip, server_port, name);
 }
 
@@ -97,7 +101,7 @@ void Root::StartMainLoop() {
                 mStateManager.HandleEvent(e);
             }
             
-            // TODO: Network receiving.
+            // Network receiving.
             mNetworkManager.Receive();
             
             // There will be a snapshot to be processed from time to time,
@@ -109,7 +113,8 @@ void Root::StartMainLoop() {
             timebudget += time_delta;
             // Update simulation with fixed timestep.
 			while(time_delta < timebudget) {
-                mStateManager.Update(dt);
+				// TODO: NEXT TASK
+                //mStateManager.Update(dt);
                 timebudget -= dt;
 			}          
             
@@ -144,6 +149,10 @@ StateManager* Root::GetStateManagerPtr(){
 
 NetworkManager* Root::GetNetworkManagerPtr() {
     return &mNetworkManager;
+}
+
+LogManager* Root::GetLogManagerPtr() {
+	return &mLogManager;
 }
 
 const Vector2D Root::GetWindowSize() const {

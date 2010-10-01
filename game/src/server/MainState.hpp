@@ -1,6 +1,7 @@
 #ifndef MAINSTATE_HPP
 #define MAINSTATE_HPP
 
+#include "LogManager.hpp"
 #include "State.hpp"
 #include "Submarine.hpp"
 

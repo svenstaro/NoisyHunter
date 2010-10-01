@@ -64,11 +64,13 @@ enum NetworkCommand {
 	// start an action. An action is defined in a concrete entity's 
 	// EntityAction enum. This could be ENTITYMOVE or ENTITYSHOOT, for example.
 	// Packet structure is:
-	// [sf::Uint16(NETCMD_ENTITYACTION),???]
+	// [sf::Uint16(NETCMD_ENTITYACTION), sf::Uint16(game_entity_action_id),
+	//	sf::Uint16(unique_id), OPTIONAL_STREAMED_PARAMETERS]
 	// If this is sent server->client, the client is being notified of an
 	// entity's action. This is useful for interpolating.
 	// Packet structure is:
-	// [sf::Uint16(NETCMD_ENTITYACTION),???]
+	// [sf::Uint16(NETCMD_ENTITYACTION), sf::Uint16(game_entity_action_id),
+	//	sf::Uint16(unique_id), OPTIONAL_STREAMED_PARAMETERS]
 	NETCMD_ENTITYACTION = 0x21,
 
 	// If this is sent client->server, ALL HELL BREAKS LOSE!

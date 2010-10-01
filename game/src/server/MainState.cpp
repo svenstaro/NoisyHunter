@@ -1,7 +1,5 @@
 #include "MainState.hpp"
-
 #include "Root.hpp"
-#include <iostream>
 
 MainState::MainState() {
 }
@@ -10,10 +8,12 @@ MainState::~MainState() {
 }
 
 void MainState::Initialize() {
-    std::cout << "## Initializing Server MainState..." << std::endl;
+	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
+    logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing main state.");
 }
 void MainState::Shutdown() {
-    std::cout << "## Shutting down Server MainState..." << std::endl;
+	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
+    logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Shutting down main state.");
 }
 
 void MainState::Update(float time_delta) {
