@@ -8,32 +8,24 @@ LogManager::~LogManager() {}
 
 void LogManager::Log(enum LogLevel log_level, enum LogOrigin log_origin, const std::string& text) {
 	std::string log_message;
-	if(log_level == LOGLEVEL_URGENT) {
-		log_message = "[URGENT: "+YELLOW;
-		if(log_origin == LOGORIGIN_NETWORK)
-			log_message += "NETWORK] ";
-		else if(log_origin == LOGORIGIN_ENTITY)
-			log_message += "ENTITY] ";
-		else if(log_origin == LOGORIGIN_STATE)
-			log_message += "STATE] ";
-	}
+	
+	if(log_level == LOGLEVEL_URGENT)
+		log_message = YELLOW+"[URGENT: ";
+	else if(log_level == LOGLEVEL_VERBOSE)
+		log_message = GREEN+"[VERBOSE: ";
+	else if(log_level == LOGLEVEL_ERROR)
+		log_message = RED+"[VERBOSE: ";
+	
 
-	else if(log_level == LOGLEVEL_VERBOSE) {
-		if(mIsVerbose) {
-			if(log_origin == LOGORIGIN_NETWORK)
-				std::cout << YELLOW << "[VERBOSE: NETWORK] " << NO_COLOR << text << std::endl;
-			else if(log_origin == LOGORIGIN_ENTITY)
-				std::cout << YELLOW << "[VERBOSE: ENTITY] " << NO_COLOR << text << std::endl;
-		}
-	}
+	if(log_origin == LOGORIGIN_NETWORK)
+		log_message += "NETWORK] ";
+	else if(log_origin == LOGORIGIN_ENTITY)
+		log_message += "ENTITY] ";
+	else if(log_origin == LOGORIGIN_STATE)
+		log_message += "STATE] ";
+	
 
-	else if(log_level == LOGLEVEL_ERROR) {
-		if(log_origin == LOGORIGIN_NETWORK)
-			std::cerr << RED << "[URGENT: NETWORK] " << text << NO_COLOR << std::endl;
-		else if(log_origin == LOGORIGIN_ENTITY)
-			std::cerr << RED << "[ERROR: ENTITY] " << text << NO_COLOR << std::endl;
-	}
-	log_message += text;
+	log_message += NO_COLOR + text;
 	std::cout << log_message << std::endl;
 }
 
