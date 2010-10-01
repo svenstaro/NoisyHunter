@@ -32,7 +32,10 @@ void LogManager::Log(enum LogLevel log_level, enum LogOrigin log_origin, const s
 	
 
 	log_message += NO_COLOR + text;
-	std::cout << log_message << std::endl;
+	if(log_level == LOGLEVEL_ERROR)
+		std::cerr << log_message << std::endl;
+	else
+		std::cout << log_message << std::endl;
 }
 
 }
