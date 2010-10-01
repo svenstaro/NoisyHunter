@@ -49,11 +49,16 @@ void PlayState::Initialize() {
 
     // create entities
 	// TODO: NEXT TASK
-	//sf::Packet packet;
-	//netmgr
-    //mPlayerSubmarine = new Submarine(0.5,0.5);
+    Submarine player_submarine(0.5,0.5);
     //AddEntity(mPlayerSubmarine);
-    //mPlayerSubmarine->SetTarget(Engine::Vector2D(1,1));
+    player_submarine.SetTarget(Engine::Vector2D(0.2,0.2));
+	sf::Packet packet;
+	packet << sf::Uint16(Engine::NETCMD_ENTITYADD);
+	packet << player_submarine.GetEntityId();
+	Engine::IOPacket iopacket(false, packet);
+	player_submarine.serialize(iopacket);
+	packet = iopacket.GetPacket();
+	netmgr->SendPacket(packet);
 }
 
 void PlayState::Shutdown() {
@@ -85,11 +90,13 @@ void PlayState::OnSetSilentMode() {
 void PlayState::OnNavigateTo(const Engine::Coordinates& mouse_position) {
     //const Engine::Vector2D target = Engine::Vector2D(mouse_position.X, mouse_position.Y);
     //mPlayerSubmarine->SetTarget(target);
+
     
-    sf::Packet p;
-    p << sf::Uint16(Engine::NETCMD_ENTITYACTION) << 0x01 << mPlayerSubmarine->GetUniqueId() << mouse_position.X << mouse_position.Y;
-    Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(p);
-    std::cout << "Send action" << std::endl;
+	// TODO: Send packets here. Next task.
+//    sf::Packet p;
+//    p << sf::Uint16(Engine::NETCMD_ENTITYACTION) << 0x01 << mPlayerSubmarine->GetUniqueId() << mouse_position.X << mouse_position.Y;
+//    Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(p);
+//    std::cout << "Send action" << std::endl;
 }
 
 void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position) {
