@@ -1,4 +1,5 @@
 #include "GuiControl.hpp"
+#include "Root.hpp"
 
 namespace Engine {
 
@@ -36,7 +37,7 @@ void GuiControl::OnType(sf::Uint32 unicode_char) {
 }
 
 void GuiControl::OnClick() {
-    std::cout << "Clicked on element" << std::endl;
+	Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "Clicked on element.");
 }
 
 void GuiControl::OnRightClick() {

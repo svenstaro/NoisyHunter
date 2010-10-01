@@ -51,7 +51,7 @@ void GuiButton::Draw(sf::RenderTarget* target) {
     else shape_color = sf::Color(200,200,200);
 
     mShape = sf::Shape::Rectangle(mPosition.x,
-                                  mPosition.y,
+        e                          mPosition.y,
                                   mPosition.x+mDimension.x,
                                   mPosition.y+mDimension.y,
                                   shape_color);
@@ -66,7 +66,7 @@ void GuiButton::Draw(sf::RenderTarget* target) {
 
 // event callbacks
 void GuiButton::OnClick() {
-    std::cout << "Clicked on Button \"" << mName << "\" ..." << std::endl;
+	Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "CLicked on Button \"" + mName + "\" ...");
 }
 void GuiButton::OnKeyDown(sf::Key::Code key_code) {
     if (key_code == sf::Key::Return or key_code == sf::Key::Space){

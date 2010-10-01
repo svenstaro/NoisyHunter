@@ -1,4 +1,5 @@
 #include "ResourceManager.hpp"
+#include "Root.hpp"
 
 namespace Engine{
 
@@ -33,7 +34,7 @@ bool ResourceManager::AddImage(const boost::filesystem::path& path, const std::s
     }
 
 	// Log output
-	std::cout << "Caching image " << originalFile << std::endl;
+	Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_RESOURCEMANAGER, "Caching image " + originalFile);
 
 	// Create cache directory
 	boost::filesystem::create_directory(cacheDir.string());

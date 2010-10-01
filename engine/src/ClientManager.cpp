@@ -1,11 +1,12 @@
 #include <SFML/Network.hpp>
+#include "ClientManager.hpp"
+#include "Root.hpp"
 
-#include <iostream>
 #include <string>
 #include <map>
 
-#include "ClientManager.hpp"
 
+namespace Engine {
 ClientManager::ClientManager(sf::Uint16 max_players) {
     mMaxPlayers = max_players;
 }
@@ -19,7 +20,7 @@ void ClientManager::Add(const sf::IPAddress& address, const sf::Uint16 port, con
     client.address = address;
     client.port = port;
     client.name = name;
-    std::cout << it->first << std::endl << mClients.size() << std::endl;
+	Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, it->first + " " + mClients.size());
     mClients.insert(std::pair<sf::Uint16, Client>(it->first, client));
 }
 
@@ -96,4 +97,6 @@ void ClientManager::SetName(const sf::Uint16 id, const std::string& name) {
 
 void ClientManager::SetMaxPlayers(const sf::Uint16 max_players) {
     mMaxPlayers = max_players;
+}
+
 }

@@ -1,6 +1,7 @@
 #include "Vector2D.hpp"
 #include <assert.h>
-#include <iostream>
+#include "Root.hpp"
+
 namespace Engine {
 //-----------------------------------------------------------------------------
 // Purpose:	Constructor
@@ -37,7 +38,9 @@ float Vector2D::Rotation() const
 {
     //assert (x != 0 && y != 0); // Zero vector has no rotation.
     if (x==0 && y==0) {
-        std::cout << "ERROR: Tried to get angle of zero vector. Returning 0." << std::endl;
+		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_VECTOR, "Tried to get angle of zero vector. Returning 0.");
+
         return 0;
     }
 
