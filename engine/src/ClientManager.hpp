@@ -6,6 +6,10 @@
 #include <string>
 #include <map>
 
+#include "LogManager.hpp"
+
+namespace Engine {
+
 struct Client {
     sf::IPAddress address;
     std::string name;
@@ -52,5 +56,7 @@ class ClientManager {
         sf::Uint16 mMaxPlayers;
         std::map<sf::Uint16, Client> mClients;
 };
+
+}
 
 #endif

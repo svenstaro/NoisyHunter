@@ -23,10 +23,21 @@ void LogManager::Log(enum LogLevel log_level, enum LogOrigin log_origin, const s
 		log_message += "ENTITY] ";
 	else if(log_origin == LOGORIGIN_STATE)
 		log_message += "STATE] ";
+	else if(log_origin == LOGORIGIN_VECTOR)
+		log_message += "VECTOR] ";
+	else if(log_origin == LOGORIGIN_RESOURCEMANAGER)
+		log_message += "RESOURCEMANAGER] ";
+	else if(log_origin == LOGORIGIN_GUI)
+		log_message += "GUI] ";
+	else if(log_origin == LOGORIGIN_IDMANAGER)
+		log_message += "IDMANAGER] ";
 	
 
 	log_message += NO_COLOR + text;
-	std::cout << log_message << std::endl;
+	if(log_level == LOGLEVEL_ERROR)
+		std::cerr << log_message << std::endl;
+	else
+		std::cout << log_message << std::endl;
 }
 
 }

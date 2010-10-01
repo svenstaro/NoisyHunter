@@ -123,8 +123,9 @@ void PlayState::OnMouseMove(Engine::MouseEventArgs args) {
 }
 
 void PlayState::OnClientConnected(const std::string& client_name) {
-    std::cout << "Client connected: " << client_name << std::endl;
+	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "CLient connected: " + client_name);
     if (client_name == Engine::Root::get_mutable_instance().GetClientName()){
-        std::cout << "THAT'S YOU!!" << std::endl;
+        logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "THAT'S YOU!!");
     }
 }

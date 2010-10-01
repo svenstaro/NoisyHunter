@@ -74,7 +74,7 @@ sf::Packet Submarine::PerformAction(const sf::Uint16 action_id, sf::Packet& pack
             // on fail: return sf::Packet();
         }
         SetTarget(Engine::Vector2D(x,y));
-        std::cout << "Performed action" << std::endl;
+		Engine::Root::get_mutable_instance().GetLogManagerPtr()->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_ENTITY, "Performed action.");
         default_response << x << y;
         return default_response;
     }

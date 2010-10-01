@@ -1,8 +1,6 @@
 #ifndef GUICONTROL_HPP
 #define GUICONTROL_HPP
 
-#include <iostream>
-
 #include <SFML/Graphics.hpp>
 
 #include "Entity.hpp"
