@@ -25,6 +25,8 @@ public:
     void OnDamage(const float dmg);
 
     void OnFire();
+    
+    sf::Packet PerformAction(const sf::Uint16 action_id, sf::Packet& packet, const bool validate = false);
 
 	sf::Uint16 GetEntityId() const;
 

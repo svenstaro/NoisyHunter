@@ -28,10 +28,16 @@ public:
 	Entity();
 
 	virtual ~Entity() = 0;
-
-	// callbacks
-	virtual void OnCollide(const Entity& ent);
+    
+	// Callbacks
+    virtual void OnCollide(const Entity& ent);
 	// TODO: All the other callbacks
+    
+    // Performs some action on the entity. If validate is true, this 
+    // will validate the action before actually performing it. 
+    // Returns the response to be sent back or an empty packet if 
+    // invalid or no response needed
+    virtual sf::Packet PerformAction(const sf::Uint16 action_id, sf::Packet& packet, const bool validate = false);
 
 	virtual void Update(const float time_delta);
 

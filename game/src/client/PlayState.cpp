@@ -79,9 +79,13 @@ void PlayState::OnSetSilentMode() {
 }
 
 void PlayState::OnNavigateTo(const Engine::Coordinates& mouse_position) {
-    const Engine::Vector2D target = Engine::Vector2D(mouse_position.X, mouse_position.Y);
-
-    mPlayerSubmarine->SetTarget(target);
+    //const Engine::Vector2D target = Engine::Vector2D(mouse_position.X, mouse_position.Y);
+    //mPlayerSubmarine->SetTarget(target);
+    
+    sf::Packet p;
+    p << sf::Uint16(Engine::NETCMD_ENTITYACTION) << 0x01 << mPlayerSubmarine->GetUniqueId() << mouse_position.X << mouse_position.Y;
+    Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(p);
+    std::cout << "Send action" << std::endl;
 }
 
 void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position) {

@@ -71,4 +71,13 @@ void State::HandleEntityInfo(sf::Packet packet) {
 	//packet >> &e;	
 }
 
+Entity* State::GetEntityByUniqueId(const sf::Uint16 unique_id) {
+    // TODO: map!?
+   	BOOST_FOREACH(Entity& entity, mEntities) {
+		if(entity.GetUniqueId() == unique_id) {
+            return &entity;
+        }
+	} 
+}
+
 }

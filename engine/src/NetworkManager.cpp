@@ -6,9 +6,6 @@
 namespace Engine {
 
 NetworkManager::NetworkManager() {}
-/*NetworkManager::NetworkManager(Root* root) {
-    mRoot = root;
-}*/
 NetworkManager::~NetworkManager() {}
 
 void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
@@ -121,35 +118,36 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
         packet >> net_cmd;
         
         if(mIsServer) {
-            // Server packet handling
+            // SERVER PACKET HANDLING
             if(net_cmd == NETCMD_CLIENTADD) {
-                // Fetch name from packet
+                // Fetch name from packet.
 				std::string name;
 				packet >> name;
-                // Add new client if unknown
+                // Add new client if unknown.
 				if(!mClientManager.IsKnown(address)) {
 					if(mClientManager.IsSlotAvailable()) {
-						// Make a signal here wich is connected to mClientManager.Add() and to MainState.OnClientConnect()
+						// Create a signal here wich is connected to 
+                        // mClientManager.Add() and to 
+                        // MainState.OnClientConnect()
 						mClientManager.Add(address, port, name); 
                         OnClientConnected(name);
 						SendClientAdd(name);
 						
-
 						std::cout << "[NETWORK/SERVER] Client [" + name + "] was added successfully." << std::endl;
 					} else {
 						std::cerr << "[NETWORK/SERVER] No slot available." << std::endl;
 					}
 				}
 			} else if(net_cmd == NETCMD_CHATMESSAGE) {
-                // Fetch the message
+                // Fetch the message.
                 std::string msg;
                 packet >> msg;
-                // Get username
+                // Get username.
                 sf::Uint16 id = mClientManager.GetId(address);
                 std::string name = mClientManager.GetName(id);
                 // Output the message.
                 std::cout << "<" << name << "> [" << address << ":" << port << "] said: " << msg << std::endl;
-                // Send back to everyone
+                // Send back to everyone.
                 SendChatMessage(msg, name);
             } else if(net_cmd == NETCMD_CLIENTPING) {
                 // The client pinged back! 
@@ -160,6 +158,19 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 sf::Packet p;
                 p << sf::Uint16(NETCMD_SERVERPING);
                 SendPacket(p);
+            } else if(net_cmd == NETCMD_ENTITYACTION) {
+                sf::Uint16 action_id;
+                sf::Uint16 unique_id;
+                packet >> action_id;
+                packet >> unique_id;
+                
+                // TODO: Add the entities and synchronize their Unique IDs so you can get the correct entity
+                // Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
+                // sf::Packet response = e->PerformAction(action_id, packet, true);
+                // Send back to all clients.
+                // if(response.GetDataSize() > 0) {
+                //     SendPacket(response);                    
+                // }
             }
 		} else {
             // Client packet handling
@@ -189,9 +200,15 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 packet >> username;
                 packet >> message;
                 std::cout << "<" << username << ">: " << message << std::endl;
+            } else if(net_cmd == NETCMD_ENTITYACTION) {
+                sf::Uint16 action_id;
+                sf::Uint16 unique_id;
+                packet >> action_id;
+                packet >> unique_id;
+                Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
+                e->PerformAction(unique_id, packet, false); // false -> do not validate action, as luckily the server did that for you
             }
         }
-        
     }
 }
 
