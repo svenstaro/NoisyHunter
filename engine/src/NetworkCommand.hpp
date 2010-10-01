@@ -4,6 +4,10 @@
 namespace Engine {
 
 enum NetworkCommand {
+	// This is an empty packet for debugging purposes. If it is handled, 
+	// something probably went wrong.
+	NETCMD_EMPTY = 0x00,
+
 	// If this is sent client->server, the client is requesting being added
 	// to the server's list of known clients. Basically, this is a handshake.
 	// Packet structure is:
@@ -12,7 +16,7 @@ enum NetworkCommand {
 	// accepted client.
 	// Packet structure is: 
 	// [sf::Uint16(NETCMD_CLIENTADD), std::string(client_name)]
-	NETCMD_CLIENTADD = 0x00,
+	NETCMD_CLIENTADD = 0x01,
 
 	// If this is sent client->server, the client is signaling a good-bye
 	// to the server.
@@ -24,7 +28,7 @@ enum NetworkCommand {
 	// Packet structure is:
 	// [sf::Uint16(NETCMD_CLIENTQUIT), std::string(client_name),
 	//  std::string(reason)]
-	NETCMD_CLIENTQUIT = 0x01,
+	NETCMD_CLIENTQUIT = 0x02,
 
 	// If this is sent client->server, the client is responding to the server's
 	// last ping request. This is used to measure client latency and doubles
@@ -36,7 +40,7 @@ enum NetworkCommand {
 	// This is used to measure latency and doubles as a keep-alive.
 	// Packet structure is:
 	// [sf::Uint16(NETCMD_CLIENTPING)]
-	NETCMD_CLIENTPING = 0x03,
+	NETCMD_CLIENTPING = 0x04,
 
 	// If this is sent client->server, the server is being queried for latency.
 	// The server is expected to simply respond with the same package. 
@@ -50,10 +54,7 @@ enum NetworkCommand {
 	// [sf::Uint16(NETCMD_SERVERPING)]
 	NETCMD_SERVERPING = 0x10,
 
-	// If this is sent client->server, a client is requesting an entity to be
-	// added.
-	// Packet structure is:
-	// [sf::Uint16(NETCMD_ENTITYADD), sf::Uint16(entity_id)]
+	// If this is sent client->server, ALL HELL BREAKS LOOSE!
 	// If this is sent server->client, the client is being notified of a new 
 	// entity.
 	// Packet structure is:
@@ -73,13 +74,14 @@ enum NetworkCommand {
 	//	sf::Uint16(unique_id), OPTIONAL_STREAMED_PARAMETERS]
 	NETCMD_ENTITYACTION = 0x21,
 
-	// If this is sent client->server, ALL HELL BREAKS LOSE!
+	// If this is sent client->server, ALL HELL BREAKS LOOSE!
 	// Packet structure is:
 	// NONE. THIS CANNOT BE SENT TO THE SERVER!
 	// If this is sent server->client, the client is being notified of the
 	// complete data of an entity. This info needs to be deserialized.
 	// Packet structure is:
-	// [sf::Uint16(NETCMD_ENTITYINFO), Engine::Entity(entity)]
+	// [sf::Uint16(NETCMD_ENTITYINFO), sf::Uint16(entity_id),
+	//  Engine::Entity(entity)]
 	NETCMD_ENTITYINFO = 0x22,
 
 	// If this is sent client->server, a client is requesting a chat message
