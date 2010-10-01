@@ -127,7 +127,9 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
         
         if(mIsServer) {
             // === SERVER PACKET HANDLING ===
-            if(net_cmd == NETCMD_CLIENTADD) {
+			if(net_cmd == NETCMD_EMPTY) {
+				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received NETCMD_EMPTY.");
+			} else if(net_cmd == NETCMD_CLIENTADD) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTADD.");
                 // Fetch name from packet
 				std::string client_name;
@@ -193,7 +195,9 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 			}
 		} else {
             // === CLIENT PACKET HANDLING ===
-            if(net_cmd == NETCMD_CLIENTADD) {
+			if(net_cmd == NETCMD_EMPTY) {
+				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received NETCMD_EMPTY.");
+			} else if(net_cmd == NETCMD_CLIENTADD) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTADD.");
                 // Fetch client name of new client from packet
                 std::string client_name;
@@ -215,6 +219,27 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_SERVERPING.");
                 // The server pinged back! 
 				mPing = mPingClock.GetElapsedTime() * 1000;
+            } else if(net_cmd == NETCMD_ENTITYADD) {
+                sf::Uint16 entity_id;
+                packet >> entity_id;
+				Entity* e = Root::get_mutable_instance().GetIdManagerPtr()->
+					GetEntityPrototype(entity_id);
+				IOPacket iopacket(true, packet);
+				e->serialize(iopacket);
+				packet = iopacket.GetPacket();
+                Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().AddEntity(e);
+            } else if(net_cmd == NETCMD_ENTITYACTION) {
+                sf::Uint16 action_id;
+                sf::Uint16 unique_id;
+                packet >> action_id;
+                packet >> unique_id;
+                Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
+                e->PerformAction(unique_id, packet, false); // false -> do not validate action, as luckily the server did that for you
+            } else if(net_cmd == NETCMD_ENTITYINFO) {
+				// FINISH IMPLEMENTATION
+                sf::Uint16 entity_id;
+                packet >> entity_id;
+                //Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
             } else if(net_cmd == NETCMD_CHATMESSAGE) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE.");
                 // TODO: Output into GUI
@@ -223,14 +248,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 packet >> client_name;
                 packet >> message;
                 logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, client_name+" says: "+message);
-            } else if(net_cmd == NETCMD_ENTITYACTION) {
-                sf::Uint16 action_id;
-                sf::Uint16 unique_id;
-                packet >> action_id;
-                packet >> unique_id;
-                Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
-                e->PerformAction(unique_id, packet, false); // false -> do not validate action, as luckily the server did that for you
-            }
+			}
         }
     }
 }

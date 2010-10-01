@@ -4,7 +4,7 @@
 namespace Engine {
 
 enum NetworkCommand {
-	// This is an empty packet for debugging purposes. If it is handled, 
+	// This is an empty packet for debugging purposes. If it is handled,
 	// something probably went wrong.
 	NETCMD_EMPTY = 0x00,
 
