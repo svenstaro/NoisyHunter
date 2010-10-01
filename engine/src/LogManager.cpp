@@ -10,11 +10,11 @@ void LogManager::Log(enum LogLevel log_level, enum LogOrigin log_origin, const s
 	std::string log_message;
 	
 	if(log_level == LOGLEVEL_URGENT)
-		log_message = YELLOW+"[URGENT: ";
+		log_message = YELLOW+"[URGENT:  ";
 	else if(log_level == LOGLEVEL_VERBOSE)
 		log_message = GREEN+"[VERBOSE: ";
 	else if(log_level == LOGLEVEL_ERROR)
-		log_message = RED+"[VERBOSE: ";
+		log_message = RED+"[ERROR:   ";
 	
 
 	if(log_origin == LOGORIGIN_NETWORK)
