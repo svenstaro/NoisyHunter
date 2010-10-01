@@ -8,7 +8,7 @@ MainState::~MainState() {
 }
 
 void MainState::Initialize() {
-	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
+	Engine::LogManager* logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
     logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing main state.");
 }
 void MainState::Shutdown() {

@@ -16,14 +16,11 @@ namespace Engine {
 class LogManager {
 public:
 	LogManager();
-	LogManager(bool is_verbose, bool is_server);
 	~LogManager();
 
 	void Log(enum LogLevel log_level, enum LogOrigin log_origin, const std::string& text);
 
 private:
-	bool mIsVerbose;
-	bool mIsServer;
 };
 
 }
