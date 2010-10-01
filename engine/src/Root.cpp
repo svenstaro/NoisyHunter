@@ -155,6 +155,10 @@ LogManager* Root::GetLogManagerPtr() {
 	return &mLogManager;
 }
 
+IdManager* Root::GetIdManagerPtr() {
+	return &mIdManager;
+}
+
 const Vector2D Root::GetWindowSize() const {
     return Vector2D(mRenderWindow.GetWidth(), mRenderWindow.GetHeight());
 }

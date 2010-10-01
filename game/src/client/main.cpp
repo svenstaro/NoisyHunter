@@ -79,6 +79,10 @@ int main(int argc, char* argv[]) {
 	// Get Root singleton.
     Engine::Root& root = Engine::Root::get_mutable_instance();
 
+	auto idmgr = root.GetIdManagerPtr();
+	idmgr->RegisterEntityClass(new Submarine());
+	idmgr->RegisterEntityClass(new Torpedo());
+
 	// Initialize Root singleton using parsed values.
     root.InitializeAsClient(sf::VideoMode(width, height), "Noisy Hunter", fullscreen, sf::IPAddress(ip), port, name, verbose);
 

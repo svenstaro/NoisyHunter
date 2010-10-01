@@ -49,6 +49,10 @@ int main(int argc, char* argv[]) {
 	// Get Root singleton.
     Engine::Root& root = Engine::Root::get_mutable_instance();
 
+	auto idmgr = root.GetIdManagerPtr();
+	idmgr->RegisterEntityClass(new Submarine());
+	idmgr->RegisterEntityClass(new Torpedo());
+
 	// Initialize Root singleton using parsed values.
     root.InitializeAsServer(port, verbose);
     root.GetStateManagerPtr()->Add(new MainState());

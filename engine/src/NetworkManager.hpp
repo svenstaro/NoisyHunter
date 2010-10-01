@@ -14,6 +14,7 @@
 #include "ClientManager.hpp"
 #include "NetworkCommand.hpp"
 #include "LogManager.hpp"
+#include "IdManager.hpp"
 
 namespace Engine {
 

@@ -14,6 +14,7 @@
 #include "InputManager.hpp"
 #include "LogManager.hpp"
 #include "LogCommand.hpp"
+#include "IdManager.hpp"
 
 namespace Engine {
 
@@ -44,6 +45,7 @@ public:
     StateManager* GetStateManagerPtr();
     ResourceManager* GetResourceManagerPtr();
     LogManager* GetLogManagerPtr();
+	IdManager* GetIdManagerPtr();
 
 	void SetMouseHidden(const bool mouse_hidden);
     const Vector2D GetWindowSize() const;
@@ -66,6 +68,7 @@ private:
     StateManager mStateManager;
     NetworkManager mNetworkManager;
 	LogManager mLogManager;
+	IdManager mIdManager;
 };
 
 }
