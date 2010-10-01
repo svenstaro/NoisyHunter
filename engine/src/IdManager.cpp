@@ -1,6 +1,6 @@
-#include "IdManager.hpp"
-
 #include <iostream>
+
+#include "IdManager.hpp"
 
 namespace Engine {
 
@@ -27,7 +27,7 @@ Entity* IdManager::GetEntityPrototype(sf::Uint16 entity_id) {
         std::cerr << "## EXCEPTION ## IdManager::GetEntityPrototype ## Entity with UID " << entity_id << " not registered." << std::endl;
         exit(1);
     }
-    Entity& copy = * mRegisteredEntityClasses[entity_id];
+    Entity& copy = *mRegisteredEntityClasses[entity_id];
     return &copy;
 }
 
