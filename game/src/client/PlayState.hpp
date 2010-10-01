@@ -35,7 +35,6 @@ public:
     void OnClientConnected(const std::string& client_name);
 
 private:
-    Submarine* mPlayerSubmarine;
     Crosshair* mCrosshair;
 };
 

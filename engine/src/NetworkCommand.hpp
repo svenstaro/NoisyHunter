@@ -53,11 +53,11 @@ enum NetworkCommand {
 	// If this is sent client->server, a client is requesting an entity to be
 	// added.
 	// Packet structure is:
-	// [sf::Uint16(NETCMD_ENTITYADD),???]
+	// [sf::Uint16(NETCMD_ENTITYADD), sf::Uint16(entity_id)]
 	// If this is sent server->client, the client is being notified of a new 
 	// entity.
 	// Packet structure is:
-	// [sf::Uint16(NETCMD_ENTITYADD),???]
+	// [sf::Uint16(NETCMD_ENTITYADD), sf::Uint16(entity_id), sf::Uint16(unique_id)]
 	NETCMD_ENTITYADD = 0x20,
 
 	// If this is sent client->server, a client is requesting an entity to 
