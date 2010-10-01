@@ -34,14 +34,14 @@ public:
     // Sending methods
     void PreparePacket();
     void AppendEntityToPacket(Entity& entity);
-    // Sends the prepared packet "mPacket" by calling SendPacket(mPacket);
+    // Sends the prepared packet "mPacket" by calling SendPacket(mPacket).
     void SendPacket();
     void SendPacket(sf::Packet& packet);
     
-    // Sends a packet containing NETCMD_CLIENTADD to server / all clients
+    // Sends a packet containing NETCMD_CLIENTADD to server / all clients.
     void SendClientAdd(const std::string& client_name);
 
-    // Sends a packet containing NETCMD_CHATMESSAGE to server / all clients
+    // Sends a packet containing NETCMD_CHATMESSAGE to server / all clients.
     void SendChatMessage(const std::string& chat_message, const std::string& client_name = "");
     
     // Signal binding & events
@@ -51,15 +51,15 @@ public:
 
 	sf::Uint16 GetPing();
 private:
-    // general members
+    // General members
     bool mIsServer;
 	sf::SocketUDP mListener;
 	sf::Packet mPacket;
 
-    // members used when in server mode
+    // Members used when in server mode
 	sf::SelectorUDP mServer_Selector;
 
-    // members used when in client mode
+    // Members used when in client mode
     sf::IPAddress mClient_ServerIp;
     sf::Uint16 mClient_ServerPort;
     sf::Uint16 mClient_ClientPort;
@@ -69,7 +69,7 @@ private:
     // Signals
     boost::signals2::signal<void (const std::string&)> mOnClientConnectedSignal;
 
-	// used for calculating pings
+	// Used for calculating pings
 	sf::Clock mPingClock;
 	sf::Uint16 mPing;
 };

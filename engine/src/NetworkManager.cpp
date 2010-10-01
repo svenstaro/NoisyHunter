@@ -6,9 +6,6 @@
 namespace Engine {
 
 NetworkManager::NetworkManager() {}
-/*NetworkManager::NetworkManager(Root* root) {
-    mRoot = root;
-}*/
 NetworkManager::~NetworkManager() {}
 
 void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
@@ -165,9 +162,22 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_SERVERPING.");
                 // OMG! You got pinged by the server!
                 // Just send it back.
-                sf::Packet packet;
-                packet << sf::Uint16(NETCMD_SERVERPING);
-                SendPacket(packet);
+                sf::Packet p;
+                p << sf::Uint16(NETCMD_SERVERPING);
+                SendPacket(p);
+            } else if(net_cmd == NETCMD_ENTITYACTION) {
+                sf::Uint16 action_id;
+                sf::Uint16 unique_id;
+                packet >> action_id;
+                packet >> unique_id;
+                
+                // TODO: Add the entities and synchronize their Unique IDs so you can get the correct entity
+                // Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
+                // sf::Packet response = e->PerformAction(action_id, packet, true);
+                // Send back to all clients.
+                // if(response.GetDataSize() > 0) {
+                //     SendPacket(response);                    
+                // }
 			} else if(net_cmd == NETCMD_CHATMESSAGE) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE.");
                 // Fetch the message
@@ -212,7 +222,14 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 std::string message;
                 packet >> client_name;
                 packet >> message;
-				logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, client_name+" says: "+message);
+                logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, client_name+" says: "+message);
+            } else if(net_cmd == NETCMD_ENTITYACTION) {
+                sf::Uint16 action_id;
+                sf::Uint16 unique_id;
+                packet >> action_id;
+                packet >> unique_id;
+                Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
+                e->PerformAction(unique_id, packet, false); // false -> do not validate action, as luckily the server did that for you
             }
         }
     }

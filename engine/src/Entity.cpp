@@ -25,18 +25,24 @@ void Entity::serialize(IOPacket& packet) {
     packet & l;
 }
 
+sf::Packet Entity::PerformAction(const sf::Uint16 action_id, sf::Packet& packet, const bool validate) {
+    // Do not perform any action by default and return that nothing was
+    // done at all.
+    return sf::Packet();
+}
+
 void Entity::Update(const float time_delta) {
 	mPosition += mSpeed * time_delta;
 }
 
 void Entity::Draw(sf::RenderTarget* target) const {
-	// set screen position
+	// Set screen position.
 	if(GetPositionType() == Entity::POSITIONTYPE_WORLD) {
-		// convert to world coordinates
+		// Convert to world coordinates.
 		Coordinates pos = Root::get_mutable_instance().GetInputManagerPtr()->GetScreenCoordinates(mPosition.x, mPosition.y);
 		mDrawable->SetPosition(pos.ScreenX, pos.ScreenY);
 	} else if(GetPositionType() == Entity::POSITIONTYPE_SCREEN) {
-		// simply use screen coordinates
+		// Simply use screen coordinates.
 		mDrawable->SetPosition(mPosition.x, mPosition.y);
 	}
 

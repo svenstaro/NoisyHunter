@@ -2,6 +2,7 @@
 
 #include "Submarine.hpp"
 #include "Root.hpp"
+#include "NetworkCommand.hpp"
 
 Submarine::Submarine(const float pos_x,
 					 const float pos_y,
@@ -57,6 +58,26 @@ void Submarine::OnDamage(const float dmg) {
 
 void Submarine::OnFire() {
 	// TODO: Do stuff
+}
+
+sf::Packet Submarine::PerformAction(const sf::Uint16 action_id, sf::Packet& packet, const bool validate) {
+    sf::Packet default_response;
+    default_response << sf::Uint16(Engine::NETCMD_ENTITYACTION) << action_id;
+    
+    if(action_id == 0x01) {
+        // Set Target
+        sf::Uint16 x;
+        sf::Uint16 y;
+        packet >> x >> y;
+        if(validate) {
+            // TODO: Validation
+            // on fail: return sf::Packet();
+        }
+        SetTarget(Engine::Vector2D(x,y));
+        std::cout << "Performed action" << std::endl;
+        default_response << x << y;
+        return default_response;
+    }
 }
 
 sf::Uint16 Submarine::GetEntityId() const {

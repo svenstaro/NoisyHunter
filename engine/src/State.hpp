@@ -31,6 +31,7 @@ public:
     void AddEntity(Entity* entity);
     void CreateGuiSystem();
 	void HandleEntityInfo(sf::Packet packet);
+    Entity* GetEntityByUniqueId(const sf::Uint16 unique_id);
 
 protected:
     //Root* mRoot;
