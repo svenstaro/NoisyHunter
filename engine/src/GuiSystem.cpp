@@ -22,20 +22,27 @@ void GuiSystem::Update(const float time_delta) {
 }
 
 void GuiSystem::HandleEvent(sf::Event e) {
-    if (e.Type == sf::Event::KeyPressed and e.Key.Code == sf::Key::Tab){
+    if(e.Type == sf::Event::KeyPressed and e.Key.Code == sf::Key::Tab) {
         bool back = e.Key.Shift;
         // focus next / prev element
 
         boost::ptr_vector<GuiControl>::iterator i;
-        for (i = mControls.begin(); i != mControls.end(); i++) {
-            if (i->HasFocus()){
+        for(i = mControls.begin(); i != mControls.end(); i++) {
+            if(i->HasFocus()) {
 
-                if (back) i--;
-                else i++;
+                if(back) {
+                    i--;
+                } else {
+                    i++;
+                }
 
-                if (i == mControls.end()) SetFocus( &(mControls.front()) );
-                else if (i == mControls.begin()) SetFocus( &(mControls.back()) );
-                else SetFocus( &(*i) );
+                if (i == mControls.end()) {
+                    SetFocus( &(mControls.front()) );
+                } else if (i == mControls.begin()) {
+                    SetFocus( &(mControls.back()) );
+                } else {
+                    SetFocus( &(*i) );
+                }
                 break;
             }
         }
@@ -45,25 +52,41 @@ void GuiSystem::HandleEvent(sf::Event e) {
 
     BOOST_FOREACH(GuiControl& control, mControls){
 
-        if (e.Type == sf::Event::MouseButtonPressed){
-            if (control.IsAtPoint(Vector2D(e.MouseButton.X,e.MouseButton.Y))){
+        if(e.Type == sf::Event::MouseButtonPressed) {
+            if(control.IsAtPoint(Vector2D(e.MouseButton.X,e.MouseButton.Y))) {
                 SetFocus(&control);
-
-                if (e.MouseButton.Button == sf::Mouse::Left)
-                    control.OnClick();
-                else if (e.MouseButton.Button == sf::Mouse::Right)
-                    control.OnRightClick();
+                                
+                // non-default buttons (extra buttons on mouse) will not become "0"
+                sf::Uint16 mouse_button = 0;
+                
+                if(e.MouseButton.Button == sf::Mouse::Left) {
+                    mouse_button = 1;
+                } else if(e.MouseButton.Button == sf::Mouse::Middle) {
+                    mouse_button = 2;
+                } else if(e.MouseButton.Button == sf::Mouse::Right) {
+                    mouse_button = 3;
+                }
+                control.OnClick(e.MouseButton.X, e.MouseButton.Y, mouse_button);
+                control.TriggerOnClick(e.MouseButton.X, e.MouseButton.Y, mouse_button);
             }
-        }
-        else if (e.Type == sf::Event::KeyPressed and control.HasFocus()){
+        } else if(e.Type == sf::Event::KeyPressed and control.HasFocus()) {
             control.OnKeyDown(e.Key.Code);
-        }
-        else if (e.Type == sf::Event::TextEntered and control.HasFocus()){
+            control.TriggerOnKeyDown(e.Key.Code);
+        } else if(e.Type == sf::Event::KeyReleased and control.HasFocus()) {
+            control.OnKeyUp(e.Key.Code);
+            control.TriggerOnKeyUp(e.Key.Code);
+        } else if(e.Type == sf::Event::TextEntered and control.HasFocus()) {
             control.OnType(e.Text.Unicode);
+            control.TriggerOnType(e.Text.Unicode);
         }
-
-        if (e.Type == sf::Event::MouseMoved){
-            control.SetHover(control.IsAtPoint(Vector2D(e.MouseMove.X, e.MouseMove.Y)));
+        
+        if(e.Type == sf::Event::MouseMoved) {
+            bool hover = control.IsAtPoint(Vector2D(e.MouseMove.X, e.MouseMove.Y));
+            control.SetHover(hover);
+            if(hover) {
+                control.OnMouseMove(e.MouseMove.X, e.MouseMove.Y);
+                control.TriggerOnMouseMove(e.MouseMove.X, e.MouseMove.Y);
+            }
         }
 
     }

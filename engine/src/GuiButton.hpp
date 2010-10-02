@@ -21,9 +21,6 @@ public:
     void SetFontStyle(unsigned long style);
     void SetFontColor(const sf::Color& color);
 
-    // event callbacks
-    void OnClick();
-    void OnKeyDown(sf::Key::Code key_code);
 private:
     sf::String mString;
     TiledSprite mSprite;

@@ -164,7 +164,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 					if(mClientManager.IsSlotAvailable()) {
 						// Make a signal here wich is connected to mClientManager.Add() and to MainState.OnClientConnect()
 						mClientManager.Add(address, port, client_name);
-                        OnClientConnected(client_name);
+                        TriggerOnClientConnected(client_name);
 						SendClientAdd(client_name);
 						
 						logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Client "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+") was added successfully.");
@@ -239,7 +239,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 // successfully to server.
                 // Otherwise, there just was a new client being connected, 
                 // so update scoreboard list. (TODO: scoreboard list updating)
-                OnClientConnected(client_name);
+                TriggerOnClientConnected(client_name);
             } else if(net_cmd == NETCMD_CLIENTPING) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTPING.");
                 // OMG! You got pinged by the server!
@@ -289,7 +289,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 void NetworkManager::BindOnClientConnected(const boost::signals2::signal<void (const std::string&)>::slot_type& slot) {
     mOnClientConnectedSignal.connect(slot);
 }
-void NetworkManager::OnClientConnected(const std::string& client_name) {
+void NetworkManager::TriggerOnClientConnected(const std::string& client_name) {
     mOnClientConnectedSignal(client_name);
 }
 

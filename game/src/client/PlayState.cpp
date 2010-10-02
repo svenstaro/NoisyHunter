@@ -48,7 +48,9 @@ void PlayState::Initialize() {
     c->SetText("Server did not answer yet...");
     c->SetFont(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetFont("default"));
     c->SetFontSize(12);
+    c->BindOnClick(boost::bind(&PlayState::ExitButton_OnClick, this, _1, _2, _3)); // bind test signal ;)
     mGuiSystems.begin()->AddControl(c);
+    
 
     auto inputmgr = Engine::Root::get_mutable_instance().GetInputManagerPtr();
     // bind keys
@@ -153,4 +155,9 @@ void PlayState::OnClientConnected(const std::string& client_name) {
         // TODO: Unpause StateManager.
         mGuiSystems.begin()->GetControl<Engine::GuiButton>("waiting")->SetText("Found Server!");
     }
+}
+
+void PlayState::ExitButton_OnClick(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
+    auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Yeah you clicked on that nice button which will not cause anything to happen as it has been abused as a label ;)");
 }
