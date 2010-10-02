@@ -5,6 +5,8 @@
 
 #include "PlayState.hpp"
 #include "Root.hpp"
+#include "GuiButton.hpp"
+#include "GuiCheckbox.hpp"
 #include "Entity.hpp"
 
 PlayState::PlayState() {}
@@ -21,6 +23,15 @@ void PlayState::Initialize() {
 					 "submarine1.svg", 80, 53, "submarine");
     resmgr->AddImage(boost::filesystem::path("../game/gfx"), 
 					 "aim.svg", 80, 53, "aim");
+    resmgr->AddImage(boost::filesystem::path("../game/gui"),
+                     "button.svg", 100, 100, "gui.button");
+    resmgr->AddImage(boost::filesystem::path("../game/gui"),
+                     "button_hover.svg", 100, 100, "gui.button_hover");
+                     
+    sf::Font font;
+    font.LoadFromFile("../game/fonts/kingthings_trypewriter_2.ttf");
+    resmgr->AddFont(font, "default");
+    
 
     // create GUI
 	// TODO: Do stuff
@@ -28,7 +39,16 @@ void PlayState::Initialize() {
 	// client side only entity
     mCrosshair = new Crosshair();
     AddEntity(mCrosshair);
-
+    
+    // Add some GUI
+    CreateGuiSystem();
+    Engine::GuiButton* c = new Engine::GuiButton("waiting");
+    c->SetDimension(Engine::Vector2D(200,30));
+    c->SetPosition(Engine::Vector2D(20,20));
+    c->SetText("Server did not answer yet...");
+    c->SetFont(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetFont("default"));
+    c->SetFontSize(12);
+    mGuiSystems.begin()->AddControl(c);
 
     auto inputmgr = Engine::Root::get_mutable_instance().GetInputManagerPtr();
     // bind keys
@@ -130,5 +150,7 @@ void PlayState::OnClientConnected(const std::string& client_name) {
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "CLient connected: " + client_name);
     if (client_name == Engine::Root::get_mutable_instance().GetClientName()){
         logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "THAT'S YOU!!");
+        // TODO: Unpause StateManager.
+        mGuiSystems.begin()->GetControl<Engine::GuiButton>("waiting")->SetText("Found Server!");
     }
 }

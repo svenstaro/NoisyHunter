@@ -4,11 +4,11 @@
 #include "GuiControl.hpp"
 #include <string>
 #include <boost/ptr_container/ptr_vector.hpp>
+#include <boost/foreach.hpp>
 
-namespace Engine{
+namespace Engine {
 
-
-class GuiSystem{
+class GuiSystem {
 public:
     GuiSystem();
     ~GuiSystem();
@@ -22,6 +22,15 @@ public:
 
 
     void AddControl(GuiControl* control);
+    
+    template < typename T >
+    T* GetControl(const std::string& control_name) {
+        BOOST_FOREACH(GuiControl& control, mControls){
+            if (control.GetName() == control_name){
+                return (T*)&control;
+            }
+        }
+    }
 
 private:
     // Controls list
@@ -29,8 +38,6 @@ private:
 
 };
 
-
 }
-
 
 #endif
