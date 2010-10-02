@@ -15,6 +15,8 @@ public:
 
 	~Torpedo();
 
+	void Initialize();
+
 	void Update(const float time_delta);
 
 	// callbacks

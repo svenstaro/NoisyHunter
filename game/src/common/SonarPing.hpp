@@ -11,6 +11,8 @@ public:
 
 	~SonarPing();
 
+	void Initialize();
+
 	// callbacks
 	void OnCollide(const Engine::Entity& ent);
 

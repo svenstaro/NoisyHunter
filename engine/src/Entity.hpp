@@ -28,6 +28,8 @@ public:
 	Entity();
 
 	virtual ~Entity() = 0;
+
+	virtual void Initialize();
     
 	// Callbacks
     virtual void OnCollide(const Entity& ent);
