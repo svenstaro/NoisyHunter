@@ -9,12 +9,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="600"
-   height="400"
+   width="420"
+   height="150"
    id="svg2"
    version="1.1"
-   inkscape:version="0.47 r22583"
-   sodipodi:docname="submarine1.svg"
+   inkscape:version="0.48.0 r9654"
+   sodipodi:docname="torpedo1.svg"
    inkscape:export-filename="/home/svenstaro/NoisyHunter/gfx/submarine1.png"
    inkscape:export-xdpi="12"
    inkscape:export-ydpi="12">
@@ -51,18 +51,23 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="312.34314"
-     inkscape:cy="217.14286"
+     inkscape:cx="264.84314"
+     inkscape:cy="67.14286"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     showgrid="true"
-     showguides="false"
+     showgrid="false"
+     showguides="true"
      inkscape:snap-bbox="false"
      inkscape:window-width="1088"
      inkscape:window-height="681"
-     inkscape:window-x="188"
+     inkscape:window-x="186"
      inkscape:window-y="56"
-     inkscape:window-maximized="0">
+     inkscape:window-maximized="0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:guide-bbox="true">
     <inkscape:grid
        type="xygrid"
        id="grid3590"
@@ -81,7 +86,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -89,11 +94,12 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-652.36218)">
+     transform="translate(-80,-752.36218)">
     <path
-       style="fill:#7aa1ff;fill-opacity:1;stroke:none"
-       d="m 200,752.36218 -100,50 -20,-40 0,130 20,-40 100,50 200,0 100,-50 0,-50 -100,-50 -200,0 z"
+       style="fill:#7aa1ff;fill-opacity:1;stroke:none;stroke-opacity:1"
+       d="m 230,772.36218 -110,30 -40,-50 0,150 40,-50 110,30 150,0 120,-30 0,-50 -120,-30 z"
        id="path3627"
-       sodipodi:nodetypes="ccccccccccc" />
+       sodipodi:nodetypes="ccccccccccc"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>
