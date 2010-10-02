@@ -1,3 +1,4 @@
+#include "Root.hpp"
 #include "SonarPing.hpp"
 
 SonarPing::SonarPing(const sf::Uint16 unique_id,
@@ -7,6 +8,10 @@ SonarPing::SonarPing(const sf::Uint16 unique_id,
 }
 
 SonarPing::~SonarPing() {}
+
+void SonarPing::Initialize() {
+	// TODO: Get own image here!
+}
 
 void SonarPing::OnCollide(const Engine::Entity& ent) {
 }

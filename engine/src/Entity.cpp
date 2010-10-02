@@ -9,6 +9,8 @@ Entity::Entity() {}
 
 Entity::~Entity() {}
 
+void Entity::Initialize() {}
+
 void Entity::OnCollide(const Entity& ent) {}
 
 bool Entity::operator<(const Entity& other) {

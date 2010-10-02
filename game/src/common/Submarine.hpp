@@ -17,6 +17,8 @@ public:
 
 	~Submarine();
 
+	void Initialize();
+
     void Update(float time_delta);
 
     // callbacks

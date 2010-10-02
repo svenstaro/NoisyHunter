@@ -9,6 +9,8 @@ public:
 
 	~WorldPolygon();
 
+	void Initialize();
+
 	// callbacks
 	void OnCollide(const Engine::Entity& ent);
 

@@ -61,6 +61,7 @@ void NetworkManager::SendPacket() {
 }
 
 void NetworkManager::SendPacket(sf::Packet& packet) {
+	// Don't send empty packets.
 	if(packet.GetDataSize() == 0) {
 		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Won't send empty packet.");
@@ -255,12 +256,13 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
             } else if(net_cmd == NETCMD_ENTITYADD) {
                 sf::Uint16 entity_id;
                 packet >> entity_id;
-				Entity* e = Root::get_mutable_instance().GetIdManagerPtr()->
+				Entity* entity = Root::get_mutable_instance().GetIdManagerPtr()->
 					GetEntityPrototype(entity_id);
+				entity->Initialize();
 				IOPacket iopacket(true, packet);
-				e->serialize(iopacket);
+				entity->serialize(iopacket);
 				packet = iopacket.GetPacket();
-                Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().AddEntity(e);
+                Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().AddEntity(entity);
             } else if(net_cmd == NETCMD_ENTITYACTION) {
                 sf::Uint16 action_id;
                 sf::Uint16 unique_id;
