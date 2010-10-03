@@ -30,6 +30,7 @@ public:
                 return (T*)&control;
             }
         }
+        return NULL;
     }
 
 private:

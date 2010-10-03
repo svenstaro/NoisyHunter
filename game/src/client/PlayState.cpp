@@ -74,21 +74,6 @@ void PlayState::Initialize() {
     // Bind connection events
     auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
     netmgr->BindOnClientConnected(boost::bind(&PlayState::OnClientConnected, this, _1));
-
-    // create entities
-	// TODO: NEXT TASK
-//    Submarine player_submarine(0.5,0.5);
-//    //AddEntity(mPlayerSubmarine);
-//    player_submarine.SetTarget(Engine::Vector2D(0.2,0.2));
-//	sf::Packet packet;
-//	packet << sf::Uint16(Engine::NETCMD_ENTITYADD);
-//	packet << player_submarine.GetEntityId();
-//	Engine::IOPacket iopacket(false, packet);
-//	player_submarine.serialize(iopacket);
-//	packet = iopacket.GetPacket();
-//
-//	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_NETWORK, "Sending packet with NETCMD_ENTITYADD.");
-//	netmgr->SendPacket(packet);
 }
 
 void PlayState::Shutdown() {
@@ -107,16 +92,21 @@ void PlayState::OnSetSilentMode() {
     //mPlayerSubmarine->SetMode(Submarine::MODE_SILENT);
 }
 
-void PlayState::OnNavigateTo(const Engine::Coordinates& mouse_position) {
-    //const Engine::Vector2D target = Engine::Vector2D(mouse_position.X, mouse_position.Y);
-    //mPlayerSubmarine->SetTarget(target);
+void PlayState::OnNavigateTo(const Engine::Coordinates& mouse_position) {	
+    // get the player submarine
+    /*BOOST_FOREACH(Engine::Entity& entity, mEntities){
+        if (entity.GetClientId() == Engine::Root::get_mutable_instance().GetClientId()){
+            mPlayerSubmarine = (Submarine*)&entity;
+        }
+     }
 
     
-	// TODO: Send packets here. Next task.
-//    sf::Packet p;
-//    p << sf::Uint16(Engine::NETCMD_ENTITYACTION) << 0x01 << mPlayerSubmarine->GetUniqueId() << mouse_position.X << mouse_position.Y;
-//    Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(p);
-//    std::cout << "Send action" << std::endl;
+    sf::Packet p;
+    p << sf::Uint16(Engine::NETCMD_ENTITYACTION) << 0x01 << mPlayerSubmarine->GetUniqueId() << mouse_position.X << mouse_position.Y;
+    Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(p);
+    auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_STATE, "Sent entity action for navigation of submarine.");
+    * */
 }
 
 void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position) {

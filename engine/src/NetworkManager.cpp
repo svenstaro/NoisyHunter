@@ -80,7 +80,7 @@ void NetworkManager::SendPacket(sf::Packet& packet) {
 
 void NetworkManager::SendClientAdd(const std::string& client_name) {
     sf::Packet packet;
-    packet << sf::Uint16(NETCMD_CLIENTADD) << client_name;
+    packet << sf::Uint16(NETCMD_CLIENTADD) << client_name << mClientManager.GetId(client_name);
     SendPacket(packet);
 }
 
@@ -206,13 +206,14 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 packet >> action_id;
                 packet >> unique_id;
                 
-                // TODO: Add the entities and synchronize their Unique IDs so you can get the correct entity
-                // Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
-                // sf::Packet response = e->PerformAction(action_id, packet, true);
-                // Send back to all clients.
-                // if(response.GetDataSize() > 0) {
-                //     SendPacket(response);                    
-                // }
+                Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
+                if (e != NULL) {
+                    sf::Packet response = e->PerformAction(action_id, packet, true);
+                    // Send back to all clients.
+                    if(response.GetDataSize() > 0) {
+                        SendPacket(response);                    
+                    }
+                }
 			} else if(net_cmd == NETCMD_CHATMESSAGE) {
                 // Fetch the message
                 std::string message;
@@ -236,10 +237,18 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 // Fetch client name of new client from packet
                 std::string client_name;
                 packet >> client_name;
+                sf::Uint16 client_id;
+                packet >> client_id;
+                
                 // If name is client name of THIS client, then you have beed added
                 // successfully to server.
+                if (client_name == Root::get_mutable_instance().GetClientName()){
+                    Root::get_mutable_instance().SetClientId(client_id);
+                }
                 // Otherwise, there just was a new client being connected, 
-                // so update scoreboard list. (TODO: scoreboard list updating)
+                // so update scoreboard list. 
+                // TODO: scoreboard list updating.
+                
                 TriggerOnClientConnected(client_name);
             } else if(net_cmd == NETCMD_CLIENTPING) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTPING.");
@@ -272,9 +281,16 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 e->PerformAction(unique_id, packet, false); // false -> do not validate action, as luckily the server did that for you
             } else if(net_cmd == NETCMD_ENTITYINFO) {
 				// FINISH IMPLEMENTATION
-                sf::Uint16 entity_id;
-                packet >> entity_id;
-                //Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
+                sf::Uint16 unique_id;
+                packet >> unique_id;
+                
+                Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
+                if (e != NULL) {
+                    // deserialize
+                    IOPacket iopacket(true, packet);
+                    e->serialize(iopacket);
+                    packet = iopacket.GetPacket();
+                }
             } else if(net_cmd == NETCMD_CHATMESSAGE) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE.");
                 // TODO: Output into GUI

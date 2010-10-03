@@ -4,6 +4,7 @@ namespace Engine {
 
 Root::Root() {
     mShutdownRequested = false;
+    mClientId = -1;
 }
 Root::~Root() {}
 
@@ -183,6 +184,12 @@ void Root::SetMouseHidden(const bool mouse_hidden) {
 
 const std::string& Root::GetClientName() const {
     return mClientName;
+}
+sf::Uint16 Root::GetClientId() const {
+    return mClientId;
+}
+void Root::SetClientId(const sf::Uint16 client_id) {
+    mClientId = client_id;
 }
 
 }

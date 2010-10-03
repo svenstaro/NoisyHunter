@@ -52,6 +52,8 @@ public:
 
     Vector2D GetMousePosition() const;
     const std::string& GetClientName() const;
+    sf::Uint16 GetClientId() const;
+    void SetClientId(const sf::Uint16 client_id);
 
 private:
     bool mIsServer;
@@ -63,6 +65,7 @@ private:
     InputManager mInputManager;
     ResourceManager mResourceManager;
     std::string mClientName;
+    sf::Uint16 mClientId;
     
     sf::Clock mClock;
     StateManager mStateManager;

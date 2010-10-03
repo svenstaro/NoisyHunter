@@ -15,7 +15,7 @@ enum NetworkCommand {
 	// If this is sent server->client, the client is being notified of a new
 	// accepted client.
 	// Packet structure is: 
-	// [sf::Uint16(NETCMD_CLIENTADD), std::string(client_name)]
+	// [sf::Uint16(NETCMD_CLIENTADD), std::string(client_name), sf::Uint16(client_id)]
 	NETCMD_CLIENTADD = 0x01,
 
 	// If this is sent client->server, the client is signaling a good-bye

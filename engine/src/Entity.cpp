@@ -85,4 +85,11 @@ Entity::PositionType Entity::GetPositionType() const {
 	return Entity::POSITIONTYPE_WORLD;
 }
 
+void Entity::SetClientId(const sf::Uint16 client_id) {
+    mClientId = client_id;
+}
+sf::Uint16 Entity::GetClientId() const {
+    return mClientId;
+}
+
 }

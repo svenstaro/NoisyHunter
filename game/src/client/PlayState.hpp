@@ -5,6 +5,7 @@
 
 #include "LogManager.hpp"
 #include "State.hpp"
+#include "Entity.hpp"
 #include "InputManager.hpp"
 #include "Crosshair.hpp"
 #include "Submarine.hpp"
@@ -40,6 +41,7 @@ public:
 
 private:
     Crosshair* mCrosshair;
+    Submarine* mPlayerSubmarine;
 };
 
 #endif
