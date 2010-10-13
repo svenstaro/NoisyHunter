@@ -178,7 +178,6 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 sf::Packet packet;
                 sf::Uint16 id = mClientManager.GetId(address);
                 std::string client_name = mClientManager.GetName(id);
-				// 
 				if(mClientManager.IsKnown(address)) {
 					logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Removing "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");
 					mClientManager.Remove(id);
