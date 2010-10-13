@@ -20,7 +20,10 @@ void ClientManager::Add(const sf::IPAddress& address, const sf::Uint16 port, con
     Client client;
     client.address = address;
     client.port = port;
-    client.name = name;
+	if(GetId(name) != 666)
+		client.name = "_"+name;
+	else
+	    client.name = name;
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Adding client "+name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+").");
     mClients.insert(std::pair<sf::Uint16, Client>(it->first, client));
@@ -103,7 +106,7 @@ sf::Uint16 ClientManager::GetId(const std::string& name) {
 	if(!id_found) {
 		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_CLIENTMANAGER, "Tried getting Id for client name "+name+" but this client name doesn't exist!");
-		exit(1);
+		return 666;
 	}
     return tmp;
 }
