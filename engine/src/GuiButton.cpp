@@ -64,14 +64,4 @@ void GuiButton::Draw(sf::RenderTarget* target) {
     target->Draw(mString);
 }
 
-// event callbacks
-void GuiButton::OnClick() {
-	Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "CLicked on Button \"" + mName + "\" ...");
-}
-void GuiButton::OnKeyDown(sf::Key::Code key_code) {
-    if (key_code == sf::Key::Return or key_code == sf::Key::Space){
-        OnClick();
-    }
-}
-
 }

@@ -6,11 +6,11 @@
 
 Submarine::Submarine(const float pos_x,
 					 const float pos_y,
-					 const sf::Uint16 cl_id) {
+					 const sf::Uint16 client_id) {
 	mPosition = Engine::Vector2D(pos_x, pos_y);
 	mLayer = Engine::Entity::LAYER_REGULAR;
 	mSpeed = Engine::Vector2D(0.1,0);
-	mClId = cl_id;
+	mClientId = client_id;
 }
 
 Submarine::~Submarine() {}
@@ -81,6 +81,8 @@ sf::Packet Submarine::PerformAction(const sf::Uint16 action_id, sf::Packet& pack
         default_response << x << y;
         return default_response;
     }
+    return sf::Packet();
+    
 }
 
 sf::Uint16 Submarine::GetEntityId() const {
@@ -93,6 +95,7 @@ void Submarine::SetTarget(const Engine::Vector2D target) {
 
 void Submarine::serialize(Engine::IOPacket& packet) {
     packet & mUniqueId;
+    packet & mClientId;
     packet & mPosition.x;
     packet & mPosition.y;
     packet & mSpeed.x;
@@ -101,8 +104,4 @@ void Submarine::serialize(Engine::IOPacket& packet) {
     packet & l;
     packet & mTarget.x;
     packet & mTarget.y;
-}
-
-sf::Uint16 Submarine::GetClId() {
-	return mClId;
 }

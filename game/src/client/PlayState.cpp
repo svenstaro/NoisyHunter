@@ -5,6 +5,8 @@
 
 #include "PlayState.hpp"
 #include "Root.hpp"
+#include "GuiButton.hpp"
+#include "GuiCheckbox.hpp"
 #include "Entity.hpp"
 
 PlayState::PlayState() {}
@@ -25,14 +27,33 @@ void PlayState::Initialize() {
 					 "torpedo1.svg", 80, 53, "torpedo");
     resmgr->AddImage(boost::filesystem::path("../game/gfx"),
 					 "missing.svg", 80, 53, "missing");
-
+    resmgr->AddImage(boost::filesystem::path("../game/gui"),
+                     "button.svg", 100, 100, "gui.button");
+    resmgr->AddImage(boost::filesystem::path("../game/gui"),
+                     "button_hover.svg", 100, 100, "gui.button_hover");
+                     
+    sf::Font font;
+    font.LoadFromFile("../game/fonts/kingthings_trypewriter_2.ttf");
+    resmgr->AddFont(font, "default");
+    
     // create GUI
 	// TODO: Do stuff
 
 	// client side only entity
     mCrosshair = new Crosshair();
     AddEntity(mCrosshair);
-
+    
+    // Add some GUI
+    CreateGuiSystem();
+    Engine::GuiButton* c = new Engine::GuiButton("waiting");
+    c->SetDimension(Engine::Vector2D(200,30));
+    c->SetPosition(Engine::Vector2D(20,20));
+    c->SetText("Server did not answer yet...");
+    c->SetFont(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetFont("default"));
+    c->SetFontSize(12);
+    c->BindOnClick(boost::bind(&PlayState::ExitButton_OnClick, this, _1, _2, _3)); // bind test signal ;)
+    mGuiSystems.begin()->AddControl(c);
+    
 
     auto inputmgr = Engine::Root::get_mutable_instance().GetInputManagerPtr();
     // bind keys
@@ -53,21 +74,6 @@ void PlayState::Initialize() {
     // Bind connection events
     auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
     netmgr->BindOnClientConnected(boost::bind(&PlayState::OnClientConnected, this, _1));
-
-    // create entities
-	// TODO: NEXT TASK
-//    Submarine player_submarine(0.5,0.5);
-//    //AddEntity(mPlayerSubmarine);
-//    player_submarine.SetTarget(Engine::Vector2D(0.2,0.2));
-//	sf::Packet packet;
-//	packet << sf::Uint16(Engine::NETCMD_ENTITYADD);
-//	packet << player_submarine.GetEntityId();
-//	Engine::IOPacket iopacket(false, packet);
-//	player_submarine.serialize(iopacket);
-//	packet = iopacket.GetPacket();
-//
-//	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_NETWORK, "Sending packet with NETCMD_ENTITYADD.");
-//	netmgr->SendPacket(packet);
 }
 
 void PlayState::Shutdown() {
@@ -86,16 +92,21 @@ void PlayState::OnSetSilentMode() {
     //mPlayerSubmarine->SetMode(Submarine::MODE_SILENT);
 }
 
-void PlayState::OnNavigateTo(const Engine::Coordinates& mouse_position) {
-    //const Engine::Vector2D target = Engine::Vector2D(mouse_position.X, mouse_position.Y);
-    //mPlayerSubmarine->SetTarget(target);
+void PlayState::OnNavigateTo(const Engine::Coordinates& mouse_position) {	
+    // get the player submarine
+    /*BOOST_FOREACH(Engine::Entity& entity, mEntities){
+        if (entity.GetClientId() == Engine::Root::get_mutable_instance().GetClientId()){
+            mPlayerSubmarine = (Submarine*)&entity;
+        }
+     }
 
     
-	// TODO: Send packets here. Next task.
-//    sf::Packet p;
-//    p << sf::Uint16(Engine::NETCMD_ENTITYACTION) << 0x01 << mPlayerSubmarine->GetUniqueId() << mouse_position.X << mouse_position.Y;
-//    Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(p);
-//    std::cout << "Send action" << std::endl;
+    sf::Packet p;
+    p << sf::Uint16(Engine::NETCMD_ENTITYACTION) << 0x01 << mPlayerSubmarine->GetUniqueId() << mouse_position.X << mouse_position.Y;
+    Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(p);
+    auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_STATE, "Sent entity action for navigation of submarine.");
+    * */
 }
 
 void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position) {
@@ -134,5 +145,12 @@ void PlayState::OnClientConnected(const std::string& client_name) {
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "CLient connected: " + client_name);
     if (client_name == Engine::Root::get_mutable_instance().GetClientName()){
         logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "THAT'S YOU!!");
+        // TODO: Unpause StateManager.
+        mGuiSystems.begin()->GetControl<Engine::GuiButton>("waiting")->SetText("Found Server!");
     }
+}
+
+void PlayState::ExitButton_OnClick(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
+    auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Yeah you clicked on that nice button which will not cause anything to happen as it has been abused as a label ;)");
 }

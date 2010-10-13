@@ -64,8 +64,12 @@ public:
 	bool operator<(const Entity& other);
 
     virtual void serialize(IOPacket& packet);
+    
+    void SetClientId(const sf::Uint16 client_id);
+    sf::Uint16 GetClientId() const;
 
 protected:
+	sf::Uint16 mClientId;
 	sf::Uint16 mUniqueId;
 
 	Vector2D mPosition;

@@ -72,12 +72,13 @@ void State::HandleEntityInfo(sf::Packet packet) {
 }
 
 Entity* State::GetEntityByUniqueId(const sf::Uint16 unique_id) {
-    // TODO: map!?
+    // TODO: @Sven, mach was anderes als NULL wenn du willst, oder halt nicht
    	BOOST_FOREACH(Entity& entity, mEntities) {
 		if(entity.GetUniqueId() == unique_id) {
             return &entity;
         }
 	} 
+    return NULL;
 }
 
 }

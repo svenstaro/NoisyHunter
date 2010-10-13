@@ -2,6 +2,7 @@
 #define STATE_HPP
 
 #include <boost/ptr_container/ptr_vector.hpp>
+#include <boost/signals2.hpp>
 
 #include <SFML/Graphics.hpp>
 

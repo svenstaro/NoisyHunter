@@ -50,7 +50,7 @@ public:
     
     // Signal binding & events
     void BindOnClientConnected(const boost::signals2::signal<void (const std::string&)>::slot_type& slot);
-    void OnClientConnected(const std::string& client_name);
+    void TriggerOnClientConnected(const std::string& client_name);
 
 	sf::Uint16 GetPing();
 

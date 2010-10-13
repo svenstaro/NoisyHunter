@@ -13,42 +13,64 @@ GuiControl::GuiControl(const sf::Uint16 unique_id,
 
 GuiControl::~GuiControl() {}
 
-void GuiControl::Update(const float time_delta) {
-	// TODO: Do stuff
+void GuiControl::Update(const float time_delta) {}
+
+// === EVENT SIGNAL BINDING ===
+void GuiControl::BindOnClick(const boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button)>::slot_type& slot) {
+    mOnClickSignal.connect(slot);
+}
+void GuiControl::BindOnMouseMove(const boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y)>::slot_type& slot) {
+    mOnMouseMoveSignal.connect(slot);
+}
+void GuiControl::BindOnKeyDown(const boost::signals2::signal<void (const sf::Key::Code key)>::slot_type& slot) {
+    mOnKeyDownSignal.connect(slot);
+}
+void GuiControl::BindOnKeyUp(const boost::signals2::signal<void (const sf::Key::Code key)>::slot_type& slot) {
+    mOnKeyUpSignal.connect(slot);
+}
+void GuiControl::BindOnType(const boost::signals2::signal<void (const sf::Uint32 unicode_char)>::slot_type& slot) {
+    mOnTypeSignal.connect(slot);
 }
 
-void GuiControl::Draw(sf::RenderTarget* target) {
-    sf::Color col(255,128,0);
-    if(mHover)
-        col = sf::Color(255,255,0);
-    if(mIsFocused)
-        col = sf::Color(255,255,255);
-
-    sf::Shape s = sf::Shape::Rectangle(mPosition.x,
-                                       mPosition.y,
-                                       mPosition.x+mDimension.x,
-                                       mPosition.y+mDimension.y,
-                                       col);
-    target->Draw(s);
+// === EVENT SIGNAL TRIGGERS ===
+void GuiControl::TriggerOnClick(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
+    mOnClickSignal(mouse_x, mouse_y, mouse_button);
+}
+void GuiControl::TriggerOnMouseMove(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y) {
+    mOnMouseMoveSignal(mouse_x, mouse_y);
+}
+void GuiControl::TriggerOnKeyDown(const sf::Key::Code key) {
+    mOnKeyDownSignal(key);
+}
+void GuiControl::TriggerOnKeyUp(const sf::Key::Code key) {
+    mOnKeyUpSignal(key);
+}
+void GuiControl::TriggerOnType(const sf::Uint32 unicode_char) {
+    mOnTypeSignal(unicode_char);
 }
 
-void GuiControl::OnType(sf::Uint32 unicode_char) {
-	// TODO: Do stuff
+
+// === EVENT CALLBACKS FOR INTERNAL USE ===
+
+void GuiControl::OnClick(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
+    Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "Clicked on element.");
+}
+void GuiControl::OnMouseMove(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y) {
+    Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "Moved over element.");
+}
+void GuiControl::OnKeyDown(const sf::Key::Code key) {
+    Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "Pressed key on element.");
+}
+void GuiControl::OnKeyUp(const sf::Key::Code key) {
+    Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "Released key on element.");
+}
+void GuiControl::OnType(const sf::Uint32 unicode_char) {
+    Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "Typed into element.");
 }
 
-void GuiControl::OnClick() {
-	Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "Clicked on element.");
-}
 
-void GuiControl::OnRightClick() {
-	// TODO: Do stuff
-}
 
-void GuiControl::OnKeyDown(sf::Key::Code key_code) {
-    if(key_code == sf::Key::Return){
-        OnClick();
-    }
-}
+
 
 sf::Uint16 GuiControl::GetEntityId() const {
 	return 60000;
