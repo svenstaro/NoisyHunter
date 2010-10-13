@@ -53,7 +53,7 @@ void State::HandleEvent(sf::Event e) {
 }
 
 void State::AddEntity(Entity* entity) {
-	mEntities.push_back( entity );
+	mEntities.push_back(entity);
 	mEntityListNeedsSorting = true;
 }
 

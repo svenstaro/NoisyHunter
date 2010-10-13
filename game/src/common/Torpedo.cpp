@@ -55,7 +55,8 @@ void Torpedo::serialize(Archive & ar, const unsigned int version) {
 }*/
 
 void Torpedo::serialize(Engine::IOPacket& packet) {
-packet & mUniqueId;
+	packet & mClientId;
+	packet & mUniqueId;
     packet & mPosition.x;
     packet & mPosition.y;
     packet & mSpeed.x;

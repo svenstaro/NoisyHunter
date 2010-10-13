@@ -18,6 +18,7 @@ bool Entity::operator<(const Entity& other) {
 }
 
 void Entity::serialize(IOPacket& packet) {
+	packet & mClientId;
     packet & mUniqueId;
     packet & mPosition.x;
     packet & mPosition.y;

@@ -51,7 +51,7 @@ void NetworkManager::PreparePacket() {
 
 void NetworkManager::AppendEntityToPacket(Entity& entity) {
     mPacket << entity.GetEntityId();
-    Engine::IOPacket p(true,mPacket);
+    Engine::IOPacket p(true, mPacket);
     entity.serialize(p);
     mPacket = p.GetPacket();
 }
