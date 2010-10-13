@@ -7,6 +7,7 @@
 
 
 namespace Engine {
+
 ClientManager::ClientManager(sf::Uint16 max_players) {
     mMaxPlayers = max_players;
 }
@@ -23,13 +24,13 @@ void ClientManager::Add(const sf::IPAddress& address, const sf::Uint16 port, con
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Adding client "+name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+").");
     mClients.insert(std::pair<sf::Uint16, Client>(it->first, client));
-	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Clients online now: "+boost::lexical_cast<std::string>(mClients.size()));
+	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Client count: "+boost::lexical_cast<std::string>(mClients.size()));
 }
 
 void ClientManager::Remove(const sf::Uint16 id) {
     mClients.erase(id);
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Clients online now: "+boost::lexical_cast<std::string>(mClients.size()));
+	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Client count: "+boost::lexical_cast<std::string>(mClients.size()));
 }
 
 bool ClientManager::IsKnown(const sf::IPAddress& address) {
@@ -88,15 +89,34 @@ sf::Uint16 ClientManager::GetId(const std::string& name) {
 }
 
 sf::IPAddress ClientManager::GetIp(const sf::Uint16 id) {
-	return mClients[id].address;
+	if(mClients.count(id) >= 1) {
+		return mClients[id].address;
+	} else {
+		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_CLIENTMANAGER, "Tried getting IP for client ID "+boost::lexical_cast<std::string>(id)+" but this client ID doesn't exist!");
+		exit(1);
+	}
+
 }
 
 sf::Uint16 ClientManager::GetPort(const sf::Uint16 id) {
-    return mClients[id].port;
+	if(mClients.count(id) >= 1) {
+		return mClients[id].port;
+	} else {
+		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_CLIENTMANAGER, "Tried getting port for client ID "+boost::lexical_cast<std::string>(id)+" but this client ID doesn't exist!");
+		exit(1);
+	}
 }
 
 std::string ClientManager::GetName(const sf::Uint16 id) {
-    return mClients[id].name;
+	if(mClients.count(id) >= 1) {
+		return mClients[id].name;
+	} else {
+		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_CLIENTMANAGER, "Tried getting client name for client ID "+boost::lexical_cast<std::string>(id)+" but this client ID doesn't exist!");
+		exit(1);
+	}
 }
 
 sf::Uint16 ClientManager::GetMaxPlayers() {
@@ -108,7 +128,8 @@ sf::Uint16 ClientManager::GetActiveClients() {
 }
 
 void ClientManager::SetName(const sf::Uint16 id, const std::string& name) {
-    mClients[id].name = name;
+	if(mClients.count(id) >= 1)
+		mClients[id].name = name;
 }
 
 void ClientManager::SetMaxPlayers(const sf::Uint16 max_players) {
