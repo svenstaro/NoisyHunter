@@ -33,7 +33,7 @@ class ClientManager {
         // Returns vector of currently active (connected) client IDs
         std::vector<sf::Uint16> GetIds();
 
-        sf::Uint16 GetId(const sf::IPAddress& address);
+        sf::Uint16 GetId(const sf::IPAddress& address, const sf::Uint16 port);
         sf::Uint16 GetId(const std::string& name);
 
         // Get IP of client ID

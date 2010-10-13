@@ -125,7 +125,7 @@ void NetworkManager::Receive() {
 			// TODO: Implement packet queue to handle all sent packets.
 			if(socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
 				if(mClientManager.IsKnown(client_address)) {
-					sf::Uint16 client_id = mClientManager.GetId(client_address);
+					sf::Uint16 client_id = mClientManager.GetId(client_address, client_port);
 					std::string client_name = mClientManager.GetName(client_id);
 					logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from known client "+client_name+"("+boost::lexical_cast<std::string>(client_address)+":"+boost::lexical_cast<std::string>(client_port)+")");
 				} else {
@@ -185,7 +185,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 			} else if(net_cmd == NETCMD_CLIENTQUIT) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTQUIT from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
                 sf::Packet packet;
-                sf::Uint16 id = mClientManager.GetId(address);
+                sf::Uint16 id = mClientManager.GetId(address, port);
                 std::string client_name = mClientManager.GetName(id);
 				if(mClientManager.IsKnown(address)) {
 					logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Removing "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");
@@ -227,7 +227,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 std::string message;
                 packet >> message;
                 // Get client name
-                sf::Uint16 id = mClientManager.GetId(address);
+                sf::Uint16 id = mClientManager.GetId(address, port);
                 std::string client_name = mClientManager.GetName(id);
                 // Output the message.
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE from "+client_name+"("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");

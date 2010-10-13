@@ -1,4 +1,6 @@
+#include <boost/lexical_cast.hpp>
 #include <SFML/Network.hpp>
+
 #include "ClientManager.hpp"
 #include "Root.hpp"
 
@@ -20,8 +22,9 @@ void ClientManager::Add(const sf::IPAddress& address, const sf::Uint16 port, con
     Client client;
     client.address = address;
     client.port = port;
+	sf::Uint16 rnd = sf::Randomizer::Random(100,999);
 	if(GetId(name) != 666)
-		client.name = "_"+name;
+		client.name = name + boost::lexical_cast<std::string>(rnd);
 	else
 	    client.name = name;
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
@@ -73,12 +76,12 @@ std::vector<sf::Uint16> ClientManager::GetIds() {
     return ids;
 }
 
-sf::Uint16 ClientManager::GetId(const sf::IPAddress& address) {
+sf::Uint16 ClientManager::GetId(const sf::IPAddress& address, const sf::Uint16 port) {
     std::map<sf::Uint16, Client>::iterator it;
 	sf::Uint16 tmp = 0;
 	bool id_found = false;
 	for(it = mClients.begin(); it != mClients.end(); it++) {
-        if(it->second.address == address) {
+        if(it->second.address == address && it->second.port == port) {
             tmp = it->first;
 			id_found = true;
             break;
@@ -87,7 +90,7 @@ sf::Uint16 ClientManager::GetId(const sf::IPAddress& address) {
 	if(!id_found) {
 		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_CLIENTMANAGER, "Tried getting Id for client IP "+boost::lexical_cast<std::string>(address)+" but this client IP doesn't exist!");
-		exit(1);
+		return 666;
 	}
     return tmp;
 }
