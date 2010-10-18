@@ -7,7 +7,7 @@ Torpedo::Torpedo(const Engine::Vector2D& pos,
 	mPosition = pos;
 	mSpeed = speed;
 	mTargetPosition = target_position;
-	mUniqueId = Engine::Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
+	mUniqueId = 0;
 }
 
 Torpedo::~Torpedo() {}

@@ -2,7 +2,7 @@
 #include "WorldPolygon.hpp"
 
 WorldPolygon::WorldPolygon() {
-	mUniqueId = Engine::Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
+	mUniqueId = 0;
 }
 
 WorldPolygon::~WorldPolygon() {}

@@ -30,6 +30,8 @@ public:
 	virtual ~Entity() = 0;
 
 	virtual void Initialize();
+
+	virtual void GrabUniqueId();
     
 	// Callbacks
     virtual void OnCollide(const Entity& ent);

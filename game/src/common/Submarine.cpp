@@ -11,7 +11,7 @@ Submarine::Submarine(const float pos_x,
 	mLayer = Engine::Entity::LAYER_REGULAR;
 	mSpeed = Engine::Vector2D(0.1,0);
 	mClientId = client_id;
-	mUniqueId = Engine::Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
+	mUniqueId = 0;
 }
 
 Submarine::~Submarine() {}

@@ -5,13 +5,15 @@
 
 namespace Engine {
 
-Entity::Entity() {
-	mUniqueId = Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
-}
+Entity::Entity() {}
 
 Entity::~Entity() {}
 
 void Entity::Initialize() {}
+
+void Entity::GrabUniqueId() {
+	mUniqueId = Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
+}
 
 void Entity::OnCollide(const Entity& ent) {}
 

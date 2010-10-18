@@ -3,7 +3,7 @@
 
 SonarPing::SonarPing(const float direction_angle) {
 	mDirectionAngle = direction_angle;
-	mUniqueId = Engine::Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
+	mUniqueId = 0;
 }
 
 SonarPing::~SonarPing() {}

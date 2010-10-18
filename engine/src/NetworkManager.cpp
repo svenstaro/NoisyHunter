@@ -285,6 +285,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 				IOPacket iopacket(true, packet);
 				entity->serialize(iopacket);
 				packet = iopacket.GetPacket();
+				entity->GrabUniqueId();
                 Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().AddEntity(entity);
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetUniqueId())+") added.");
             } else if(net_cmd == NETCMD_ENTITYACTION) {
