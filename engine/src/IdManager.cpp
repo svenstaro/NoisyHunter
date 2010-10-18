@@ -5,7 +5,9 @@
 
 namespace Engine {
 
-IdManager::IdManager() {}
+IdManager::IdManager() {
+	ResetUniqueIds();
+}
 IdManager::~IdManager() {}
 
 void IdManager::RegisterEntityClass(Entity* default_object) {
@@ -30,6 +32,15 @@ Entity* IdManager::GetEntityPrototype(sf::Uint16 entity_id) {
     }
     Entity& copy = *mRegisteredEntityClasses[entity_id];
     return &copy;
+}
+
+const sf::Uint16 IdManager::GetNewUniqueId() {
+	mNextUniqueId++;
+	return mNextUniqueId - 1;
+}
+
+void IdManager::ResetUniqueIds() {
+	mNextUniqueId = 1000;
 }
 
 }

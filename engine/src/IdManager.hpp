@@ -16,8 +16,12 @@ public:
 
     Entity* GetEntityPrototype(sf::Uint16 entity_id);
 
+	const sf::Uint16 GetNewUniqueId();
+	void ResetUniqueIds();
+
 private:
 	std::map<sf::Uint16, Entity* > mRegisteredEntityClasses;
+	sf::Uint16 mNextUniqueId;
 };
 
 }
