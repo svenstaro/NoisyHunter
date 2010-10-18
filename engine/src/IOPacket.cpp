@@ -1,6 +1,5 @@
 #include "IOPacket.hpp"
 
-
 namespace Engine{
 
 IOPacket::IOPacket(bool stream_out, sf::Packet packet) {
@@ -76,7 +75,7 @@ IOPacket& IOPacket::operator & (bool          &data) {
 }
 
 
-sf::Packet&  IOPacket::GetPacket() {
+const sf::Packet& IOPacket::GetPacket() const {
     return mPacket;
 }
 

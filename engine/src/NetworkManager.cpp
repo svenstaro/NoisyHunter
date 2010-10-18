@@ -51,10 +51,10 @@ void NetworkManager::PreparePacket() {
 
 void NetworkManager::AppendEntityToPacket(Entity& entity) {
 	mPacket << sf::Uint16(NETCMD_ENTITYINFO);
-    mPacket << entity.GetEntityId();
-    Engine::IOPacket p(true, mPacket);
-    entity.serialize(p);
-    mPacket = p.GetPacket();
+	mPacket << entity.GetUniqueId();
+	Engine::IOPacket p(false, mPacket);
+	entity.serialize(p);
+	mPacket = p.GetPacket();
 }
 
 void NetworkManager::SendPacket() {
@@ -287,6 +287,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 				entity->serialize(iopacket);
 				packet = iopacket.GetPacket();
                 Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().AddEntity(entity);
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetUniqueId())+") added.");
             } else if(net_cmd == NETCMD_ENTITYACTION) {
                 sf::Uint16 action_id;
                 sf::Uint16 unique_id;
@@ -301,11 +302,14 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 
                 Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
                 if (e != NULL) {
-                    // deserialize
-                    IOPacket iopacket(true, packet);
+					// Deserialize
+					IOPacket iopacket(true, packet);
                     e->serialize(iopacket);
                     packet = iopacket.GetPacket();
-                }
+					logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Deserialized packet.");
+				} else {
+					logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Invalid Packet (ENTITYINFO): Entity with UID "+boost::lexical_cast<std::string>(unique_id)+" not found.");
+				}
             } else if(net_cmd == NETCMD_CHATMESSAGE) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE.");
                 // TODO: Output into GUI

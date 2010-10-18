@@ -98,7 +98,7 @@ void Submarine::serialize(Engine::IOPacket& packet) {
     packet & mUniqueId;
     packet & mClientId;
     packet & mPosition.x;
-    packet & mPosition.y;
+	packet & mPosition.y;
     packet & mSpeed.x;
     packet & mSpeed.y;
     sf::Uint16 l = mLayer;

@@ -8,7 +8,7 @@ namespace Engine{
 
 class IOPacket {
 public:
-    IOPacket(bool stream_out, sf::Packet packet = sf::Packet());
+	IOPacket(bool stream_out, sf::Packet packet);
     ~IOPacket();
 
     IOPacket& operator & (sf::Int8      &data);
@@ -25,9 +25,7 @@ public:
     IOPacket& operator & (std::wstring  &data);
     IOPacket& operator & (bool          &data);
 
-
-    sf::Packet& GetPacket();
-
+	const sf::Packet& GetPacket() const;
 private:
     sf::Packet mPacket;
     bool mStreamOut;
