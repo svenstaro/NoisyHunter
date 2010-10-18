@@ -50,6 +50,7 @@ void NetworkManager::PreparePacket() {
 }
 
 void NetworkManager::AppendEntityToPacket(Entity& entity) {
+	mPacket << sf::Uint16(NETCMD_ENTITYINFO);
     mPacket << entity.GetEntityId();
     Engine::IOPacket p(true, mPacket);
     entity.serialize(p);
