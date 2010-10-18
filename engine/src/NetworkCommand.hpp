@@ -80,7 +80,7 @@ enum NetworkCommand {
 	// If this is sent server->client, the client is being notified of the
 	// complete data of an entity. This info needs to be deserialized.
 	// Packet structure is:
-	// [sf::Uint16(NETCMD_ENTITYINFO), sf::Uint16(entity_id),
+	// [sf::Uint16(NETCMD_ENTITYINFO), sf::Uint16(unique_id),
 	//  Engine::Entity(entity)]
 	NETCMD_ENTITYINFO = 0x22,
 

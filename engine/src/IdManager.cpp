@@ -34,7 +34,7 @@ Entity* IdManager::GetEntityPrototype(sf::Uint16 entity_id) {
     return &copy;
 }
 
-const sf::Uint16 IdManager::GetNewUniqueId() {
+sf::Uint16 IdManager::GetNewUniqueId() {
 	mNextUniqueId++;
 	return mNextUniqueId - 1;
 }

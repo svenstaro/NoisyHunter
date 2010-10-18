@@ -5,7 +5,9 @@
 
 namespace Engine {
 
-Entity::Entity() {}
+Entity::Entity() {
+	mUniqueId = Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
+}
 
 Entity::~Entity() {}
 

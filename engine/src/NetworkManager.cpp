@@ -163,11 +163,10 @@ void NetworkManager::Receive() {
 
 void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& address, const sf::Uint16 port) {
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-
     sf::Uint16 net_cmd;
     while(!packet.EndOfPacket()) {
         packet >> net_cmd;
-        
+		mPacket << sf::Uint16(NETCMD_ENTITYINFO);
         if(mIsServer) {
             // === SERVER PACKET HANDLING ===
 			if(net_cmd == NETCMD_EMPTY) {

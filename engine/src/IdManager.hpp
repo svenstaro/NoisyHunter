@@ -16,7 +16,7 @@ public:
 
     Entity* GetEntityPrototype(sf::Uint16 entity_id);
 
-	const sf::Uint16 GetNewUniqueId();
+	sf::Uint16 GetNewUniqueId();
 	void ResetUniqueIds();
 
 private:

@@ -1,14 +1,13 @@
 #include "Root.hpp"
 #include "Torpedo.hpp"
 
-Torpedo::Torpedo(const sf::Uint16 unique_id,
-				 const Engine::Vector2D& pos,
+Torpedo::Torpedo(const Engine::Vector2D& pos,
 				 const Engine::Vector2D& speed,
 				 const Engine::Vector2D& target_position) {
-	mUniqueId = unique_id;
 	mPosition = pos;
 	mSpeed = speed;
 	mTargetPosition = target_position;
+	mUniqueId = Engine::Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
 }
 
 Torpedo::~Torpedo() {}

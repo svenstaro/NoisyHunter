@@ -11,6 +11,7 @@ Submarine::Submarine(const float pos_x,
 	mLayer = Engine::Entity::LAYER_REGULAR;
 	mSpeed = Engine::Vector2D(0.1,0);
 	mClientId = client_id;
+	mUniqueId = Engine::Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
 }
 
 Submarine::~Submarine() {}
@@ -42,7 +43,7 @@ void Submarine::Update(float time_delta) {
 
 const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D Pos) {
 	// Calculate the Direction-Vector to the mouse position
-	return new Torpedo(0, mPosition, mSpeed, Pos);
+	return new Torpedo(mPosition, mSpeed, Pos);
 }
 
 const Engine::Entity* Submarine::PingTo(const Engine::Vector2D Pos) {

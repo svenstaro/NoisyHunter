@@ -1,8 +1,8 @@
 #include "Root.hpp"
 #include "WorldPolygon.hpp"
 
-WorldPolygon::WorldPolygon(const sf::Uint16 unique_id) {
-	mUniqueId = unique_id;
+WorldPolygon::WorldPolygon() {
+	mUniqueId = Engine::Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
 }
 
 WorldPolygon::~WorldPolygon() {}

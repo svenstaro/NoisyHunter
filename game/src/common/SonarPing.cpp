@@ -1,10 +1,9 @@
 #include "Root.hpp"
 #include "SonarPing.hpp"
 
-SonarPing::SonarPing(const sf::Uint16 unique_id,
-					 const float direction_angle) {
-	mUniqueId = unique_id;
+SonarPing::SonarPing(const float direction_angle) {
 	mDirectionAngle = direction_angle;
+	mUniqueId = Engine::Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
 }
 
 SonarPing::~SonarPing() {}

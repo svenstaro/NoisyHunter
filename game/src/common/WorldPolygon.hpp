@@ -5,7 +5,7 @@
 
 class WorldPolygon : public Engine::Entity {
 public:
-	WorldPolygon(const sf::Uint16 unique_id = 0);
+	WorldPolygon();
 
 	~WorldPolygon();
 

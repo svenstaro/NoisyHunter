@@ -6,8 +6,7 @@
 class SonarPing : public Engine::Entity {
 
 public:
-	SonarPing(const sf::Uint16 unique_id = 0, 
-			  const float direction_angle = 0);
+	SonarPing(const float direction_angle = 0);
 
 	~SonarPing();
 

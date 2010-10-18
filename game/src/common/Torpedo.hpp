@@ -8,8 +8,7 @@
 class Torpedo : public Engine::Entity {
 
 public:
-	Torpedo(const sf::Uint16 unique_id = 0,
-			const Engine::Vector2D& pos = Engine::Vector2D(0,0),
+	Torpedo(const Engine::Vector2D& pos = Engine::Vector2D(0,0),
 			const Engine::Vector2D& speed = Engine::Vector2D(0,0),
 			const Engine::Vector2D& target_position = Engine::Vector2D(0,0));
 
