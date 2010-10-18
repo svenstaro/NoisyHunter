@@ -38,9 +38,12 @@ public:
     // Sends the prepared packet "mPacket" by calling SendPacket(mPacket).
     void SendPacket();
     void SendPacket(sf::Packet& packet);
-    
-    // Sends a packet containing NETCMD_CLIENTADD to server / all clients.
-    void SendClientAdd(const std::string& client_name);
+
+	// Sends a packet containing NETCMD_CLIENTADD to server / all clients.
+	void SendClientAdd(const std::string& client_name);
+
+	// Sends a packet containing NETCMD_CLIENTQUIT to server / all clients.
+	void SendClientQuit(const std::string& reason = "", const std::string& client_name = "");
 
     // Sends a packet containing NETCMD_ENTITYADD to server / all clients.
 	void SendEntityAdd(Entity* e);

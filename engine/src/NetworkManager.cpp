@@ -89,6 +89,16 @@ void NetworkManager::SendClientAdd(const std::string& client_name) {
     SendPacket(packet);
 }
 
+
+void NetworkManager::SendClientQuit(const std::string &reason, const std::string &client_name) {
+	sf::Packet packet;
+	packet << sf::Uint16(NETCMD_CLIENTQUIT);
+	if(mIsServer) {
+		packet << client_name << reason;
+	}
+	SendPacket(packet);
+}
+
 void NetworkManager::SendEntityAdd(Entity* entity) {
 	sf::Packet packet;
 	packet << sf::Uint16(NETCMD_ENTITYADD);
@@ -191,12 +201,8 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 					logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Removing "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");
 					mClientManager.Remove(id);
 				}
-
-				// TODO: Notify other clients of client quit.
-                //packet << sf::Uint16(NETCMD_CLIENTQUIT);
-				//packet << client_name;
-				//packet << "REASON: LOL";
-                //SendPacket(packet);
+				std::string reason = "Lol just quit.";
+				SendClientQuit(reason, client_name);
             } else if(net_cmd == NETCMD_CLIENTPING) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTPING from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
                 // The client pinged back! 
@@ -307,6 +313,11 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 packet >> client_name;
                 packet >> message;
                 logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, client_name+" says: "+message);
+			} else if(net_cmd == NETCMD_CLIENTQUIT) {
+				std::string client_name = "";
+				std::string reason = "";
+				packet >> client_name >> reason;
+				logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Client <"+client_name+"> quit - Reason: " + reason);
 			}
         }
     }

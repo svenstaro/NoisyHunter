@@ -2,9 +2,12 @@
 bin/
 build/
 build2/
+qtcreator-build/
+qt
 doc/
 lib/
 *.cbp
 *.depend
+*.user
 game/gfx/cached/
 game/gui/cached/

@@ -65,7 +65,7 @@ private:
     InputManager mInputManager;
     ResourceManager mResourceManager;
     std::string mClientName;
-    sf::Uint16 mClientId;
+	sf::Int16 mClientId;
     
     sf::Clock mClock;
     StateManager mStateManager;

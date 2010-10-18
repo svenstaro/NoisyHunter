@@ -120,10 +120,10 @@ void PlayState::OnLeaveGame() {
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Quitting game.");
 	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_NETWORK, "Sending packet with NETCMD_CLIENTQUIT.");
 
+	// Send NETCMD_CLIENTQUIT to server
 	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
-	sf::Packet packet;
-	packet << sf::Uint16(Engine::NETCMD_CLIENTQUIT);
-	netmgr->SendPacket(packet);
+	netmgr->SendClientQuit();
+
     Engine::Root::get_mutable_instance().RequestShutdown();
 }
 
