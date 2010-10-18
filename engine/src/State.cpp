@@ -32,12 +32,13 @@ void State::UpdateAllEntities(const float time_delta) {
 
 void State::AppendAllEntitiesToPacket() {
 	BOOST_FOREACH(Entity& entity, mEntities) {
-		Root::get_mutable_instance().GetNetworkManagerPtr()->AppendEntityToPacket(entity);
+		Root::get_mutable_instance().GetNetworkManagerPtr()->
+			AppendEntityToPacket(entity);
 	}
 }
 
 void State::Draw(sf::RenderTarget* target) {
-	BOOST_FOREACH(Entity& entity, mEntities){
+	BOOST_FOREACH(Entity& entity, mEntities) {
 		entity.Draw(target);
 	}
 
