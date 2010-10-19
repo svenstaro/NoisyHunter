@@ -79,6 +79,9 @@ private:
 	// Used for calculating pings
 	sf::Clock mPingClock;
 	sf::Uint16 mPing;
+
+	sf::Uint32 mReceivedPacketsCount;
+	sf::Uint32 mSentPacketsCount;
 };
 
 }

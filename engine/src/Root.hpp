@@ -55,6 +55,8 @@ public:
     sf::Uint16 GetClientId() const;
     void SetClientId(const sf::Uint16 client_id);
 
+	const float GetRunTime() const;
+
 private:
     bool mIsServer;
 	bool mIsVerbose;
@@ -67,7 +69,8 @@ private:
     std::string mClientName;
 	sf::Int16 mClientId;
     
-    sf::Clock mClock;
+	sf::Clock mFrameTimeClock;
+    sf::Clock mRunTimeClock;
     StateManager mStateManager;
     NetworkManager mNetworkManager;
 	LogManager mLogManager;

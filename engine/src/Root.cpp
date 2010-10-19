@@ -66,15 +66,14 @@ void Root::StartMainLoop() {
 
     if(mIsServer) {
         // SERVER MAIN LOOP
-		sf::Clock Clock;
         
 		const float fps = 60.f;
 		const float dt = 1/fps;
         float timebudget = 0.f;
         
         while(!mShutdownRequested) {
-            float time_delta = Clock.GetElapsedTime();
-            Clock.Reset();
+            float time_delta = mFrameTimeClock.GetElapsedTime();
+            mFrameTimeClock.Reset();
             timebudget += time_delta;
                        
             // update simulation
@@ -96,14 +95,13 @@ void Root::StartMainLoop() {
         }
     } else {
         // CLIENT MAIN LOOP
-		sf::Clock Clock;
 		const float fps = 60.f;
 		const float dt = 1/fps;
         float timebudget = 0.f;
         
         while(mRenderWindow.IsOpened()) {
-            float time_delta = mClock.GetElapsedTime();
-            mClock.Reset();
+            float time_delta = mFrameTimeClock.GetElapsedTime();
+            mFrameTimeClock.Reset();
             
             // Always prepare packet before handling events, as there 
             // might be actions to be inserted into packet.
@@ -190,6 +188,10 @@ sf::Uint16 Root::GetClientId() const {
 }
 void Root::SetClientId(const sf::Uint16 client_id) {
     mClientId = client_id;
+}
+
+const float Root::GetRunTime() const {
+	return mRunTimeClock.GetElapsedTime();
 }
 
 }

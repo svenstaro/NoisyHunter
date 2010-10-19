@@ -16,6 +16,9 @@ public:
 
     void Update(float time_delta);
 	void OnClientConnected(std::string client_name);
+private:
+	// TEEEEEEST TEST
+	bool mTargetSet;
 };
 
 #endif

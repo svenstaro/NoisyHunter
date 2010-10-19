@@ -25,6 +25,9 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
 	mClientManager = ClientManager(2);
 
 	mListener.SetBlocking(1);
+
+	mReceivedPacketsCount = 0;
+	mSentPacketsCount = 0;
 }
 
 void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip, 
@@ -43,6 +46,9 @@ void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip,
     mListener.SetBlocking(0);
     
 	SendClientAdd(client_name);
+
+	mReceivedPacketsCount = 0;
+	mSentPacketsCount = 0;;
 }
 
 void NetworkManager::PreparePacket() {
@@ -63,9 +69,10 @@ void NetworkManager::SendPacket() {
 }
 
 void NetworkManager::SendPacket(sf::Packet& packet) {
+	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+
 	// Don't send empty packets.
 	if(packet.GetDataSize() == 0) {
-		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Won't send empty packet.");
 	} else {
 		if(mIsServer) {
@@ -77,6 +84,8 @@ void NetworkManager::SendPacket(sf::Packet& packet) {
 			// We are sending from client.
 			mListener.Send(packet, mClient_ServerIp, mClient_ServerPort);
 		}
+		mSentPacketsCount++;
+		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sent packets count: "+boost::lexical_cast<std::string>(mSentPacketsCount));
 	}
 }
 
@@ -126,7 +135,7 @@ void NetworkManager::Receive() {
 		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Receiving.");
         unsigned int nb_sockets = mServer_Selector.Wait(0.5f);
 
-        for(unsigned int i=0;i < nb_sockets; ++i) {
+		for(unsigned int i = 0; i < nb_sockets; ++i) {
             sf::SocketUDP socket = mServer_Selector.GetSocketReady(i);
 
 			sf::Packet packet;
@@ -153,7 +162,7 @@ void NetworkManager::Receive() {
         sf::Uint16 server_port;
         
 			// TODO: Implement packet queue to handle all sent packets.
-        if(mListener.Receive(packet, server_address, server_port) == sf::Socket::Done){
+		if(mListener.Receive(packet, server_address, server_port) == sf::Socket::Done) {
 			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from "+boost::lexical_cast<std::string>(server_address)+":"+boost::lexical_cast<std::string>(server_port));
             HandlePacket(packet, server_address, server_port);
             packet.Clear();
@@ -163,9 +172,12 @@ void NetworkManager::Receive() {
 
 void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& address, const sf::Uint16 port) {
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+
+	mReceivedPacketsCount++;
+	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received packets count: "+boost::lexical_cast<std::string>(mReceivedPacketsCount));
+
     sf::Uint16 net_cmd;
-    while(!packet.EndOfPacket()) {
-		logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Packet length before netcmd "+boost::lexical_cast<std::string>(packet.GetDataSize()));
+    while(!packet.EndOfPacket()) {		
         packet >> net_cmd;
 
         if(mIsServer) {
@@ -299,7 +311,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
                 e->PerformAction(unique_id, packet, false); // false -> do not validate action, as luckily the server did that for you
 			} else if(net_cmd == NETCMD_ENTITYINFO) {
-                sf::Uint16 unique_id;
+				sf::Uint16 unique_id;
                 packet >> unique_id;
                 
 				sf::Uint16 entity_id;
@@ -311,7 +323,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 					IOPacket iopacket(true, packet);
                     e->serialize(iopacket);
                     packet = iopacket.GetPacket();
-					logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Deserialized packet.");
+					logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Deserialized NETCMD_ENTITYINFO.");
 				} else {
 					logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Entity with UID "+boost::lexical_cast<std::string>(unique_id)+" not found. Creating new entity.");
 					// create new entity
