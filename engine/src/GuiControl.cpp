@@ -109,10 +109,6 @@ Entity::PositionType GuiControl::GetPositionType() const {
     return Entity::POSITIONTYPE_SCREEN;
 }
 
-void GuiControl::SetPosition(const Vector2D position) {
-    mPosition = position;
-}
-
 const Vector2D GuiControl::GetPosition() const {
     return mPosition;
 }

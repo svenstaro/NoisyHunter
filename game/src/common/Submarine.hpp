@@ -35,6 +35,7 @@ public:
 	sf::Uint16 GetEntityId() const;
 
     // controlling
+	void SetTarget(const float x, const float y);
     void SetTarget(const Engine::Vector2D target);
 
 	const Engine::Entity* FireTorpedoTo(const Engine::Vector2D Pos);

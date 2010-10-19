@@ -94,6 +94,10 @@ sf::Uint16 Submarine::GetEntityId() const {
 	return 2;
 }
 
+void Submarine::SetTarget(const float x, const float y) {
+	SetTarget(Engine::Vector2D(x,y));
+}
+
 void Submarine::SetTarget(const Engine::Vector2D target) {
     mTarget = target;
 }
