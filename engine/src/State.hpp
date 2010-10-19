@@ -35,8 +35,6 @@ public:
     Entity* GetEntityByUniqueId(const sf::Uint16 unique_id);
 
 protected:
-    //Root* mRoot;
-
     // Entity list
     boost::ptr_vector<Entity> mEntities;
 
