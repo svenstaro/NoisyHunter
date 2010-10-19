@@ -240,6 +240,9 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 				logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, client_name+" says: "+message);
                 // Send back to everyone
                 SendChatMessage(message, client_name);
+			} else {
+				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received invalid NETCMD id: "+boost::lexical_cast<std::string>(net_cmd));
+				exit(1);
 			}
 		} else {
             // === CLIENT PACKET HANDLING ===
@@ -301,7 +304,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 packet >> unique_id;
                 
                 Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
-                if (e != NULL) {
+                if(e != NULL) {
 					// Deserialize
 					IOPacket iopacket(true, packet);
                     e->serialize(iopacket);
@@ -323,6 +326,9 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 				std::string reason = "";
 				packet >> client_name >> reason;
 				logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Client <"+client_name+"> quit - Reason: " + reason);
+			} else {
+				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received invalid NETCMD id: "+boost::lexical_cast<std::string>(net_cmd));
+				exit(1);
 			}
         }
     }
