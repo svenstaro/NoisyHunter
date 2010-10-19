@@ -169,7 +169,6 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 		logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Packet length before netcmd "+boost::lexical_cast<std::string>(packet.GetDataSize()));
         packet >> net_cmd;
 
-		mPacket << sf::Uint16(NETCMD_ENTITYINFO);
         if(mIsServer) {
             // === SERVER PACKET HANDLING ===
 			if(net_cmd == NETCMD_EMPTY) {
