@@ -81,7 +81,7 @@ enum NetworkCommand {
 	// complete data of an entity. This info needs to be deserialized.
 	// Packet structure is:
 	// [sf::Uint16(NETCMD_ENTITYINFO), sf::Uint16(unique_id),
-	//  Engine::Entity(entity)]
+	//  sf::Uint16(entity_id), Engine::Entity(entity)]
 	NETCMD_ENTITYINFO = 0x22,
 
 	// If this is sent client->server, a client is requesting a chat message
