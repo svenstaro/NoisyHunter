@@ -1,0 +1,64 @@
+#include <boost/lexical_cast.hpp>
+
+#include "Server.hpp"
+#include "ClientManager.hpp"
+
+#include <iostream>
+#include <string>
+
+int main() {
+
+	Engine::ClientManager ClMan(8);
+
+	bool running = true;
+
+	sf::SocketUDP Socket;
+	sf::Packet Packet;
+
+	sf::IPAddress Sender;
+	sf::Uint16 Port;
+
+	sf::Clock Clock;
+	const float fps = 50.f;
+	const float dt = 1/fps;
+	float timebudget = 0.6f;
+
+	if(!Socket.Bind(1337)) {
+		std::cout << "fail port binding" << std::endl;
+	}
+	while(running) {
+		
+		float time_delta = Clock.GetElapsedTime();
+		Clock.Reset();
+		timebudget -= dt;
+
+		while(time_delta < timebudget) {
+			sf::Sleep(0.01);
+			timebudget -= dt;
+		}
+
+		Packet.Clear();
+
+		if(Socket.Receive(Packet, Sender, Port) == sf::Socket::Done) {
+			if(!ClMan.IsKnown(Sender)) {
+				ClMan.Add(Sender, Port, "unnamed"); 
+				std::cout << "Client added to ClMan" << std::endl;
+			} else {
+				std::string cmd1;
+				Packet >> cmd1;
+				if(cmd1 == "Hello") {
+					std::string name;
+					Packet >> name;
+					sf::Uint16 id = ClMan.GetId(Sender, Port);
+					ClMan.SetName(id, name);
+					std::cout << "CLient connected ["+boost::lexical_cast<std::string>(id)+" | "+name+"]" << std::endl;
+				} else if(cmd1 == "Ping") {
+					std::cout << "Got ping from Client ["+boost::lexical_cast<std::string>(ClMan.GetId(Sender,Port))+" | "+ClMan.GetName(ClMan.GetId(Sender,Port))+"]" << std::endl;
+				} else if(cmd1 == "Bye") {
+					ClMan.Remove(ClMan.GetId(Sender,Port));
+				}
+			}
+			// SENDING SHIT
+		}
+	}
+}
