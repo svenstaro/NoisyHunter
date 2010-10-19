@@ -95,15 +95,12 @@ void Submarine::SetTarget(const Engine::Vector2D target) {
 }
 
 void Submarine::serialize(Engine::IOPacket& packet) {
-	packet & mClientId;
     packet & mUniqueId;
     packet & mClientId;
     packet & mPosition.x;
 	packet & mPosition.y;
     packet & mSpeed.x;
-    packet & mSpeed.y;
-    sf::Uint16 l = mLayer;
-    packet & l;
+	packet & mSpeed.y;
     packet & mTarget.x;
-    packet & mTarget.y;
+	packet & mTarget.y;
 }

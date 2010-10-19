@@ -27,9 +27,7 @@ void Entity::serialize(IOPacket& packet) {
     packet & mPosition.x;
     packet & mPosition.y;
     packet & mSpeed.x;
-    packet & mSpeed.y;
-    sf::Uint16 l = mLayer;
-    packet & l;
+	packet & mSpeed.y;
 }
 
 sf::Packet Entity::PerformAction(const sf::Uint16 action_id, sf::Packet& packet, const bool validate) {

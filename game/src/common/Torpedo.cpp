@@ -60,8 +60,6 @@ void Torpedo::serialize(Engine::IOPacket& packet) {
     packet & mPosition.y;
     packet & mSpeed.x;
     packet & mSpeed.y;
-    sf::Uint16 l = mLayer;
-    packet & l;
     packet & mTargetPosition.x;
     packet & mTargetPosition.y;
 }

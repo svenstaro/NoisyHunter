@@ -165,7 +165,9 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
     sf::Uint16 net_cmd;
     while(!packet.EndOfPacket()) {
+		logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Packet length before netcmd "+boost::lexical_cast<std::string>(packet.GetDataSize()));
         packet >> net_cmd;
+
 		mPacket << sf::Uint16(NETCMD_ENTITYINFO);
         if(mIsServer) {
             // === SERVER PACKET HANDLING ===
@@ -288,7 +290,6 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 				IOPacket iopacket(true, packet);
 				entity->serialize(iopacket);
 				packet = iopacket.GetPacket();
-				entity->GrabUniqueId();
                 Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().AddEntity(entity);
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetUniqueId())+") added.");
             } else if(net_cmd == NETCMD_ENTITYACTION) {
@@ -298,8 +299,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 packet >> unique_id;
                 Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
                 e->PerformAction(unique_id, packet, false); // false -> do not validate action, as luckily the server did that for you
-            } else if(net_cmd == NETCMD_ENTITYINFO) {
-				// FINISH IMPLEMENTATION
+			} else if(net_cmd == NETCMD_ENTITYINFO) {
                 sf::Uint16 unique_id;
                 packet >> unique_id;
                 

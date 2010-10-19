@@ -30,6 +30,7 @@ void MainState::OnClientConnected(std::string client_name) {
 	sf::Uint16 cl_id = clientmgr->GetId(client_name);
 	float lol = sf::Randomizer::Random(0.1f, 0.9f);
 	Submarine* submarine = new Submarine(lol, lol, cl_id);
+	submarine->GrabUniqueId();
 	netmgr->SendEntityAdd(submarine);
 	AddEntity(submarine);
 }
