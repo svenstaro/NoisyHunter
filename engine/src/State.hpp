@@ -34,6 +34,23 @@ public:
 	void HandleEntityInfo(sf::Packet packet);
     Entity* GetEntityByUniqueId(const sf::Uint16 unique_id);
 
+	template <typename T>
+			std::vector<T*> GetAllEntitiesByType() {
+
+		std::vector<T*> entities;
+
+		T t;
+		sf::Uint16 entity_id = t.GetEntityId();
+
+		BOOST_FOREACH(Entity& entity, mEntities) {
+			if(entity.GetEntityId() == entity_id) {
+				entities.push_back( (T*)&entity );
+			}
+		}
+		return entities;
+
+	}
+
 protected:
     // Entity list
     boost::ptr_vector<Entity> mEntities;
