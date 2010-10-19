@@ -25,9 +25,14 @@ public:
         POSITIONTYPE_WORLD
 	};
 
+	// Default constructor
 	Entity();
 
+	// Virtual destructor
 	virtual ~Entity() = 0;
+
+	// Virtual constructor (clone)
+	virtual Entity* clone() const = 0;
 
 	virtual void Initialize();
 

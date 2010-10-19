@@ -9,6 +9,8 @@ Entity::Entity() {}
 
 Entity::~Entity() {}
 
+Entity* Entity::clone() const {}
+
 void Entity::Initialize() {}
 
 void Entity::GrabUniqueId() {

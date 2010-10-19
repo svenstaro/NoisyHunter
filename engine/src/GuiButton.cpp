@@ -13,17 +13,25 @@ GuiButton::GuiButton(std::string name) {
     SetFontStyle(sf::String::Bold);
     SetFontColor(sf::Color(0,0,0));
 }
+
 GuiButton::~GuiButton() {}
+
+GuiButton* GuiButton::clone() const {
+	return new GuiButton();
+}
 
 void GuiButton::SetFont(const sf::Font& font) {
     mString.SetFont(font);
 }
+
 void GuiButton::SetFontSize(const float size) {
     mString.SetSize(size);
 }
+
 void GuiButton::SetFontStyle(unsigned long style) {
     mString.SetStyle(style);
 }
+
 void GuiButton::SetFontColor(const sf::Color& color) {
     mString.SetColor(color);
 }
@@ -33,7 +41,6 @@ void GuiButton::Draw(sf::RenderTarget* target) {
     mString.SetText(mText);
     mString.SetPosition(mPosition.x + mDimension.x / 2 - mString.GetRect().GetWidth()  / 2,
                         mPosition.y + mDimension.y / 2 - mString.GetRect().GetHeight() / 2);
-
 
     if (mHover)
         mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button_hover"));

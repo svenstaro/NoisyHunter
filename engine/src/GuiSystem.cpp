@@ -6,7 +6,12 @@
 namespace Engine{
 
 GuiSystem::GuiSystem() {}
+
 GuiSystem::~GuiSystem() {}
+
+GuiSystem* GuiSystem::clone() const {
+	return new GuiSystem();
+}
 
 void GuiSystem::SetFocus(GuiControl* control){
     BOOST_FOREACH(GuiControl& c, mControls){
@@ -29,29 +34,24 @@ void GuiSystem::HandleEvent(sf::Event e) {
         boost::ptr_vector<GuiControl>::iterator i;
         for(i = mControls.begin(); i != mControls.end(); i++) {
             if(i->HasFocus()) {
-
-                if(back) {
+                if(back)
                     i--;
-                } else {
+                else
                     i++;
-                }
 
-                if (i == mControls.end()) {
+                if(i == mControls.end())
                     SetFocus( &(mControls.front()) );
-                } else if (i == mControls.begin()) {
+                else if(i == mControls.begin())
                     SetFocus( &(mControls.back()) );
-                } else {
+                else
                     SetFocus( &(*i) );
-                }
                 break;
             }
         }
 
     }
 
-
-    BOOST_FOREACH(GuiControl& control, mControls){
-
+    BOOST_FOREACH(GuiControl& control, mControls) {
         if(e.Type == sf::Event::MouseButtonPressed) {
             if(control.IsAtPoint(Vector2D(e.MouseButton.X,e.MouseButton.Y))) {
                 SetFocus(&control);
@@ -59,13 +59,13 @@ void GuiSystem::HandleEvent(sf::Event e) {
                 // non-default buttons (extra buttons on mouse) will not become "0"
                 sf::Uint16 mouse_button = 0;
                 
-                if(e.MouseButton.Button == sf::Mouse::Left) {
+                if(e.MouseButton.Button == sf::Mouse::Left)
                     mouse_button = 1;
-                } else if(e.MouseButton.Button == sf::Mouse::Middle) {
+                else if(e.MouseButton.Button == sf::Mouse::Middle)
                     mouse_button = 2;
-                } else if(e.MouseButton.Button == sf::Mouse::Right) {
+                else if(e.MouseButton.Button == sf::Mouse::Right)
                     mouse_button = 3;
-                }
+
                 control.OnClick(e.MouseButton.X, e.MouseButton.Y, mouse_button);
                 control.TriggerOnClick(e.MouseButton.X, e.MouseButton.Y, mouse_button);
             }
@@ -92,11 +92,13 @@ void GuiSystem::HandleEvent(sf::Event e) {
     }
 
 }
+
 void GuiSystem::Draw(sf::RenderTarget* target) {
     BOOST_FOREACH(GuiControl& control, mControls){
         control.Draw(target);
     }
 }
+
 void GuiSystem::AddControl(GuiControl* control) {
     mControls.push_back(control);
 }

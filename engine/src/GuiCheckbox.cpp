@@ -5,6 +5,7 @@
 namespace Engine{
 
 GuiCheckbox::GuiCheckbox() {}
+
 GuiCheckbox::GuiCheckbox(std::string name) {
     mIsChecked = false;
     mName = name;
@@ -14,8 +15,12 @@ GuiCheckbox::GuiCheckbox(std::string name) {
     SetFontStyle(sf::String::Bold);
     SetFontColor(sf::Color(0,0,0));
 }
+
 GuiCheckbox::~GuiCheckbox() {}
 
+GuiCheckbox* GuiCheckbox::clone() const {
+	return new GuiCheckbox();
+}
 
 bool GuiCheckbox::IsAtPoint(const Vector2D point) {
     return (point.x >= mPosition.x and
@@ -27,24 +32,27 @@ bool GuiCheckbox::IsAtPoint(const Vector2D point) {
 void GuiCheckbox::SetChecked(const bool is_checked) {
     mIsChecked = is_checked;
 }
+
 bool GuiCheckbox::Checked() {
     return mIsChecked;
 }
+
 void GuiCheckbox::ToggleChecked() {
     mIsChecked = !mIsChecked;
 }
 
-
-
 void GuiCheckbox::SetFont(const sf::Font& font) {
     mString.SetFont(font);
 }
+
 void GuiCheckbox::SetFontSize(const float size) {
     mString.SetSize(size);
 }
+
 void GuiCheckbox::SetFontStyle(unsigned long style) {
     mString.SetStyle(style);
 }
+
 void GuiCheckbox::SetFontColor(const sf::Color& color) {
     mString.SetColor(color);
 }
@@ -53,7 +61,6 @@ void GuiCheckbox::SetFontColor(const sf::Color& color) {
 void GuiCheckbox::Draw(sf::RenderTarget* target) {
     mString.SetText(mText);
     mString.SetPosition(mPosition.x + 20,mPosition.y);
-
 
     if (mIsChecked)  mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.checkbox_checked"));
     else if (mHover) mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.checkbox_hover"));
@@ -70,6 +77,7 @@ void GuiCheckbox::Draw(sf::RenderTarget* target) {
 void GuiCheckbox::OnClick() {
     ToggleChecked();
 }
+
 void GuiCheckbox::OnKeyDown(sf::Key::Code key_code) {
     if (key_code == sf::Key::Space or key_code == sf::Key::Return) {
         ToggleChecked();

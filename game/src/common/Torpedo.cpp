@@ -12,6 +12,10 @@ Torpedo::Torpedo(const Engine::Vector2D& pos,
 
 Torpedo::~Torpedo() {}
 
+Torpedo* Torpedo::clone() const {
+	return new Torpedo();
+}
+
 void Torpedo::Initialize() {
 	sf::Sprite* d = new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("submarine"));
 	d->SetCenter(d->GetSize().x / 2, d->GetSize().y / 2);

@@ -7,6 +7,10 @@ WorldPolygon::WorldPolygon() {
 
 WorldPolygon::~WorldPolygon() {}
 
+WorldPolygon* WorldPolygon::clone() const {
+	return new WorldPolygon();
+}
+
 void WorldPolygon::Initialize() {
 	// TODO: Get own image here!
 }

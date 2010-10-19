@@ -12,6 +12,8 @@ public:
 
     ~Crosshair();
 
+	Crosshair* clone() const;
+
     void OnCollide(const Entity& ent);
 
 	sf::Uint16 GetEntityId() const;

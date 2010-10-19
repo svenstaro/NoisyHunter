@@ -9,8 +9,12 @@ namespace Engine{
 class GuiTextfield : public GuiControl{
 public:
     GuiTextfield();
+
     GuiTextfield(std::string name);
+
     ~GuiTextfield();
+
+	GuiTextfield* clone() const;
 
     // main callbacks
     void Draw(sf::RenderTarget* target);

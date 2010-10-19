@@ -9,6 +9,8 @@ public:
 
 	~WorldPolygon();
 
+	WorldPolygon* clone() const;
+
 	void Initialize();
 
 	// callbacks

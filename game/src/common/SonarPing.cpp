@@ -8,6 +8,10 @@ SonarPing::SonarPing(const float direction_angle) {
 
 SonarPing::~SonarPing() {}
 
+SonarPing* SonarPing::clone() const {
+	return new SonarPing();
+}
+
 void SonarPing::Initialize() {
 	// TODO: Get own image here!
 }

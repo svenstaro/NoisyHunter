@@ -15,7 +15,9 @@ public:
     GuiControl(const sf::Uint16 unique_id = 0, 
 			   const std::string& name = "undefined");
 
-    ~GuiControl();
+    virtual ~GuiControl() = 0;
+
+	virtual GuiControl* clone() const = 0;
 
     // Main callbacks
     virtual void Update(const float time_delta);

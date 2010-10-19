@@ -17,6 +17,8 @@ public:
 
 	~Submarine();
 
+	Submarine* clone() const;
+
 	void Initialize();
 
     void Update(float time_delta);

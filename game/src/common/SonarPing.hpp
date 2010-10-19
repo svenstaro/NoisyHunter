@@ -10,6 +10,8 @@ public:
 
 	~SonarPing();
 
+	SonarPing* clone() const;
+
 	void Initialize();
 
 	// callbacks

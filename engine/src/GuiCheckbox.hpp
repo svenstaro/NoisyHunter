@@ -10,8 +10,12 @@ namespace Engine{
 class GuiCheckbox : public GuiControl{
 public:
     GuiCheckbox();
+
     GuiCheckbox(std::string name);
+
     ~GuiCheckbox();
+
+	GuiCheckbox* clone() const;
 
     // main callbacks
     void Draw(sf::RenderTarget* target);

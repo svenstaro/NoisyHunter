@@ -16,6 +16,10 @@ Submarine::Submarine(const float pos_x,
 
 Submarine::~Submarine() {}
 
+Submarine* Submarine::clone() const {
+	return new Submarine();
+}
+
 void Submarine::Initialize() {
 	sf::Sprite* d = new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("submarine"));
 	d->SetCenter(d->GetSize().x / 2, d->GetSize().y / 2);

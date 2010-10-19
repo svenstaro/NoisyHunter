@@ -14,6 +14,8 @@ public:
 
 	~Torpedo();
 
+	Torpedo* clone() const;
+
 	void Initialize();
 
 	void Update(const float time_delta);

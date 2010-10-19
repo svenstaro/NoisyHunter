@@ -10,8 +10,12 @@ namespace Engine{
 class GuiButton : public GuiControl{
 public:
     GuiButton();
+
     GuiButton(std::string name);
+
     ~GuiButton();
+
+	GuiButton* clone() const;
 
     // main callbacks
     virtual void Draw(sf::RenderTarget* target);

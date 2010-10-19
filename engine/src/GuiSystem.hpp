@@ -11,7 +11,10 @@ namespace Engine {
 class GuiSystem {
 public:
     GuiSystem();
+
     ~GuiSystem();
+
+	GuiSystem* clone() const;
 
     void Update(const float time_delta);
     void HandleEvent(sf::Event e);

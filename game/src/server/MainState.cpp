@@ -28,9 +28,17 @@ void MainState::OnClientConnected(std::string client_name) {
 	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
 	auto clientmgr = netmgr->GetClientManagerPtr();
 	sf::Uint16 cl_id = clientmgr->GetId(client_name);
-	float lol = sf::Randomizer::Random(0.1f, 0.9f);
-	Submarine* submarine = new Submarine(lol, lol, cl_id);
-	submarine->GrabUniqueId();
-	netmgr->SendEntityAdd(submarine);
-	AddEntity(submarine);
+	float lol;
+
+	lol = sf::Randomizer::Random(0.1f, 0.9f);
+	Submarine* submarine1 = new Submarine(lol, lol, cl_id);
+	submarine1->GrabUniqueId();
+	netmgr->SendEntityAdd(submarine1);
+	AddEntity(submarine1);
+
+	lol = sf::Randomizer::Random(0.1f, 0.9f);
+	Submarine* submarine2 = new Submarine(lol, lol, cl_id);
+	submarine2->GrabUniqueId();
+	netmgr->SendEntityAdd(submarine2);
+	AddEntity(submarine2);
 }

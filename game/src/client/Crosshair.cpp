@@ -13,6 +13,10 @@ Crosshair::Crosshair(const sf::Uint16 unique_id) {
 
 Crosshair::~Crosshair() {}
 
+Crosshair* Crosshair::clone() const {
+	return new Crosshair();
+}
+
 void Crosshair::OnCollide(const Entity& ent) {
 	// TODO: Do stuff
 }
