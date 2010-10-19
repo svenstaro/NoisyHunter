@@ -80,18 +80,19 @@ void Root::StartMainLoop() {
 			while(time_delta < timebudget) {
                 mStateManager.Update(dt);
                 timebudget -= dt;
+
+
+				// Only send if there are clients to send packets to.
+				if(mNetworkManager.GetClientManagerPtr()->GetActiveClients() > 0) {
+					mNetworkManager.PreparePacket();
+					mStateManager.AppendAllEntitiesToPacket();
+					logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending snapshot.");
+					mNetworkManager.SendPacket();
+				}
 			}
 
             // Receive packets from clients.
             mNetworkManager.Receive();
-            
-			// Only send if there are clients to send packets to.
-			if(mNetworkManager.GetClientManagerPtr()->GetActiveClients() > 0) {
-				mNetworkManager.PreparePacket();
-				mStateManager.AppendAllEntitiesToPacket();
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending snapshot.");
-				mNetworkManager.SendPacket();
-			}
         }
     } else {
         // CLIENT MAIN LOOP

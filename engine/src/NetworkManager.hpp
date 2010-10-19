@@ -58,6 +58,7 @@ public:
 	sf::Uint16 GetPing();
 
 	ClientManager* GetClientManagerPtr();
+
 private:
     // General members
     bool mIsServer;
@@ -65,7 +66,6 @@ private:
 	sf::Packet mPacket;
 
     // Members used when in server mode
-	sf::SelectorUDP mServer_Selector;
 	ClientManager mClientManager;
     
     // Members used when in client mode
@@ -82,6 +82,8 @@ private:
 
 	sf::Uint32 mReceivedPacketsCount;
 	sf::Uint32 mSentPacketsCount;
+
+	sf::Clock mTimeOutClock;
 };
 
 }

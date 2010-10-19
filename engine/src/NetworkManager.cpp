@@ -21,10 +21,9 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
 		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Binding to port "+boost::lexical_cast<std::string>(server_port)+" successful.");
     }
 
-    mServer_Selector.Add(mListener);
 	mClientManager = ClientManager(2);
 
-	mListener.SetBlocking(1);
+	mListener.SetBlocking(0);
 
 	mReceivedPacketsCount = 0;
 	mSentPacketsCount = 0;
@@ -43,12 +42,12 @@ void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip,
 
     mClient_ClientPort = 12357;
     mListener.Bind(mClient_ClientPort);
-    mListener.SetBlocking(0);
+	mListener.SetBlocking(0);
     
 	SendClientAdd(client_name);
 
 	mReceivedPacketsCount = 0;
-	mSentPacketsCount = 0;;
+	mSentPacketsCount = 0;
 }
 
 void NetworkManager::PreparePacket() {
@@ -78,10 +77,12 @@ void NetworkManager::SendPacket(sf::Packet& packet) {
 		if(mIsServer) {
 			// We are sending from server, therefore send to all clients.
 			BOOST_FOREACH(sf::Uint16 id, mClientManager.GetIds()) {
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending packet to: "+mClientManager.GetIp(id).ToString()+":"+boost::lexical_cast<std::string>(mClientManager.GetPort(id)));
 				mListener.Send(packet, mClientManager.GetIp(id), mClientManager.GetPort(id));
 			}
 		} else {
 			// We are sending from client.
+			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending packet to: "+mClient_ServerIp.ToString()+":"+boost::lexical_cast<std::string>(mClient_ServerPort));
 			mListener.Send(packet, mClient_ServerIp, mClient_ServerPort);
 		}
 		mSentPacketsCount++;
@@ -132,18 +133,17 @@ void NetworkManager::Receive() {
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 
     if(mIsServer) {
-		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Receiving.");
-        unsigned int nb_sockets = mServer_Selector.Wait(0.5f);
+		if(mTimeOutClock.GetElapsedTime() > 0.5f) {
+			mTimeOutClock.Reset();
 
-		for(unsigned int i = 0; i < nb_sockets; ++i) {
-            sf::SocketUDP socket = mServer_Selector.GetSocketReady(i);
+			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Receiving.");
 
 			sf::Packet packet;
 			sf::IPAddress client_address;
 			sf::Uint16 client_port;
 
 			// TODO: Implement packet queue to handle all sent packets.
-			if(socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
+			if(mListener.Receive(packet, client_address, client_port) == sf::Socket::Done) {
 				if(mClientManager.IsKnown(client_address)) {
 					sf::Uint16 client_id = mClientManager.GetId(client_address, client_port);
 					std::string client_name = mClientManager.GetName(client_id);
@@ -154,8 +154,8 @@ void NetworkManager::Receive() {
 
 				HandlePacket(packet, client_address, client_port);
 				packet.Clear();
-            }
-        }
+			}
+		}
     } else {
         sf::Packet packet;
         sf::IPAddress server_address;
