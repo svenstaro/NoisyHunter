@@ -200,11 +200,11 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 sf::Uint16 id = mClientManager.GetId(address, port);
                 std::string client_name = mClientManager.GetName(id);
 				if(mClientManager.IsKnown(address)) {
+					std::string reason = "Lol just quit.";
+					SendClientQuit(reason, client_name);
 					logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Removing "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");
 					mClientManager.Remove(id);
 				}
-				std::string reason = "Lol just quit.";
-				SendClientQuit(reason, client_name);
             } else if(net_cmd == NETCMD_CLIENTPING) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTPING from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
                 // The client pinged back! 
