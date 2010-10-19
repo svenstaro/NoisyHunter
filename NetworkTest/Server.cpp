@@ -1,4 +1,5 @@
 #include <boost/lexical_cast.hpp>
+#include <boost/foreach.hpp>
 
 #include "Server.hpp"
 #include "ClientManager.hpp"
@@ -42,7 +43,7 @@ int main() {
 		if(Socket.Receive(Packet, Sender, Port) == sf::Socket::Done) {
 			if(!ClMan.IsKnown(Sender)) {
 				ClMan.Add(Sender, Port, "unnamed"); 
-				std::cout << "Client added to ClMan" << std::endl;
+				std::cout << "Client added to ClMan" << boost::lexical_cast<std::string>(Port) << std::endl;
 			} else {
 				std::string cmd1;
 				Packet >> cmd1;
@@ -58,7 +59,15 @@ int main() {
 					ClMan.Remove(ClMan.GetId(Sender,Port));
 				}
 			}
-			// SENDING SHIT
+		}
+
+		BOOST_FOREACH(sf::Uint16 id, ClMan.GetIds()) {
+			Packet.Clear();
+			Packet << sf::Uint16(ClMan.GetActiveClients());
+			BOOST_FOREACH(sf::Uint16 id2, ClMan.GetIds()) {
+				Packet << ClMan.GetName(id2);
+			}
+			Socket.Send(Packet, ClMan.GetIp(id), ClMan.GetPort(id));
 		}
 	}
 }
