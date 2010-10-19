@@ -18,6 +18,7 @@ int main(int argc, char* argv[]){
     std::string name = argv[3];
     packet << t << name;
     mSocket.Send(packet, ip, port);
+    mSocket.Send(packet, ip, port);
     std::cout << "Hello server, I am " << name << std::endl;
 
     int i = 0;
