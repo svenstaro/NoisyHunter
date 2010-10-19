@@ -60,8 +60,6 @@ public:
     // set screen position type
     Entity::PositionType GetPositionType() const;
 
-    void SetPosition(const Vector2D position);
-
     const Vector2D GetPosition() const;
 
     void SetDimension(const Vector2D dimension);
@@ -82,14 +80,11 @@ protected:
     boost::signals2::signal<void (const sf::Key::Code key)> mOnKeyUpSignal;
     boost::signals2::signal<void (const sf::Uint32 unicode_char)> mOnTypeSignal;
     
-    
-
-    std::string mName;
+	std::string mName;
     std::string mText;
     bool mIsFocused;
     bool mHover;
 
-    Vector2D mPosition;
     Vector2D mDimension;
 };
 

@@ -59,6 +59,7 @@ public:
     void SetSpeed(const float x, const float y);
 
 	void SetPosition(const float x, const float y);
+	void SetPosition(const Vector2D position);
 
 	const Vector2D GetSpeed() const;
 

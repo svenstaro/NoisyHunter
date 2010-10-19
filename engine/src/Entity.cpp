@@ -71,7 +71,11 @@ void Entity::SetSpeed(const float x, const float y) {
 }
 
 void Entity::SetPosition(const float x, const float y) {
-	mPosition = Vector2D(x, y);
+	SetPosition(Vector2D(x, y));
+}
+
+void Entity::SetPosition(const Vector2D position) {
+	mPosition = position;
 }
 
 const Vector2D Entity::GetSpeed() const {
