@@ -28,13 +28,15 @@ void PlayState::Initialize() {
     resmgr->AddImage(boost::filesystem::path("../game/gfx"),
 					 "missing.svg", 80, 53, "missing");
     resmgr->AddImage(boost::filesystem::path("../game/gui"),
-					 "button.svg", 24, 24, "gui.button");
+					 "button.svg", 48, 48, "gui.button");
     resmgr->AddImage(boost::filesystem::path("../game/gui"),
-					 "button_hover.svg", 24, 24, "gui.button_hover");
+					 "button_hover.svg", 48, 48, "gui.button_hover");
                      
     sf::Font font;
     font.LoadFromFile("../game/fonts/kingthings_trypewriter_2.ttf");
-    resmgr->AddFont(font, "default");
+	resmgr->AddFont(font, "trypewriter");
+	resmgr->AddFont(font, "default");
+	//resmgr->AddFont(sf::Font::GetDefaultFont(), "default");
     
     // create GUI
 	// TODO: Do stuff
@@ -45,14 +47,29 @@ void PlayState::Initialize() {
     
     // Add some GUI
     CreateGuiSystem();
-    Engine::GuiButton* c = new Engine::GuiButton("waiting");
-    c->SetDimension(Engine::Vector2D(200,30));
-    c->SetPosition(Engine::Vector2D(20,20));
-    c->SetText("Server did not answer yet...");
-    c->SetFont(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetFont("default"));
-    c->SetFontSize(12);
-    c->BindOnClick(boost::bind(&PlayState::ExitButton_OnClick, this, _1, _2, _3)); // bind test signal ;)
-    mGuiSystems.begin()->AddControl(c);
+
+		// Info Label
+		Engine::GuiLabel* l = new Engine::GuiLabel("info_label");
+		l->SetPosition(5,5);
+		l->SetText("Connecting to server...");
+		l->SetFont(sf::Font::GetDefaultFont());
+		l->SetFontSize(11);
+		l->SetFontStyle(sf::Text::Regular);
+		l->SetFontColor(sf::Color::White);
+		mGuiSystems.begin()->AddControl(l);
+
+
+		// Exit button
+		Engine::GuiButton* c = new Engine::GuiButton("exit_button");
+		c->SetDimension(Engine::Vector2D(100,40));
+		c->SetPosition(Engine::Vector2D(5,555));
+		c->SetText("Exit Game");
+		c->SetFont(sf::Font::GetDefaultFont());
+		c->SetFontSize(11);
+		c->SetFontStyle(sf::Text::Regular);
+		c->SetFontColor(sf::Color::White);
+		c->BindOnClick(boost::bind(&PlayState::ExitButton_OnClick, this, _1, _2, _3)); // bind test signal ;)
+		mGuiSystems.begin()->AddControl(c);
     
 
     auto inputmgr = Engine::Root::get_mutable_instance().GetInputManagerPtr();
@@ -146,11 +163,12 @@ void PlayState::OnClientConnected(const std::string& client_name) {
     if (client_name == Engine::Root::get_mutable_instance().GetClientName()){
         logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "THAT'S YOU!!");
         // TODO: Unpause StateManager.
-        mGuiSystems.begin()->GetControl<Engine::GuiButton>("waiting")->SetText("Found Server!");
+		//mGuiSystems.begin()->GetControl<Engine::GuiLabel>("info_label")->SetText("Connection successful, found the server!");
     }
 }
 
 void PlayState::ExitButton_OnClick(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
-    auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Yeah you clicked on that nice button which will not cause anything to happen as it has been abused as a label ;)");
+	/*auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Yeah you clicked on that nice button which will not cause anything to happen as it has been abused as a label ;)");*/
+	 Engine::Root::get_mutable_instance().RequestShutdown();
 }

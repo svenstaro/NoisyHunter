@@ -138,7 +138,7 @@ void Root::StartMainLoop() {
 			}          
             
             // Render the image.
-            mRenderWindow.Clear(sf::Color(0,0,0));
+			mRenderWindow.Clear(sf::Color(0,0,0));
             mStateManager.Draw(&mRenderWindow);
             mRenderWindow.Display();
 

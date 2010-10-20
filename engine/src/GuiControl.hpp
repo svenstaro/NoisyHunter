@@ -81,7 +81,7 @@ protected:
     boost::signals2::signal<void (const sf::Uint32 unicode_char)> mOnTypeSignal;
     
 	std::string mName;
-    std::string mString;
+	std::string mCaption;
     bool mIsFocused;
     bool mHover;
 

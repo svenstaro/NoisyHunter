@@ -26,19 +26,20 @@ GuiTextfield* GuiTextfield::clone() const {
 	return new GuiTextfield();
 }
 
+void GuiTextfield::SetPassword(bool password) {
+	mHideCharacters = password;
+}
+
 void GuiTextfield::Draw(sf::RenderTarget* target) {
     mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.textfield"));
     mSprite.SetPosition(mPosition.x, mPosition.y);
     mSprite.Resize(mDimension.x, mDimension.y);
     target->Draw(mSprite);
 
-    if (mHideCharacters) {
-        mText.SetString(std::string(mString.length(), '?'));
-        mText.SetFont(sf::Font::GetDefaultFont());
-    } else {
-        mText.SetString(mString);
-        mText.SetFont(*mFont);
-    }
+	if (mHideCharacters)
+		mText.SetString(std::string(mCaption.length(), '?')); // TODO: Change character
+	else
+		mText.SetString(mCaption);
 
     mText.SetPosition(mPosition.x+3, mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2);
     target->Draw(mText);
@@ -57,32 +58,11 @@ void GuiTextfield::SetMultiline(bool multiline) {
     mMultiline = multiline;
 }
 
-void GuiTextfield::SetPassword(bool password) {
-    mHideCharacters = password;
-}
-
-void GuiTextfield::SetFont(const sf::Font& font) {
-    mText.SetFont(font);
-    mFont = &font;
-}
-
-void GuiTextfield::SetFontSize(const float size) {
-    mText.SetCharacterSize(size);
-}
-
-void GuiTextfield::SetFontStyle(unsigned long style) {
-    mText.SetStyle(style);
-}
-
-void GuiTextfield::SetFontColor(const sf::Color& color) {
-    mText.SetColor(color);
-}
-
 void GuiTextfield::OnClick() {
     int last_pos = 0;
     int last_diff = 1000;
     unsigned int i = 0;
-    for(; i <= mString.length(); i++) {
+    for(; i <= mCaption.length(); i++) {
         int pos = mText.GetPosition().x + mText.GetCharacterPos(i).x;
         int diff = Root::get_mutable_instance().GetInputManagerPtr()->GetMousePosition().x - pos;
 
@@ -96,29 +76,29 @@ void GuiTextfield::OnClick() {
     }
 
     if (mCursorPosition != (int)i-1)
-        mCursorPosition = mString.length();
+        mCursorPosition = mCaption.length();
 }
 
 void GuiTextfield::OnKeyDown(sf::Key::Code key_code) {
     if(key_code == sf::Key::Back) {
-        if(mString.length() > 0) {
-            mString = mString.substr(0,mCursorPosition-1) + mString.substr(mCursorPosition);
+        if(mCaption.length() > 0) {
+            mCaption = mCaption.substr(0,mCursorPosition-1) + mCaption.substr(mCursorPosition);
             if (mCursorPosition > 0)
                 mCursorPosition -= 1;
         }
     } else if (key_code == sf::Key::Delete) {
-        if (mString.length() > 0) {
-            if (mCursorPosition < (int)mString.length())
-                mString = mString.substr(0,mCursorPosition) + mString.substr(mCursorPosition+1);
+        if (mCaption.length() > 0) {
+            if (mCursorPosition < (int)mCaption.length())
+                mCaption = mCaption.substr(0,mCursorPosition) + mCaption.substr(mCursorPosition+1);
         }
     } else if (key_code == sf::Key::Left) {
         if (mCursorPosition > 0)
             mCursorPosition--;
     } else if (key_code == sf::Key::Right) {
-        if (mCursorPosition < (int)mString.length())
+        if (mCursorPosition < (int)mCaption.length())
             mCursorPosition++;
     } else if (key_code == sf::Key::End) {
-        mCursorPosition = mString.length();
+        mCursorPosition = mCaption.length();
     } else if (key_code == sf::Key::Home) {
         mCursorPosition = 0;
     }
@@ -131,7 +111,7 @@ void GuiTextfield::OnType(sf::Uint32 unicode_char) {
        unicode_char != 9 and   // tab
        unicode_char != 13 and  // return
        unicode_char != 127) {   // delete
-       mString = mString.substr(0,mCursorPosition) + (char)unicode_char + mString.substr(mCursorPosition);
+       mCaption = mCaption.substr(0,mCursorPosition) + (char)unicode_char + mCaption.substr(mCursorPosition);
         mCursorPosition++;
     }
 }

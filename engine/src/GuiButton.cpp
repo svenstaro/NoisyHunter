@@ -9,9 +9,9 @@ GuiButton::GuiButton(std::string name) {
     mName = name;
     mHover = false;
     mIsFocused = false;
-    SetFontSize(16);
+	SetFontSize(10);
     SetFontStyle(sf::Text::Bold);
-    SetFontColor(sf::Color(0,0,0));
+	SetFontColor(sf::Color(255,255,255));
 }
 
 GuiButton::~GuiButton() {}
@@ -20,25 +20,9 @@ GuiButton* GuiButton::clone() const {
 	return new GuiButton();
 }
 
-void GuiButton::SetFont(const sf::Font& font) {
-    mText.SetFont(font);
-}
-
-void GuiButton::SetFontSize(const float size) {
-    mText.SetCharacterSize(size);
-}
-
-void GuiButton::SetFontStyle(unsigned long style) {
-    mText.SetStyle(style);
-}
-
-void GuiButton::SetFontColor(const sf::Color& color) {
-    mText.SetColor(color);
-}
-
 // main callbacks
 void GuiButton::Draw(sf::RenderTarget* target) {
-    mText.SetString(mString);
+	mText.SetString(mCaption);
     mText.SetPosition(mPosition.x + mDimension.x / 2 - mText.GetRect().Width  / 2,
                         mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2);
 
@@ -47,10 +31,10 @@ void GuiButton::Draw(sf::RenderTarget* target) {
     else
         mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button"));
 
-    if (mIsFocused)
+	if (mIsFocused)
         mText.SetColor(sf::Color(255,0,0));
     else
-        mText.SetColor(sf::Color(0,0,0));
+		mText.SetColor(sf::Color(255,255,255));
 
     /*sf::Color shape_color;
     if (mHover) shape_color = sf::Color(200,200,255);
