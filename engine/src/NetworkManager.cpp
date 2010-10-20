@@ -21,7 +21,8 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
 		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Binding to port "+boost::lexical_cast<std::string>(server_port)+" successful.");
     }
 
-	mClientManager = ClientManager(2);
+	int maxplayers = 8;
+	mClientManager = ClientManager(maxplayers);
 
 	mListener.SetBlocking(0);
 
@@ -42,7 +43,7 @@ void NetworkManager::InitializeAsClient(const sf::IpAddress server_ip,
 
     mClient_ClientPort = 12357;
     mListener.Bind(mClient_ClientPort);
-	mListener.SetBlocking(1);
+	mListener.SetBlocking(0);
     
 	SendClientAdd(client_name);
 

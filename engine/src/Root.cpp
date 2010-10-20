@@ -67,7 +67,7 @@ void Root::StartMainLoop() {
     if(mIsServer) {
         // SERVER MAIN LOOP
         
-		const float fps = 2.f;
+		const float fps = 60.f;
 		const float dt = 1/fps;
         float timebudget = 0.f;
         
