@@ -2,17 +2,11 @@
 
 namespace Engine{
 
-GuiLabel::GuiLabel() {
-
-}
-
+GuiLabel::GuiLabel() {}
 GuiLabel::GuiLabel(std::string name) {
-
+	mName = name;
 }
-
-GuiLabel::~GuiLabel() {
-
-}
+GuiLabel::~GuiLabel() {}
 
 GuiLabel* GuiLabel::clone() const {
 	return new GuiLabel();

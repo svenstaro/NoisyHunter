@@ -163,7 +163,7 @@ void PlayState::OnClientConnected(const std::string& client_name) {
     if (client_name == Engine::Root::get_mutable_instance().GetClientName()){
         logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "THAT'S YOU!!");
         // TODO: Unpause StateManager.
-		//mGuiSystems.begin()->GetControl<Engine::GuiLabel>("info_label")->SetText("Connection successful, found the server!");
+		mGuiSystems.begin()->GetControl<Engine::GuiLabel>("info_label")->SetText("Connection successful, found the server!");
     }
 }
 
