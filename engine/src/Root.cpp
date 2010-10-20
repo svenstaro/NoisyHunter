@@ -68,9 +68,11 @@ void Root::StartMainLoop() {
         // SERVER MAIN LOOP
 		sf::Clock Clock;
         
-		const float fps = 60.f;
+		const float fps = 100.f;
 		const float dt = 1/fps;
         float timebudget = 0.f;
+
+		sf::Clock SnapClock;
         
         while(!mShutdownRequested) {
             float time_delta = Clock.GetElapsedTime();
@@ -87,11 +89,13 @@ void Root::StartMainLoop() {
             mNetworkManager.Receive();
             
 			// Only send if there are clients to send packets to.
-			if(mNetworkManager.GetClientManagerPtr()->GetActiveClients() > 0) {
-				mNetworkManager.PreparePacket();
-				mStateManager.AppendAllEntitiesToPacket();
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending snapshot.");
-				mNetworkManager.SendPacket();
+			if(SnapClock.GetElapsedTime() >= 0.5f) {
+				if(mNetworkManager.GetClientManagerPtr()->GetActiveClients() > 0) {
+					mNetworkManager.PreparePacket();
+					mStateManager.AppendAllEntitiesToPacket();
+					logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending snapshot.");
+					mNetworkManager.SendPacket();
+				}
 			}
         }
     } else {

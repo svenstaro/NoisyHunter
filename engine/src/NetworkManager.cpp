@@ -21,7 +21,6 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
 		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Binding to port "+boost::lexical_cast<std::string>(server_port)+" successful.");
     }
 
-    mServer_Selector.Add(mListener);
 	mClientManager = ClientManager(2);
 
 	mListener.SetBlocking(1);
@@ -124,35 +123,32 @@ void NetworkManager::Receive() {
 
     if(mIsServer) {
 		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Receiving.");
-        unsigned int nb_sockets = mServer_Selector.Wait(0.5f);
+		sf::Packet packet;
+		sf::IPAddress client_address;
+		sf::Uint16 client_port;
 
-        for(unsigned int i=0;i < nb_sockets; ++i) {
-            sf::SocketUDP socket = mServer_Selector.GetSocketReady(i);
-
-			sf::Packet packet;
-			sf::IPAddress client_address;
-			sf::Uint16 client_port;
-
-			// TODO: Implement packet queue to handle all sent packets.
-			if(socket.Receive(packet, client_address, client_port) == sf::Socket::Done) {
-				if(mClientManager.IsKnown(client_address)) {
-					sf::Uint16 client_id = mClientManager.GetId(client_address, client_port);
-					std::string client_name = mClientManager.GetName(client_id);
-					logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from known client "+client_name+"("+boost::lexical_cast<std::string>(client_address)+":"+boost::lexical_cast<std::string>(client_port)+")");
+		if(mListener.Receive(packet, client_address, client_port) == sf::Socket::Done) {
+			if(mClientManager.IsKnown(client_address, client_port)) {
+				sf::Uint16 client_id = mClientManager.GetId(client_address, client_port);
+				std::string client_name = mClientManager.GetName(client_id);
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from known client "+client_name+"("+boost::lexical_cast<std::string>(client_address)+":"+boost::lexical_cast<std::string>(client_port)+")");
+			} else {
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from unknown client ("+boost::lexical_cast<std::string>(client_address)+":"+boost::lexical_cast<std::string>(client_port)+")");
+				if(mClientManager.IsSlotAvailable()) {
+					mClientManager.Add(client_address, client_port, "unnamed");
 				} else {
-					logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from unknown client ("+boost::lexical_cast<std::string>(client_address)+":"+boost::lexical_cast<std::string>(client_port)+")");
+					logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "No slot available for ("+client_address.ToString()+":"+boost::lexical_cast<std::string>(client_port)+").");
 				}
+			}
 
-				HandlePacket(packet, client_address, client_port);
-				packet.Clear();
-            }
-        }
+			HandlePacket(packet, client_address, client_port);
+			packet.Clear();
+		}
     } else {
         sf::Packet packet;
         sf::IPAddress server_address;
         sf::Uint16 server_port;
         
-			// TODO: Implement packet queue to handle all sent packets.
         if(mListener.Receive(packet, server_address, server_port) == sf::Socket::Done){
 			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from "+boost::lexical_cast<std::string>(server_address)+":"+boost::lexical_cast<std::string>(server_port));
             HandlePacket(packet, server_address, server_port);
@@ -181,24 +177,20 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTADD from "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");
 
                 // Add new client if unknown
-				if(!mClientManager.IsKnown(address)) {
-					if(mClientManager.IsSlotAvailable()) {
+				if(!mClientManager.IsKnown(address, port)) {
 						// Make a signal here wich is connected to mClientManager.Add() and to MainState.OnClientConnect()
-						mClientManager.Add(address, port, client_name);
+						sf::Uint16 id = mClientManager.GetId(address, port);
+						mClientManager.SetName(id, client_name);
 						SendClientAdd(client_name);
 						TriggerOnClientConnected(client_name);
-
 						logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Client "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+") was added successfully.");
-					} else {
-						logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "No slot available for "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+").");
-					}
 				}
 			} else if(net_cmd == NETCMD_CLIENTQUIT) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTQUIT from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
                 sf::Packet packet;
                 sf::Uint16 id = mClientManager.GetId(address, port);
                 std::string client_name = mClientManager.GetName(id);
-				if(mClientManager.IsKnown(address)) {
+				if(mClientManager.IsKnown(address, port)) {
 					std::string reason = "Lol just quit.";
 					SendClientQuit(reason, client_name);
 					logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Removing "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");

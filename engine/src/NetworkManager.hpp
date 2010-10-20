@@ -65,7 +65,6 @@ private:
 	sf::Packet mPacket;
 
     // Members used when in server mode
-	sf::SelectorUDP mServer_Selector;
 	ClientManager mClientManager;
     
     // Members used when in client mode

@@ -40,7 +40,7 @@ int main() {
 					Packet >> name;
 					sf::Uint16 id = ClMan.GetId(Sender, Port);
 					ClMan.SetName(id, name);
-					std::cout << "CLient connected ["+boost::lexical_cast<std::string>(id)+" | "+name+"]" << std::endl;
+					std::cout << "Client connected ["+boost::lexical_cast<std::string>(id)+" | "+name+"]" << std::endl;
 					Packet.Clear();
 					Packet << "kthx";
 					Socket.Send(Packet, Sender, Port);
