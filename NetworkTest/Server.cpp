@@ -23,6 +23,7 @@ int main() {
 	const float fps = 50.f;
 	const float dt = 1/fps;
 	float timebudget = 0.6f;
+	sf::Clock LOLClock;
 
 	if(!Socket.Bind(1337)) {
 		std::cout << "fail port binding" << std::endl;
@@ -34,11 +35,9 @@ int main() {
 		timebudget -= dt;
 
 		while(time_delta < timebudget) {
-			sf::Sleep(0.01);
+			sf::Sleep(0.005);
 			timebudget -= dt;
 		}
-
-		Packet.Clear();
 
 		if(Socket.Receive(Packet, Sender, Port) == sf::Socket::Done) {
 			if(!ClMan.IsKnown(Sender, Port)) {
@@ -65,13 +64,19 @@ int main() {
 			}
 		}
 
-		BOOST_FOREACH(sf::Uint16 id, ClMan.GetIds()) {
+		if (LOLClock.GetElapsedTime() >= 0.2f) {
+			LOLClock.Reset();
 			Packet.Clear();
-			Packet << sf::Uint16(ClMan.GetActiveClients());
-			BOOST_FOREACH(sf::Uint16 id2, ClMan.GetIds()) {
-				Packet << ClMan.GetName(id2);
+
+
+			BOOST_FOREACH(sf::Uint16 id, ClMan.GetIds()) {
+				Packet.Clear();
+				Packet << sf::Uint16(ClMan.GetActiveClients());
+				BOOST_FOREACH(sf::Uint16 id2, ClMan.GetIds()) {
+					Packet << ClMan.GetName(id2);
+				}
+				Socket.Send(Packet, ClMan.GetIp(id), ClMan.GetPort(id));
 			}
-			Socket.Send(Packet, ClMan.GetIp(id), ClMan.GetPort(id));
 		}
 	}
 }

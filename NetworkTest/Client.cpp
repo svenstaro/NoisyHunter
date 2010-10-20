@@ -58,16 +58,17 @@ int main(int argc, char* argv[]){
 
         mSocket.Send(packet, ip, port);
 
-        mSocket.Receive(packet, sip, sport);
-        sf::Uint16 client_num;
-        packet >> client_num;
-        std::string lol = " Clients: ";
-        for (int i = 0; i < client_num; i++){
-            std::string client_name;
-            packet >> client_name;
-            lol += client_name+" | ";
-        }
-        std::cout << client_num << lol << std::endl;
+        if(mSocket.Receive(packet, sip, sport) == sf::Socket::Done) {
+			sf::Uint16 client_num;
+			packet >> client_num;
+			std::string lol = " Clients: ";
+			for (int i = 0; i < client_num; i++){
+				std::string client_name;
+				packet >> client_name;
+				lol += client_name+" | ";
+			}
+			std::cout << client_num << lol << std::endl;
+		}
         sf::Sleep(0.2);        
     }
     return 1;
