@@ -22,7 +22,7 @@ Submarine* Submarine::clone() const {
 
 void Submarine::Initialize() {
 	sf::Sprite* d = new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("submarine"));
-	d->SetCenter(d->GetSize().x / 2, d->GetSize().y / 2);
+	d->SetOrigin(d->GetSize().x / 2, d->GetSize().y / 2);
 	mDrawable = d;
 }
 

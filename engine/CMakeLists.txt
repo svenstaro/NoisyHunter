@@ -8,7 +8,7 @@ add_library(engine STATIC
 
 target_link_libraries(engine
 	${Boost_LIBRARIES}
-    ${SFML_LIBRARY}
+	${SFML_LIBRARIES}
     ${BULLET_LIBRARIES}
 	${ImageMagick_LIBRARIES}
 )

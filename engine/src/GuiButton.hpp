@@ -26,7 +26,7 @@ public:
     void SetFontColor(const sf::Color& color);
 
 private:
-    sf::String mString;
+    sf::Text mText;
     TiledSprite mSprite;
 };
 

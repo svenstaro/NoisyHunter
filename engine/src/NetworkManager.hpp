@@ -24,13 +24,13 @@ public:
 	~NetworkManager();
 
 	void InitializeAsServer(const sf::Uint16 server_port);
-	void InitializeAsClient(const sf::IPAddress server_ip, 
+	void InitializeAsClient(const sf::IpAddress server_ip, 
 							const sf::Uint16 server_port,
 							const std::string name);
 
     // Receiving methods
     void Receive();
-	void HandlePacket(sf::Packet& packet, const sf::IPAddress& address, const sf::Uint16 port);
+	void HandlePacket(sf::Packet& packet, const sf::IpAddress& address, const sf::Uint16 port);
 
     // Sending methods
     void PreparePacket();
@@ -62,14 +62,14 @@ public:
 private:
     // General members
     bool mIsServer;
-	sf::SocketUDP mListener;
+	sf::UdpSocket mListener;
 	sf::Packet mPacket;
 
     // Members used when in server mode
 	ClientManager mClientManager;
     
     // Members used when in client mode
-    sf::IPAddress mClient_ServerIp;
+    sf::IpAddress mClient_ServerIp;
     sf::Uint16 mClient_ServerPort;
     sf::Uint16 mClient_ClientPort;
 

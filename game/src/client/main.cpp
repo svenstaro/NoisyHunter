@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
 	idmgr->RegisterEntityClass(new Torpedo());
 
 	// Initialize Root singleton using parsed values.
-    root.InitializeAsClient(sf::VideoMode(width, height), "Noisy Hunter", fullscreen, sf::IPAddress(ip), port, name, verbose);
+    root.InitializeAsClient(sf::VideoMode(width, height), "Noisy Hunter", fullscreen, sf::IpAddress(ip), port, name, verbose);
 
     //root.GetStateManagerPtr()->Add(new LoadingState());
     root.GetStateManagerPtr()->Add(new PlayState());

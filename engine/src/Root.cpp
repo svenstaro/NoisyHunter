@@ -29,7 +29,7 @@ void Root::InitializeAsServer(const sf::Uint16 server_port,
 void Root::InitializeAsClient(const sf::VideoMode& video_mode, 
 							  const std::string& window_title, 
 							  const bool is_fullscreen,
-							  const sf::IPAddress& server_ip, 
+							  const sf::IpAddress& server_ip, 
 							  const sf::Uint16 server_port,
 							  const std::string name,
 							  bool is_verbose) {
@@ -39,7 +39,7 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_STATE, "Initializing Root as client.");
 
-    sf::WindowSettings Settings;
+    sf::ContextSettings Settings;
     Settings.DepthBits         = 24; // Request a 24 bits depth buffer
     Settings.StencilBits       = 8;  // Request a 8 bits stencil buffer
     Settings.AntialiasingLevel = 8;  // Request 2 levels of antialiasing
@@ -67,7 +67,7 @@ void Root::StartMainLoop() {
     if(mIsServer) {
         // SERVER MAIN LOOP
         
-		const float fps = 60.f;
+		const float fps = 2.f;
 		const float dt = 1/fps;
         float timebudget = 0.f;
         

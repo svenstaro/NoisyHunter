@@ -4,10 +4,11 @@ project(NoisyHunter)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-extras/")
 
+set(SFML_FIND_VERSION_MAJOR 2)
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 
-find_package(SFML REQUIRED)
+find_package(SFML COMPONENTS audio graphics network system window REQUIRED)
 find_package(Bullet REQUIRED)
 find_package(Boost COMPONENTS filesystem program_options system date_time REQUIRED)
 find_package(ImageMagick COMPONENTS Magick++ REQUIRED)

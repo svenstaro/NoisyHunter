@@ -28,7 +28,7 @@ public:
     void InitializeAsClient(const sf::VideoMode& video_mode, 
 							const std::string& window_title, 
 							const bool is_fullscreen,
-                            const sf::IPAddress& server_ip, 
+                            const sf::IpAddress& server_ip, 
 							const sf::Uint16 server_port,
 							const std::string name,
 							bool is_verbose);

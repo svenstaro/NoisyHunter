@@ -1,22 +1,20 @@
 #include "TiledSprite.hpp"
 
-
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Image.hpp>
-//#include <SFML/Graphics/GraphicsContext.hpp> // ?? why not ??
+#include <GL/glew.h>
 
-namespace Engine{
+namespace Engine {
 
 using namespace sf;
 
 // constructors
 TiledSprite::TiledSprite() : Sprite() {}
+
 TiledSprite::TiledSprite(const Image& Img, const Vector2f& Position, const Vector2f& Scale, float Rotation, const Color& Col) :
     Sprite(Img, Position, Scale, Rotation, Col){}
 
-
 // RENDER TILED SPRITE
-
 
 void TiledSprite::Render(RenderTarget&) const  {
 
@@ -24,10 +22,10 @@ void TiledSprite::Render(RenderTarget&) const  {
     const IntRect& sub_rect = GetSubRect();
 
     // Get the sprite size
-    float Width  = static_cast<float>(sub_rect.GetWidth());
-    float Height = static_cast<float>(sub_rect.GetHeight());
-    float subw = sub_rect.GetWidth() / GetScale().x / 3;
-    float subh = sub_rect.GetHeight() / GetScale().y / 3;
+    float Width  = static_cast<float>(sub_rect.Width);
+    float Height = static_cast<float>(sub_rect.Height);
+    float subw = sub_rect.Width / GetScale().x / 3;
+    float subh = sub_rect.Height / GetScale().y / 3;
 
     // Check if the image is valid
     if (image && (image->GetWidth() > 0) && (image->GetHeight() > 0)){
@@ -57,7 +55,7 @@ void TiledSprite::Render(RenderTarget&) const  {
                                myIsFlippedY ? TexCoords.Top    : TexCoords.Bottom);
 */
 
-                FloatRect Rect(TexCoords.Left,TexCoords.Top,TexCoords.Right,TexCoords.Bottom);
+                FloatRect Rect(TexCoords.Left, TexCoords.Top, TexCoords.Left + TexCoords.Width, TexCoords.Top + TexCoords.Height);
 
                 int left = 0;
                 int right = subw / 3;
@@ -84,9 +82,9 @@ void TiledSprite::Render(RenderTarget&) const  {
                 // Draw the tile's triangles
                 glBegin(GL_QUADS);
                 glTexCoord2f(Rect.Left,  Rect.Top);    glVertex2f(left, top);
-                glTexCoord2f(Rect.Left,  Rect.Bottom); glVertex2f(left, bottom);
-                glTexCoord2f(Rect.Right, Rect.Bottom); glVertex2f(right, bottom);
-                glTexCoord2f(Rect.Right, Rect.Top);    glVertex2f(right, top);
+                glTexCoord2f(Rect.Left,  Rect.Top+Rect.Height); glVertex2f(left, bottom);
+                glTexCoord2f(Rect.Left+Rect.Width, Rect.Top+Rect.Height); glVertex2f(right, bottom);
+                glTexCoord2f(Rect.Left+Rect.Width, Rect.Top);    glVertex2f(right, top);
                 glEnd();
             }
         }

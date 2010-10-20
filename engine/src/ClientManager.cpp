@@ -16,7 +16,7 @@ ClientManager::ClientManager(sf::Uint16 max_players) {
 
 ClientManager::~ClientManager() {}
 
-void ClientManager::Add(const sf::IPAddress& address, const sf::Uint16 port, const std::string& name) {
+void ClientManager::Add(const sf::IpAddress& address, const sf::Uint16 port, const std::string& name) {
     std::map<sf::Uint16, Client>::iterator it;
     it = mClients.end();
     Client client;
@@ -49,7 +49,7 @@ void ClientManager::Remove(const sf::Uint16 id) {
 	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Client count: "+boost::lexical_cast<std::string>(mClients.size()));
 }
 
-bool ClientManager::IsKnown(const sf::IPAddress& address) {
+bool ClientManager::IsKnown(const sf::IpAddress& address) {
     bool isknown = false;
     std::map<sf::Uint16, Client>::iterator it;
     for(it = mClients.begin(); it != mClients.end(); ++it) {
@@ -86,7 +86,7 @@ std::vector<sf::Uint16> ClientManager::GetIds() {
     return ids;
 }
 
-sf::Uint16 ClientManager::GetId(const sf::IPAddress& address, const sf::Uint16 port) {
+sf::Uint16 ClientManager::GetId(const sf::IpAddress& address, const sf::Uint16 port) {
     std::map<sf::Uint16, Client>::iterator it;
 	sf::Uint16 tmp = 0;
 	bool id_found = false;
@@ -124,7 +124,7 @@ sf::Uint16 ClientManager::GetId(const std::string& name) {
     return tmp;
 }
 
-sf::IPAddress ClientManager::GetIp(const sf::Uint16 id) {
+sf::IpAddress ClientManager::GetIp(const sf::Uint16 id) {
 	if(mClients.count(id) >= 1) {
 		return mClients[id].address;
 	} else {

@@ -11,7 +11,7 @@
 namespace Engine {
 
 struct Client {
-    sf::IPAddress address;
+    sf::IpAddress address;
     std::string name;
     sf::Uint16 port;
 };
@@ -22,22 +22,22 @@ class ClientManager {
 
         ~ClientManager();
 
-        void Add(const sf::IPAddress& address, const sf::Uint16 port, const std::string& name);
+        void Add(const sf::IpAddress& address, const sf::Uint16 port, const std::string& name);
 
         void Remove(const sf::Uint16 id);
 
-        bool IsKnown(const sf::IPAddress& address);
+        bool IsKnown(const sf::IpAddress& address);
 
         bool IsSlotAvailable();
 
         // Returns vector of currently active (connected) client IDs
         std::vector<sf::Uint16> GetIds();
 
-        sf::Uint16 GetId(const sf::IPAddress& address, const sf::Uint16 port);
+        sf::Uint16 GetId(const sf::IpAddress& address, const sf::Uint16 port);
         sf::Uint16 GetId(const std::string& name);
 
         // Get IP of client ID
-        sf::IPAddress GetIp(const sf::Uint16 id);
+        sf::IpAddress GetIp(const sf::Uint16 id);
 
         sf::Uint16 GetPort(const sf::Uint16 id);
     

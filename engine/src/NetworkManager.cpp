@@ -14,7 +14,7 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Initializing NetworkManager as server.");
 
-    if(!mListener.Bind(server_port)) {
+    if(mListener.Bind(server_port)) {
 		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "NetworkManager was broken while binding the listening server socket.");
         exit(1);
     } else {
@@ -29,7 +29,7 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
 	mSentPacketsCount = 0;
 }
 
-void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip, 
+void NetworkManager::InitializeAsClient(const sf::IpAddress server_ip, 
 										const sf::Uint16 server_port,
 										const std::string client_name) {
     mIsServer = false;
@@ -42,7 +42,7 @@ void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip,
 
     mClient_ClientPort = 12357;
     mListener.Bind(mClient_ClientPort);
-	mListener.SetBlocking(0);
+	mListener.SetBlocking(1);
     
 	SendClientAdd(client_name);
 
@@ -139,7 +139,7 @@ void NetworkManager::Receive() {
 			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Receiving.");
 
 			sf::Packet packet;
-			sf::IPAddress client_address;
+			sf::IpAddress client_address;
 			sf::Uint16 client_port;
 
 			// TODO: Implement packet queue to handle all sent packets.
@@ -158,7 +158,7 @@ void NetworkManager::Receive() {
 		}
     } else {
         sf::Packet packet;
-        sf::IPAddress server_address;
+        sf::IpAddress server_address;
         sf::Uint16 server_port;
         
 			// TODO: Implement packet queue to handle all sent packets.
@@ -170,7 +170,7 @@ void NetworkManager::Receive() {
     }
 }
 
-void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& address, const sf::Uint16 port) {
+void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& address, const sf::Uint16 port) {
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 
 	mReceivedPacketsCount++;
