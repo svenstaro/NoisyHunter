@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
 	sf::IPAddress sip;
 	sf::Uint16 sport;
 	bool connected = false;
-	while (!connected) {
+	while(!connected) {
 		packet << t << name;
 	    mSocket.Send(packet, ip, port);
 	    std::cout << "Hello server, I am " << name << std::endl;

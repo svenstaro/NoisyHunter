@@ -19,10 +19,7 @@ int main() {
 	sf::IPAddress Sender;
 	sf::Uint16 Port;
 
-	sf::Clock Clock;
-	const float fps = 50.f;
-	const float dt = 1/fps;
-	float timebudget = 0.6f;
+	Socket.SetBlocking(1);
 	sf::Clock LOLClock;
 
 	if(!Socket.Bind(1337)) {
