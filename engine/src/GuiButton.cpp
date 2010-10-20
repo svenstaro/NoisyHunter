@@ -64,7 +64,7 @@ void GuiButton::Draw(sf::RenderTarget* target) {
                                   shape_color);
 */
     mSprite.SetPosition(mPosition.x, mPosition.y);
-    mSprite.Resize(mDimension.x, mDimension.y);
+	mSprite.SetScale(mDimension.x, mDimension.y);
 
 
     target->Draw(mSprite);

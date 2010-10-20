@@ -28,9 +28,9 @@ void PlayState::Initialize() {
     resmgr->AddImage(boost::filesystem::path("../game/gfx"),
 					 "missing.svg", 80, 53, "missing");
     resmgr->AddImage(boost::filesystem::path("../game/gui"),
-                     "button.svg", 100, 100, "gui.button");
+					 "button.svg", 24, 24, "gui.button");
     resmgr->AddImage(boost::filesystem::path("../game/gui"),
-                     "button_hover.svg", 100, 100, "gui.button_hover");
+					 "button_hover.svg", 24, 24, "gui.button_hover");
                      
     sf::Font font;
     font.LoadFromFile("../game/fonts/kingthings_trypewriter_2.ttf");

@@ -1,105 +1,76 @@
 #include "TiledSprite.hpp"
 
+#include <iostream>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Image.hpp>
-#include <GL/glew.h>
 
 namespace Engine {
 
 using namespace sf;
 
 // constructors
-TiledSprite::TiledSprite() : Sprite() {}
+TiledSprite::TiledSprite() {
+	SetSubRect(IntRect(0,0,1,1));
+}
 
-TiledSprite::TiledSprite(const Image& Img, const Vector2f& Position, const Vector2f& Scale, float Rotation, const Color& Col) :
-    Sprite(Img, Position, Scale, Rotation, Col){}
+TiledSprite::TiledSprite(const Image& Img, const Vector2f& Position, const Vector2f& Scale, float Rotation, const Color& Col) {
+	SetImage(Img);
+	SetPosition(Position);
+	SetScale(Scale);
+	SetRotation(Rotation);
+	SetColor(Col);
+	SetSubRect(IntRect(0,0,1,1));
+}
 
-// RENDER TILED SPRITE
+void TiledSprite::Render(RenderTarget&, Renderer& renderer) const {
+	const Image* image = GetImage();
 
-void TiledSprite::Render(RenderTarget&) const  {
 
-    const Image* image = GetImage();
     const IntRect& sub_rect = GetSubRect();
 
-    // Get the sprite size
+	// Get the sprite size
+
+
     float Width  = static_cast<float>(sub_rect.Width);
-    float Height = static_cast<float>(sub_rect.Height);
-    float subw = sub_rect.Width / GetScale().x / 3;
-    float subh = sub_rect.Height / GetScale().y / 3;
+	float Height = static_cast<float>(sub_rect.Height);
+	float subw = Width / 3;  // 8
+	float subh = Height / 3; // 8
+	float sw = GetScale().x; // 200
+	float sh = GetScale().y; // 30
 
     // Check if the image is valid
-    if (image && (image->GetWidth() > 0) && (image->GetHeight() > 0)){
-        // Use the "offset trick" to get pixel-perfect rendering
-        // see http://www.opengl.org/resources/faq/technical/transformations.htm#tran0030
-        glTranslatef(0.375f, 0.375f, 0.f);
+	if(image) {
+		// Bind the texture
+		renderer.SetTexture(image);
 
-
-
-        // Bind the texture
-        image->Bind();
-
-
-        // 9 subrects
-        for (int x = 0; x < 3; x++){
-            for (int y = 0; y < 3; y++){
+		// 9 subrects
+		for(int x = 0; x < 3; x++) {
+			for(int y = 0; y < 3; y++) {
                 // Calculate the texture coordinates
+				FloatRect tc = image->GetTexCoords(IntRect(x * subw, y * subh, subw, subh));
 
-                FloatRect TexCoords = image->GetTexCoords(IntRect(sub_rect.Left + x     * Width / 3,
-                                                                  sub_rect.Top  + y     * Height / 3,
-                                                                  sub_rect.Left + (x+1) * Width / 3,
-                                                                  sub_rect.Top  + (y+1) * Height / 3));
+				float left = 0, top = 0, right = 0, bottom = 0;
+				float hp = subw/sw;
+				float vp = subh/sh;
 
-                /*FloatRect Rect(myIsFlippedX ? TexCoords.Right  : TexCoords.Left,
-                               myIsFlippedY ? TexCoords.Bottom : TexCoords.Top,
-                               myIsFlippedX ? TexCoords.Left   : TexCoords.Right,
-                               myIsFlippedY ? TexCoords.Top    : TexCoords.Bottom);
-*/
+					 if(x == 0)	{ left = 0;		right = hp;		}
+				else if(x == 1)	{ left = hp;	right = 1-hp;	}
+				else if(x == 2)	{ left = 1-hp;	right = 1;		}
 
-                FloatRect Rect(TexCoords.Left, TexCoords.Top, TexCoords.Left + TexCoords.Width, TexCoords.Top + TexCoords.Height);
+					 if(y == 0)	{ top = 0;		bottom = vp;	}
+				else if(y == 1)	{ top = vp;		bottom = 1-vp;	}
+				else if(y == 2)	{ top = 1-vp;	bottom = 1;		}
 
-                int left = 0;
-                int right = subw / 3;
-                int top = 0;
-                int bottom = subh / 3;
-
-                if (x == 1){
-                    left = subw / 3;
-                    right = Width - subw / 3;
-                }
-                if (x == 2) {
-                    left = Width - subw / 3;
-                    right = Width;
-                }
-                if (y == 1){
-                    top = subh / 3;
-                    bottom = Height - subh / 3;
-                }
-                if (y == 2) {
-                    top = Height - subh / 3;
-                    bottom = Height;
-                }
-
-                // Draw the tile's triangles
-                glBegin(GL_QUADS);
-                glTexCoord2f(Rect.Left,  Rect.Top);    glVertex2f(left, top);
-                glTexCoord2f(Rect.Left,  Rect.Top+Rect.Height); glVertex2f(left, bottom);
-                glTexCoord2f(Rect.Left+Rect.Width, Rect.Top+Rect.Height); glVertex2f(right, bottom);
-                glTexCoord2f(Rect.Left+Rect.Width, Rect.Top);    glVertex2f(right, top);
-                glEnd();
+				// Draw the sprite's geometry
+				renderer.Begin(Renderer::TriangleStrip);
+				renderer.AddVertex(left,  top,		tc.Left,			tc.Top);
+				renderer.AddVertex(right, top,		tc.Left + tc.Width,	tc.Top);
+				renderer.AddVertex(left,  bottom,	tc.Left,			tc.Top + tc.Height);
+				renderer.AddVertex(right, bottom,	tc.Left + tc.Width,	tc.Top + tc.Height);
+				renderer.End();
             }
-        }
-    } else {
-        // Disable texturing
-        glDisable(GL_TEXTURE_2D);
-
-        // Draw the sprite's triangles
-        glBegin(GL_QUADS);
-        glVertex2f(0,     0);
-        glVertex2f(0,     Height);
-        glVertex2f(Width, Height);
-        glVertex2f(Width, 0);
-        glEnd();
-    }
+		}
+	}
 }
 
 }
