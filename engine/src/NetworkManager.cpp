@@ -91,7 +91,6 @@ void NetworkManager::SendClientAdd(const std::string& client_name) {
     SendPacket(packet);
 }
 
-
 void NetworkManager::SendClientQuit(const std::string &reason, const std::string &client_name) {
 	sf::Packet packet;
 	packet << sf::Uint16(NETCMD_CLIENTQUIT);
@@ -114,7 +113,7 @@ void NetworkManager::SendEntityAdd(Entity* entity) {
 void NetworkManager::SendChatMessage(const std::string& chat_message, const std::string& client_name) {
     sf::Packet packet;
     packet << sf::Uint16(NETCMD_CHATMESSAGE);
-    if (mIsServer)
+    if(mIsServer)
         packet << client_name;
     packet << chat_message;
     SendPacket(packet);

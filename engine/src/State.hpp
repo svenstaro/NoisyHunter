@@ -52,8 +52,6 @@ public:
 	}
 
 protected:
-    //Root* mRoot;
-
     // Entity list
     boost::ptr_vector<Entity> mEntities;
 
