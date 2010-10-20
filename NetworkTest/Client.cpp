@@ -12,14 +12,28 @@ int main(int argc, char* argv[]){
     
     sf::SocketUDP mSocket;
     mSocket.Bind(23456);
+	mSocket.SetBlocking(0);
     sf::IPAddress ip(argv[1]);
     sf::Uint16 port = boost::lexical_cast<sf::Uint16>(argv[2]);
     sf::Packet packet;
     std::string t = "Hello";
     std::string name = argv[3];
-    packet << t << name;
-    mSocket.Send(packet, ip, port);
-    std::cout << "Hello server, I am " << name << std::endl;
+	sf::IPAddress sip;
+	sf::Uint16 sport;
+	bool connected = false;
+	while (!connected) {
+		packet << t << name;
+	    mSocket.Send(packet, ip, port);
+	    std::cout << "Hello server, I am " << name << std::endl;
+		packet.Clear();
+		if (mSocket.Receive(packet, sip, sport) == sf::Socket::Done) {
+			std::string tmp;
+			packet >> tmp;
+			if(tmp=="kthx")
+				connected=true;
+		}
+		sf::Sleep(0.4);
+	}
 
     int i = 0;
     while(1) {
@@ -32,8 +46,6 @@ int main(int argc, char* argv[]){
 
         mSocket.Send(packet, ip, port);
 
-        sf::IPAddress sip;
-        sf::Uint16 sport;
         mSocket.Receive(packet, sip, sport);
         sf::Uint16 client_num;
         packet >> client_num;
@@ -44,7 +56,7 @@ int main(int argc, char* argv[]){
             lol += client_name;
         }
         std::cout << client_num << lol << std::endl;
-        sf::Sleep(0.5);        
+        sf::Sleep(0.2);        
     }
     return 1;
 }
