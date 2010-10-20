@@ -41,7 +41,7 @@ int main() {
 		Packet.Clear();
 
 		if(Socket.Receive(Packet, Sender, Port) == sf::Socket::Done) {
-			if(!ClMan.IsKnown(Sender)) {
+			if(!ClMan.IsKnown(Sender, Port)) {
 				ClMan.Add(Sender, Port, "unnamed"); 
 				std::cout << "Client added to ClMan" << boost::lexical_cast<std::string>(Port) << std::endl;
 			} else {

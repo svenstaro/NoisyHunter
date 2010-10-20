@@ -26,7 +26,7 @@ class ClientManager {
 
         void Remove(const sf::Uint16 id);
 
-        bool IsKnown(const sf::IPAddress& address);
+        bool IsKnown(const sf::IPAddress& address, const sf::Uint16& port);
 
         bool IsSlotAvailable();
 
