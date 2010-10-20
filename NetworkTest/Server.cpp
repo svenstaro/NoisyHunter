@@ -30,15 +30,6 @@ int main() {
 	}
 	while(running) {
 		
-		float time_delta = Clock.GetElapsedTime();
-		Clock.Reset();
-		timebudget -= dt;
-
-		while(time_delta < timebudget) {
-			sf::Sleep(0.005);
-			timebudget -= dt;
-		}
-
 		if(Socket.Receive(Packet, Sender, Port) == sf::Socket::Done) {
 			if(!ClMan.IsKnown(Sender, Port)) {
 				ClMan.Add(Sender, Port, "unnamed"); 

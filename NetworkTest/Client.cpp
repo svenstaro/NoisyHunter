@@ -48,16 +48,8 @@ int main(int argc, char* argv[]){
 	}
 
     int i = 0;
+	sf::Clock Clock;
     while(1) {
-        i++;
-        std::cout << "Loop #" << i << std::endl;
-
-        t = "Ping";
-        packet.Clear();
-        packet << t;
-
-        mSocket.Send(packet, ip, port);
-
         if(mSocket.Receive(packet, sip, sport) == sf::Socket::Done) {
 			sf::Uint16 client_num;
 			packet >> client_num;
@@ -69,7 +61,18 @@ int main(int argc, char* argv[]){
 			}
 			std::cout << client_num << lol << std::endl;
 		}
-        sf::Sleep(0.2);        
+
+		if (Clock.GetElapsedTime() >= 0.5f) {
+			i++;
+			Clock.Reset();
+			std::cout << "Loop #" << i << std::endl;
+			t = "Ping";
+			packet.Clear();
+			packet << t;
+
+			mSocket.Send(packet, ip, port);
+		}
+
     }
     return 1;
 }
