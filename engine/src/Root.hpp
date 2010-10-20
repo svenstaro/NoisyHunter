@@ -28,7 +28,7 @@ public:
     void InitializeAsClient(const sf::VideoMode& video_mode, 
 							const std::string& window_title, 
 							const bool is_fullscreen,
-                            const sf::IPAddress& server_ip, 
+                            const sf::IpAddress& server_ip, 
 							const sf::Uint16 server_port,
 							const std::string name,
 							bool is_verbose);
@@ -55,6 +55,8 @@ public:
     sf::Uint16 GetClientId() const;
     void SetClientId(const sf::Uint16 client_id);
 
+	const float GetRunTime() const;
+
 private:
     bool mIsServer;
 	bool mIsVerbose;
@@ -67,7 +69,8 @@ private:
     std::string mClientName;
 	sf::Int16 mClientId;
     
-    sf::Clock mClock;
+	sf::Clock mFrameTimeClock;
+    sf::Clock mRunTimeClock;
     StateManager mStateManager;
     NetworkManager mNetworkManager;
 	LogManager mLogManager;

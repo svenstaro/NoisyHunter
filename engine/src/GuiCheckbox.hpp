@@ -34,7 +34,7 @@ public:
     void OnClick();
     void OnKeyDown(sf::Key::Code key_code);
 private:
-    sf::String mString;
+    sf::Text mText;
     sf::Sprite mSprite;
     bool mIsChecked;
 };

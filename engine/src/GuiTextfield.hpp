@@ -32,7 +32,7 @@ public:
     void OnKeyDown(sf::Key::Code key_code);
     void OnType(sf::Uint32 unicode_char);
 private:
-    sf::String mString;
+    sf::Text mText;
     const sf::Font* mFont;
     TiledSprite mSprite;
 

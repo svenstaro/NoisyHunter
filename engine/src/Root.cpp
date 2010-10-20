@@ -29,7 +29,7 @@ void Root::InitializeAsServer(const sf::Uint16 server_port,
 void Root::InitializeAsClient(const sf::VideoMode& video_mode, 
 							  const std::string& window_title, 
 							  const bool is_fullscreen,
-							  const sf::IPAddress& server_ip, 
+							  const sf::IpAddress& server_ip, 
 							  const sf::Uint16 server_port,
 							  const std::string name,
 							  bool is_verbose) {
@@ -39,7 +39,7 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_STATE, "Initializing Root as client.");
 
-    sf::WindowSettings Settings;
+    sf::ContextSettings Settings;
     Settings.DepthBits         = 24; // Request a 24 bits depth buffer
     Settings.StencilBits       = 8;  // Request a 8 bits stencil buffer
     Settings.AntialiasingLevel = 8;  // Request 2 levels of antialiasing
@@ -66,30 +66,32 @@ void Root::StartMainLoop() {
 
     if(mIsServer) {
         // SERVER MAIN LOOP
-		sf::Clock Clock;
         
-		const float fps = 100.f;
+		const float fps = 100.0f;
 		const float dt = 1/fps;
-        float timebudget = 0.f;
+		const float net_tick_rate = 10.f;
+        float time_budget = 0.f;
 
 		sf::Clock SnapClock;
         
         while(!mShutdownRequested) {
-            float time_delta = Clock.GetElapsedTime();
-            Clock.Reset();
-            timebudget += time_delta;
+			sf::Sleep(0.001f);
+            float frame_time = mFrameTimeClock.GetElapsedTime();
+            mFrameTimeClock.Reset();
+            time_budget += frame_time;
                        
             // update simulation
-			while(time_delta < timebudget) {
+			while(time_budget >= dt) {
                 mStateManager.Update(dt);
-                timebudget -= dt;
+                time_budget -= dt;
 			}
 
             // Receive packets from clients.
             mNetworkManager.Receive();
             
 			// Only send if there are clients to send packets to.
-			if(SnapClock.GetElapsedTime() >= 0.5f) {
+			if(SnapClock.GetElapsedTime() >= 1.0f/net_tick_rate) {
+				SnapClock.Reset();
 				if(mNetworkManager.GetClientManagerPtr()->GetActiveClients() > 0) {
 					mNetworkManager.PreparePacket();
 					mStateManager.AppendAllEntitiesToPacket();
@@ -100,14 +102,13 @@ void Root::StartMainLoop() {
         }
     } else {
         // CLIENT MAIN LOOP
-		sf::Clock Clock;
 		const float fps = 60.f;
 		const float dt = 1/fps;
-        float timebudget = 0.f;
+        float time_budget = 0.f;
         
         while(mRenderWindow.IsOpened()) {
-            float time_delta = mClock.GetElapsedTime();
-            mClock.Reset();
+            float time_delta = mFrameTimeClock.GetElapsedTime();
+            mFrameTimeClock.Reset();
             
             // Always prepare packet before handling events, as there 
             // might be actions to be inserted into packet.
@@ -129,12 +130,11 @@ void Root::StartMainLoop() {
 			// Send the prepared packet.
 			//mNetworkManager.SendPacket();
             
-            timebudget += time_delta;
+            time_budget += time_delta;
             // Update simulation with fixed timestep.
-			while(time_delta < timebudget) {
-				// TODO: NEXT TASK
-                //mStateManager.Update(dt);
-                timebudget -= dt;
+			while(time_budget >= dt) {
+                mStateManager.Update(dt);
+                time_budget -= dt;
 			}          
             
             // Render the image.
@@ -194,6 +194,10 @@ sf::Uint16 Root::GetClientId() const {
 }
 void Root::SetClientId(const sf::Uint16 client_id) {
     mClientId = client_id;
+}
+
+const float Root::GetRunTime() const {
+	return mRunTimeClock.GetElapsedTime();
 }
 
 }

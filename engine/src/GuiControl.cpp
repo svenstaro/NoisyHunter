@@ -122,11 +122,11 @@ const Vector2D GuiControl::GetDimension() const {
 }
 
 void GuiControl::SetText(std::string text) {
-    mText = text;
+    mString = text;
 }
 
 const std::string GuiControl::GetText() const {
-    return mText;
+    return mString;
 }
 
 const std::string GuiControl::GetName() const {

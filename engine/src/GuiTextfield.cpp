@@ -33,22 +33,22 @@ void GuiTextfield::Draw(sf::RenderTarget* target) {
     target->Draw(mSprite);
 
     if (mHideCharacters) {
-        mString.SetText(std::string(mText.length(), '?'));
-        mString.SetFont(sf::Font::GetDefaultFont());
+        mText.SetString(std::string(mString.length(), '?'));
+        mText.SetFont(sf::Font::GetDefaultFont());
     } else {
-        mString.SetText(mText);
-        mString.SetFont(*mFont);
+        mText.SetString(mString);
+        mText.SetFont(*mFont);
     }
 
-    mString.SetPosition(mPosition.x+3, mPosition.y + mDimension.y / 2 - mString.GetRect().GetHeight() / 2);
-    target->Draw(mString);
+    mText.SetPosition(mPosition.x+3, mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2);
+    target->Draw(mText);
 
     // draw cursor
     if(mIsFocused) {
-        int xpos = mString.GetPosition().x + mString.GetCharacterPos(mCursorPosition).x + 1;
+        int xpos = mText.GetPosition().x + mText.GetCharacterPos(mCursorPosition).x + 1;
         int h = 15;
-        int ypos = mString.GetPosition().y + mString.GetRect().GetHeight() / 2 - h / 2;
-        sf::Shape cursor = sf::Shape::Rectangle(xpos, ypos, xpos+2, ypos+h, mString.GetColor());
+        int ypos = mText.GetPosition().y + mText.GetRect().Height / 2 - h / 2;
+        sf::Shape cursor = sf::Shape::Rectangle(xpos, ypos, xpos+2, ypos+h, mText.GetColor());
         target->Draw(cursor);
     }
 }
@@ -62,28 +62,28 @@ void GuiTextfield::SetPassword(bool password) {
 }
 
 void GuiTextfield::SetFont(const sf::Font& font) {
-    mString.SetFont(font);
+    mText.SetFont(font);
     mFont = &font;
 }
 
 void GuiTextfield::SetFontSize(const float size) {
-    mString.SetSize(size);
+    mText.SetCharacterSize(size);
 }
 
 void GuiTextfield::SetFontStyle(unsigned long style) {
-    mString.SetStyle(style);
+    mText.SetStyle(style);
 }
 
 void GuiTextfield::SetFontColor(const sf::Color& color) {
-    mString.SetColor(color);
+    mText.SetColor(color);
 }
 
 void GuiTextfield::OnClick() {
     int last_pos = 0;
     int last_diff = 1000;
     unsigned int i = 0;
-    for(; i <= mText.length(); i++) {
-        int pos = mString.GetPosition().x + mString.GetCharacterPos(i).x;
+    for(; i <= mString.length(); i++) {
+        int pos = mText.GetPosition().x + mText.GetCharacterPos(i).x;
         int diff = Root::get_mutable_instance().GetInputManagerPtr()->GetMousePosition().x - pos;
 
         if(abs(diff) > abs(last_diff)) {
@@ -96,29 +96,29 @@ void GuiTextfield::OnClick() {
     }
 
     if (mCursorPosition != (int)i-1)
-        mCursorPosition = mText.length();
+        mCursorPosition = mString.length();
 }
 
 void GuiTextfield::OnKeyDown(sf::Key::Code key_code) {
     if(key_code == sf::Key::Back) {
-        if(mText.length() > 0) {
-            mText = mText.substr(0,mCursorPosition-1) + mText.substr(mCursorPosition);
+        if(mString.length() > 0) {
+            mString = mString.substr(0,mCursorPosition-1) + mString.substr(mCursorPosition);
             if (mCursorPosition > 0)
                 mCursorPosition -= 1;
         }
     } else if (key_code == sf::Key::Delete) {
-        if (mText.length() > 0) {
-            if (mCursorPosition < (int)mText.length())
-                mText = mText.substr(0,mCursorPosition) + mText.substr(mCursorPosition+1);
+        if (mString.length() > 0) {
+            if (mCursorPosition < (int)mString.length())
+                mString = mString.substr(0,mCursorPosition) + mString.substr(mCursorPosition+1);
         }
     } else if (key_code == sf::Key::Left) {
         if (mCursorPosition > 0)
             mCursorPosition--;
     } else if (key_code == sf::Key::Right) {
-        if (mCursorPosition < (int)mText.length())
+        if (mCursorPosition < (int)mString.length())
             mCursorPosition++;
     } else if (key_code == sf::Key::End) {
-        mCursorPosition = mText.length();
+        mCursorPosition = mString.length();
     } else if (key_code == sf::Key::Home) {
         mCursorPosition = 0;
     }
@@ -131,7 +131,7 @@ void GuiTextfield::OnType(sf::Uint32 unicode_char) {
        unicode_char != 9 and   // tab
        unicode_char != 13 and  // return
        unicode_char != 127) {   // delete
-       mText = mText.substr(0,mCursorPosition) + (char)unicode_char + mText.substr(mCursorPosition);
+       mString = mString.substr(0,mCursorPosition) + (char)unicode_char + mString.substr(mCursorPosition);
         mCursorPosition++;
     }
 }

@@ -12,7 +12,7 @@ GuiCheckbox::GuiCheckbox(std::string name) {
     mHover = false;
     mIsFocused = false;
     SetFontSize(12);
-    SetFontStyle(sf::String::Bold);
+    SetFontStyle(sf::Text::Bold);
     SetFontColor(sf::Color(0,0,0));
 }
 
@@ -25,7 +25,7 @@ GuiCheckbox* GuiCheckbox::clone() const {
 bool GuiCheckbox::IsAtPoint(const Vector2D point) {
     return (point.x >= mPosition.x and
             point.y >= mPosition.y and
-            point.x <= mPosition.x + 20 + mString.GetRect().GetWidth() and
+            point.x <= mPosition.x + 20 + mText.GetRect().Width and
             point.y <= mPosition.y + 16);
 }
 
@@ -42,25 +42,25 @@ void GuiCheckbox::ToggleChecked() {
 }
 
 void GuiCheckbox::SetFont(const sf::Font& font) {
-    mString.SetFont(font);
+    mText.SetFont(font);
 }
 
 void GuiCheckbox::SetFontSize(const float size) {
-    mString.SetSize(size);
+    mText.SetCharacterSize(size);
 }
 
 void GuiCheckbox::SetFontStyle(unsigned long style) {
-    mString.SetStyle(style);
+    mText.SetStyle(style);
 }
 
 void GuiCheckbox::SetFontColor(const sf::Color& color) {
-    mString.SetColor(color);
+    mText.SetColor(color);
 }
 
 // main callbacks
 void GuiCheckbox::Draw(sf::RenderTarget* target) {
-    mString.SetText(mText);
-    mString.SetPosition(mPosition.x + 20,mPosition.y);
+    mText.SetString(mString);
+    mText.SetPosition(mPosition.x + 20,mPosition.y);
 
     if (mIsChecked)  mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.checkbox_checked"));
     else if (mHover) mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.checkbox_hover"));
@@ -70,7 +70,7 @@ void GuiCheckbox::Draw(sf::RenderTarget* target) {
     mSprite.Resize(16,16);
 
     target->Draw(mSprite);
-    target->Draw(mString);
+    target->Draw(mText);
 }
 
 // event callbacks

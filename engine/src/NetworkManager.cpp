@@ -14,19 +14,23 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Initializing NetworkManager as server.");
 
-    if(!mListener.Bind(server_port)) {
+    if(mListener.Bind(server_port)) {
 		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "NetworkManager was broken while binding the listening server socket.");
         exit(1);
     } else {
 		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Binding to port "+boost::lexical_cast<std::string>(server_port)+" successful.");
     }
 
-	mClientManager = ClientManager(2);
+	int maxplayers = 8;
+	mClientManager = ClientManager(maxplayers);
 
-	mListener.SetBlocking(1);
+	mListener.SetBlocking(0);
+
+	mReceivedPacketsCount = 0;
+	mSentPacketsCount = 0;
 }
 
-void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip, 
+void NetworkManager::InitializeAsClient(const sf::IpAddress server_ip, 
 										const sf::Uint16 server_port,
 										const std::string client_name) {
     mIsServer = false;
@@ -39,9 +43,12 @@ void NetworkManager::InitializeAsClient(const sf::IPAddress server_ip,
 
     mClient_ClientPort = 12357;
     mListener.Bind(mClient_ClientPort);
-    mListener.SetBlocking(0);
+	mListener.SetBlocking(0);
     
 	SendClientAdd(client_name);
+
+	mReceivedPacketsCount = 0;
+	mSentPacketsCount = 0;
 }
 
 void NetworkManager::PreparePacket() {
@@ -62,20 +69,25 @@ void NetworkManager::SendPacket() {
 }
 
 void NetworkManager::SendPacket(sf::Packet& packet) {
+	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+
 	// Don't send empty packets.
 	if(packet.GetDataSize() == 0) {
-		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Won't send empty packet.");
 	} else {
 		if(mIsServer) {
 			// We are sending from server, therefore send to all clients.
 			BOOST_FOREACH(sf::Uint16 id, mClientManager.GetIds()) {
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending packet to: "+mClientManager.GetIp(id).ToString()+":"+boost::lexical_cast<std::string>(mClientManager.GetPort(id)));
 				mListener.Send(packet, mClientManager.GetIp(id), mClientManager.GetPort(id));
 			}
 		} else {
 			// We are sending from client.
+			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending packet to: "+mClient_ServerIp.ToString()+":"+boost::lexical_cast<std::string>(mClient_ServerPort));
 			mListener.Send(packet, mClient_ServerIp, mClient_ServerPort);
 		}
+		mSentPacketsCount++;
+		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sent packets count: "+boost::lexical_cast<std::string>(mSentPacketsCount));
 	}
 }
 
@@ -122,9 +134,9 @@ void NetworkManager::Receive() {
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 
     if(mIsServer) {
-		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Receiving.");
+		//logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Receiving.");
 		sf::Packet packet;
-		sf::IPAddress client_address;
+		sf::IpAddress client_address;
 		sf::Uint16 client_port;
 
 		if(mListener.Receive(packet, client_address, client_port) == sf::Socket::Done) {
@@ -146,10 +158,11 @@ void NetworkManager::Receive() {
 		}
     } else {
         sf::Packet packet;
-        sf::IPAddress server_address;
+        sf::IpAddress server_address;
         sf::Uint16 server_port;
         
-        if(mListener.Receive(packet, server_address, server_port) == sf::Socket::Done){
+		// TODO: Implement packet queue to handle all sent packets.
+		if(mListener.Receive(packet, server_address, server_port) == sf::Socket::Done) {
 			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from "+boost::lexical_cast<std::string>(server_address)+":"+boost::lexical_cast<std::string>(server_port));
             HandlePacket(packet, server_address, server_port);
             packet.Clear();
@@ -157,11 +170,14 @@ void NetworkManager::Receive() {
     }
 }
 
-void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& address, const sf::Uint16 port) {
+void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& address, const sf::Uint16 port) {
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+
+	mReceivedPacketsCount++;
+	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received packets count: "+boost::lexical_cast<std::string>(mReceivedPacketsCount));
+
     sf::Uint16 net_cmd;
-    while(!packet.EndOfPacket()) {
-		logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Packet length before netcmd "+boost::lexical_cast<std::string>(packet.GetDataSize()));
+    while(!packet.EndOfPacket()) {		
         packet >> net_cmd;
 
         if(mIsServer) {
@@ -291,7 +307,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
                 Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
                 e->PerformAction(unique_id, packet, false); // false -> do not validate action, as luckily the server did that for you
 			} else if(net_cmd == NETCMD_ENTITYINFO) {
-                sf::Uint16 unique_id;
+				sf::Uint16 unique_id;
                 packet >> unique_id;
                 
 				sf::Uint16 entity_id;
@@ -303,7 +319,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 					IOPacket iopacket(true, packet);
                     e->serialize(iopacket);
                     packet = iopacket.GetPacket();
-					logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Deserialized packet.");
+					logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Deserialized NETCMD_ENTITYINFO.");
 				} else {
 					logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Entity with UID "+boost::lexical_cast<std::string>(unique_id)+" not found. Creating new entity.");
 					// create new entity

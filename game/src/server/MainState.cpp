@@ -21,24 +21,29 @@ void MainState::Shutdown() {
 }
 
 void MainState::Update(float time_delta) {
-    //Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->Receive();
+	UpdateAllEntities(time_delta);
+
+	const sf::Uint16 time = Engine::Root::get_const_instance().GetRunTime();
+	if(time % 3 and not mTargetSet) {
+		BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
+			Engine::Vector2D lolvec = { sf::Randomizer::Random(0.1f, 0.9f), sf::Randomizer::Random(0.1f, 0.9f) };
+			sub->SetTarget(lolvec);
+		}
+		mTargetSet = true;
+		
+	} else {
+		mTargetSet = false;
+	}
 }
 
 void MainState::OnClientConnected(std::string client_name) {
 	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
 	auto clientmgr = netmgr->GetClientManagerPtr();
 	sf::Uint16 cl_id = clientmgr->GetId(client_name);
-	float lol;
 
-	lol = sf::Randomizer::Random(0.1f, 0.9f);
+	float lol = sf::Randomizer::Random(0.1f, 0.9f);
 	Submarine* submarine1 = new Submarine(lol, lol, cl_id);
 	submarine1->GrabUniqueId();
 	netmgr->SendEntityAdd(submarine1);
-	AddEntity(submarine1);
-
-	lol = sf::Randomizer::Random(0.1f, 0.9f);
-	Submarine* submarine2 = new Submarine(lol, lol, cl_id);
-	submarine2->GrabUniqueId();
-	netmgr->SendEntityAdd(submarine2);
-	AddEntity(submarine2);
+	AddEntity(submarine1);			
 }

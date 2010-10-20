@@ -10,7 +10,7 @@ GuiButton::GuiButton(std::string name) {
     mHover = false;
     mIsFocused = false;
     SetFontSize(16);
-    SetFontStyle(sf::String::Bold);
+    SetFontStyle(sf::Text::Bold);
     SetFontColor(sf::Color(0,0,0));
 }
 
@@ -21,26 +21,26 @@ GuiButton* GuiButton::clone() const {
 }
 
 void GuiButton::SetFont(const sf::Font& font) {
-    mString.SetFont(font);
+    mText.SetFont(font);
 }
 
 void GuiButton::SetFontSize(const float size) {
-    mString.SetSize(size);
+    mText.SetCharacterSize(size);
 }
 
 void GuiButton::SetFontStyle(unsigned long style) {
-    mString.SetStyle(style);
+    mText.SetStyle(style);
 }
 
 void GuiButton::SetFontColor(const sf::Color& color) {
-    mString.SetColor(color);
+    mText.SetColor(color);
 }
 
 // main callbacks
 void GuiButton::Draw(sf::RenderTarget* target) {
-    mString.SetText(mText);
-    mString.SetPosition(mPosition.x + mDimension.x / 2 - mString.GetRect().GetWidth()  / 2,
-                        mPosition.y + mDimension.y / 2 - mString.GetRect().GetHeight() / 2);
+    mText.SetString(mString);
+    mText.SetPosition(mPosition.x + mDimension.x / 2 - mText.GetRect().Width  / 2,
+                        mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2);
 
     if (mHover)
         mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button_hover"));
@@ -48,9 +48,9 @@ void GuiButton::Draw(sf::RenderTarget* target) {
         mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button"));
 
     if (mIsFocused)
-        mString.SetColor(sf::Color(255,0,0));
+        mText.SetColor(sf::Color(255,0,0));
     else
-        mString.SetColor(sf::Color(0,0,0));
+        mText.SetColor(sf::Color(0,0,0));
 
     /*sf::Color shape_color;
     if (mHover) shape_color = sf::Color(200,200,255);
@@ -68,7 +68,7 @@ void GuiButton::Draw(sf::RenderTarget* target) {
 
 
     target->Draw(mSprite);
-    target->Draw(mString);
+    target->Draw(mText);
 }
 
 }
