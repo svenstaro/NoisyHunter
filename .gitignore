@@ -11,3 +11,4 @@ lib/
 *.user
 game/gfx/cached/
 game/gui/cached/
+NetworkTest/*.bin
