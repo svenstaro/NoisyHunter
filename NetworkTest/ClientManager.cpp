@@ -43,11 +43,11 @@ void ClientManager::Remove(const sf::Uint16 id) {
     mClients.erase(id);
 }
 
-bool ClientManager::IsKnown(const sf::IPAddress& address) {
+bool ClientManager::IsKnown(const sf::IPAddress& address, const sf::Uint16& port) {
     bool isknown = false;
     std::map<sf::Uint16, Client>::iterator it;
     for(it = mClients.begin(); it != mClients.end(); ++it) {
-		if(it->second.address == address) {
+		if(it->second.address == address and it->second.port == port) {
 			isknown = true;
 			break;
         }
