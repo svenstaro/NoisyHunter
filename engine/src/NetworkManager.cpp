@@ -177,7 +177,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IPAddress& addre
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTADD from "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");
 
                 // Add new client if unknown
-				if(!mClientManager.IsKnown(address, port)) {
+				if(mClientManager.IsKnown(address, port)) {
 						// Make a signal here wich is connected to mClientManager.Add() and to MainState.OnClientConnect()
 						sf::Uint16 id = mClientManager.GetId(address, port);
 						mClientManager.SetName(id, client_name);
