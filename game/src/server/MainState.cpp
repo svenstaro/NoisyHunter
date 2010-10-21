@@ -20,6 +20,21 @@ void MainState::Shutdown() {
     logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Shutting down main state.");
 }
 
+void MainState::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data) {
+	// handle different interactions here!!
+	if(interaction_id == INTERACTION_SETSUBMARINETARGET) {
+		// TODO: NEXT TASK
+		Engine::Root::get_mutable_instance().GetLogManagerPtr()->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Received INTERACTION_SETSUBMARINETARGET.");
+		float target_x, target_y;
+		data >> target_x >> target_y;
+
+		BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
+			sub->SetTarget(target_x, target_y);
+		}
+
+	}
+}
+
 void MainState::Update(float time_delta) {
 	UpdateAllEntities(time_delta);
 
@@ -27,7 +42,7 @@ void MainState::Update(float time_delta) {
 	if(time % 3 and not mTargetSet) {
 		BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
 			Engine::Vector2D lolvec = { sf::Randomizer::Random(0.1f, 0.9f), sf::Randomizer::Random(0.1f, 0.9f) };
-			sub->SetTarget(lolvec);
+			//sub->SetTarget(lolvec);
 		}
 		mTargetSet = true;
 		

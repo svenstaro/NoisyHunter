@@ -93,7 +93,17 @@ enum NetworkCommand {
 	// Packet structure is:
 	// [sf::Uint16(NETCMD_CHATMESSAGE), std::string(client_name),
 	//  std::string(message)]
-	NETCMD_CHATMESSAGE = 0x30
+	NETCMD_CHATMESSAGE = 0x30,
+
+	// If this is sent client->server, a client tells the server about an interaction
+	// the user performed. An interaction is defined in a general game-specific enum.
+	// This could be WALKTOPOSITION or DELETEALLENTITIES, for example. The server should
+	// validate the interaction.
+	// Packet structure is:
+	// [sf::Uint16(NETCMD_INTERACTION), sf::Uint16(game_interaction_id),
+	// OPTIONAL_STREAMED_PARAMETERS]
+	// If this is sent server->client, ALL HELL BREAKS LOOSE!
+	NETCMD_INTERACTION = 0x31
 };
 
 }

@@ -3,12 +3,18 @@
 
 #include <string>
 
+#include <boost/foreach.hpp>
+#include <boost/bind.hpp>
+
 #include "LogManager.hpp"
 #include "State.hpp"
 #include "Entity.hpp"
 #include "InputManager.hpp"
 #include "Crosshair.hpp"
 #include "Submarine.hpp"
+#include "Interaction.hpp"
+#include "GuiButton.hpp"
+#include "GuiCheckbox.hpp"
 
 class PlayState : public Engine::State {
 public:

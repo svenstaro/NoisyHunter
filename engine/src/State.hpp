@@ -31,6 +31,10 @@ public:
 
     void AddEntity(Entity* entity);
     void CreateGuiSystem();
+
+	// Server-side handling of Interactions
+	virtual void HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data);
+
 	void HandleEntityInfo(sf::Packet packet);
     Entity* GetEntityByUniqueId(const sf::Uint16 unique_id);
 

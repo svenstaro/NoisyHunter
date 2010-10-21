@@ -62,6 +62,8 @@ void State::CreateGuiSystem() {
 	mGuiSystems.push_back(new GuiSystem());
 }
 
+void State::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data) {}
+
 void State::HandleEntityInfo(sf::Packet packet) {
 	// Stream Entity info out of the packet.
 	sf::Uint16 uuid;

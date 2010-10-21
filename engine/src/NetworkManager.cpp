@@ -249,6 +249,12 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 				logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, client_name+" says: "+message);
                 // Send back to everyone
                 SendChatMessage(message, client_name);
+			} else if(net_cmd == NETCMD_INTERACTION) {
+				// Fetch interaction ID
+				sf::Uint16 interaction_id;
+				packet >> interaction_id;
+				auto statemgr = Root::get_mutable_instance().GetStateManagerPtr();
+				statemgr->GetCurrentState().HandleInteraction(interaction_id, mClientManager.GetId(address, port), packet);
 			} else {
 				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received invalid NETCMD id: "+boost::lexical_cast<std::string>(net_cmd));
 				exit(1);

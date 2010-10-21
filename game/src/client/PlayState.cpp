@@ -1,13 +1,7 @@
 #include <iostream>
 
-#include <boost/foreach.hpp>
-#include <boost/bind.hpp>
-
 #include "PlayState.hpp"
 #include "Root.hpp"
-#include "GuiButton.hpp"
-#include "GuiCheckbox.hpp"
-#include "Entity.hpp"
 
 PlayState::PlayState() {}
 
@@ -110,20 +104,9 @@ void PlayState::OnSetSilentMode() {
 }
 
 void PlayState::OnNavigateTo(const Engine::Coordinates& mouse_position) {	
-    // get the player submarine
-    /*BOOST_FOREACH(Engine::Entity& entity, mEntities){
-        if (entity.GetClientId() == Engine::Root::get_mutable_instance().GetClientId()){
-            mPlayerSubmarine = (Submarine*)&entity;
-        }
-     }
-
-    
-    sf::Packet p;
-    p << sf::Uint16(Engine::NETCMD_ENTITYACTION) << 0x01 << mPlayerSubmarine->GetUniqueId() << mouse_position.X << mouse_position.Y;
-    Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(p);
-    auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_STATE, "Sent entity action for navigation of submarine.");
-    * */
+	sf::Packet packet;
+	packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_SETSUBMARINETARGET) << mouse_position.X << mouse_position.Y;
+	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
 }
 
 void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position) {
