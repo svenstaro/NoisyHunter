@@ -29,7 +29,9 @@ void MainState::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uin
 		data >> target_x >> target_y;
 
 		BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
-			sub->SetTarget(target_x, target_y);
+			if(sub->GetClientId() == client_id) {
+				sub->SetTarget(target_x, target_y);
+			}
 		}
 
 	}
@@ -59,6 +61,7 @@ void MainState::OnClientConnected(std::string client_name) {
 	float lol = sf::Randomizer::Random(0.1f, 0.9f);
 	Submarine* submarine1 = new Submarine(lol, lol, cl_id);
 	submarine1->GrabUniqueId();
+	submarine1->SetClientId(cl_id);
 	netmgr->SendEntityAdd(submarine1);
 	AddEntity(submarine1);			
 }
