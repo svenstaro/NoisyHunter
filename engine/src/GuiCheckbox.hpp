@@ -31,7 +31,7 @@ public:
     void SetFontColor(const sf::Color& color);
 
     // event callbacks
-    void OnClick();
+	void OnMouseUp();
     void OnKeyDown(sf::Key::Code key_code);
 private:
     sf::Text mText;

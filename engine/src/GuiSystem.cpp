@@ -52,7 +52,7 @@ void GuiSystem::HandleEvent(sf::Event e) {
     }
 
     BOOST_FOREACH(GuiControl& control, mControls) {
-        if(e.Type == sf::Event::MouseButtonPressed) {
+		if(e.Type == sf::Event::MouseButtonPressed || e.Type == sf::Event::MouseButtonReleased) {
             if(control.IsAtPoint(Vector2D(e.MouseButton.X,e.MouseButton.Y))) {
                 SetFocus(&control);
                                 
@@ -66,8 +66,13 @@ void GuiSystem::HandleEvent(sf::Event e) {
                 else if(e.MouseButton.Button == sf::Mouse::Right)
                     mouse_button = 3;
 
-                control.OnClick(e.MouseButton.X, e.MouseButton.Y, mouse_button);
-                control.TriggerOnClick(e.MouseButton.X, e.MouseButton.Y, mouse_button);
+				if(e.Type == sf::Event::MouseButtonPressed) {
+					control.OnMouseDown(e.MouseButton.X, e.MouseButton.Y, mouse_button);
+					control.TriggerOnMouseDown(e.MouseButton.X, e.MouseButton.Y, mouse_button);
+				} else { // MouseButtonReleased
+					control.OnMouseUp(e.MouseButton.X, e.MouseButton.Y, mouse_button);
+					control.TriggerOnMouseUp(e.MouseButton.X, e.MouseButton.Y, mouse_button);
+				}
             }
         } else if(e.Type == sf::Event::KeyPressed and control.HasFocus()) {
             control.OnKeyDown(e.Key.Code);

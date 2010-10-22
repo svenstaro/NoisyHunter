@@ -74,7 +74,7 @@ void GuiCheckbox::Draw(sf::RenderTarget* target) {
 }
 
 // event callbacks
-void GuiCheckbox::OnClick() {
+void GuiCheckbox::OnMouseUp() {
     ToggleChecked();
 }
 

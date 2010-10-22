@@ -13,6 +13,8 @@
 #include "Crosshair.hpp"
 #include "Submarine.hpp"
 #include "Interaction.hpp"
+
+#include "GuiTextfield.hpp"
 #include "GuiButton.hpp"
 #include "GuiCheckbox.hpp"
 

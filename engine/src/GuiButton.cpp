@@ -28,13 +28,10 @@ void GuiButton::Draw(sf::RenderTarget* target) {
 
     if (mHover)
         mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button_hover"));
-    else
+	else if (mIsFocused)
+		mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button_focus"));
+	else
         mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button"));
-
-	if (mIsFocused)
-        mText.SetColor(sf::Color(255,0,0));
-    else
-		mText.SetColor(sf::Color(255,255,255));
 
     /*sf::Color shape_color;
     if (mHover) shape_color = sf::Color(200,200,255);
@@ -53,6 +50,23 @@ void GuiButton::Draw(sf::RenderTarget* target) {
 
     target->Draw(mSprite);
     target->Draw(mText);
+}
+
+
+
+// Signals & slots
+
+void GuiButton::BindOnClick(const boost::signals2::signal<void (const sf::Uint16)>::slot_type& slot) {
+	mOnClickSignal.connect(slot);
+}
+
+void GuiButton::TriggerOnClick(const sf::Uint16 mouse_button) {
+	mOnClickSignal();
+}
+
+// Internal callback, called from input manager
+void GuiButton::OnMouseDown(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
+	TriggerOnClick(mouse_x, mouse_y, mouse_button);
 }
 
 }

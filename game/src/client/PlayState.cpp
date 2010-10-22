@@ -23,8 +23,12 @@ void PlayState::Initialize() {
 					 "missing.svg", 80, 53, "missing");
     resmgr->AddImage(boost::filesystem::path("../game/gui"),
 					 "button.svg", 48, 48, "gui.button");
-    resmgr->AddImage(boost::filesystem::path("../game/gui"),
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),
 					 "button_hover.svg", 48, 48, "gui.button_hover");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),
+					 "button_focus.svg", 48, 48, "gui.button_focus");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),
+					 "textfield2.svg", 24, 24, "gui.textfield");
                      
     sf::Font font;
     font.LoadFromFile("../game/fonts/kingthings_trypewriter_2.ttf");
@@ -52,6 +56,17 @@ void PlayState::Initialize() {
 		l->SetFontColor(sf::Color::White);
 		mGuiSystems.begin()->AddControl(l);
 
+		// Exit button
+		Engine::GuiButton* o = new Engine::GuiButton("options_button");
+		o->SetDimension(Engine::Vector2D(100,40));
+		o->SetPosition(Engine::Vector2D(5,520));
+		o->SetText("Options");
+		o->SetFont(sf::Font::GetDefaultFont());
+		o->SetFontSize(11);
+		o->SetFontStyle(sf::Text::Regular);
+		o->SetFontColor(sf::Color::White);
+		o->BindOnClick(boost::bind(&PlayState::ExitButton_OnClick, this, _1)); // bind test signal ;)
+		mGuiSystems.begin()->AddControl(o);
 
 		// Exit button
 		Engine::GuiButton* c = new Engine::GuiButton("exit_button");
@@ -62,9 +77,18 @@ void PlayState::Initialize() {
 		c->SetFontSize(11);
 		c->SetFontStyle(sf::Text::Regular);
 		c->SetFontColor(sf::Color::White);
-		c->BindOnClick(boost::bind(&PlayState::ExitButton_OnClick, this, _1, _2, _3)); // bind test signal ;)
+		c->BindOnClick(boost::bind(&PlayState::ExitButton_OnClick, this, _1));
 		mGuiSystems.begin()->AddControl(c);
-    
+
+		// Chat Textfield
+		Engine::GuiTextfield* t = new Engine::GuiTextfield("chat_textfield");
+		t->SetDimension(Engine::Vector2D(400,25));
+		t->SetPosition(Engine::Vector2D(395,555));
+		t->SetText("Enter text here");
+		t->SetFont(sf::Font::GetDefaultFont());
+		t->SetFontSize(11);
+		t->SetFontColor(sf::Color::White);
+		mGuiSystems.begin()->AddControl(t);
 
     auto inputmgr = Engine::Root::get_mutable_instance().GetInputManagerPtr();
     // bind keys
@@ -150,7 +174,7 @@ void PlayState::OnClientConnected(const std::string& client_name) {
     }
 }
 
-void PlayState::ExitButton_OnClick(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
+void PlayState::ExitButton_OnClick(const sf::Uint16 mouse_button) {
 	/*auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Yeah you clicked on that nice button which will not cause anything to happen as it has been abused as a label ;)");*/
 	 Engine::Root::get_mutable_instance().RequestShutdown();

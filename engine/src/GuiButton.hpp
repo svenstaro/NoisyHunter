@@ -20,8 +20,18 @@ public:
     // main callbacks
     virtual void Draw(sf::RenderTarget* target);
 
+	// Signals & slots
+	virtual void BindOnClick(const boost::signals2::signal<void (const sf::Uint16 mouse_button)>::slot_type& slot);
+	virtual void TriggerOnClick(const sf::Uint16 mouse_button);
+
+	// Internal callback, called from input manager
+	void OnMouseDown(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button);
+
 private:
-    TiledSprite mSprite;
+	// Click signal
+	boost::signals2::signal<void (const sf::Uint16 mouse_button)> mOnClickSignal;
+
+	TiledSprite mSprite;
 };
 
 

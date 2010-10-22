@@ -24,21 +24,24 @@ public:
     virtual void Draw(sf::RenderTarget* target) = 0;
 
     // Event signal binding
-    virtual void BindOnClick(const boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button)>::slot_type& slot);
+	virtual void BindOnMouseDown(const boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button)>::slot_type& slot);
+	virtual void BindOnMouseUp(const boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button)>::slot_type& slot);
     virtual void BindOnMouseMove(const boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y)>::slot_type& slot);
     virtual void BindOnKeyDown(const boost::signals2::signal<void (const sf::Key::Code key)>::slot_type& slot);
     virtual void BindOnKeyUp(const boost::signals2::signal<void (const sf::Key::Code key)>::slot_type& slot);
     virtual void BindOnType(const boost::signals2::signal<void (const sf::Uint32 unicode_char)>::slot_type& slot);
 
     // Event signal triggers
-    virtual void TriggerOnClick(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button);
+	virtual void TriggerOnMouseDown(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button);
+	virtual void TriggerOnMouseUp(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button);
     virtual void TriggerOnMouseMove(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y);
     virtual void TriggerOnKeyDown(const sf::Key::Code key);
     virtual void TriggerOnKeyUp(const sf::Key::Code key);
     virtual void TriggerOnType(const sf::Uint32 unicode_char);
     
     // Event callbacks for internal use
-    virtual void OnClick(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button);
+	virtual void OnMouseDown(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button);
+	virtual void OnMouseUp(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button);
     virtual void OnMouseMove(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y);
     virtual void OnKeyDown(const sf::Key::Code key);
     virtual void OnKeyUp(const sf::Key::Code key);
@@ -74,7 +77,8 @@ public:
 
 protected:
     // signals
-    boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button)> mOnClickSignal;
+	boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button)> mOnMouseDownSignal;
+	boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button)> mOnMouseUpSignal;
     boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y)> mOnMouseMoveSignal;
     boost::signals2::signal<void (const sf::Key::Code key)> mOnKeyDownSignal;
     boost::signals2::signal<void (const sf::Key::Code key)> mOnKeyUpSignal;

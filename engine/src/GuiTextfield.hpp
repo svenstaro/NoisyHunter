@@ -23,7 +23,7 @@ public:
     void SetPassword(bool password);
 
     // event callbacks
-    void OnClick();
+	void OnMouseDown();
     void OnKeyDown(sf::Key::Code key_code);
     void OnType(sf::Uint32 unicode_char);
 private:

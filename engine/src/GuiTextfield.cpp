@@ -15,7 +15,7 @@ GuiTextfield::GuiTextfield(std::string name) {
     SetFontColor(sf::Color(0,0,0));
     SetDimension(Vector2D(200,20));
     mMultiline = false;
-    SetPassword(true);
+	SetPassword(false);
 
     SetFont(sf::Font::GetDefaultFont());
 }
@@ -33,7 +33,7 @@ void GuiTextfield::SetPassword(bool password) {
 void GuiTextfield::Draw(sf::RenderTarget* target) {
     mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.textfield"));
     mSprite.SetPosition(mPosition.x, mPosition.y);
-    mSprite.Resize(mDimension.x, mDimension.y);
+	mSprite.SetScale(mDimension.x, mDimension.y);
     target->Draw(mSprite);
 
 	if (mHideCharacters)
@@ -41,15 +41,15 @@ void GuiTextfield::Draw(sf::RenderTarget* target) {
 	else
 		mText.SetString(mCaption);
 
-    mText.SetPosition(mPosition.x+3, mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2);
+	mText.SetPosition(mPosition.x+8, mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2);
     target->Draw(mText);
 
     // draw cursor
     if(mIsFocused) {
-        int xpos = mText.GetPosition().x + mText.GetCharacterPos(mCursorPosition).x + 1;
+		int xpos = mText.GetPosition().x + mText.GetCharacterPos(mCursorPosition).x + 1;
         int h = 15;
         int ypos = mText.GetPosition().y + mText.GetRect().Height / 2 - h / 2;
-        sf::Shape cursor = sf::Shape::Rectangle(xpos, ypos, xpos+2, ypos+h, mText.GetColor());
+		sf::Shape cursor = sf::Shape::Rectangle(xpos, ypos, 2, h, mText.GetColor());
         target->Draw(cursor);
     }
 }
@@ -58,7 +58,7 @@ void GuiTextfield::SetMultiline(bool multiline) {
     mMultiline = multiline;
 }
 
-void GuiTextfield::OnClick() {
+void GuiTextfield::OnMouseDown() {
     int last_pos = 0;
     int last_diff = 1000;
     unsigned int i = 0;
@@ -81,10 +81,9 @@ void GuiTextfield::OnClick() {
 
 void GuiTextfield::OnKeyDown(sf::Key::Code key_code) {
     if(key_code == sf::Key::Back) {
-        if(mCaption.length() > 0) {
-            mCaption = mCaption.substr(0,mCursorPosition-1) + mCaption.substr(mCursorPosition);
-            if (mCursorPosition > 0)
-                mCursorPosition -= 1;
+		if(mCaption.length() > 0 && mCursorPosition > 0) {
+			mCaption = mCaption.substr(0,mCursorPosition-1) + mCaption.substr(mCursorPosition);
+			mCursorPosition -= 1;
         }
     } else if (key_code == sf::Key::Delete) {
         if (mCaption.length() > 0) {

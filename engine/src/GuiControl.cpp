@@ -18,8 +18,12 @@ GuiControl* GuiControl::clone() const {}
 void GuiControl::Update(const float time_delta) {}
 
 // === EVENT SIGNAL BINDING ===
-void GuiControl::BindOnClick(const boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button)>::slot_type& slot) {
-    mOnClickSignal.connect(slot);
+void GuiControl::BindOnMouseDown(const boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button)>::slot_type& slot) {
+	mOnMouseDownSignal.connect(slot);
+}
+
+void GuiControl::BindOnMouseUp(const boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button)>::slot_type& slot) {
+	mOnMouseUpSignal.connect(slot);
 }
 
 void GuiControl::BindOnMouseMove(const boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y)>::slot_type& slot) {
@@ -39,8 +43,12 @@ void GuiControl::BindOnType(const boost::signals2::signal<void (const sf::Uint32
 }
 
 // === EVENT SIGNAL TRIGGERS ===
-void GuiControl::TriggerOnClick(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
-    mOnClickSignal(mouse_x, mouse_y, mouse_button);
+void GuiControl::TriggerOnMouseDown(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
+	mOnMouseDownSignal(mouse_x, mouse_y, mouse_button);
+}
+
+void GuiControl::TriggerOnMouseUp(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
+	mOnMouseUpSignal(mouse_x, mouse_y, mouse_button);
 }
 
 void GuiControl::TriggerOnMouseMove(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y) {
@@ -62,7 +70,11 @@ void GuiControl::TriggerOnType(const sf::Uint32 unicode_char) {
 
 // === EVENT CALLBACKS FOR INTERNAL USE ===
 
-void GuiControl::OnClick(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
+void GuiControl::OnMouseDown(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
+	//Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "Clicked on element.");
+}
+
+void GuiControl::OnMouseUp(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
 	//Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "Clicked on element.");
 }
 
