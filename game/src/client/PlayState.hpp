@@ -45,7 +45,7 @@ public:
     void OnClientConnected(const std::string& client_name);
     
     // gui callbacks
-    void ExitButton_OnClick(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button);
+	void ExitButton_OnClick(const sf::Uint16 mouse_button);
 
 private:
     Crosshair* mCrosshair;

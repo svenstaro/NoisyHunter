@@ -61,12 +61,12 @@ void GuiButton::BindOnClick(const boost::signals2::signal<void (const sf::Uint16
 }
 
 void GuiButton::TriggerOnClick(const sf::Uint16 mouse_button) {
-	mOnClickSignal();
+	mOnClickSignal(mouse_button);
 }
 
 // Internal callback, called from input manager
 void GuiButton::OnMouseDown(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
-	TriggerOnClick(mouse_x, mouse_y, mouse_button);
+	TriggerOnClick(mouse_button);
 }
 
 }
