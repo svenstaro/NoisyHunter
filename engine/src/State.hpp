@@ -38,6 +38,7 @@ public:
 	void HandleEntityInfo(sf::Packet packet);
     Entity* GetEntityByUniqueId(const sf::Uint16 unique_id);
 
+	virtual void OnLeaveGame();
 	template <typename T>
 			std::vector<T*> GetAllEntitiesByType() {
 

@@ -84,4 +84,5 @@ Entity* State::GetEntityByUniqueId(const sf::Uint16 unique_id) {
     return NULL;
 }
 
+void State::OnLeaveGame() {}
 }

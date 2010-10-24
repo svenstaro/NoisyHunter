@@ -1,7 +1,15 @@
+#include <signal.h>
+
 #include "Root.hpp"
 
 #include "PlayState.hpp"
 #include "LoadingState.hpp"
+
+void HandleSignal(int sig) {
+	auto logmgr =  Engine::Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_ROOT, "Raised signal: " + boost::lexical_cast<std::string>(sig) + ".");
+	Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().OnLeaveGame();
+}
 
 namespace po = boost::program_options;
 po::variables_map usage(int& argc, char* argv[]) {
@@ -57,6 +65,11 @@ std::vector<sf::Uint16> split(const std::string& size_str) {
 }
 
 int main(int argc, char* argv[]) {
+
+	signal(SIGINT, HandleSignal);
+	signal(SIGABRT, HandleSignal);
+	signal(SIGTERM, HandleSignal);
+
 	// Pass along command line argument to usage() in order to process them.
 	po::variables_map opts = usage (argc, argv);
 

@@ -33,6 +33,8 @@ void LogManager::Log(enum LogLevel log_level, enum LogOrigin log_origin, const s
 		log_message += "IDMANAGER] ";
 	else if(log_origin == LOGORIGIN_CLIENTMANAGER)
 		log_message += "CLIENTMANAGER] ";
+	else if(log_origin == LOGORIGIN_ROOT)
+		log_message += "ROOT] ";
 	
 
 	log_message += NO_COLOR + text;
