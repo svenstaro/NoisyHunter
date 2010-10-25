@@ -188,5 +188,6 @@ void PlayState::OnClientConnected(const std::string& client_name) {
 void PlayState::ExitButton_OnClick(const sf::Uint16 mouse_button) {
 	/*auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Yeah you clicked on that nice button which will not cause anything to happen as it has been abused as a label ;)");*/
-	 Engine::Root::get_mutable_instance().RequestShutdown();
+	//Engine::Root::get_mutable_instance().RequestShutdown();
+	OnLeaveGame();
 }
