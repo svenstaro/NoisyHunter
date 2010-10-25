@@ -48,6 +48,9 @@ public:
     // Sends a packet containing NETCMD_ENTITYADD to server / all clients.
 	void SendEntityAdd(Entity* e);
 
+	// Sends a packet which requests a ping response; In a way PONG :D
+	void SendPing();
+
     // Sends a packet containing NETCMD_CHATMESSAGE to server / all clients.
     void SendChatMessage(const std::string& chat_message, const std::string& client_name = "");
     

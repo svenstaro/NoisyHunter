@@ -56,6 +56,16 @@ void PlayState::Initialize() {
 		l->SetFontColor(sf::Color::White);
 		mGuiSystems.begin()->AddControl(l);
 
+		// Ping info Label
+		Engine::GuiLabel* p = new Engine::GuiLabel("ping_label");
+		p->SetPosition(750,5);
+		p->SetText("0");
+		p->SetFont(sf::Font::GetDefaultFont());
+		p->SetFontSize(12);
+		p->SetFontStyle(sf::Text::Regular);
+		p->SetFontColor(sf::Color::White);
+		mGuiSystems.begin()->AddControl(p);
+
 		// Exit button
 		Engine::GuiButton* o = new Engine::GuiButton("options_button");
 		o->SetDimension(Engine::Vector2D(100,40));
@@ -118,6 +128,7 @@ void PlayState::Shutdown() {
 
 void PlayState::Update(float time_delta) {
     UpdateAllEntities(time_delta);
+	mGuiSystems.begin()->GetControl<Engine::GuiLabel>("ping_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->GetPing()));
 }
 
 void PlayState::OnSetNoisyMode() {

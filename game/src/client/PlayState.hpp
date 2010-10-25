@@ -5,6 +5,7 @@
 
 #include <boost/foreach.hpp>
 #include <boost/bind.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include "LogManager.hpp"
 #include "State.hpp"

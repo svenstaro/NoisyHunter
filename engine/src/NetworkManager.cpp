@@ -130,6 +130,13 @@ void NetworkManager::SendChatMessage(const std::string& chat_message, const std:
     SendPacket(packet);
 }
 
+void NetworkManager::SendPing() {
+	mPingClock.Reset();
+	sf::Packet packet;
+	packet << sf::Uint16(NETCMD_SERVERPING);
+	SendPacket(packet);
+}
+
 void NetworkManager::Receive() {
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 
@@ -218,7 +225,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
                 // TODO: Calculate the latency.
             } else if(net_cmd == NETCMD_SERVERPING) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_SERVERPING from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
-                // OMG! You got pinged by the server!
+                // OMG! You got pinged by the client!
                 // Just send it back.
                 sf::Packet p;
                 p << sf::Uint16(NETCMD_SERVERPING);

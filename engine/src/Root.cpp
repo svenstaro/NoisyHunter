@@ -105,6 +105,7 @@ void Root::StartMainLoop() {
 		const float fps = 60.f;
 		const float dt = 1/fps;
         float time_budget = 0.f;
+		sf::Clock PingClock;
         
         while(mRenderWindow.IsOpened()) {
             float time_delta = mFrameTimeClock.GetElapsedTime();
@@ -137,6 +138,10 @@ void Root::StartMainLoop() {
                 time_budget -= dt;
 			}          
             
+			if(PingClock.GetElapsedTime() >= 1.0f) {
+				PingClock.Reset();
+				GetNetworkManagerPtr()->SendPing();
+			}
             // Render the image.
 			mRenderWindow.Clear(sf::Color(0,0,0));
             mStateManager.Draw(&mRenderWindow);
