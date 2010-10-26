@@ -180,6 +180,9 @@ void NetworkManager::Receive() {
 void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& address, const sf::Uint16 port) {
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 
+	// debug message, count NETCMD_ENTITYINFO
+	int num_entity_infos = 0;
+
 	mReceivedPacketsCount++;
 	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received packets count: "+boost::lexical_cast<std::string>(mReceivedPacketsCount));
 
@@ -332,7 +335,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 					IOPacket iopacket(true, packet);
                     e->serialize(iopacket);
                     packet = iopacket.GetPacket();
-					logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Deserialized NETCMD_ENTITYINFO.");
+					num_entity_infos++;
 				} else {
 					logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Entity with UID "+boost::lexical_cast<std::string>(unique_id)+" not found. Creating new entity.");
 					// create new entity
@@ -364,6 +367,9 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 			}
         }
     }
+	// debug message
+	if (num_entity_infos > 0)
+		logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Deserialized "+boost::lexical_cast<std::string>(num_entity_infos)+" x NETCMD_ENTITYINFO.");
 }
 
 void NetworkManager::BindOnClientConnected(const boost::signals2::signal<void (const std::string&)>::slot_type& slot) {
