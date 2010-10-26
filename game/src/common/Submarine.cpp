@@ -46,7 +46,6 @@ void Submarine::Update(float time_delta) {
 }
 
 const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D Pos) {
-	// Calculate the Direction-Vector to the mouse position
 	return new Torpedo(mPosition, mSpeed, Pos);
 }
 

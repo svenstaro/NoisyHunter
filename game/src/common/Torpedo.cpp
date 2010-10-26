@@ -17,12 +17,13 @@ Torpedo* Torpedo::clone() const {
 }
 
 void Torpedo::Initialize() {
-	sf::Sprite* d = new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("submarine"));
+	sf::Sprite* d = new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("torpedo"));
 	d->SetOrigin(d->GetSize().x / 2, d->GetSize().y / 2);
 	mDrawable = d;
 }
 
 void Torpedo::Update(const float time_delta) {
+	/*
 	Engine::Vector2D relative_target = mTargetPosition - mPosition;
 	float angle = Engine::Vector2D::Angle(mSpeed, relative_target);
 	float max_angle = 1 * time_delta;
@@ -32,7 +33,24 @@ void Torpedo::Update(const float time_delta) {
 		angle = -max_angle;
 	mSpeed.Rotate(angle);
 
+	mPosition += mSpeed * time_delta;*/
+	Engine::Vector2D relative_target = mTargetPosition - mPosition;
+	float angle = relative_target.Rotation() - mSpeed.Rotation();
+
+	if(Engine::Vector2D::rad2Deg(angle) > 180)
+		angle -= Engine::Vector2D::deg2Rad(360);
+	else if(Engine::Vector2D::rad2Deg(angle) < -180)
+		angle += Engine::Vector2D::deg2Rad(360);
+
+	float max_angle = 2 * time_delta;
+	if(angle > max_angle)
+		angle = max_angle;
+	else if(angle < -max_angle)
+		angle = -max_angle;
+
+	mSpeed.Rotate(angle);
 	mPosition += mSpeed * time_delta;
+
 }
 
 

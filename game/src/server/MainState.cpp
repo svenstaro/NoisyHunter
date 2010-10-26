@@ -23,7 +23,6 @@ void MainState::Shutdown() {
 void MainState::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data) {
 	// handle different interactions here!!
 	if(interaction_id == INTERACTION_SETSUBMARINETARGET) {
-		// TODO: NEXT TASK
 		Engine::Root::get_mutable_instance().GetLogManagerPtr()->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Received INTERACTION_SETSUBMARINETARGET.");
 		float target_x, target_y;
 		data >> target_x >> target_y;
@@ -34,6 +33,21 @@ void MainState::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uin
 			}
 		}
 
+	} else if(interaction_id == INTERACTION_FIRETORPEDO) {
+		Engine::Root::get_mutable_instance().GetLogManagerPtr()->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Received INTERACTION_FIRETORPEDO.");
+		float target_x, target_y;
+		data >> target_x >> target_y;
+
+		// Get player submarine
+		BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
+			if(sub->GetClientId() == client_id) {
+				Torpedo* torpedo = (Torpedo*)sub->FireTorpedoTo(Engine::Vector2D(target_x, target_y));
+				torpedo->GrabUniqueId();
+				auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
+				netmgr->SendEntityAdd(torpedo);
+				AddEntity(torpedo);
+			}
+		}
 	}
 }
 

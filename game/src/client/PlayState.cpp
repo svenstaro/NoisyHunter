@@ -18,7 +18,7 @@ void PlayState::Initialize() {
     resmgr->AddImage(boost::filesystem::path("../game/gfx"),
 					 "aim.svg", 80, 53, "aim");
     resmgr->AddImage(boost::filesystem::path("../game/gfx"),
-					 "torpedo1.svg", 80, 53, "torpedo");
+					 "torpedo1.svg", 30, 10, "torpedo");
     resmgr->AddImage(boost::filesystem::path("../game/gfx"),
 					 "missing.svg", 80, 53, "missing");
     resmgr->AddImage(boost::filesystem::path("../game/gui"),
@@ -157,9 +157,9 @@ void PlayState::OnNavigateTo(const Engine::Coordinates& mouse_position) {
 }
 
 void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position) {
-    /*const Engine::Vector2D target = Engine::Vector2D(mouse_position.X, mouse_position.Y);
-    Torpedo* torpedo = (Torpedo*)mPlayerSubmarine->FireTorpedoTo(target);
-    AddEntity(torpedo);*/
+	sf::Packet packet;
+	packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_FIRETORPEDO) << mouse_position.X << mouse_position.Y;
+	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
 }
 
 void PlayState::OnLeaveGame() {
@@ -176,7 +176,7 @@ void PlayState::OnLeaveGame() {
 
 void PlayState::OnClick(Engine::MouseEventArgs args) {
     OnNavigateTo(args);
-    Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendChatMessage("I am so glad I just clicked!");
+	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendChatMessage("I am so glad I just clicked!");
 }
 
 void PlayState::OnRightClick(Engine::MouseEventArgs args) {
