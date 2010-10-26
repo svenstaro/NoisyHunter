@@ -23,17 +23,6 @@ void Torpedo::Initialize() {
 }
 
 void Torpedo::Update(const float time_delta) {
-	/*
-	Engine::Vector2D relative_target = mTargetPosition - mPosition;
-	float angle = Engine::Vector2D::Angle(mSpeed, relative_target);
-	float max_angle = 1 * time_delta;
-	if(angle > max_angle)
-		angle = max_angle;
-	else if(angle < -max_angle)
-		angle = -max_angle;
-	mSpeed.Rotate(angle);
-
-	mPosition += mSpeed * time_delta;*/
 	Engine::Vector2D relative_target = mTargetPosition - mPosition;
 	float angle = relative_target.Rotation() - mSpeed.Rotation();
 
