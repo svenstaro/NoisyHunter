@@ -31,7 +31,8 @@ void GuiProgressbar::Draw(sf::RenderTarget* target) {
 	mFrontSprite.SetScale(mDimension.x * mProgress, mDimension.y);
 
 	mText.SetString(boost::lexical_cast<std::string>(int(mProgress*100)) + "%");
-	mText.SetPosition(int(mPosition.x + mDimension.x / 2 - mText.GetRect().Width / 2), int(mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2) );
+	mText.SetPosition(int(mPosition.x + mDimension.x / 2 - mText.GetRect().Width / 2), // convert to int to prevent blurry font due to half pixel coordinates
+					  int(mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2) );
 
 	target->Draw(mBackSprite);
 	target->Draw(mFrontSprite);

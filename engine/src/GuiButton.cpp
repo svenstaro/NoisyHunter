@@ -23,8 +23,8 @@ GuiButton* GuiButton::clone() const {
 // main callbacks
 void GuiButton::Draw(sf::RenderTarget* target) {
 	mText.SetString(mCaption);
-    mText.SetPosition(mPosition.x + mDimension.x / 2 - mText.GetRect().Width  / 2,
-                        mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2);
+	mText.SetPosition(int(mPosition.x + mDimension.x / 2 - mText.GetRect().Width  / 2),	// convert to int to prevent blurry font due to half pixel coordinates
+					  int(mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2));
 
     if (mHover)
         mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button_hover"));
