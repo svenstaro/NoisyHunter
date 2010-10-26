@@ -29,22 +29,26 @@ void PlayState::Initialize() {
 					 "button_focus.svg", 48, 48, "gui.button_focus");
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),
 					 "textfield2.svg", 24, 24, "gui.textfield");
-                     
-    sf::Font font;
-    font.LoadFromFile("../game/fonts/kingthings_trypewriter_2.ttf");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),
+					 "progressbar_back.svg", 24, 24, "gui.progressbar_back");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),
+					 "progressbar_front.svg", 24, 24, "gui.progressbar_front");
+
+	sf::Font font;
+	font.LoadFromFile("../game/fonts/kingthings_trypewriter_2.ttf");
 	resmgr->AddFont(font, "trypewriter");
 	resmgr->AddFont(font, "default");
 	//resmgr->AddFont(sf::Font::GetDefaultFont(), "default");
-    
-    // create GUI
+
+	// create GUI
 	// TODO: Do stuff
 
 	// client side only entity
-    mCrosshair = new Crosshair();
-    AddEntity(mCrosshair);
-    
-    // Add some GUI
-    CreateGuiSystem();
+	mCrosshair = new Crosshair();
+	AddEntity(mCrosshair);
+
+	// Add some GUI
+	CreateGuiSystem();
 
 		// Info Label
 		Engine::GuiLabel* l = new Engine::GuiLabel("info_label");
@@ -100,25 +104,33 @@ void PlayState::Initialize() {
 		t->SetFontColor(sf::Color::White);
 		mGuiSystems.begin()->AddControl(t);
 
-    auto inputmgr = Engine::Root::get_mutable_instance().GetInputManagerPtr();
-    // bind keys
-    Engine::KeyBindingCallback cb = boost::bind(&PlayState::OnLeaveGame, this);
-    inputmgr->BindKey( cb, Engine::KEY_PRESSED, sf::Key::Escape );
-    // bind mouse
-    Engine::MouseBindingCallback mcb = boost::bind(&PlayState::OnClick, this, _1);
-    inputmgr->BindMouse(mcb, Engine::BUTTON_PRESSED, sf::Mouse::Left);
-    Engine::MouseBindingCallback right = boost::bind(&PlayState::OnRightClick, this, _1);
-    inputmgr->BindMouse(right, Engine::BUTTON_PRESSED, sf::Mouse::Right);
+		// Test progress bar
+		Engine::GuiProgressbar* b = new Engine::GuiProgressbar("test_bar");
+		b->SetPosition(Engine::Vector2D(50,50));
+		b->SetDimension(Engine::Vector2D(300,30));
+		b->SetProgress(0.3);
+		b->SetFontSize(11);
+		mGuiSystems.begin()->AddControl(b);
 
-    // mouse cursor
-    Engine::MouseBindingCallback mv = boost::bind(&PlayState::OnMouseMove, this, _1);
-    inputmgr->BindMouse(mv, Engine::MOUSE_MOVED);
-    // hide original cursor
-    Engine::Root::get_mutable_instance().SetMouseHidden(true);
-    
-    // Bind connection events
-    auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
-    netmgr->BindOnClientConnected(boost::bind(&PlayState::OnClientConnected, this, _1));
+	auto inputmgr = Engine::Root::get_mutable_instance().GetInputManagerPtr();
+	// bind keys
+	Engine::KeyBindingCallback cb = boost::bind(&PlayState::OnLeaveGame, this);
+	inputmgr->BindKey( cb, Engine::KEY_PRESSED, sf::Key::Escape );
+	// bind mouse
+	Engine::MouseBindingCallback mcb = boost::bind(&PlayState::OnClick, this, _1);
+	inputmgr->BindMouse(mcb, Engine::BUTTON_PRESSED, sf::Mouse::Left);
+	Engine::MouseBindingCallback right = boost::bind(&PlayState::OnRightClick, this, _1);
+	inputmgr->BindMouse(right, Engine::BUTTON_PRESSED, sf::Mouse::Right);
+
+	// mouse cursor
+	Engine::MouseBindingCallback mv = boost::bind(&PlayState::OnMouseMove, this, _1);
+	inputmgr->BindMouse(mv, Engine::MOUSE_MOVED);
+	// hide original cursor
+	Engine::Root::get_mutable_instance().SetMouseHidden(true);
+
+	// Bind connection events
+	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
+	netmgr->BindOnClientConnected(boost::bind(&PlayState::OnClientConnected, this, _1));
 }
 
 void PlayState::Shutdown() {

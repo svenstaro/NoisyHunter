@@ -18,6 +18,7 @@
 #include "GuiTextfield.hpp"
 #include "GuiButton.hpp"
 #include "GuiCheckbox.hpp"
+#include "GuiProgressbar.hpp"
 
 class PlayState : public Engine::State {
 public:
