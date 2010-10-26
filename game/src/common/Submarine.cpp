@@ -47,8 +47,8 @@ void Submarine::Update(float time_delta) {
 	}
 }
 
-const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D Pos) {
-	return new Torpedo(mPosition, mSpeed * 3, Pos);
+const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D Pos, const float time_to_live) {
+	return new Torpedo(mPosition, mSpeed * 3, Pos, time_to_live);
 }
 
 const Engine::Entity* Submarine::PingTo(const Engine::Vector2D Pos) {

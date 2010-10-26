@@ -3,11 +3,14 @@
 
 Torpedo::Torpedo(const Engine::Vector2D& pos,
 				 const Engine::Vector2D& speed,
-				 const Engine::Vector2D& target_position) {
+				 const Engine::Vector2D& target_position,
+				 const float time_to_live) {
 	mPosition = pos;
 	mSpeed = speed;
 	mTargetPosition = target_position;
 	mUniqueId = 0;
+	mReachedTargetAngle = false;
+	mTimeToLive = time_to_live;
 }
 
 Torpedo::~Torpedo() {}
@@ -24,22 +27,34 @@ void Torpedo::Initialize() {
 
 void Torpedo::Update(const float time_delta) {
 	Engine::Vector2D relative_target = mTargetPosition - mPosition;
-	float angle = relative_target.Rotation() - mSpeed.Rotation();
 
-	if(Engine::Vector2D::rad2Deg(angle) > 180)
-		angle -= Engine::Vector2D::deg2Rad(360);
-	else if(Engine::Vector2D::rad2Deg(angle) < -180)
-		angle += Engine::Vector2D::deg2Rad(360);
+	if (!mReachedTargetAngle) {
+		float angle = relative_target.Rotation() - mSpeed.Rotation();
 
-	float max_angle = 2 * time_delta;
-	if(angle > max_angle)
-		angle = max_angle;
-	else if(angle < -max_angle)
-		angle = -max_angle;
+		if(Engine::Vector2D::rad2Deg(angle) > 180)
+			angle -= Engine::Vector2D::deg2Rad(360);
+		else if(Engine::Vector2D::rad2Deg(angle) < -180)
+			angle += Engine::Vector2D::deg2Rad(360);
 
-	mSpeed.Rotate(angle);
+		float max_angle = 2 * time_delta;
+		if(angle > max_angle)
+			angle = max_angle;
+		else if(angle < -max_angle)
+			angle = -max_angle;
+		else
+			mReachedTargetAngle = true;
+
+		mSpeed.Rotate(angle);
+	}
+
 	mPosition += mSpeed * time_delta;
 
+	mTimeToLive -= time_delta;
+
+	if (mTimeToLive <= 0) {
+		// TODO: explode, yeah!
+		mSpeed = Engine::Vector2D(0,0);
+	}
 }
 
 

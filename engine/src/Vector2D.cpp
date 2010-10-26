@@ -38,9 +38,6 @@ float Vector2D::Rotation() const
 {
     //assert (x != 0 && y != 0); // Zero vector has no rotation.
     if (x==0 && y==0) {
-		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_VECTOR, "Tried to get angle of zero vector. Returning 0.");
-
         return 0;
     }
 

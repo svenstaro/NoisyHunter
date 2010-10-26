@@ -10,7 +10,8 @@ class Torpedo : public Engine::Entity {
 public:
 	Torpedo(const Engine::Vector2D& pos = Engine::Vector2D(0,0),
 			const Engine::Vector2D& speed = Engine::Vector2D(0,0),
-			const Engine::Vector2D& target_position = Engine::Vector2D(0,0));
+			const Engine::Vector2D& target_position = Engine::Vector2D(0,0),
+			const float time_to_live = 3.f);
 
 	~Torpedo();
 
@@ -34,8 +35,9 @@ private:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version);
 */
-
+	bool mReachedTargetAngle;
 	Engine::Vector2D mTargetPosition;
+	float mTimeToLive;
 };
 
 #endif

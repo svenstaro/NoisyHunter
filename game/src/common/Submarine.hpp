@@ -38,7 +38,7 @@ public:
 	void SetTarget(const float x, const float y);
     void SetTarget(const Engine::Vector2D target);
 
-	const Engine::Entity* FireTorpedoTo(const Engine::Vector2D Pos);
+	const Engine::Entity* FireTorpedoTo(const Engine::Vector2D Pos, const float time_to_live);
 
 	const Engine::Entity* PingTo(const Engine::Vector2D Pos);
 
