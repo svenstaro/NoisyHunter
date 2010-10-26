@@ -35,13 +35,13 @@ void MainState::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uin
 
 	} else if(interaction_id == INTERACTION_FIRETORPEDO) {
 		Engine::Root::get_mutable_instance().GetLogManagerPtr()->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Received INTERACTION_FIRETORPEDO.");
-		float target_x, target_y;
-		data >> target_x >> target_y;
+		float target_x, target_y, time_to_live;
+		data >> target_x >> target_y >> time_to_live;
 
 		// Get player submarine
 		BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
 			if(sub->GetClientId() == client_id) {
-				Torpedo* torpedo = (Torpedo*)sub->FireTorpedoTo(Engine::Vector2D(target_x, target_y));
+				Torpedo* torpedo = (Torpedo*)sub->FireTorpedoTo(Engine::Vector2D(target_x, target_y), time_to_live);
 				torpedo->GrabUniqueId();
 				auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
 				netmgr->SendEntityAdd(torpedo);

@@ -9,7 +9,7 @@ enum Interaction {
 
 	// The player fires a torpedo to the target point
 	// Additional data:
-	// [float(target_x), float(target_y)]
+	// [float(target_x), float(target_y), float(time_to_live)]
 	INTERACTION_FIRETORPEDO = 0x0102
 };
 

@@ -28,25 +28,27 @@ void Submarine::Initialize() {
 
 void Submarine::Update(float time_delta) {
     Engine::Vector2D relative_target = mTarget - mPosition;
-    float angle = relative_target.Rotation() - mSpeed.Rotation();
+	if (relative_target.Magnitude() > 0.01){
+		float angle = relative_target.Rotation() - mSpeed.Rotation();
 
-    if(Engine::Vector2D::rad2Deg(angle) > 180) 
-		angle -= Engine::Vector2D::deg2Rad(360);
-    else if(Engine::Vector2D::rad2Deg(angle) < -180) 
-		angle += Engine::Vector2D::deg2Rad(360);
+		if(Engine::Vector2D::rad2Deg(angle) > 180)
+			angle -= Engine::Vector2D::deg2Rad(360);
+		else if(Engine::Vector2D::rad2Deg(angle) < -180)
+			angle += Engine::Vector2D::deg2Rad(360);
 
-	float max_angle = 2 * time_delta;
-	if(angle > max_angle)
-		angle = max_angle;
-	else if(angle < -max_angle)
-		angle = -max_angle;
+		float max_angle = 2 * time_delta;
+		if(angle > max_angle)
+			angle = max_angle;
+		else if(angle < -max_angle)
+			angle = -max_angle;
 
-    mSpeed.Rotate(angle);
-    mPosition += mSpeed * time_delta;
+		mSpeed.Rotate(angle);
+		mPosition += mSpeed * time_delta * relative_target.Magnitude() * 5;
+	}
 }
 
-const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D Pos) {
-	return new Torpedo(mPosition, mSpeed, Pos);
+const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D Pos, const float time_to_live) {
+	return new Torpedo(mPosition, mSpeed * 3, Pos, time_to_live);
 }
 
 const Engine::Entity* Submarine::PingTo(const Engine::Vector2D Pos) {

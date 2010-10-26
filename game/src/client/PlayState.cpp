@@ -170,6 +170,7 @@ void PlayState::OnNavigateTo(const Engine::Coordinates& mouse_position) {
 void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position) {
 	sf::Packet packet;
 	packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_FIRETORPEDO) << mouse_position.X << mouse_position.Y;
+	packet << 3.f; // time_to_live
 	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
 }
 
