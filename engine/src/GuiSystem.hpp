@@ -23,7 +23,6 @@ public:
 
     void SetFocus(GuiControl* control);
 
-
     void AddControl(GuiControl* control);
     
     template < typename T >

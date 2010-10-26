@@ -20,6 +20,10 @@
 #include "GuiCheckbox.hpp"
 #include "GuiProgressbar.hpp"
 
+#include "ParticleSystem.hpp"
+#include "ParticleEmitter.hpp"
+#include "Particle.hpp"
+
 class PlayState : public Engine::State {
 public:
     PlayState();

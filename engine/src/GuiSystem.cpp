@@ -3,7 +3,7 @@
 #include <boost/foreach.hpp>
 #include <iostream>
 
-namespace Engine{
+namespace Engine {
 
 GuiSystem::GuiSystem() {}
 

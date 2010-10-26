@@ -50,9 +50,7 @@ void Torpedo::Update(const float time_delta) {
 
 	mSpeed.Rotate(angle);
 	mPosition += mSpeed * time_delta;
-
 }
-
 
 void Torpedo::OnCollide(const Engine::Entity& ent) {
 	// TODO: Do stuff

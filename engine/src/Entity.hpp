@@ -56,14 +56,19 @@ public:
 
 	sf::Uint16 GetUniqueId() const;
 
+	void SetPosition(const float x, const float y);
+
+	void SetPosition(const Vector2D position);
+
     void SetSpeed(const float x, const float y);
 
-	void SetPosition(const float x, const float y);
-	void SetPosition(const Vector2D position);
+	void SetRotation(const float degree);
+
+	const Vector2D GetPosition() const;
 
 	const Vector2D GetSpeed() const;
 
-	const Vector2D GetPosition() const;
+	const float GetRotation() const;
 
 	Layer GetLayer() const;
 
@@ -82,6 +87,7 @@ protected:
 
 	Vector2D mPosition;
 	Vector2D mSpeed;
+	float mRotation;
 
     Layer mLayer;
 

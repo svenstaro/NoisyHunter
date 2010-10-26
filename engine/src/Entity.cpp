@@ -66,10 +66,6 @@ sf::Uint16 Entity::GetUniqueId() const {
 	return mUniqueId;
 }
 
-void Entity::SetSpeed(const float x, const float y) {
-	mSpeed = Vector2D(x, y);
-}
-
 void Entity::SetPosition(const float x, const float y) {
 	SetPosition(Vector2D(x, y));
 }
@@ -78,12 +74,24 @@ void Entity::SetPosition(const Vector2D position) {
 	mPosition = position;
 }
 
-const Vector2D Entity::GetSpeed() const {
-	return mSpeed;
+void Entity::SetSpeed(const float x, const float y) {
+	mSpeed = Vector2D(x, y);
+}
+
+void Entity::SetRotation(const float degree) {
+	mRotation = degree;
 }
 
 const Vector2D Entity::GetPosition() const {
 	return mPosition;
+}
+
+const Vector2D Entity::GetSpeed() const {
+	return mSpeed;
+}
+
+const float Entity::GetRotation() const {
+	return mRotation;
 }
 
 Entity::Layer Entity::GetLayer() const {
