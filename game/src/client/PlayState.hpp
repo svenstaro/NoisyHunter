@@ -13,6 +13,7 @@
 #include "InputManager.hpp"
 #include "Crosshair.hpp"
 #include "Submarine.hpp"
+#include "WorldPolygon.hpp"
 #include "Interaction.hpp"
 
 #include "GuiTextfield.hpp"
@@ -48,7 +49,7 @@ public:
     void OnMouseMove(Engine::MouseEventArgs args);
     
     // network callbacks
-    void OnClientConnected(const std::string& client_name);
+    void OnClientConnected(const sf::Uint16 client_id);
     
     // gui callbacks
 	void ExitButton_OnClick(const sf::Uint16 mouse_button);

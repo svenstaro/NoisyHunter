@@ -1,9 +1,12 @@
 #ifndef MAINSTATE_HPP
 #define MAINSTATE_HPP
 
+#include <SFML/System/Vector2.hpp>
+
 #include "LogManager.hpp"
 #include "State.hpp"
 #include "Submarine.hpp"
+#include "WorldPolygon.hpp"
 #include "Interaction.hpp"
 
 class MainState : public Engine::State{

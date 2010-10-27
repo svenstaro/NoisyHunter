@@ -4,6 +4,7 @@
 
 #include "PlayState.hpp"
 #include "LoadingState.hpp"
+// Include entities in the appropriate state
 
 void HandleSignal(int sig) {
 	auto logmgr =  Engine::Root::get_mutable_instance().GetLogManagerPtr();
@@ -93,6 +94,7 @@ int main(int argc, char* argv[]) {
 	auto idmgr = root.GetIdManagerPtr();
 	idmgr->RegisterEntityClass(new Submarine());
 	idmgr->RegisterEntityClass(new Torpedo());
+	idmgr->RegisterEntityClass(new WorldPolygon());
 
 	// Initialize Root singleton using parsed values.
     root.InitializeAsClient(sf::VideoMode(width, height), "Noisy Hunter", fullscreen, sf::IpAddress(ip), port, name, verbose);

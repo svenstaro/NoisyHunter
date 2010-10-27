@@ -14,6 +14,20 @@ void MainState::Initialize() {
     // Bind connection events
     auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
     netmgr->BindOnClientConnected(boost::bind(&MainState::OnClientConnected, this, _1));
+
+	WorldPolygon* pol1 = new WorldPolygon();
+	pol1->Initialize();
+	pol1->GrabUniqueId();
+	pol1->AddPoint(sf::Vector2f(0,0));
+	pol1->AddPoint(sf::Vector2f(100,0));
+	pol1->AddPoint(sf::Vector2f(100,100));
+	pol1->AddPoint(sf::Vector2f(200,100));
+	pol1->AddPoint(sf::Vector2f(200,200));
+	pol1->AddPoint(sf::Vector2f(300,200));
+	pol1->AddPoint(sf::Vector2f(300,300));
+	pol1->AddPoint(sf::Vector2f(0,300));
+	pol1->SetPosition(100,100);
+	AddEntity(pol1);
 }
 void MainState::Shutdown() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
@@ -44,7 +58,7 @@ void MainState::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uin
 				Torpedo* torpedo = (Torpedo*)sub->FireTorpedoTo(Engine::Vector2D(target_x, target_y), time_to_live);
 				torpedo->GrabUniqueId();
 				auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
-				netmgr->SendEntityAdd(torpedo);
+				netmgr->SendEntityAdd(*torpedo);
 				AddEntity(torpedo);
 			}
 		}
@@ -69,8 +83,6 @@ void MainState::Update(float time_delta) {
 
 void MainState::OnClientConnected(sf::Uint16 client_id) {
 	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
-	auto clientmgr = netmgr->GetClientManagerPtr();
-	sf::Uint16 cl_id = clientmgr->GetId(client_name);
 
 	float lol = sf::Randomizer::Random(0.1f, 0.9f);
 	Submarine* submarine1 = new Submarine(lol, lol, client_id);
