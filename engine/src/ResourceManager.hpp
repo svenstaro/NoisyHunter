@@ -9,9 +9,19 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/filesystem.hpp>
 
-//#include "Root.hpp"
+#include "AnimatedSprite.hpp"
 
 namespace Engine {
+
+enum MouseCursor {
+	MOUSECURSOR_ARROW	= 10000,
+	MOUSECURSOR_POINTER	= 10001,
+	MOUSECURSOR_BUSY	= 10002,
+	MOUSECURSOR_HELP	= 10003,
+	MOUSECURSOR_MOVE	= 10004,
+	MOUSECURSOR_NO		= 10005,
+	MOUSECURSOR_SELECT	= 10006
+};
 
 class ResourceManager {
 public:
@@ -25,9 +35,16 @@ public:
 
     void AddFont(sf::Font& font, std::string key);
     const sf::Font& GetFont(const std::string& key);
+
+	void SetCursorSprite(AnimatedSprite& sprite, const sf::Uint16 key);
+	AnimatedSprite& GetCursorSprite();
+	void SetCursor(const sf::Uint16 key);
+	const sf::Uint16 GetCursor() const;
 private:
 	boost::ptr_map<std::string, sf::Image> mImages;
 	boost::ptr_map<std::string, sf::Font> mFonts;
+	boost::ptr_map<sf::Uint16, AnimatedSprite> mCursors;
+	sf::Uint16 mCurrentCursor;
 };
 
 }

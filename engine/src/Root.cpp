@@ -50,6 +50,17 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
     else
         mRenderWindow.Create(video_mode, window_title, sf::Style::Close, Settings);
 
+	// Load Engine Resources (Default GUI etc.)
+	mResourceManager.AddImage(boost::filesystem::path("../engine/gui"),"cursors.svg", 256, 256, "gui.default.cursors");
+	AnimatedSprite arrow;
+	arrow.SetImage(mResourceManager.GetImage("gui.default.cursors"));
+	arrow.SetSubRectSize(sf::Vector2f(16,16));
+	arrow.SetSubRectOffset(sf::Vector2f(0,0));
+	arrow.SetFPS(0);
+	arrow.SetNumFrames(1);
+	mResourceManager.SetCursorSprite(arrow, MOUSECURSOR_ARROW);
+	mResourceManager.SetCursor(MOUSECURSOR_ARROW);
+
     //mInputManager = InputManager();
     //mStateManager = StateManager();
     //mResourceManager = ResourceManager();
@@ -145,6 +156,10 @@ void Root::StartMainLoop() {
             // Render the image.
 			mRenderWindow.Clear(sf::Color(0,0,0));
             mStateManager.Draw(&mRenderWindow);
+			// Render mouse cursor
+			AnimatedSprite& s = mResourceManager.GetCursorSprite();
+			s.SetPosition(GetMousePosition().x, GetMousePosition().y);
+			mRenderWindow.Draw(s);
             mRenderWindow.Display();
 
             // Check whether a shutdown has been requested.

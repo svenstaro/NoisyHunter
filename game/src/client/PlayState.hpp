@@ -11,7 +11,6 @@
 #include "State.hpp"
 #include "Entity.hpp"
 #include "InputManager.hpp"
-#include "Crosshair.hpp"
 #include "Submarine.hpp"
 #include "WorldPolygon.hpp"
 #include "Interaction.hpp"
@@ -55,7 +54,6 @@ public:
 	void ExitButton_OnClick(const sf::Uint16 mouse_button);
 
 private:
-    Crosshair* mCrosshair;
     Submarine* mPlayerSubmarine;
 };
 

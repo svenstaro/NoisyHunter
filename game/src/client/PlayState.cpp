@@ -55,8 +55,6 @@ void PlayState::Initialize() {
 	// TODO: Do stuff
 
 	// client side only entity
-	mCrosshair = new Crosshair();
-	AddEntity(mCrosshair);
 
 	// Add some GUI
 	CreateGuiSystem();
@@ -196,7 +194,7 @@ void PlayState::OnRightClick(Engine::MouseEventArgs args) {
 }
 
 void PlayState::OnMouseMove(Engine::MouseEventArgs args) {
-    mCrosshair->SetPosition(args.X, args.Y);
+
 }
 
 void PlayState::OnClientConnected(const sf::Uint16 client_id) {

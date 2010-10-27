@@ -15,6 +15,7 @@
 #include "LogManager.hpp"
 #include "LogCommand.hpp"
 #include "IdManager.hpp"
+#include "AnimatedSprite.hpp"
 
 namespace Engine {
 

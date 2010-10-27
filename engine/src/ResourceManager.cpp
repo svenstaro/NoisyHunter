@@ -72,5 +72,20 @@ const sf::Font& ResourceManager::GetFont(const std::string& key) {
     return mFonts[key];
 }
 
+void ResourceManager::SetCursorSprite(AnimatedSprite& sprite, const sf::Uint16 key) {
+	mCursors[key] = sprite;
+}
+
+void ResourceManager::SetCursor(const sf::Uint16 key) {
+	mCurrentCursor = key;
+}
+
+const sf::Uint16 ResourceManager::GetCursor() const {
+	return mCurrentCursor;
+}
+
+AnimatedSprite& ResourceManager::GetCursorSprite() {
+	return mCursors[mCurrentCursor];
+}
 
 }
