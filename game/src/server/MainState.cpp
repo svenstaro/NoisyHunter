@@ -67,15 +67,19 @@ void MainState::Update(float time_delta) {
 	}
 }
 
-void MainState::OnClientConnected(std::string client_name) {
+void MainState::OnClientConnected(sf::Uint16 client_id) {
 	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
 	auto clientmgr = netmgr->GetClientManagerPtr();
 	sf::Uint16 cl_id = clientmgr->GetId(client_name);
 
 	float lol = sf::Randomizer::Random(0.1f, 0.9f);
-	Submarine* submarine1 = new Submarine(lol, lol, cl_id);
+	Submarine* submarine1 = new Submarine(lol, lol, client_id);
 	submarine1->GrabUniqueId();
-	submarine1->SetClientId(cl_id);
-	netmgr->SendEntityAdd(submarine1);
+	submarine1->SetClientId(client_id);
+
+	SendAllEntityAddToClient(client_id);
+
 	AddEntity(submarine1);			
+
+	netmgr->SendEntityAdd(*submarine1);
 }

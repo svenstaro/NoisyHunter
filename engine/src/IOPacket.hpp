@@ -26,6 +26,8 @@ public:
     IOPacket& operator & (bool          &data);
 
 	const sf::Packet& GetPacket() const;
+
+	bool IsStreamOut() const;
 private:
     sf::Packet mPacket;
     bool mStreamOut;

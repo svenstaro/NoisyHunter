@@ -49,7 +49,7 @@ void ClientManager::Remove(const sf::Uint16 id) {
 	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Client count: "+boost::lexical_cast<std::string>(mClients.size()));
 }
 
-bool ClientManager::IsKnown(const sf::IpAddress& address, const sf::Uint16& port) {
+bool ClientManager::IsKnown(const sf::IpAddress& address, const sf::Uint16 port) {
     bool isknown = false;
     std::map<sf::Uint16, Client>::iterator it;
     for(it = mClients.begin(); it != mClients.end(); ++it) {

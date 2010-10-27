@@ -91,6 +91,25 @@ void NetworkManager::SendPacket(sf::Packet& packet) {
 	}
 }
 
+void NetworkManager::SendPacket(sf::Packet& packet, sf::Uint16 client_id) {
+	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+
+	// Don't send empty packets.
+	if(packet.GetDataSize() == 0) {
+		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Won't send empty packet.");
+	} else {
+		if(mIsServer) {
+			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending packet to: "+mClientManager.GetIp(client_id).ToString()+":"+boost::lexical_cast<std::string>(mClientManager.GetPort(client_id)));
+			mListener.Send(packet, mClientManager.GetIp(client_id), mClientManager.GetPort(client_id));
+		} else {
+			// WE DONT WANT THAT
+			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "ALL HELL BREAKS LOOSE");
+		}
+		mSentPacketsCount++;
+		//logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sent packets count: "+boost::lexical_cast<std::string>(mSentPacketsCount));
+	}
+}
+
 void NetworkManager::SendClientAdd(const std::string& client_name) {
     sf::Packet packet;
 	if(mIsServer) {
@@ -111,14 +130,24 @@ void NetworkManager::SendClientQuit(const std::string &reason, const std::string
 	SendPacket(packet);
 }
 
-void NetworkManager::SendEntityAdd(Entity* entity) {
+void NetworkManager::SendEntityAdd(Entity& entity) {
 	sf::Packet packet;
 	packet << sf::Uint16(NETCMD_ENTITYADD);
-	packet << entity->GetEntityId();
+	packet << entity.GetEntityId();
 	IOPacket iopacket(false, packet);
-	entity->serialize(iopacket);
+	entity.serialize(iopacket);
 	packet = iopacket.GetPacket();
 	SendPacket(packet);
+}
+
+void NetworkManager::SendEntityAdd(Entity& entity, const sf::Uint16 client_id) {
+	sf::Packet packet;
+	packet << sf::Uint16(NETCMD_ENTITYADD);
+	packet << entity.GetEntityId();
+	IOPacket iopacket(false, packet);
+	entity.serialize(iopacket);
+	packet = iopacket.GetPacket();
+	SendPacket(packet, client_id);
 }
 
 void NetworkManager::SendChatMessage(const std::string& chat_message, const std::string& client_name) {
@@ -208,7 +237,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 						sf::Uint16 id = mClientManager.GetId(address, port);
 						mClientManager.SetName(id, client_name);
 						SendClientAdd(client_name);
-						TriggerOnClientConnected(client_name);
+						TriggerOnClientConnected(id);
 						logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Client "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+") was added successfully.");
 				}
 			} else if(net_cmd == NETCMD_CLIENTQUIT) {
@@ -291,7 +320,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
                 // so update scoreboard list. 
                 // TODO: scoreboard list updating.
                 
-                TriggerOnClientConnected(client_name);
+                TriggerOnClientConnected(client_id);
             } else if(net_cmd == NETCMD_CLIENTPING) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTPING.");
                 // OMG! You got pinged by the server!
@@ -367,16 +396,13 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 			}
         }
     }
-	// debug message
-	if (num_entity_infos > 0)
-		logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Deserialized "+boost::lexical_cast<std::string>(num_entity_infos)+" x NETCMD_ENTITYINFO.");
 }
 
-void NetworkManager::BindOnClientConnected(const boost::signals2::signal<void (const std::string&)>::slot_type& slot) {
+void NetworkManager::BindOnClientConnected(const boost::signals2::signal<void (const sf::Uint16)>::slot_type& slot) {
     mOnClientConnectedSignal.connect(slot);
 }
-void NetworkManager::TriggerOnClientConnected(const std::string& client_name) {
-    mOnClientConnectedSignal(client_name);
+void NetworkManager::TriggerOnClientConnected(const sf::Uint16 client_id) {
+    mOnClientConnectedSignal(client_id);
 }
 
 sf::Uint16 NetworkManager::GetPing() {

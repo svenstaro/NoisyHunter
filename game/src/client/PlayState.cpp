@@ -199,10 +199,10 @@ void PlayState::OnMouseMove(Engine::MouseEventArgs args) {
     mCrosshair->SetPosition(args.X, args.Y);
 }
 
-void PlayState::OnClientConnected(const std::string& client_name) {
+void PlayState::OnClientConnected(const sf::Uint16 client_id) {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "CLient connected: " + client_name);
-    if (client_name == Engine::Root::get_mutable_instance().GetClientName()){
+	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Client connected: " + boost::lexical_cast<std::string>(client_id));
+    if (client_id == Engine::Root::get_mutable_instance().GetClientId()){
         logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "THAT'S YOU!!");
         // TODO: Unpause StateManager.
 		mGuiSystems.begin()->GetControl<Engine::GuiLabel>("info_label")->SetText("Connection successful, found the server!");

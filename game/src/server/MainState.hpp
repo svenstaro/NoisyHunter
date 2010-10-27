@@ -18,7 +18,7 @@ public:
 	void HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data);
 
     void Update(float time_delta);
-	void OnClientConnected(std::string client_name);
+	void OnClientConnected(sf::Uint16 client_id);
 private:
 	// TEEEEEEST TEST
 	bool mTargetSet;

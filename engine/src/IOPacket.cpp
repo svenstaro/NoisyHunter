@@ -91,4 +91,8 @@ const sf::Packet& IOPacket::GetPacket() const {
     return mPacket;
 }
 
+bool IOPacket::IsStreamOut() const {
+	return mStreamOut;
+}
+
 }

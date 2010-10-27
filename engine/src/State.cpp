@@ -37,6 +37,14 @@ void State::AppendAllEntitiesToPacket() {
 	}
 }
 
+void State::SendAllEntityAddToClient(sf::Uint16 client_id) {
+	Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_STATE, "Going to send all entities to the new connected client." + Root::get_mutable_instance().GetNetworkManagerPtr()->GetClientManagerPtr()->GetName(client_id));
+	BOOST_FOREACH(Entity& entity, mEntities) {
+		auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
+		netmgr->SendEntityAdd(entity, client_id);
+	}
+}
+
 void State::Draw(sf::RenderTarget* target) {
 	BOOST_FOREACH(Entity& entity, mEntities) {
 		entity.Draw(target);

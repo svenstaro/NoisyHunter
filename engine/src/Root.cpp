@@ -95,7 +95,7 @@ void Root::StartMainLoop() {
 				if(mNetworkManager.GetClientManagerPtr()->GetActiveClients() > 0) {
 					mNetworkManager.PreparePacket();
 					mStateManager.AppendAllEntitiesToPacket();
-					logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending snapshot.");
+					//logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending snapshot.");
 					mNetworkManager.SendPacket();
 				}
 			}
