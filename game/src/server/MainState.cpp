@@ -89,8 +89,6 @@ void MainState::OnClientConnected(sf::Uint16 client_id) {
 	submarine1->GrabUniqueId();
 	submarine1->SetClientId(client_id);
 
-	SendAllEntityAddToClient(client_id);
-
 	AddEntity(submarine1);			
 
 	netmgr->SendEntityAdd(*submarine1);

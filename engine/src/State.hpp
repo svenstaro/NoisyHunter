@@ -24,7 +24,6 @@ public:
     void UpdateAllEntities(const float time_delta); // TODO: This should 
 	// probably be private if it is never called from the outside.
     void AppendAllEntitiesToPacket();
-	void SendAllEntityAddToClient(sf::Uint16 client_id);
 
     // Draws all entities to render target.
     void HandleEvent(sf::Event e);
