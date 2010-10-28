@@ -4,6 +4,11 @@
 #include "State.hpp"
 #include "InputManager.hpp"
 #include "GuiSystem.hpp"
+#include "GuiButton.hpp"
+#include "GuiProgressbar.hpp"
+#include "GuiCheckbox.hpp"
+#include "GuiTextfield.hpp"
+#include "PlayState.hpp"
 
 class LoadingState : public Engine::State{
 public:
@@ -14,7 +19,7 @@ public:
     void Initialize();
     void Shutdown();
 
-    //void Update(float time_delta);
+	void Update(float time_delta);
     //void Draw(sf::RenderTarget* target);
 
     void OnCancel();
