@@ -27,8 +27,8 @@ void ParticleSystem::Update(const float time_delta) {
 	}
 }
 
-void ParticleSystem::Draw(sf::RenderTarget* target) {
-	BOOST_FOREACH(ParticleEmitter& emitter, mParticleEmitters) {
+void ParticleSystem::Draw(sf::RenderTarget* target) const {
+	BOOST_FOREACH(const ParticleEmitter& emitter, mParticleEmitters) {
 		emitter.Draw(target);
 	}
 }

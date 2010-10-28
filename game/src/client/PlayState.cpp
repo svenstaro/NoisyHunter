@@ -41,15 +41,14 @@ void PlayState::Initialize() {
 	//resmgr->AddFont(sf::Font::GetDefaultFont(), "default");
 	
 	// Particle system crap
-// TODO: This segfaults. Fix this crap.
-//	Engine::Vector2D pos = Engine::Vector2D(0.5f, 0.5f);
-//	float rotation = 20.f;
-//	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(pos, rotation, Engine::Entity::PositionType::POSITIONTYPE_WORLD);
-//	Engine::ParticleEmitter* part_emit1 = new Engine::ParticleEmitter();
-//	Engine::ParticleEmitter* part_emit2 = new Engine::ParticleEmitter();
-//	part_sys->AddEmitter(part_emit1);
-//	part_sys->AddEmitter(part_emit2);
-//	AddEntity(part_sys);
+	Engine::Vector2D pos = Engine::Vector2D(0.5f, 0.5f);
+	float rotation = 20.f;
+	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(pos, rotation, Engine::Entity::PositionType::POSITIONTYPE_WORLD);
+	Engine::ParticleEmitter* part_emit1 = new Engine::ParticleEmitter();
+	Engine::ParticleEmitter* part_emit2 = new Engine::ParticleEmitter();
+	part_sys->AddEmitter(part_emit1);
+	part_sys->AddEmitter(part_emit2);
+	AddEntity(part_sys);
 
 	// create GUI
 	// TODO: Do stuff

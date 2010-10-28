@@ -23,7 +23,7 @@ public:
 
     void Update(const float time_delta);
 
-	void Draw(sf::RenderTarget* target);
+	void Draw(sf::RenderTarget* target) const;
 
 	sf::Uint16 GetEntityId() const;
 
