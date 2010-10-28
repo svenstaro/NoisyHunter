@@ -10,13 +10,10 @@ namespace Engine {
 class Particle : public Entity {
 public:
 	Particle();
-	Particle(const Vector2D& pos, 
-			 const Vector2D& speed, 
-			 const float time_to_live,
-			 const sf::Color& start_color = sf::Color(0, 0, 255, 255),
-			 const sf::Color& end_color = sf::Color(255, 0, 0, 255),
-			 const float start_scale = 1.0f,
-			 const float end_scale = 2.0f,
+	Particle(const Vector2D& pos,
+			 const Vector2D& speed,
+			 const sf::Color& color,
+			 const float scale,
 			 const PositionType pos_type = PositionType::POSITIONTYPE_WORLD);
 	
 	~Particle();
@@ -31,13 +28,15 @@ public:
 
 	Entity::PositionType GetPositionType() const;
 
+	const float GetLifeTime() const;
+
 private:
-	float mTimeToLive;
-	sf::Color mStartColor;
-	sf::Color mEndColor;
-	float mStartScale;
-	float mEndScale;
+	sf::Color mColor;
+	float mScale;
+
 	PositionType mPositionType;
+
+	float mLifeTime;
 };
 
 }

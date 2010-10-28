@@ -10,13 +10,21 @@ namespace Engine {
 
 class ParticleEmitter : public Entity {
 public:
-	ParticleEmitter();
+	ParticleEmitter(const Vector2D& offset = Vector2D(0.f, 0.f),
+					const Vector2D& speed = Vector2D(1.f, 1.f),
+					const float spread = 0.1f,
+					const float time_to_live = 3.f,
+					const sf::Uint16 max_particles = 20,
+					const sf::Color& start_color = sf::Color(0, 0, 255, 255),
+					const sf::Color& end_color = sf::Color(255, 0, 0, 255),
+					const float start_scale = 1.0f,
+					const float end_scale = 2.0f);
 	
 	~ParticleEmitter();
 
 	ParticleEmitter* clone() const;
 	
-	void Initialize();
+	void Initialize(PositionType);
 
     void Update(const float time_delta);
 
@@ -27,6 +35,16 @@ public:
 	Entity::PositionType GetPositionType() const;
 
 private:
+	Vector2D mOffset;
+	Vector2D mSpeed;
+	float mSpread;
+	float mTimeToLive;
+	sf::Uint16 mMaxParticles;
+	sf::Color mStartColor;
+	sf::Color mEndColor;
+	float mStartScale;
+	float mEndScale;
+
 	boost::ptr_list<Particle> mParticles;
 
 	PositionType mPositionType;

@@ -42,6 +42,7 @@ Entity::PositionType ParticleSystem::GetPositionType() const {
 }
 
 void ParticleSystem::AddEmitter(ParticleEmitter* emitter) {
+	emitter->Initialize(mPositionType);
 	mParticleEmitters.push_back(emitter);
 }
 

@@ -11,9 +11,9 @@ namespace Engine {
 class ParticleSystem : public Entity {
 public:
 	ParticleSystem();
-	ParticleSystem(const Vector2D pos, 
-				   float rotation,
-				   const PositionType pos_type);
+	ParticleSystem(const Vector2D pos,
+				   float rotation = 0.f,
+				   const PositionType pos_type = Entity::PositionType::POSITIONTYPE_WORLD);
 	
 	~ParticleSystem();
 
