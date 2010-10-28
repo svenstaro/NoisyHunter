@@ -12,6 +12,7 @@ void PlayState::Initialize() {
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing PlayState.");
 
     // load resources
+	/*
 	auto resmgr = Engine::Root::get_mutable_instance().GetResourceManagerPtr();
 	resmgr->AddImage(boost::filesystem::path("../game/gfx"),
 					 "submarine1.svg", 80, 53, "submarine");
@@ -38,7 +39,7 @@ void PlayState::Initialize() {
 	font.LoadFromFile("../game/fonts/kingthings_trypewriter_2.ttf");
 	resmgr->AddFont(font, "trypewriter");
 	resmgr->AddFont(font, "default");
-	//resmgr->AddFont(sf::Font::GetDefaultFont(), "default");
+	*/
 	
 	// Particle system crap
 	Engine::Vector2D pos = Engine::Vector2D(0.5f, 0.5f);

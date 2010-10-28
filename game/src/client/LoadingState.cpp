@@ -1,23 +1,33 @@
 #include "LoadingState.hpp"
 
 #include "Root.hpp"
-#include "GuiButton.hpp"
-#include "GuiCheckbox.hpp"
-#include "GuiTextfield.hpp"
 
 LoadingState::LoadingState() {}
 LoadingState::~LoadingState() {}
 
 // state control
 void LoadingState::Initialize() {
-    // load gui resources
+	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing PlayState.");
 
-    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"button.svg",             100, 100,   "gui.button");
-    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"button_hover.svg",       100, 100,   "gui.button_hover");
-    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"checkbox.svg",           16, 16,     "gui.checkbox");
-    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"checkbox_checked.svg",   16, 16,     "gui.checkbox_checked");
-    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"checkbox_hover.svg",     16, 16,     "gui.checkbox_hover");
-    Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddImage(boost::filesystem::path("../game/gui"),"textfield.svg",          100, 100,   "gui.textfield");
+	// load resources
+	auto resmgr = Engine::Root::get_mutable_instance().GetResourceManagerPtr();
+
+	// GUI
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),"button.svg",				48,		48,		"gui.button");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),"button_hover.svg",		48,		48,		"gui.button_hover");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),"button_focus.svg",		48,		48,		"gui.button_focus");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),"checkbox.svg",			16,		16,		"gui.checkbox");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),"checkbox_checked.svg",	16,		16,		"gui.checkbox_checked");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),"checkbox_hover.svg",		16,		16,		"gui.checkbox_hover");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),"textfield2.svg",			24,		24,		"gui.textfield");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),"progressbar_back.svg",	24,		24,		"gui.progressbar_back");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),"progressbar_front.svg",	24,		24,		"gui.progressbar_front");
+
+	// IMAGES
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"submarine1.svg",			80,		53,		"submarine");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"torpedo1.svg",			30,		10,		"torpedo");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"missing.svg",			80,		53,		"missing");
 
     // load font
     sf::Font font;
@@ -26,37 +36,20 @@ void LoadingState::Initialize() {
     font.LoadFromFile("../game/fonts/ParmaPetit-Normal.ttf");
     Engine::Root::get_mutable_instance().GetResourceManagerPtr()->AddFont(font, "serif");
 
-
     // create gui
     CreateGuiSystem();
 
-    Engine::GuiButton* c = new Engine::GuiButton("test");
-    c->SetDimension(Engine::Vector2D(100,30));
-    c->SetPosition(Engine::Vector2D(20,20));
-    c->SetText("Play!");
-    c->SetFont(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetFont("default"));
-    mGuiSystems.begin()->AddControl(c);
+	Engine::GuiProgressbar* p = new Engine::GuiProgressbar("loading_progress");
+	p->SetPosition(Engine::Vector2D(300,280));
+	p->SetDimension(Engine::Vector2D(200,40));
+	mGuiSystems.begin()->AddControl(p);
 
-    c = new Engine::GuiButton("test2");
-    c->SetDimension(Engine::Vector2D(760,100));
-    c->SetPosition(Engine::Vector2D(20,480));
-    c->SetText("I am a huge button!!! Did you notice that?");
-    c->SetFont(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetFont("serif"));
-    c->SetFontSize(20);
-    mGuiSystems.begin()->AddControl(c);
+	Engine::GuiLabel* l = new Engine::GuiLabel("loading_progress_label");
+	l->SetPosition(300,330);
+	l->SetText("Loading images...");
+	l->SetFontSize(11);
+	mGuiSystems.begin()->AddControl(l);
 
-    Engine::GuiTextfield* f = new Engine::GuiTextfield("roflcopter");
-    f->SetPosition(Engine::Vector2D(20,100));
-    f->SetText("Roflcopter");
-    f->SetFont(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetFont("serif"));
-    mGuiSystems.begin()->AddControl(f);
-
-    Engine::GuiCheckbox* b = new Engine::GuiCheckbox("test");
-    b->SetPosition(Engine::Vector2D(20,60));
-    b->SetText("Click me to check me ;)");
-    b->SetFont(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetFont("default"));
-    b->SetFontColor(sf::Color(255,255,255));
-    mGuiSystems.begin()->AddControl(b);
 
     // (create entities)
 
@@ -81,8 +74,25 @@ void LoadingState::Initialize() {
     //Engine::Root::get_mutable_instance().SetMouseHidden(true);
 
 }
+
+void LoadingState::Update(float time_delta) {
+	sf::Sleep(0.1);
+	auto resmgr = Engine::Root::get_mutable_instance().GetResourceManagerPtr();
+
+	if (resmgr->GetPercentageLoadingDone() >= 1) {
+		Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new PlayState());
+	} else {
+		sf::Uint16 n = resmgr->LoadNextImage();
+		sf::Uint16 m = resmgr->GetMaxImageQueueSize();
+		mGuiSystems.begin()->GetControl<Engine::GuiProgressbar>("loading_progress")->SetProgress(resmgr->GetPercentageLoadingDone());
+		mGuiSystems.begin()->GetControl<Engine::GuiLabel>("loading_progress_label")->SetText( "Loading images ... " +
+			boost::lexical_cast<std::string>(n) +
+			" / " +
+			boost::lexical_cast<std::string>(m) );
+	}
+}
+
 void LoadingState::Shutdown() {}
-//void Update(float time_delta);
 
 void LoadingState::OnCancel() {
     Engine::Root::get_mutable_instance().RequestShutdown();

@@ -2,6 +2,7 @@
 #define RESOURCEMANAGER_HPP
 
 #include <iostream>
+#include <queue>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <ImageMagick/Magick++.h>
@@ -23,11 +24,38 @@ enum MouseCursor {
 	MOUSECURSOR_SELECT	= 10006
 };
 
+struct ImageProperties{
+public:
+	ImageProperties(const boost::filesystem::path& path, const std::string& imgname,
+		const sf::Uint16 width, const sf::Uint16 height, const std::string& key="") {
+
+		Path = path;
+		Name = imgname;
+		Width = width;
+		Height = height;
+		Key = key;
+	}
+
+	boost::filesystem::path Path;
+	std::string Name;
+	sf::Uint16 Width;
+	sf::Uint16 Height;
+	std::string Key;
+};
+
 class ResourceManager {
 public:
     ResourceManager();
     //ResourceManager(Root* root);
     ~ResourceManager();
+
+	void AddImageToLoadingQueue(const boost::filesystem::path& path, const std::string& imgname,
+		const sf::Uint16 width, const sf::Uint16 height, const std::string& key="");
+
+	const sf::Uint16 LoadNextImage();
+	const sf::Uint16 GetImagesToLoadLeft() const;
+	const sf::Uint16 GetMaxImageQueueSize() const;
+	const float GetPercentageLoadingDone() const;
 
     bool AddImage(const boost::filesystem::path& path, const std::string& imgname,
         const sf::Uint16 width, const sf::Uint16 height, const std::string& key="");
@@ -41,10 +69,14 @@ public:
 	void SetCursor(const sf::Uint16 key);
 	const sf::Uint16 GetCursor() const;
 private:
+	std::queue<ImageProperties> mImagesToLoad;
+
 	boost::ptr_map<std::string, sf::Image> mImages;
 	boost::ptr_map<std::string, sf::Font> mFonts;
 	boost::ptr_map<sf::Uint16, AnimatedSprite> mCursors;
 	sf::Uint16 mCurrentCursor;
+
+	sf::Uint16 mMaxImageQueueSize;
 };
 
 }
