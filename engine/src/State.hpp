@@ -55,6 +55,7 @@ public:
 		return entities;
 
 	}
+	void DelEntitiesByClientId(const sf::Uint16 client_id);
 
 protected:
     // Entity list
