@@ -51,15 +51,26 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
         mRenderWindow.Create(video_mode, window_title, sf::Style::Close, Settings);
 
 	// Load Engine Resources (Default GUI etc.)
-	mResourceManager.AddImage(boost::filesystem::path("../engine/gui"),"cursors.svg", 256, 256, "gui.default.cursors");
+	int cursor_size = 24;
+	mResourceManager.AddImage(boost::filesystem::path("../engine/gui"),"cursors.svg", cursor_size*16, cursor_size*16, "gui.default.cursors");
 	AnimatedSprite arrow;
 	arrow.SetImage(mResourceManager.GetImage("gui.default.cursors"));
-	arrow.SetSubRectSize(sf::Vector2f(16,16));
+	arrow.SetSubRectSize(sf::Vector2f(cursor_size,cursor_size));
 	arrow.SetSubRectOffset(sf::Vector2f(0,0));
 	arrow.SetFPS(0);
 	arrow.SetNumFrames(1);
 	mResourceManager.SetCursorSprite(arrow, MOUSECURSOR_ARROW);
-	mResourceManager.SetCursor(MOUSECURSOR_ARROW);
+
+	AnimatedSprite busy;
+	busy.SetImage(mResourceManager.GetImage("gui.default.cursors"));
+	busy.SetSubRectSize(sf::Vector2f(cursor_size,cursor_size));
+	busy.SetSubRectOffset(sf::Vector2f(0,cursor_size));
+	busy.SetFPS(8);
+	busy.SetNumFrames(8);
+	mResourceManager.SetCursorSprite(busy, MOUSECURSOR_BUSY);
+
+	mResourceManager.SetCursor(MOUSECURSOR_BUSY);
+
 
     //mInputManager = InputManager();
     //mStateManager = StateManager();
@@ -147,7 +158,11 @@ void Root::StartMainLoop() {
 			while(time_budget >= dt) {
                 mStateManager.Update(dt);
                 time_budget -= dt;
-			}          
+			}
+			// Update mouse cursor
+			AnimatedSprite& cursor = mResourceManager.GetCursorSprite();
+			cursor.Update(time_delta);
+
             
 			if(PingClock.GetElapsedTime() >= 1.0f) {
 				PingClock.Reset();
@@ -157,9 +172,8 @@ void Root::StartMainLoop() {
 			mRenderWindow.Clear(sf::Color(0,0,0));
             mStateManager.Draw(&mRenderWindow);
 			// Render mouse cursor
-			AnimatedSprite& s = mResourceManager.GetCursorSprite();
-			s.SetPosition(GetMousePosition().x, GetMousePosition().y);
-			mRenderWindow.Draw(s);
+			cursor.SetPosition(GetMousePosition().x, GetMousePosition().y);
+			mRenderWindow.Draw(cursor);
             mRenderWindow.Display();
 
             // Check whether a shutdown has been requested.

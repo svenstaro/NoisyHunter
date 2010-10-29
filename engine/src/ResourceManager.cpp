@@ -32,7 +32,7 @@ const sf::Uint16 ResourceManager::LoadNextImage() {
 	mImagesToLoad.pop();
 	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_RESOURCEMANAGER, "Loading image " + p.Key + " from queue.");
 	if (!AddImage(p.Path, p.Name, p.Width, p.Height, p.Key))
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Could not load image " + p.Key);
+		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Could not load imag9e " + p.Key);
 
 	return int(mImagesToLoad.size());
 }
@@ -86,6 +86,7 @@ bool ResourceManager::AddImage(const boost::filesystem::path& path, const std::s
 	// Load, convert and save image (originalFile > cacheFile)
 	Magick::Image mimage;
 	mimage.backgroundColor(Magick::Color(0,0,0,65535));
+	mimage.density(Magick::Geometry(144,144));
 	mimage.read(originalFile);
 	mimage.zoom(Magick::Geometry(width, height));
 	mimage.depth(8);
