@@ -36,7 +36,6 @@ public:
 
 private:
 	Vector2D mOffset;
-	Vector2D mSpeed;
 	float mSpread;
 	float mTimeToLive;
 	sf::Uint16 mMaxParticles;
