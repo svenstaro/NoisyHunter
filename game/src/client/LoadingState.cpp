@@ -28,6 +28,8 @@ void LoadingState::Initialize() {
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"submarine1.svg",			80,		53,		"submarine");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"torpedo1.svg",			30,		10,		"torpedo");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"missing.svg",			80,		53,		"missing");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle1.svg",			24,		24,		"particle1");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"glow1.svg",				400,	400,	"glow");
 
     // load font
     sf::Font font;
