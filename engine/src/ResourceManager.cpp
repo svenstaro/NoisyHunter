@@ -1,23 +1,24 @@
 #include "ResourceManager.hpp"
 #include "Root.hpp"
 
-namespace Engine{
+namespace Engine {
 
 ResourceManager::ResourceManager() {
 	mMaxImageQueueSize = 0;
 }
-/*ResourceManager::ResourceManager(Root* root) {
-    mRoot = root;
-}*/
+
 ResourceManager::~ResourceManager() {}
 
-void ResourceManager::AddImageToLoadingQueue(const boost::filesystem::path& path, const std::string& imgname,
-	const sf::Uint16 width, const sf::Uint16 height, const std::string& key) {
+void ResourceManager::AddImageToLoadingQueue(const boost::filesystem::path& path,
+											 const std::string& imgname,
+											 const sf::Uint16 width,
+											 const sf::Uint16 height,
+											 const std::string& key) {
 
 	ImageProperties p(path, imgname, width, height, key);
 	mImagesToLoad.push(p);
 
-	if (mMaxImageQueueSize < mImagesToLoad.size())
+	if(mMaxImageQueueSize < mImagesToLoad.size())
 		mMaxImageQueueSize = mImagesToLoad.size();
 }
 
@@ -25,13 +26,13 @@ const sf::Uint16 ResourceManager::LoadNextImage() {
 
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 
-	if (mImagesToLoad.size() <= 0)
+	if(mImagesToLoad.size() <= 0)
 		return mMaxImageQueueSize;
 
 	ImageProperties p = mImagesToLoad.front();
 	mImagesToLoad.pop();
 	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_RESOURCEMANAGER, "Loading image " + p.Key + " from queue.");
-	if (!AddImage(p.Path, p.Name, p.Width, p.Height, p.Key))
+	if(!AddImage(p.Path, p.Name, p.Width, p.Height, p.Key))
 		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Could not load imag9e " + p.Key);
 
 	return int(mImagesToLoad.size());
@@ -46,17 +47,25 @@ const sf::Uint16 ResourceManager::GetMaxImageQueueSize() const {
 }
 
 const float ResourceManager::GetPercentageLoadingDone() const {
-	if (mMaxImageQueueSize == 0)
+	if(mMaxImageQueueSize == 0)
 		return 1.f;
 	else
 		return 1.f - int(mImagesToLoad.size()) * 1.f / mMaxImageQueueSize;
 }
 
+bool ResourceManager::AddImage(const boost::filesystem::path& path,
+							   const std::string& imgname,
+							   const sf::Uint16 width,
+							   const sf::Uint16 height,
+							   const std::string& key) {
+	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 
-bool ResourceManager::AddImage(const boost::filesystem::path& path, const std::string& imgname,
-    const sf::Uint16 width, const sf::Uint16 height, const std::string& key) {
+	if(!boost::filesystem::is_regular_file(path/imgname)) {
+		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_CLIENTMANAGER, "Tried loading image path'"+(path/imgname).string()+"' but this image path doesn't exist!");
+		exit(1);
+	}
 
-    // create Original File Path
+    // create Original file path
     std::string originalFile = (path / imgname).string();
 
 
@@ -78,7 +87,7 @@ bool ResourceManager::AddImage(const boost::filesystem::path& path, const std::s
     }
 
 	// Log output
-	Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_RESOURCEMANAGER, "Caching image " + originalFile);
+	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_RESOURCEMANAGER, "Caching image " + originalFile);
 
 	// Create cache directory
 	boost::filesystem::create_directory(cacheDir.string());
@@ -92,7 +101,7 @@ bool ResourceManager::AddImage(const boost::filesystem::path& path, const std::s
 	mimage.depth(8);
 	mimage.write(cacheFile);
 
-	// Load cached File
+	// Load cached file
 	sf::Image sfimage;
 	sfimage.LoadFromFile(cacheFile);
 	sfimage.SetSmooth(true);
@@ -105,10 +114,14 @@ bool ResourceManager::AddImage(const boost::filesystem::path& path, const std::s
 }
 
 const sf::Image& ResourceManager::GetImage(const std::string& img) {
-    // TODO: if not in map argh!!!
-	return mImages[img];
+	if(mImages.count(img) >= 1) {
+		return mImages[img];
+	} else {
+		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_CLIENTMANAGER, "Tried getting image '"+img+"' but this image doesn't exist!");
+		exit(1);
+	}
 }
-
 
 void ResourceManager::AddFont(sf::Font& font, std::string key) {
     mFonts[key] = font;

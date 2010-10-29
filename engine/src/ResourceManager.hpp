@@ -26,8 +26,11 @@ enum MouseCursor {
 
 struct ImageProperties{
 public:
-	ImageProperties(const boost::filesystem::path& path, const std::string& imgname,
-		const sf::Uint16 width, const sf::Uint16 height, const std::string& key="") {
+	ImageProperties(const boost::filesystem::path& path,
+					const std::string& imgname,
+					const sf::Uint16 width,
+					const sf::Uint16 height,
+					const std::string& key="") {
 
 		Path = path;
 		Name = imgname;
@@ -46,11 +49,14 @@ public:
 class ResourceManager {
 public:
     ResourceManager();
-    //ResourceManager(Root* root);
+
     ~ResourceManager();
 
-	void AddImageToLoadingQueue(const boost::filesystem::path& path, const std::string& imgname,
-		const sf::Uint16 width, const sf::Uint16 height, const std::string& key="");
+	void AddImageToLoadingQueue(const boost::filesystem::path& path,
+								const std::string& imgname,
+								const sf::Uint16 width,
+								const sf::Uint16 height,
+								const std::string& key="");
 
 	const sf::Uint16 LoadNextImage();
 	const sf::Uint16 GetImagesToLoadLeft() const;
