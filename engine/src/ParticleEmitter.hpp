@@ -11,7 +11,7 @@ namespace Engine {
 class ParticleEmitter : public Entity {
 public:
 	ParticleEmitter(const Vector2D& offset = Vector2D(0.f, 0.f),
-					const Vector2D& speed = Vector2D(1.f, 1.f),
+					const float speed = 0.5f,
 					const float spread = 0.1f,
 					const float time_to_live = 3.f,
 					const sf::Uint16 max_particles = 20,

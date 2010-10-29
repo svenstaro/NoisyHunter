@@ -5,14 +5,14 @@
 namespace Engine {
 
 ParticleEmitter::ParticleEmitter(const Vector2D& offset,
-					const Vector2D& speed,
-					const float spread,
-					const float time_to_live,
-					const sf::Uint16 max_particles,
-					const sf::Color& start_color,
-					const sf::Color& end_color,
-					const float start_scale,
-					const float end_scale) {
+								 const float speed,
+								 const float spread,
+								 const float time_to_live,
+								 const sf::Uint16 max_particles,
+								 const sf::Color& start_color,
+								 const sf::Color& end_color,
+								 const float start_scale,
+								 const float end_scale) {
 	mOffset = offset;
 	mSpeed = speed;
 	mSpread = spread;

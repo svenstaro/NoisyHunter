@@ -4,11 +4,11 @@ namespace Engine {
 
 ParticleSystem::ParticleSystem() {}
 
-ParticleSystem::ParticleSystem(const Vector2D pos, 
-							   float rotation,
+ParticleSystem::ParticleSystem(const Vector2D& position,
+							   const Vector2D& direction,
 							   const PositionType pos_type) {
-	mPosition = pos;
-	mRotation = rotation;
+	mPosition = position;
+	mDirection = direction;
 	mPositionType = pos_type;
 }
 

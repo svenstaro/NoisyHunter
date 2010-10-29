@@ -4,12 +4,12 @@ namespace Engine {
 
 Particle::Particle() {}
 
-Particle::Particle(const Vector2D& pos,
-			 const Vector2D& speed,
-			 const sf::Color& color,
-			 const float scale,
-			 const PositionType pos_type) {
-	mPosition = pos;
+Particle::Particle(const Vector2D& position,
+				   const float speed,
+				   const sf::Color& color,
+				   const float scale,
+				   const PositionType pos_type) {
+	mPosition = position;
 	mSpeed = speed;
 	mColor = color;
 	mScale = scale;

@@ -10,8 +10,8 @@ namespace Engine {
 class Particle : public Entity {
 public:
 	Particle();
-	Particle(const Vector2D& pos,
-			 const Vector2D& speed,
+	Particle(const Vector2D& position,
+			 const float speed,
 			 const sf::Color& color,
 			 const float scale,
 			 const PositionType pos_type = PositionType::POSITIONTYPE_WORLD);
