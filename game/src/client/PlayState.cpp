@@ -10,36 +10,6 @@ PlayState::~PlayState() {}
 void PlayState::Initialize() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing PlayState.");
-
-    // load resources
-	/*
-	auto resmgr = Engine::Root::get_mutable_instance().GetResourceManagerPtr();
-	resmgr->AddImage(boost::filesystem::path("../game/gfx"),
-					 "submarine1.svg", 80, 53, "submarine");
-    resmgr->AddImage(boost::filesystem::path("../game/gfx"),
-					 "aim.svg", 80, 53, "aim");
-    resmgr->AddImage(boost::filesystem::path("../game/gfx"),
-					 "torpedo1.svg", 30, 10, "torpedo");
-    resmgr->AddImage(boost::filesystem::path("../game/gfx"),
-					 "missing.svg", 80, 53, "missing");
-    resmgr->AddImage(boost::filesystem::path("../game/gui"),
-					 "button.svg", 48, 48, "gui.button");
-	resmgr->AddImage(boost::filesystem::path("../game/gui"),
-					 "button_hover.svg", 48, 48, "gui.button_hover");
-	resmgr->AddImage(boost::filesystem::path("../game/gui"),
-					 "button_focus.svg", 48, 48, "gui.button_focus");
-	resmgr->AddImage(boost::filesystem::path("../game/gui"),
-					 "textfield2.svg", 24, 24, "gui.textfield");
-	resmgr->AddImage(boost::filesystem::path("../game/gui"),
-					 "progressbar_back.svg", 24, 24, "gui.progressbar_back");
-	resmgr->AddImage(boost::filesystem::path("../game/gui"),
-					 "progressbar_front.svg", 24, 24, "gui.progressbar_front");
-
-	sf::Font font;
-	font.LoadFromFile("../game/fonts/kingthings_trypewriter_2.ttf");
-	resmgr->AddFont(font, "trypewriter");
-	resmgr->AddFont(font, "default");
-	*/
 	
 	// Particle system crap
 	Engine::Vector2D position = Engine::Vector2D(0.5f, 0.5f);
@@ -50,11 +20,6 @@ void PlayState::Initialize() {
 	part_sys->AddEmitter(part_emit1);
 	part_sys->AddEmitter(part_emit2);
 	AddEntity(part_sys);
-
-	// create GUI
-	// TODO: Do stuff
-
-	// client side only entity
 
 	// Add some GUI
 	CreateGuiSystem();
