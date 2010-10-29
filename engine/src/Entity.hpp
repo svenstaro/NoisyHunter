@@ -60,15 +60,15 @@ public:
 
 	void SetPosition(const Vector2D position);
 
-    void SetSpeed(const float x, const float y);
+	void SetSpeed(const float speed);
 
-	void SetRotation(const float degree);
+	void SetDirection(const Vector2D direction);
 
 	const Vector2D GetPosition() const;
 
-	const Vector2D GetSpeed() const;
+	const float GetSpeed() const;
 
-	const float GetRotation() const;
+	const Vector2D GetDirection() const;
 
 	Layer GetLayer() const;
 
@@ -86,8 +86,8 @@ protected:
 	sf::Uint16 mUniqueId;
 
 	Vector2D mPosition;
-	Vector2D mSpeed;
-	float mRotation;
+	float mSpeed;
+	Vector2D mDirection;
 
     Layer mLayer;
 

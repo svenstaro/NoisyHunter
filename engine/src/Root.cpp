@@ -69,7 +69,7 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 	busy.SetNumFrames(8);
 	mResourceManager.SetCursorSprite(busy, MOUSECURSOR_BUSY);
 
-	mResourceManager.SetCursor(MOUSECURSOR_BUSY);
+	mResourceManager.SetCursor(MOUSECURSOR_ARROW);
 
 
     //mInputManager = InputManager();

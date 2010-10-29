@@ -7,9 +7,10 @@
 Submarine::Submarine(const float pos_x,
 					 const float pos_y,
 					 const sf::Uint16 client_id) {
-	mPosition = Engine::Vector2D(pos_x, pos_y);
 	mLayer = Engine::Entity::LAYER_REGULAR;
-	mSpeed = Engine::Vector2D(0.1,0);
+	SetPosition(Engine::Vector2D(pos_x, pos_y));
+	SetSpeed(0.1);
+	SetDirection(Engine::Vector2D(1,0));
 	mClientId = client_id;
 	mUniqueId = 0;
 }
@@ -29,7 +30,7 @@ void Submarine::Initialize() {
 void Submarine::Update(float time_delta) {
     Engine::Vector2D relative_target = mTarget - mPosition;
 	if (relative_target.Magnitude() > 0.01){
-		float angle = relative_target.Rotation() - mSpeed.Rotation();
+		float angle = relative_target.Rotation() - mDirection.Rotation();
 
 		if(Engine::Vector2D::rad2Deg(angle) > 180)
 			angle -= Engine::Vector2D::deg2Rad(360);
@@ -42,13 +43,15 @@ void Submarine::Update(float time_delta) {
 		else if(angle < -max_angle)
 			angle = -max_angle;
 
-		mSpeed.Rotate(angle);
-		mPosition += mSpeed * time_delta * relative_target.Magnitude() * 5;
+		mDirection.Rotate(angle);
+		mDirection.Normalize();
+		mPosition += mDirection * mSpeed * time_delta * relative_target.Magnitude() * 5;
 	}
 }
 
 const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D Pos, const float time_to_live) {
-	return new Torpedo(mPosition, mSpeed * 3, Pos, time_to_live);
+	mDirection.Normalize();
+	return new Torpedo(mPosition, mDirection, mSpeed * 3, Pos, time_to_live);
 }
 
 const Engine::Entity* Submarine::PingTo(const Engine::Vector2D Pos) {
@@ -108,8 +111,9 @@ void Submarine::serialize(Engine::IOPacket& packet) {
     packet & mClientId;
     packet & mPosition.x;
 	packet & mPosition.y;
-    packet & mSpeed.x;
-	packet & mSpeed.y;
+	packet & mSpeed;
+	packet & mDirection.x;
+	packet & mDirection.y;
     packet & mTarget.x;
 	packet & mTarget.y;
 }

@@ -2,11 +2,13 @@
 #include "Torpedo.hpp"
 
 Torpedo::Torpedo(const Engine::Vector2D& pos,
-				 const Engine::Vector2D& speed,
+				 const Engine::Vector2D& direction,
+				 const float speed,
 				 const Engine::Vector2D& target_position,
 				 const float time_to_live) {
-	mPosition = pos;
-	mSpeed = speed;
+	SetPosition(pos);
+	SetDirection(direction);
+	SetSpeed(speed);
 	mTargetPosition = target_position;
 	mUniqueId = 0;
 	mReachedTargetAngle = false;
@@ -29,7 +31,7 @@ void Torpedo::Update(const float time_delta) {
 	Engine::Vector2D relative_target = mTargetPosition - mPosition;
 
 	if (!mReachedTargetAngle) {
-		float angle = relative_target.Rotation() - mSpeed.Rotation();
+		float angle = relative_target.Rotation() - mDirection.Rotation();
 
 		if(Engine::Vector2D::rad2Deg(angle) > 180)
 			angle -= Engine::Vector2D::deg2Rad(360);
@@ -44,16 +46,18 @@ void Torpedo::Update(const float time_delta) {
 		else
 			mReachedTargetAngle = true;
 
-		mSpeed.Rotate(angle);
+		mDirection.Rotate(angle);
 	}
 
-	mPosition += mSpeed * time_delta;
+	mDirection.Normalize();
+	mPosition += mDirection * mSpeed * time_delta;
 
 	mTimeToLive -= time_delta;
 
 	if (mTimeToLive <= 0) {
 		// TODO: explode, yeah!
-		mSpeed = Engine::Vector2D(0,0);
+		mSpeed = 0;
+		mReachedTargetAngle = true;
 	}
 }
 
@@ -83,8 +87,9 @@ void Torpedo::serialize(Engine::IOPacket& packet) {
 	packet & mUniqueId;
     packet & mPosition.x;
     packet & mPosition.y;
-    packet & mSpeed.x;
-    packet & mSpeed.y;
+	packet & mSpeed;
+	packet & mDirection.x;
+	packet & mDirection.y;
     packet & mTargetPosition.x;
     packet & mTargetPosition.y;
 }

@@ -28,8 +28,9 @@ void Entity::serialize(IOPacket& packet) {
     packet & mUniqueId;
     packet & mPosition.x;
     packet & mPosition.y;
-    packet & mSpeed.x;
-	packet & mSpeed.y;
+	packet & mSpeed;
+	packet & mDirection.x;
+	packet & mDirection.y;
 }
 
 sf::Packet Entity::PerformAction(const sf::Uint16 action_id, sf::Packet& packet, const bool validate) {
@@ -53,11 +54,7 @@ void Entity::Draw(sf::RenderTarget* target) const {
 		mDrawable->SetPosition(mPosition.x, mPosition.y);
 	}
 
-	float rotation = 0;
-	if(mSpeed.x != 0 && mSpeed.y != 0)
-		rotation = mSpeed.Rotation();
-
-	mDrawable->SetRotation(- Vector2D::rad2Deg(rotation));
+	mDrawable->SetRotation(- Vector2D::rad2Deg( mDirection.Rotation() ));
 
 	target->Draw(*mDrawable);
 }
@@ -74,24 +71,25 @@ void Entity::SetPosition(const Vector2D position) {
 	mPosition = position;
 }
 
-void Entity::SetSpeed(const float x, const float y) {
-	mSpeed = Vector2D(x, y);
+void Entity::SetSpeed(const float speed) {
+	mSpeed = speed;
 }
 
-void Entity::SetRotation(const float degree) {
-	mRotation = degree;
+void Entity::SetDirection(const Vector2D direction) {
+	mDirection = direction;
+	mDirection.Normalize();
 }
 
 const Vector2D Entity::GetPosition() const {
 	return mPosition;
 }
 
-const Vector2D Entity::GetSpeed() const {
+const float Entity::GetSpeed() const {
 	return mSpeed;
 }
 
-const float Entity::GetRotation() const {
-	return mRotation;
+const Vector2D Entity::GetDirection() const {
+	return mDirection;
 }
 
 Entity::Layer Entity::GetLayer() const {

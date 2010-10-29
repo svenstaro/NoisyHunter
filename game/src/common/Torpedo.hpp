@@ -9,7 +9,8 @@ class Torpedo : public Engine::Entity {
 
 public:
 	Torpedo(const Engine::Vector2D& pos = Engine::Vector2D(0,0),
-			const Engine::Vector2D& speed = Engine::Vector2D(0,0),
+			const Engine::Vector2D& direction = Engine::Vector2D(1,0),
+			const float speed = 0.3,
 			const Engine::Vector2D& target_position = Engine::Vector2D(0,0),
 			const float time_to_live = 3.f);
 
