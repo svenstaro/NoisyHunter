@@ -1,4 +1,4 @@
-#include <algorithm>
+#include <boost/bind.hpp>
 
 #include "ParticleEmitter.hpp"
 
@@ -35,6 +35,7 @@ void ParticleEmitter::Initialize(const PositionType pos_type) {
 }
 
 void ParticleEmitter::Update(const float time_delta) {
+	/*
 	auto it = mParticles.begin();
 	while(it != mParticles.end()) {
 		if(it->GetLifeTime() >= mTimeToLive) {
@@ -43,7 +44,9 @@ void ParticleEmitter::Update(const float time_delta) {
 			++it;
 		}
 	}
-	//mParticles.erase_if(boost::);
+	*/
+	// The following line does the job of the commented code, nice!
+	mParticles.erase_if(boost::bind(&Particle::GetLifeTime, _1) >= mTimeToLive);
 
 	while(mParticles.size() < mMaxParticles) {
 		Particle* particle = new Particle(mOffset, mSpeed, mStartColor, mStartScale, mPositionType);

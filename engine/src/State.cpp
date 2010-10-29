@@ -85,14 +85,7 @@ Entity* State::GetEntityByUniqueId(const sf::Uint16 unique_id) {
 }
 
 void State::DelEntitiesByClientId(const sf::Uint16 client_id) {
-	auto it = mEntities.begin();
-	while(it != mEntities.end()) {
-		if(it->GetClientId() == client_id) {
-			it = mEntities.erase(it);
-		} else {
-			++it;
-		}
-	}
+	mEntities.erase_if(boost::bind(&Entity::GetClientId, _1) == client_id);
 }
 
 void State::OnLeaveGame() {}
