@@ -33,7 +33,7 @@ const sf::Uint16 ResourceManager::LoadNextImage() {
 	mImagesToLoad.pop();
 	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_RESOURCEMANAGER, "Loading image " + p.Key + " from queue.");
 	if(!AddImage(p.Path, p.Name, p.Width, p.Height, p.Key))
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Could not load imag9e " + p.Key);
+		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Could not load image " + p.Key);
 
 	return int(mImagesToLoad.size());
 }
