@@ -66,7 +66,7 @@ void ParticleEmitter::Update(const float time_delta) {
 		float spread = sf::Randomizer::Random(-mSpread, mSpread);
 		Vector2D spread_vector(1.f, spread);
 		spread_vector.Rotate(mDirection.Rotation());
-		Particle* particle = new Particle(mPosition, mDirection, mSpeed, mStartColor, mStartScale, mPositionType);
+		Particle* particle = new Particle(mPosition, mDirection+spread_vector, mSpeed, mStartColor, mStartScale, mPositionType);
 		particle->Initialize();
 		mParticles.push_back(particle);
 		mTimeSinceLastParticle = 0.f;
