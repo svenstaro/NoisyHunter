@@ -10,10 +10,10 @@ PlayState::~PlayState() {}
 void PlayState::Initialize() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing PlayState.");
-	
+
 	// Particle system crap
 	Engine::Vector2D position = Engine::Vector2D(0.5f, 0.5f);
-	Engine::Vector2D direction = Engine::Vector2D(1.f, 0.f);
+	Engine::Vector2D direction = Engine::Vector2D(1.f, 1.f);
 	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_WORLD);
 	Engine::ParticleEmitter* part_emit1 = new Engine::ParticleEmitter();
 	Engine::ParticleEmitter* part_emit2 = new Engine::ParticleEmitter();

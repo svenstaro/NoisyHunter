@@ -11,6 +11,7 @@ class Particle : public Entity {
 public:
 	Particle();
 	Particle(const Vector2D& position,
+			 const Vector2D& direction,
 			 const float speed,
 			 const sf::Color& color,
 			 const float scale,

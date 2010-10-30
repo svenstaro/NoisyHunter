@@ -5,11 +5,13 @@ namespace Engine {
 Particle::Particle() {}
 
 Particle::Particle(const Vector2D& position,
+				   const Vector2D& direction,
 				   const float speed,
 				   const sf::Color& color,
 				   const float scale,
 				   const PositionType pos_type) {
 	mPosition = position;
+	mDirection = direction;
 	mSpeed = speed;
 	mColor = color;
 	mScale = scale;
@@ -32,7 +34,7 @@ void Particle::Initialize() {
 
 void Particle::Update(const float time_delta) {
 	mLifeTime += time_delta;
-	mPosition += mSpeed * time_delta;
+	mPosition += mDirection * mSpeed * time_delta;
 }
 
 sf::Uint16 Particle::GetEntityId() const {
