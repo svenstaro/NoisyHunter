@@ -37,6 +37,7 @@ void Submarine::Initialize() {
 	part_emit->SetStartScale(0.5f);
 	part_emit->SetEndScale(5.f);
 	part_emit->SetEndAlpha(0);
+	part_emit->SetEndColor(sf::Color(0,0,255));
 	part_sys->AddEmitter(part_emit);
 
 	Attach(*part_sys, Engine::Vector2D(0,0), 0, Engine::RestraintSettings(false,false,true));
