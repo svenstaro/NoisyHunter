@@ -18,13 +18,14 @@ void PlayState::Initialize() {
 	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter(Engine::Vector2D(0.f, 0.f), 0.f, 50.f, 360.f);
 	part_emit->SetBlendMode(sf::Blend::Add);
 	part_emit->SetRate(100.f);
-	part_emit->SetTimeToLive(1.f);
-	part_emit->SetStartScale(0.2f);
-	part_emit->SetEndScale(0.5f);
+	part_emit->SetTimeToLive(1.5f);
+	part_emit->SetStartScale(0.4f);
+	part_emit->SetEndScale(1.f);
 	part_emit->SetStartColor(sf::Color(0,0,255));
 	part_emit->SetEndColor(sf::Color(255,0,0));
-	part_emit->SetStartAlpha(200);
+	part_emit->SetStartAlpha(230);
 	part_emit->SetEndAlpha(0);
+	part_emit->SetImageName("particle_cursor");
 	part_sys->AddEmitter(part_emit);
 	AddEntity(part_sys);
 	mCursorPartSys = part_sys;
