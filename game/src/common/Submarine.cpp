@@ -29,18 +29,17 @@ void Submarine::Initialize() {
 
 	// Particle system for submarine
 	Engine::Vector2D position = Engine::Vector2D(0.5f, 0.5f);
-	Engine::Vector2D direction = Engine::Vector2D(0, -1.f);
+	Engine::Vector2D direction = Engine::Vector2D(-0.2, -1.f);
 	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_WORLD);
-	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter(0.f, 0.f, 0.04f);
-	part_emit->SetRate(10.f);
-	part_emit->SetTimeToLive(3.f);
+	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter(0.f, 0.f, 0.1f, 20);
+	part_emit->SetRate(2.f);
+	part_emit->SetTimeToLive(5.f);
 	part_emit->SetStartScale(0.5f);
-	part_emit->SetEndScale(3.f);
+	part_emit->SetEndScale(5.f);
 	part_emit->SetEndAlpha(0);
 	part_sys->AddEmitter(part_emit);
-	part_sys->SetPosition(0.5,0.5);
 
-	Attach(*part_sys, Engine::Vector2D(0,0), 0);
+	Attach(*part_sys, Engine::Vector2D(0,0), 0, Engine::RestraintSettings(false,false,true));
 }
 
 void Submarine::Update(float time_delta) {
