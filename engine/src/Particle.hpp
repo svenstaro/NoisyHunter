@@ -4,6 +4,7 @@
 #include "Root.hpp"
 #include "Entity.hpp"
 #include "Vector2D.hpp"
+#include "boost/lexical_cast.hpp"
 
 namespace Engine {
 
@@ -13,8 +14,10 @@ public:
 	Particle(const Vector2D& position,
 			 const Vector2D& direction,
 			 const float speed,
-			 const sf::Color& color,
-			 const float scale,
+			 const sf::Color& start_color,
+			 const sf::Color& end_color,
+			 const float start_scale,
+			 const float end_scale,
 			 const sf::Blend::Mode mode,
 			 const PositionType pos_type = PositionType::POSITIONTYPE_WORLD);
 	
@@ -34,7 +37,12 @@ public:
 
 private:
 	sf::Color mColor;
+	sf::Color mStartColor;
+	sf::Color mEndColor;
 	float mScale;
+	float mStartScale;
+	float mEndScale;
+
 	sf::Blend::Mode mBlendMode;
 
 	PositionType mPositionType;

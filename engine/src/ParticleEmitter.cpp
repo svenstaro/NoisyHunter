@@ -10,7 +10,6 @@ ParticleEmitter::ParticleEmitter(const Vector2D& position_offset,
 								 const float spread,
 								 const float time_to_live,
 								 const float rate,
-								 const sf::Uint16 max_particles,
 								 const sf::Blend::Mode mode,
 								 const sf::Color& start_color,
 								 const sf::Color& end_color,
@@ -22,7 +21,6 @@ ParticleEmitter::ParticleEmitter(const Vector2D& position_offset,
 	mSpread = spread;
 	mTimeToLive = time_to_live;
 	mRate = rate;
-	mMaxParticles = max_particles;
 	mStartColor = start_color;
 	mEndColor = end_color;
 	mStartScale = start_scale;
@@ -51,17 +49,6 @@ void ParticleEmitter::Update(const float time_delta,
 	mPosition = mPositionOffset + position_of_partsys;
 	mDirection = direction_of_partsys;
 	mDirection.Rotate(mRotationOffset);
-	std::cout << mParticles.size() << " meh: " << mTimeSinceLastParticle << std::endl;
-	/*
-	auto it = mParticles.begin();
-	while(it != mParticles.end()) {
-		if(it->GetLifeTime() >= mTimeToLive) {
-			it = mParticles.erase(it);
-		} else {
-			++it;
-		}
-	}
-	*/
 	// The following line does the job of the commented code, nice!
 	mParticles.erase_if(boost::bind(&Particle::GetLifeTime, _1) >= mTimeToLive);
 
@@ -72,7 +59,7 @@ void ParticleEmitter::Update(const float time_delta,
 		float spread = sf::Randomizer::Random(-mSpread, mSpread);
 		Vector2D spread_vector(1.f, spread);
 		spread_vector.Rotate(mDirection.Rotation());
-		Particle* particle = new Particle(mPosition, mDirection+spread_vector, mSpeed, mStartColor, mStartScale, mBlendMode, mPositionType);
+		Particle* particle = new Particle(mPosition, mDirection+spread_vector, mSpeed, mStartColor, mEndColor, mStartScale, mEndScale, mBlendMode, mPositionType);
 		particle->Initialize();
 		mParticles.push_back(particle);
 		mTimeSinceLastParticle = 0.f;
@@ -109,10 +96,6 @@ void ParticleEmitter::SetTimeToLive(const float ttl) {
 
 void ParticleEmitter::SetRate(const float rate) {
 	mRate = rate;
-}
-
-void ParticleEmitter::SetMaxParticles(const Uint16 max_particles) {
-	mMaxParticles = max_particles;
 }
 
 void ParticleEmitter::SetBlendMode(const sf::Blend::Mode mode) {
@@ -158,10 +141,6 @@ const float ParticleEmitter::GetTimeToLive() const {
 
 const float ParticleEmitter::GetRate() const {
 	return mRate;
-}
-
-const sf::Uint16 ParticleEmitter::GetMaxParticles() const {
-	return mMaxParticles;
 }
 
 const sf::Blend::Mode ParticleEmitter::GetBlendMode() const {

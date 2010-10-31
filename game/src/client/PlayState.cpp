@@ -18,6 +18,8 @@ void PlayState::Initialize() {
 	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter();
 	part_emit->SetRate(100.f);
 	part_emit->SetTimeToLive(1.f);
+	part_emit->SetStartScale(0.5f);
+	part_emit->SetEndScale(3.f);
 	part_sys->AddEmitter(part_emit);
 	AddEntity(part_sys);
 	mCursorPartSys = part_sys;

@@ -7,15 +7,21 @@ Particle::Particle() {}
 Particle::Particle(const Vector2D& position,
 				   const Vector2D& direction,
 				   const float speed,
-				   const sf::Color& color,
-				   const float scale,
+				   const sf::Color& start_color,
+				   const sf::Color& end_color,
+				   const float start_scale,
+				   const float end_scale,
 				   const sf::Blend::Mode mode,
 				   const PositionType pos_type) {
 	mPosition = position;
 	mDirection = direction;
 	mSpeed = speed;
-	mColor = color;
-	mScale = scale;
+	mColor = start_color;
+	mStartColor = start_color;
+	mEndColor = end_color;
+	mScale = start_scale;
+	mStartScale = start_scale;
+	mEndScale = end_scale;
 	mBlendMode = mode;
 	mPositionType = pos_type;
 }
@@ -38,6 +44,9 @@ void Particle::Initialize() {
 void Particle::Update(const float time_delta) {
 	mLifeTime += time_delta;
 	mPosition += mDirection * mSpeed * time_delta;
+	mScale = ( mEndScale - mStartScale ) * mLifeTime;
+	mDrawable->SetScale(mScale, mScale);
+	//Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_PARTICLE, boost::lexical_cast<std::string>(mScale));
 }
 
 sf::Uint16 Particle::GetEntityId() const {
