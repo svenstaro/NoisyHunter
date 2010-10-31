@@ -21,7 +21,6 @@ void PlayState::Initialize() {
 	part_emit->SetStartScale(0.5f);
 	part_emit->SetEndScale(3.f);
 	part_sys->AddEmitter(part_emit);
-	part_sys->SetPosition(0.5,0.5);
 	AddEntity(part_sys);
 	mCursorPartSys = part_sys;
 
@@ -166,7 +165,6 @@ void PlayState::OnRightClick(Engine::MouseEventArgs args) {
 
 void PlayState::OnMouseMove(Engine::MouseEventArgs args) {
 	mCursorPartSys->SetPosition(args.GetWorldPixel().x, args.GetWorldPixel().y);
-	std::cout << mCursorPartSys->GetPosition().x << " " << mCursorPartSys->GetPosition().y << std::endl;
 }
 
 void PlayState::OnClientConnected(const sf::Uint16 client_id) {

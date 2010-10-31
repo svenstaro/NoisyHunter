@@ -37,6 +37,8 @@ void GuiProgressbar::Draw(sf::RenderTarget* target) {
 	target->Draw(mBackSprite);
 	target->Draw(mFrontSprite);
 	target->Draw(mText);
+
+	DrawAllAttachments(target);
 }
 
 }

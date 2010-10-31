@@ -15,7 +15,9 @@ GuiControl::~GuiControl() {}
 
 GuiControl* GuiControl::clone() const {}
 
-void GuiControl::Update(const float time_delta) {}
+void GuiControl::Update(const float time_delta) {
+	UpdateAllAttachments(time_delta);
+}
 
 // === EVENT SIGNAL BINDING ===
 void GuiControl::BindOnMouseDown(const boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button)>::slot_type& slot) {

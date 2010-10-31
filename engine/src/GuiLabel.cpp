@@ -35,6 +35,8 @@ void GuiLabel::Draw(sf::RenderTarget* target) {
 	mText.SetPosition(mPosition.x, mPosition.y);
 
 	target->Draw(mText);
+
+	DrawAllAttachments(target);
 }
 
 }

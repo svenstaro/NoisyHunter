@@ -54,7 +54,11 @@ public:
 
 	virtual void Update(const float time_delta);
 
+	void UpdateAllAttachments(const float time_delta);
+
 	virtual void Draw(sf::RenderTarget* target) const;
+
+	void DrawAllAttachments(sf::RenderTarget* target) const;
 
 	virtual sf::Uint16 GetEntityId() const = 0;
 
