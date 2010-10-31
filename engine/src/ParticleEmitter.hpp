@@ -12,7 +12,7 @@ class ParticleEmitter : public Entity {
 public:
 	ParticleEmitter(const Vector2D& position_offset = Vector2D(0.f, 0.f),
 					const float rotation_offset = 0.f,
-					const float speed = 0.1f,
+					const float speed = 60.f,
 					const float spread = 1.f,
 					const float time_to_live = 3.f,
 					const float rate = 10.f,

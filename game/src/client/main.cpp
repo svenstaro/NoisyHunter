@@ -98,6 +98,7 @@ int main(int argc, char* argv[]) {
 
 	// Initialize Root singleton using parsed values.
     root.InitializeAsClient(sf::VideoMode(width, height), "Noisy Hunter", fullscreen, sf::IpAddress(ip), port, name, verbose);
+	root.SetWorldPixelsPerFloat(600);
 
 	root.GetStateManagerPtr()->Add(new LoadingState());
 	//root.GetStateManagerPtr()->Add(new PlayState());

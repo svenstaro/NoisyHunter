@@ -52,10 +52,14 @@ void Entity::Draw(sf::RenderTarget* target) const {
 	// Set screen position.
 	if(GetPositionType() == Entity::POSITIONTYPE_WORLD) {
 		// Convert to world coordinates.
-		Coordinates pos = Root::get_mutable_instance().GetInputManagerPtr()->GetScreenCoordinates(mPosition.x, mPosition.y);
-		mDrawable->SetPosition(pos.ScreenX, pos.ScreenY);
+		Coordinates pos; //  = Root::get_mutable_instance().GetInputManagerPtr()->GetScreenCoordinates(mPosition.x, mPosition.y);
+		pos.SetWorldFloat(mPosition);
+		Vector2D worldPos = pos.GetWorldPixel();
+		Root::get_mutable_instance().SetRenderMode(RENDERMODE_WORLD);
+		mDrawable->SetPosition(worldPos.x, worldPos.y);
 	} else if(GetPositionType() == Entity::POSITIONTYPE_SCREEN) {
 		// Simply use screen coordinates.
+		Root::get_mutable_instance().SetRenderMode(RENDERMODE_GUI);
 		mDrawable->SetPosition(mPosition.x, mPosition.y);
 	}
 
