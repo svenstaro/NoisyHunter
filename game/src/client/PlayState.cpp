@@ -20,6 +20,8 @@ void PlayState::Initialize() {
 	part_emit->SetTimeToLive(1.f);
 	part_emit->SetStartScale(0.5f);
 	part_emit->SetEndScale(3.f);
+	part_emit->SetStartColor(sf::Color(0,0,255,255));
+	part_emit->SetEndColor(sf::Color(255,0,0,255));
 	part_sys->AddEmitter(part_emit);
 	part_sys->SetPosition(0.5,0.5);
 	AddEntity(part_sys);

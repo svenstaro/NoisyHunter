@@ -18,6 +18,7 @@ public:
 			 const sf::Color& end_color,
 			 const float start_scale,
 			 const float end_scale,
+			 const float time_to_live,
 			 const sf::Blend::Mode mode,
 			 const PositionType pos_type = PositionType::POSITIONTYPE_WORLD);
 	
@@ -48,6 +49,7 @@ private:
 	PositionType mPositionType;
 
 	float mLifeTime;
+	float mTimeToLive;
 };
 
 }
