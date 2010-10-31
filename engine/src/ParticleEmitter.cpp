@@ -13,6 +13,8 @@ ParticleEmitter::ParticleEmitter(const Vector2D& position_offset,
 								 const sf::Blend::Mode mode,
 								 const sf::Color& start_color,
 								 const sf::Color& end_color,
+								 const float start_alpha,
+								 const float end_alpha,
 								 const float start_scale,
 								 const float end_scale) {
 	mPositionOffset = position_offset;
@@ -21,8 +23,13 @@ ParticleEmitter::ParticleEmitter(const Vector2D& position_offset,
 	mSpread = spread;
 	mTimeToLive = time_to_live;
 	mRate = rate;
+
 	mStartColor = start_color;
 	mEndColor = end_color;
+
+	mStartAlpha = start_alpha;
+	mEndAlpha = end_alpha;
+
 	mStartScale = start_scale;
 	mEndScale = end_scale;
 }
@@ -60,7 +67,7 @@ void ParticleEmitter::Update(const float time_delta,
 		Vector2D spread_vector = mDirection;
 		spread_vector.Normalize();
 		spread_vector.Rotate(Vector2D::deg2Rad(spread));
-		Particle* particle = new Particle(mPosition, spread_vector, mSpeed, mStartColor, mEndColor, mStartScale, mEndScale, mTimeToLive, mBlendMode, mPositionType);
+		Particle* particle = new Particle(mPosition, spread_vector, mSpeed, mStartColor, mEndColor, mStartAlpha, mEndAlpha, mStartScale, mEndScale, mTimeToLive, mBlendMode, mPositionType);
 		particle->Initialize();
 		mParticles.push_back(particle);
 		mTimeSinceLastParticle = 0.f;
@@ -115,6 +122,14 @@ void ParticleEmitter::SetEndColor(const sf::Color& end_color) {
 	mEndColor = end_color;
 }
 
+void ParticleEmitter::SetStartAlpha(const float start_alpha) {
+	mStartAlpha = start_alpha;
+}
+
+void ParticleEmitter::SetEndAlpha(const float end_alpha) {
+	mEndAlpha = end_alpha;
+}
+
 void ParticleEmitter::SetStartScale(const float start_scale) {
 	mStartScale = start_scale;
 }
@@ -157,6 +172,14 @@ const sf::Color& ParticleEmitter::GetStartColor() const {
 
 const sf::Color& ParticleEmitter::GetEndColor() const {
 	return mEndColor;
+}
+
+const float ParticleEmitter::GetStartAlpha() const {
+	return mStartAlpha;
+}
+
+const float ParticleEmitter::GetEndAlpha() const {
+	return mEndAlpha;
 }
 
 const float ParticleEmitter::GetStartScale() const {

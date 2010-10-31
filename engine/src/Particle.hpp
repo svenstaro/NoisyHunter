@@ -16,6 +16,8 @@ public:
 			 const float speed,
 			 const sf::Color& start_color,
 			 const sf::Color& end_color,
+			 const float start_alpha,
+			 const float end_alpha,
 			 const float start_scale,
 			 const float end_scale,
 			 const float time_to_live,
@@ -40,6 +42,9 @@ private:
 	sf::Color mColor;
 	sf::Color mStartColor;
 	sf::Color mEndColor;
+	float mAlpha;			// 100% = visible
+	float mStartAlpha;
+	float mEndAlpha;
 	float mScale;
 	float mStartScale;
 	float mEndScale;

@@ -19,6 +19,8 @@ public:
 					const sf::Blend::Mode = sf::Blend::Multiply,
 					const sf::Color& start_color = sf::Color(255, 255, 255, 255),
 					const sf::Color& end_color = sf::Color(170, 200, 255, 255),
+					const float start_alpha = 255,
+					const float end_alpha = 255,
 					const float start_scale = 1.0f,
 					const float end_scale = 2.0f);
 	
@@ -44,8 +46,9 @@ public:
 	void SetRate(const float rate);
 	void SetBlendMode(const sf::Blend::Mode mode);
 	void SetStartColor(const sf::Color& start_color);
-
 	void SetEndColor(const sf::Color& end_color);
+	void SetStartAlpha(const float start_alpha);
+	void SetEndAlpha(const float end_alpha);
 	void SetStartScale(const float start_scale);
 	void SetEndScale(const float end_scale);
 
@@ -58,6 +61,8 @@ public:
 	const sf::Blend::Mode GetBlendMode() const;
 	const sf::Color& GetStartColor() const;
 	const sf::Color& GetEndColor() const;
+	const float GetStartAlpha() const;
+	const float GetEndAlpha() const;
 	const float GetStartScale() const;
 	const float GetEndScale() const;
 
@@ -74,6 +79,8 @@ private:
 	sf::Blend::Mode mBlendMode;
 	sf::Color mStartColor;
 	sf::Color mEndColor;
+	float mStartAlpha;
+	float mEndAlpha;
 	float mStartScale;
 	float mEndScale;
 

@@ -1,4 +1,5 @@
 #include "Particle.hpp"
+#include <iostream>
 
 namespace Engine {
 
@@ -9,6 +10,8 @@ Particle::Particle(const Vector2D& position,
 				   const float speed,
 				   const sf::Color& start_color,
 				   const sf::Color& end_color,
+				   const float start_alpha,
+				   const float end_alpha,
 				   const float start_scale,
 				   const float end_scale,
 				   const float time_to_live,
@@ -17,12 +20,19 @@ Particle::Particle(const Vector2D& position,
 	mPosition = position;
 	mDirection = direction;
 	mSpeed = speed;
+
 	mColor = start_color;
 	mStartColor = start_color;
 	mEndColor = end_color;
+
+	mAlpha = start_alpha;
+	mStartAlpha = start_alpha;
+	mEndAlpha = end_alpha;
+
 	mScale = start_scale;
 	mStartScale = start_scale;
 	mEndScale = end_scale;
+
 	mTimeToLive = time_to_live;
 	mBlendMode = mode;
 	mPositionType = pos_type;
@@ -48,15 +58,20 @@ void Particle::Update(const float time_delta) {
 	if(mTimeToLive >= 0) {
 		mLifeTime += time_delta;
 		mPosition += mDirection * mSpeed * time_delta;
-		const float f = mLifeTime / mTimeToLive;
+		float f = mLifeTime / mTimeToLive;
+		// fix last frame, when lifetime > time to live
+		if (f > 1)
+			f = 1.f;
 
-		mScale = ( mEndScale - mStartScale ) * f;
+		mScale = ( mEndScale - mStartScale ) * f + mStartScale;
 
-		int r =  (mEndColor.r - mStartColor.r) * f + mStartColor.r;
-		int g =  (mEndColor.g - mStartColor.g) * f + mStartColor.g;
-		int b =  (mEndColor.b - mStartColor.b) * f + mStartColor.b;
-		mColor = sf::Color(r, g, b);
-		// std::cout << r << " - " << g << " - " << b << std::endl;
+		int r = (mEndColor.r - mStartColor.r) * f + mStartColor.r;
+		int g = (mEndColor.g - mStartColor.g) * f + mStartColor.g;
+		int b = (mEndColor.b - mStartColor.b) * f + mStartColor.b;
+		int a = (mEndAlpha - mStartAlpha) * f + mStartAlpha;
+
+		mColor = sf::Color(r, g, b, a);
+
 		mDrawable->SetScale(mScale, mScale);
 		mDrawable->SetColor(mColor);
 	}
