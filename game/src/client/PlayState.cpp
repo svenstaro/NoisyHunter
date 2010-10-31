@@ -16,6 +16,7 @@ void PlayState::Initialize() {
 	Engine::Vector2D direction = Engine::Vector2D(1.f, 1.f);
 	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_SCREEN);
 	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter();
+	part_emit->SetBlendMode(sf::Blend::Add);
 	part_emit->SetRate(100.f);
 	part_emit->SetTimeToLive(1.f);
 	part_emit->SetStartScale(0.5f);
