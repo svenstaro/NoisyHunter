@@ -59,6 +59,8 @@ void Torpedo::Update(const float time_delta) {
 		mSpeed = 0;
 		mReachedTargetAngle = true;
 	}
+
+	UpdateAllAttachments(time_delta);
 }
 
 void Torpedo::OnCollide(const Engine::Entity& ent) {

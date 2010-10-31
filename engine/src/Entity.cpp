@@ -42,9 +42,11 @@ sf::Packet Entity::PerformAction(const sf::Uint16 action_id, sf::Packet& packet,
 
 void Entity::Update(const float time_delta) {
 	mPosition += mSpeed * time_delta;
+}
 
+void Entity::UpdateAllAttachments(const float time_delta) {
 	// Update EntityAttachments.
-	BOOST_FOREACH(EntityAttachment& attachment, mAttachments)
+	BOOST_FOREACH(EntityAttachment attachment, mAttachments)
 		attachment.Update(time_delta, mPosition, mDirection);
 }
 
@@ -66,6 +68,14 @@ void Entity::Draw(sf::RenderTarget* target) const {
 	mDrawable->SetRotation(- Vector2D::rad2Deg( mDirection.Rotation() ));
 
 	target->Draw(*mDrawable);
+
+	DrawAllAttachments(target);
+}
+
+void Entity::DrawAllAttachments(sf::RenderTarget* target) const {
+	// Update EntityAttachments.
+	BOOST_FOREACH(EntityAttachment attachment, mAttachments)
+		attachment.Draw(target);
 }
 
 sf::Uint16 Entity::GetUniqueId() const {

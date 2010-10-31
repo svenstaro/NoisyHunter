@@ -67,11 +67,14 @@ void ParticleEmitter::Update(const float time_delta,
 
 	BOOST_FOREACH(Particle& particle, mParticles)
 		particle.Update(time_delta);
+
+	UpdateAllAttachments(time_delta);
 }
 
 void ParticleEmitter::Draw(sf::RenderTarget* target) const {
 	BOOST_FOREACH(const Particle& particle, mParticles)
 		particle.Draw(target);
+	DrawAllAttachments(target);
 }
 
 void ParticleEmitter::SetPositionOffset(const Vector2D& position_offset) {

@@ -1,6 +1,8 @@
 #ifndef ENTITYATTACHMENT_HPP
 #define ENTITYATTACHMENT_HPP
 
+#include <SFML/Graphics.hpp>
+
 #include "Vector2D.hpp"
 
 namespace Engine {
@@ -20,6 +22,8 @@ public:
 	void Update(const float time_delta, 
 				const Vector2D& position, 
 				const Vector2D& direction);
+
+	void Draw(sf::RenderTarget* target);
 
 private:
 	Vector2D mPosition;

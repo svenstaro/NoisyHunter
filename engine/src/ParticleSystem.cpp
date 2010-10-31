@@ -23,12 +23,14 @@ void ParticleSystem::Update(const float time_delta) {
 	BOOST_FOREACH(ParticleEmitter& emitter, mParticleEmitters) {
 		emitter.Update(time_delta, mPosition, mDirection);
 	}
+	UpdateAllAttachments(time_delta);
 }
 
 void ParticleSystem::Draw(sf::RenderTarget* target) const {
 	BOOST_FOREACH(const ParticleEmitter& emitter, mParticleEmitters) {
 		emitter.Draw(target);
 	}
+	DrawAllAttachments(target);
 }
 
 sf::Uint16 ParticleSystem::GetEntityId() const {

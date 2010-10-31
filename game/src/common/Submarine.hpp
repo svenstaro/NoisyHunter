@@ -8,6 +8,7 @@
 #include "Vector2D.hpp"
 #include "Torpedo.hpp"
 #include "SonarPing.hpp"
+#include "ParticleSystem.hpp"
 
 class Submarine : public Engine::Entity {
 public:
