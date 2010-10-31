@@ -71,6 +71,8 @@ void GuiCheckbox::Draw(sf::RenderTarget* target) {
 
     target->Draw(mSprite);
     target->Draw(mText);
+
+	DrawAllAttachments(target);
 }
 
 // event callbacks

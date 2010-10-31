@@ -25,6 +25,12 @@ void EntityAttachment::Update(const float time_delta,
 	mPosition = position + mPositionOffset;
 	mDirection = direction;
 	mDirection.Rotate(mRotationOffset);
+	mEntity->SetPosition(mPosition);
+	mEntity->SetDirection(mDirection);
+}
+
+void EntityAttachment::Draw(sf::RenderTarget* target) {
+	mEntity->Draw(target);
 }
 
 }

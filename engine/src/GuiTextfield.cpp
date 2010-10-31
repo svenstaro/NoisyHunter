@@ -53,6 +53,8 @@ void GuiTextfield::Draw(sf::RenderTarget* target) {
 		sf::Shape cursor = sf::Shape::Rectangle(xpos, ypos, 2, h, mText.GetColor());
         target->Draw(cursor);
     }
+
+	DrawAllAttachments(target);
 }
 
 void GuiTextfield::SetMultiline(bool multiline) {

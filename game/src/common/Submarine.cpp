@@ -25,6 +25,21 @@ void Submarine::Initialize() {
 	sf::Sprite* d = new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("submarine"));
 	d->SetOrigin(d->GetSize().x / 2, d->GetSize().y / 2);
 	mDrawable = d;
+
+
+	// Particle system for submarine
+	Engine::Vector2D position = Engine::Vector2D(0.5f, 0.5f);
+	Engine::Vector2D direction = Engine::Vector2D(0, -1.f);
+	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_WORLD);
+	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter(0.f, 0.f, 0.04f);
+	part_emit->SetRate(10.f);
+	part_emit->SetTimeToLive(3.f);
+	part_emit->SetStartScale(0.5f);
+	part_emit->SetEndScale(3.f);
+	part_sys->AddEmitter(part_emit);
+	part_sys->SetPosition(0.5,0.5);
+
+	Attach(*part_sys, Engine::Vector2D(0,0), 0);
 }
 
 void Submarine::Update(float time_delta) {
@@ -47,6 +62,8 @@ void Submarine::Update(float time_delta) {
 		mDirection.Normalize();
 		mPosition += mDirection * mSpeed * time_delta * relative_target.Magnitude() * 5;
 	}
+
+	UpdateAllAttachments(time_delta);
 }
 
 const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D Pos, const float time_to_live) {
