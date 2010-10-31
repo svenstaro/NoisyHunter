@@ -28,8 +28,8 @@ void Submarine::Initialize() {
 
 
 	// Particle system for submarine
-	Engine::Vector2D position = Engine::Vector2D(0.5f, 0.5f);
-	Engine::Vector2D direction = Engine::Vector2D(-0.2, -1.f);
+	Engine::Vector2D position = Engine::Vector2D(0.f, 0.f);
+	Engine::Vector2D direction = Engine::Vector2D(0.f, -1.f);
 	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_WORLD);
 	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter(Engine::Vector2D(0.f, 0.f), 0.f, 0.1f, 20.f);
 	part_emit->SetRate(2.f);
