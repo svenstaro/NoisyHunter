@@ -24,13 +24,13 @@
     <linearGradient
        id="linearGradient3757">
       <stop
-         style="stop-color:#ffffff;stop-opacity:0.54385966;"
+         style="stop-color:#ffffff;stop-opacity:1;"
          offset="0"
          id="stop3759" />
       <stop
          id="stop3756"
          offset="0.32704404"
-         style="stop-color:#ffffff;stop-opacity:0.27058824;" />
+         style="stop-color:#ffffff;stop-opacity:0.42483661;" />
       <stop
          style="stop-color:#ffffff;stop-opacity:0;"
          offset="1"
@@ -55,7 +55,7 @@
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="143.64286"
+     inkscape:cx="202.64286"
      inkscape:cy="200"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -101,5 +101,10 @@
        sodipodi:ry="200"
        d="M 400,200 C 400,310.45695 310.45695,400 200,400 89.54305,400 0,310.45695 0,200 0,89.54305 89.54305,0 200,0 310.45695,0 400,89.54305 400,200 z"
        transform="translate(0,652.36218)" />
+    <path
+       id="path3759"
+       style="fill:none;stroke:#ffffff;stroke-width:36.65134048;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 101.66713,852.36218 196.66574,0 M 200,754.02931 l 0,196.66574"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>
