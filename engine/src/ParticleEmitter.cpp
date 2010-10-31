@@ -16,7 +16,8 @@ ParticleEmitter::ParticleEmitter(const Vector2D& position_offset,
 								 const float start_alpha,
 								 const float end_alpha,
 								 const float start_scale,
-								 const float end_scale) {
+								 const float end_scale,
+								 const std::string& image_name) {
 	mPositionOffset = position_offset;
 	mRotationOffset = rotation_offset;
 	mSpeed = speed;
@@ -32,6 +33,8 @@ ParticleEmitter::ParticleEmitter(const Vector2D& position_offset,
 
 	mStartScale = start_scale;
 	mEndScale = end_scale;
+
+	mImageName = image_name;
 }
 
 ParticleEmitter::~ParticleEmitter() {}
@@ -67,7 +70,7 @@ void ParticleEmitter::Update(const float time_delta,
 		Vector2D spread_vector = mDirection;
 		spread_vector.Normalize();
 		spread_vector.Rotate(Vector2D::deg2Rad(spread));
-		Particle* particle = new Particle(mPosition, spread_vector, mSpeed, mStartColor, mEndColor, mStartAlpha, mEndAlpha, mStartScale, mEndScale, mTimeToLive, mBlendMode, mPositionType);
+		Particle* particle = new Particle(mPosition, spread_vector, mSpeed, mStartColor, mEndColor, mStartAlpha, mEndAlpha, mStartScale, mEndScale, mTimeToLive, mBlendMode, mImageName, mPositionType);
 		particle->Initialize();
 		mParticles.push_back(particle);
 		mTimeSinceLastParticle = 0.f;
@@ -136,6 +139,10 @@ void ParticleEmitter::SetStartScale(const float start_scale) {
 
 void ParticleEmitter::SetEndScale(const float end_scale) {
 	mEndScale = end_scale;
+}
+
+void ParticleEmitter::SetImageName(const std::string image_name) {
+	mImageName = image_name;
 }
 
 const Vector2D& ParticleEmitter::GetPositionOffset() const {

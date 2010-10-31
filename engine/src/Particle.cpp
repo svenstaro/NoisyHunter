@@ -16,6 +16,7 @@ Particle::Particle(const Vector2D& position,
 				   const float end_scale,
 				   const float time_to_live,
 				   const sf::Blend::Mode mode,
+				   const std::string& image_name,
 				   const PositionType pos_type) {
 	mPosition = position;
 	mDirection = direction;
@@ -37,6 +38,8 @@ Particle::Particle(const Vector2D& position,
 	mBlendMode = mode;
 	mPositionType = pos_type;
 	mLifeTime = 0;
+
+	mImageName = image_name;
 }
 
 Particle::~Particle() {}
@@ -48,7 +51,7 @@ Particle* Particle::clone() const {
 void Particle::Initialize() {
 	mLifeTime = 0.f;
 
-	sf::Sprite* d = new sf::Sprite(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("particle1"));
+	sf::Sprite* d = new sf::Sprite(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage(mImageName));
 	d->SetOrigin(d->GetSize().x / 2, d->GetSize().y / 2);
 	d->SetBlendMode(mBlendMode);
 	mDrawable = d;
