@@ -1,6 +1,8 @@
 #ifndef PARTICLE_HPP 
 #define PARTICLE_HPP
 
+#include <string>
+
 #include "Root.hpp"
 #include "Entity.hpp"
 #include "Vector2D.hpp"
@@ -22,6 +24,7 @@ public:
 			 const float end_scale,
 			 const float time_to_live,
 			 const sf::Blend::Mode mode,
+			 const std::string& image_name,
 			 const PositionType pos_type = PositionType::POSITIONTYPE_WORLD);
 	
 	~Particle();
@@ -55,6 +58,7 @@ private:
 
 	float mLifeTime;
 	float mTimeToLive;
+	std::string mImageName;
 };
 
 }

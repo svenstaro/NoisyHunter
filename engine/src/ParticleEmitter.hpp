@@ -22,7 +22,8 @@ public:
 					const float start_alpha = 255,
 					const float end_alpha = 255,
 					const float start_scale = 1.0f,
-					const float end_scale = 2.0f);
+					const float end_scale = 2.0f,
+					const std::string& image_name = "particle1");
 	
 	~ParticleEmitter();
 
@@ -51,6 +52,7 @@ public:
 	void SetEndAlpha(const float end_alpha);
 	void SetStartScale(const float start_scale);
 	void SetEndScale(const float end_scale);
+	void SetImageName(const std::string image_name);
 
 	const Vector2D& GetPositionOffset() const;
 	const float GetRotationOffset() const;
@@ -88,6 +90,7 @@ private:
 	boost::ptr_list<Particle> mParticles;
 
 	PositionType mPositionType;
+	std::string mImageName;
 };
 
 }
