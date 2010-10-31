@@ -38,10 +38,13 @@ void State::AppendAllEntitiesToPacket() {
 }
 
 void State::Draw(sf::RenderTarget* target) {
+
+	Root::get_mutable_instance().SetRenderMode(RENDERMODE_WORLD);
 	BOOST_FOREACH(Entity& entity, mEntities) {
 		entity.Draw(target);
 	}
 
+	Root::get_mutable_instance().SetRenderMode(RENDERMODE_GUI);
 	BOOST_FOREACH(GuiSystem& system, mGuiSystems) {
 		system.Draw(target);
 	}

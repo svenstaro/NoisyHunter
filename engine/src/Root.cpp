@@ -33,7 +33,6 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 							  const sf::Uint16 server_port,
 							  const std::string name,
 							  bool is_verbose) {
-
     mIsServer = false;
 
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
@@ -42,13 +41,17 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
     sf::ContextSettings Settings;
     Settings.DepthBits         = 24; // Request a 24 bits depth buffer
     Settings.StencilBits       = 8;  // Request a 8 bits stencil buffer
-    Settings.AntialiasingLevel = 8;  // Request 2 levels of antialiasing
+	Settings.AntialiasingLevel = 8;  // Request 8 levels of antialiasing
 
     // Create Render Window
     if(is_fullscreen)
         mRenderWindow.Create(video_mode, window_title, sf::Style::Fullscreen, Settings);
     else
         mRenderWindow.Create(video_mode, window_title, sf::Style::Close, Settings);
+
+	// Create & initialize world view
+	mWorldView.Reset(sf::FloatRect(0,0,800,600));
+	mWorldView.SetViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
 
 	// Load Engine Resources (Default GUI etc.)
 	int cursor_size = 24;
@@ -216,6 +219,10 @@ const Vector2D Root::GetWindowSize() const {
     return Vector2D(mRenderWindow.GetWidth(), mRenderWindow.GetHeight());
 }
 
+const sf::View& Root::GetCurrentView() const {
+	return mRenderWindow.GetView();
+}
+
 void Root::SetMouseHidden(const bool mouse_hidden) {
 	mRenderWindow.ShowMouseCursor(!mouse_hidden);
 }
@@ -230,8 +237,29 @@ void Root::SetClientId(const sf::Uint16 client_id) {
     mClientId = client_id;
 }
 
+void Root::SetWorldPixelsPerFloat(const float ppf) {
+	mWorldPixelsPerFloat = ppf;
+}
+
+const float Root::GetWorldPixelsPerFloat() const {
+	return mWorldPixelsPerFloat;
+}
+
 const float Root::GetRunTime() const {
 	return mRunTimeClock.GetElapsedTime();
+}
+
+void Root::SetRenderMode(const RenderMode mode) {
+	if (mIsServer)
+		mLogManager.Log(LOGLEVEL_ERROR, LOGORIGIN_ROOT, "Tried to switch render mode in server.");
+	else if (mode == RENDERMODE_WORLD)
+		mRenderWindow.SetView(mWorldView);
+	else if (mode == RENDERMODE_GUI)
+		mRenderWindow.SetView(mRenderWindow.GetDefaultView());
+}
+
+void Root::CenterViewAt(const Vector2D center) {
+	mWorldView.SetCenter(center.x, center.y);
 }
 
 }

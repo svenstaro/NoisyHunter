@@ -14,13 +14,14 @@ void PlayState::Initialize() {
 	// Particle system for cursor
 	Engine::Vector2D position = Engine::Vector2D(0.5f, 0.5f);
 	Engine::Vector2D direction = Engine::Vector2D(1.f, 1.f);
-	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_WORLD);
+	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_SCREEN);
 	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter();
 	part_emit->SetRate(100.f);
 	part_emit->SetTimeToLive(1.f);
 	part_emit->SetStartScale(0.5f);
 	part_emit->SetEndScale(3.f);
 	part_sys->AddEmitter(part_emit);
+	part_sys->SetPosition(0.5,0.5);
 	AddEntity(part_sys);
 	mCursorPartSys = part_sys;
 
@@ -129,13 +130,15 @@ void PlayState::OnSetSilentMode() {
 
 void PlayState::OnNavigateTo(const Engine::Coordinates& mouse_position) {	
 	sf::Packet packet;
-	packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_SETSUBMARINETARGET) << mouse_position.X << mouse_position.Y;
+	packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_SETSUBMARINETARGET);
+	packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
 	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
 }
 
 void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position) {
 	sf::Packet packet;
-	packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_FIRETORPEDO) << mouse_position.X << mouse_position.Y;
+	packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_FIRETORPEDO);
+	packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
 	packet << 3.f; // time_to_live
 	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
 }
@@ -162,7 +165,7 @@ void PlayState::OnRightClick(Engine::MouseEventArgs args) {
 }
 
 void PlayState::OnMouseMove(Engine::MouseEventArgs args) {
-	mCursorPartSys->SetPosition(args.X, args.Y);
+	mCursorPartSys->SetPosition(args.GetWorldPixel().x, args.GetWorldPixel().y);
 	std::cout << mCursorPartSys->GetPosition().x << " " << mCursorPartSys->GetPosition().y << std::endl;
 }
 

@@ -19,6 +19,11 @@
 
 namespace Engine {
 
+enum RenderMode {
+	RENDERMODE_WORLD,
+	RENDERMODE_GUI
+};
+
 class Root : public boost::serialization::singleton<Root> {
 public:
     Root();
@@ -50,13 +55,20 @@ public:
 
 	void SetMouseHidden(const bool mouse_hidden);
     const Vector2D GetWindowSize() const;
+	const sf::View& GetCurrentView() const;
 
     Vector2D GetMousePosition() const;
     const std::string& GetClientName() const;
     sf::Uint16 GetClientId() const;
     void SetClientId(const sf::Uint16 client_id);
 
+	void SetWorldPixelsPerFloat(const float ppf);
+	const float GetWorldPixelsPerFloat() const;
+
 	const float GetRunTime() const;
+
+	void SetRenderMode(const RenderMode mode);
+	void CenterViewAt(const Vector2D center);
 
 private:
     bool mIsServer;
@@ -64,11 +76,14 @@ private:
     bool mShutdownRequested;
 
     // these members are for use in client mode only !
-    sf::RenderWindow mRenderWindow; // create Render Window first as Input Manager needs it in constructor
+	sf::RenderWindow mRenderWindow;	// create Render Window first as Input Manager needs it in constructor
+	sf::View mWorldView;			// switch to this view for world rendering, switch back for GUI rendering
     InputManager mInputManager;
     ResourceManager mResourceManager;
     std::string mClientName;
 	sf::Int16 mClientId;
+	float mWorldPixelsPerFloat;		// Float coordinates are multiplied by this>.
+
     
 	sf::Clock mFrameTimeClock;
     sf::Clock mRunTimeClock;

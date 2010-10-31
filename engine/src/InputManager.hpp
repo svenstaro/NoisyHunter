@@ -7,15 +7,9 @@
 #include <SFML/Graphics.hpp>
 
 #include "Vector2D.hpp"
+#include "Coordinates.hpp"
 
 namespace Engine {
-
-// Structure holding screen and game coordinates.
-class Coordinates {
-public:
-	float X, Y;
-	int ScreenX, ScreenY;
-};
 
 class MouseEventArgs : public Coordinates {
 public:
@@ -87,11 +81,6 @@ public:
 	~InputManager();
 
 	void HandleEvent(sf::Event e);
-
-	const Coordinates GetScreenCoordinates(const float world_x,
-										   const float world_y) const;
-	const Coordinates GetWorldCoordinates(const int screen_x,
-										  const int screen_y) const;
 
 	void BindKey(KeyBindingCallback callback, KeyboardEventType type);
 	void BindKey(KeyBindingCallback callback, KeyboardEventType type, sf::Key::Code key);
