@@ -17,8 +17,8 @@ public:
 					const float time_to_live = 3.f,
 					const float rate = 10.f,
 					const sf::Blend::Mode = sf::Blend::Multiply,
-					const sf::Color& start_color = sf::Color(0, 0, 255, 255),
-					const sf::Color& end_color = sf::Color(255, 0, 0, 255),
+					const sf::Color& start_color = sf::Color(255, 255, 255, 255),
+					const sf::Color& end_color = sf::Color(170, 200, 255, 255),
 					const float start_scale = 1.0f,
 					const float end_scale = 2.0f);
 	

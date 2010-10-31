@@ -11,6 +11,7 @@ Particle::Particle(const Vector2D& position,
 				   const sf::Color& end_color,
 				   const float start_scale,
 				   const float end_scale,
+				   const float time_to_live,
 				   const sf::Blend::Mode mode,
 				   const PositionType pos_type) {
 	mPosition = position;
@@ -22,8 +23,10 @@ Particle::Particle(const Vector2D& position,
 	mScale = start_scale;
 	mStartScale = start_scale;
 	mEndScale = end_scale;
+	mTimeToLive = time_to_live;
 	mBlendMode = mode;
 	mPositionType = pos_type;
+	mLifeTime = 0;
 }
 
 Particle::~Particle() {}
@@ -42,11 +45,21 @@ void Particle::Initialize() {
 }
 
 void Particle::Update(const float time_delta) {
-	mLifeTime += time_delta;
-	mPosition += mDirection * mSpeed * time_delta;
-	mScale = ( mEndScale - mStartScale ) * mLifeTime;
-	mDrawable->SetScale(mScale, mScale);
-	//Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_PARTICLE, boost::lexical_cast<std::string>(mScale));
+	if(mTimeToLive >= 0) {
+		mLifeTime += time_delta;
+		mPosition += mDirection * mSpeed * time_delta;
+		const float f = mLifeTime / mTimeToLive;
+
+		mScale = ( mEndScale - mStartScale ) * f;
+
+		int r =  (mEndColor.r - mStartColor.r) * f + mStartColor.r;
+		int g =  (mEndColor.g - mStartColor.g) * f + mStartColor.g;
+		int b =  (mEndColor.b - mStartColor.b) * f + mStartColor.b;
+		mColor = sf::Color(r, g, b);
+		// std::cout << r << " - " << g << " - " << b << std::endl;
+		mDrawable->SetScale(mScale, mScale);
+		mDrawable->SetColor(mColor);
+	}
 }
 
 sf::Uint16 Particle::GetEntityId() const {
