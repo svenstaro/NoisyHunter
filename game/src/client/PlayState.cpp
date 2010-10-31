@@ -124,6 +124,11 @@ void PlayState::Shutdown() {
 void PlayState::Update(float time_delta) {
     UpdateAllEntities(time_delta);
 	mGuiSystems.begin()->GetControl<Engine::GuiLabel>("ping_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->GetPing()));
+	BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
+		if (sub->GetClientId() == Engine::Root::get_mutable_instance().GetClientId()) {
+			Engine::Root::get_mutable_instance().CenterViewAt(Engine::Coordinates::WorldFloatToWorldPixel(sub->GetPosition()));
+		}
+	}
 }
 
 void PlayState::OnSetNoisyMode() {
