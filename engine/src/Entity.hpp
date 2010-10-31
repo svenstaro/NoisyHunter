@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include <boost/ptr_container/ptr_list.hpp>
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 
@@ -11,6 +13,8 @@
 
 namespace Engine {
 
+// Forward declare EntityAttachment :(
+class EntityAttachment;
 class Entity {
 public:
 	enum Layer {
@@ -81,6 +85,9 @@ public:
     void SetClientId(const sf::Uint16 client_id);
     sf::Uint16 GetClientId() const;
 
+	void Attach(Entity& entity,
+				const Vector2D& position_offset,
+				const float rotation_offset);
 protected:
 	sf::Uint16 mClientId;
 	sf::Uint16 mUniqueId;
@@ -92,6 +99,8 @@ protected:
     Layer mLayer;
 
 	sf::Drawable* mDrawable;
+
+	boost::ptr_list<EntityAttachment> mAttachments;
 };
 
 }

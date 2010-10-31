@@ -54,7 +54,7 @@ public:
 	void ExitButton_OnClick(const sf::Uint16 mouse_button);
 
 private:
-    Submarine* mPlayerSubmarine;
+	Engine::Entity* mCursorPartSys; // I know this is ugly, we need a better system for this!
 };
 
 #endif

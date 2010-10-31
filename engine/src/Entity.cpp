@@ -2,6 +2,7 @@
 
 #include "Entity.hpp"
 #include "Root.hpp"
+#include "EntityAttachment.hpp"
 
 namespace Engine {
 
@@ -41,6 +42,10 @@ sf::Packet Entity::PerformAction(const sf::Uint16 action_id, sf::Packet& packet,
 
 void Entity::Update(const float time_delta) {
 	mPosition += mSpeed * time_delta;
+
+	// Update EntityAttachments.
+	BOOST_FOREACH(EntityAttachment& attachment, mAttachments)
+		attachment.Update(time_delta, mPosition, mDirection);
 }
 
 void Entity::Draw(sf::RenderTarget* target) const {
@@ -103,8 +108,17 @@ Entity::PositionType Entity::GetPositionType() const {
 void Entity::SetClientId(const sf::Uint16 client_id) {
     mClientId = client_id;
 }
+
 sf::Uint16 Entity::GetClientId() const {
     return mClientId;
+}
+
+void Entity::Attach(Entity& entity,
+					const Vector2D& position_offset,
+					const float rotation_offset) {
+	EntityAttachment* attachment = new EntityAttachment(&entity, mPosition, mDirection, position_offset, rotation_offset);
+	//EntityAttachment* attachment = new EntityAttachment(&entity);
+	mAttachments.push_back(attachment);
 }
 
 }

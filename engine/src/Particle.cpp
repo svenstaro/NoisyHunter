@@ -9,12 +9,14 @@ Particle::Particle(const Vector2D& position,
 				   const float speed,
 				   const sf::Color& color,
 				   const float scale,
+				   const sf::Blend::Mode mode,
 				   const PositionType pos_type) {
 	mPosition = position;
 	mDirection = direction;
 	mSpeed = speed;
 	mColor = color;
 	mScale = scale;
+	mBlendMode = mode;
 	mPositionType = pos_type;
 }
 
@@ -29,6 +31,7 @@ void Particle::Initialize() {
 
 	sf::Sprite* d = new sf::Sprite(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("particle1"));
 	d->SetOrigin(d->GetSize().x / 2, d->GetSize().y / 2);
+	d->SetBlendMode(mBlendMode);
 	mDrawable = d;
 }
 

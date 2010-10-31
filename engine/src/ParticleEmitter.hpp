@@ -17,6 +17,7 @@ public:
 					const float time_to_live = 3.f,
 					const float rate = 10.f,
 					const sf::Uint16 max_particles = 20,
+					const sf::Blend::Mode = sf::Blend::Multiply,
 					const sf::Color& start_color = sf::Color(0, 0, 255, 255),
 					const sf::Color& end_color = sf::Color(255, 0, 0, 255),
 					const float start_scale = 1.0f,
@@ -30,9 +31,38 @@ public:
 					const Vector2D& direction_of_partsys,
 					const PositionType pos_type_of_partsys);
 
-    void Update(const float time_delta);
+    void Update(const float time_delta, 
+				const Vector2D& position_of_partsys,
+				const Vector2D& direction_of_partsys);
 
 	void Draw(sf::RenderTarget* target) const;
+
+	void SetPositionOffset(const Vector2D& position_offset);
+	void SetRotationOffset(const float position_offset);
+	void SetSpeed(const float speed);
+	void SetSpread(const float spread);
+	void SetTimeToLive(const float ttl);
+	void SetRate(const float rate);
+	void SetMaxParticles(const Uint16 max_particles);
+	void SetBlendMode(const sf::Blend::Mode mode);
+	void SetStartColor(const sf::Color& start_color);
+	void SetEndColor(const sf::Color& end_color);
+	void SetStartScale(const float start_scale);
+	void SetEndScale(const float end_scale);
+
+	const Vector2D& GetPositionOffset() const;
+	const float GetRotationOffset() const;
+	const float GetSpeed() const;
+	const float GetSpread() const;
+	const float GetTimeToLive() const;
+	const float GetRate() const;
+	const sf::Uint16 GetMaxParticles() const;
+	const sf::Blend::Mode GetBlendMode() const;
+	const sf::Color& SetStartColor() const;
+	const sf::Color& GetStartColor() const;
+	const sf::Color& GetEndColor() const;
+	const float GetStartScale() const;
+	const float GetEndScale() const;
 
 	sf::Uint16 GetEntityId() const;
 
@@ -45,6 +75,7 @@ private:
 	float mTimeToLive;
 	float mRate;
 	sf::Uint16 mMaxParticles;
+	sf::Blend::Mode mBlendMode;
 	sf::Color mStartColor;
 	sf::Color mEndColor;
 	float mStartScale;

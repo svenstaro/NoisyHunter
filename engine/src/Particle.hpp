@@ -15,6 +15,7 @@ public:
 			 const float speed,
 			 const sf::Color& color,
 			 const float scale,
+			 const sf::Blend::Mode mode,
 			 const PositionType pos_type = PositionType::POSITIONTYPE_WORLD);
 	
 	~Particle();
@@ -34,6 +35,7 @@ public:
 private:
 	sf::Color mColor;
 	float mScale;
+	sf::Blend::Mode mBlendMode;
 
 	PositionType mPositionType;
 

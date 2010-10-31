@@ -2,8 +2,6 @@
 
 namespace Engine {
 
-ParticleSystem::ParticleSystem() {}
-
 ParticleSystem::ParticleSystem(const Vector2D& position,
 							   const Vector2D& direction,
 							   const PositionType pos_type) {
@@ -23,7 +21,7 @@ void ParticleSystem::Initialize() {
 
 void ParticleSystem::Update(const float time_delta) {
 	BOOST_FOREACH(ParticleEmitter& emitter, mParticleEmitters) {
-		emitter.Update(time_delta);
+		emitter.Update(time_delta, mPosition, mDirection);
 	}
 }
 

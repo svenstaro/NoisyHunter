@@ -11,15 +11,16 @@ void PlayState::Initialize() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing PlayState.");
 
-	// Particle system crap
+	// Particle system for cursor
 	Engine::Vector2D position = Engine::Vector2D(0.5f, 0.5f);
 	Engine::Vector2D direction = Engine::Vector2D(1.f, 1.f);
 	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_WORLD);
-	Engine::ParticleEmitter* part_emit1 = new Engine::ParticleEmitter();
-	Engine::ParticleEmitter* part_emit2 = new Engine::ParticleEmitter();
-	part_sys->AddEmitter(part_emit1);
-	part_sys->AddEmitter(part_emit2);
+	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter();
+	part_emit->SetRate(100.f);
+	part_emit->SetTimeToLive(1.f);
+	part_sys->AddEmitter(part_emit);
 	AddEntity(part_sys);
+	mCursorPartSys = part_sys;
 
 	// Add some GUI
 	CreateGuiSystem();
@@ -159,13 +160,14 @@ void PlayState::OnRightClick(Engine::MouseEventArgs args) {
 }
 
 void PlayState::OnMouseMove(Engine::MouseEventArgs args) {
-
+	mCursorPartSys->SetPosition(args.X, args.Y);
+	std::cout << mCursorPartSys->GetPosition().x << " " << mCursorPartSys->GetPosition().y << std::endl;
 }
 
 void PlayState::OnClientConnected(const sf::Uint16 client_id) {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Client connected: " + boost::lexical_cast<std::string>(client_id));
-    if (client_id == Engine::Root::get_mutable_instance().GetClientId()){
+    if(client_id == Engine::Root::get_mutable_instance().GetClientId()) {
         logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "THAT'S YOU!!");
         // TODO: Unpause StateManager.
 		mGuiSystems.begin()->GetControl<Engine::GuiLabel>("info_label")->SetText("Connection successful, found the server!");

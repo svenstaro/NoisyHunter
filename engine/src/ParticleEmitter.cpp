@@ -11,6 +11,7 @@ ParticleEmitter::ParticleEmitter(const Vector2D& position_offset,
 								 const float time_to_live,
 								 const float rate,
 								 const sf::Uint16 max_particles,
+								 const sf::Blend::Mode mode,
 								 const sf::Color& start_color,
 								 const sf::Color& end_color,
 								 const float start_scale,
@@ -44,7 +45,12 @@ void ParticleEmitter::Initialize(const Vector2D& position_of_partsys,
 	mTimeSinceLastParticle = 0.f;
 }
 
-void ParticleEmitter::Update(const float time_delta) {
+void ParticleEmitter::Update(const float time_delta,
+							 const Vector2D& position_of_partsys,
+							 const Vector2D& direction_of_partsys) {
+	mPosition = mPositionOffset + position_of_partsys;
+	mDirection = direction_of_partsys;
+	mDirection.Rotate(mRotationOffset);
 	std::cout << mParticles.size() << " meh: " << mTimeSinceLastParticle << std::endl;
 	/*
 	auto it = mParticles.begin();
@@ -66,7 +72,7 @@ void ParticleEmitter::Update(const float time_delta) {
 		float spread = sf::Randomizer::Random(-mSpread, mSpread);
 		Vector2D spread_vector(1.f, spread);
 		spread_vector.Rotate(mDirection.Rotation());
-		Particle* particle = new Particle(mPosition, mDirection+spread_vector, mSpeed, mStartColor, mStartScale, mPositionType);
+		Particle* particle = new Particle(mPosition, mDirection+spread_vector, mSpeed, mStartColor, mStartScale, mBlendMode, mPositionType);
 		particle->Initialize();
 		mParticles.push_back(particle);
 		mTimeSinceLastParticle = 0.f;
@@ -79,6 +85,103 @@ void ParticleEmitter::Update(const float time_delta) {
 void ParticleEmitter::Draw(sf::RenderTarget* target) const {
 	BOOST_FOREACH(const Particle& particle, mParticles)
 		particle.Draw(target);
+}
+
+void ParticleEmitter::SetPositionOffset(const Vector2D& position_offset) {
+	mPositionOffset = position_offset;
+}
+
+void ParticleEmitter::SetRotationOffset(const float position_offset) {
+	mRotationOffset = position_offset;
+}
+
+void ParticleEmitter::SetSpeed(const float speed) {
+	mSpeed = speed;
+}
+
+void ParticleEmitter::SetSpread(const float spread) {
+	mSpread = spread;
+}
+
+void ParticleEmitter::SetTimeToLive(const float ttl) {
+	mTimeToLive = ttl;
+}
+
+void ParticleEmitter::SetRate(const float rate) {
+	mRate = rate;
+}
+
+void ParticleEmitter::SetMaxParticles(const Uint16 max_particles) {
+	mMaxParticles = max_particles;
+}
+
+void ParticleEmitter::SetBlendMode(const sf::Blend::Mode mode) {
+	mBlendMode = mode;
+
+}
+
+void ParticleEmitter::SetStartColor(const sf::Color& start_color) {
+	mStartColor = start_color;
+}
+
+void ParticleEmitter::SetEndColor(const sf::Color& end_color) {
+	mEndColor = end_color;
+}
+
+void ParticleEmitter::SetStartScale(const float start_scale) {
+	mStartScale = start_scale;
+}
+
+void ParticleEmitter::SetEndScale(const float end_scale) {
+	mEndScale = end_scale;
+}
+
+const Vector2D& ParticleEmitter::GetPositionOffset() const {
+	return mPositionOffset;
+}
+
+const float ParticleEmitter::GetRotationOffset() const {
+	return mRotationOffset;
+}
+
+const float ParticleEmitter::GetSpeed() const {
+	return mSpeed;
+}
+
+const float ParticleEmitter::GetSpread() const {
+	return mSpread;
+}
+
+const float ParticleEmitter::GetTimeToLive() const {
+	return mTimeToLive;
+}
+
+const float ParticleEmitter::GetRate() const {
+	return mRate;
+}
+
+const sf::Uint16 ParticleEmitter::GetMaxParticles() const {
+	return mMaxParticles;
+}
+
+const sf::Blend::Mode ParticleEmitter::GetBlendMode() const {
+	return mBlendMode;
+}
+
+const sf::Color& ParticleEmitter::GetStartColor() const {
+	return mStartColor;
+}
+
+const sf::Color& ParticleEmitter::GetEndColor() const {
+	return mEndColor;
+}
+
+const float ParticleEmitter::GetStartScale() const {
+	return mStartScale;
+}
+
+const float ParticleEmitter::GetEndScale() const {
+	return mEndScale;
 }
 
 sf::Uint16 ParticleEmitter::GetEntityId() const {
