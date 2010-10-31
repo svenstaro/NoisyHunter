@@ -129,8 +129,9 @@ sf::Uint16 Entity::GetClientId() const {
 
 void Entity::Attach(Entity& entity,
 					const Vector2D& position_offset,
-					const float rotation_offset) {
-	EntityAttachment* attachment = new EntityAttachment(&entity, mPosition, mDirection, position_offset, rotation_offset);
+					const float rotation_offset,
+					RestraintSettings restraint_settings) {
+	EntityAttachment* attachment = new EntityAttachment(&entity, mPosition, mDirection, position_offset, rotation_offset, restraint_settings);
 	//EntityAttachment* attachment = new EntityAttachment(&entity);
 	mAttachments.push_back(attachment);
 }

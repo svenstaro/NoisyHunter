@@ -9,6 +9,7 @@
 #include <SFML/Network.hpp>
 
 #include "Vector2D.hpp"
+#include "RestraintSettings.hpp"
 #include "IOPacket.hpp"
 
 namespace Engine {
@@ -91,7 +92,8 @@ public:
 
 	void Attach(Entity& entity,
 				const Vector2D& position_offset,
-				const float rotation_offset);
+				const float rotation_offset,
+				RestraintSettings restraint_settings = RestraintSettings());
 protected:
 	sf::Uint16 mClientId;
 	sf::Uint16 mUniqueId;

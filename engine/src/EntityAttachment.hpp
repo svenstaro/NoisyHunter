@@ -4,18 +4,21 @@
 #include <SFML/Graphics.hpp>
 
 #include "Vector2D.hpp"
+#include "RestraintSettings.hpp"
 
 namespace Engine {
 
 // Forward declare Entity :(
 class Entity;
+
 class EntityAttachment {
 public:
 	EntityAttachment(Entity* entity,
 					 const Vector2D& position,
 					 const Vector2D& direction,
 					 const Vector2D& position_offset,
-					 const float rotation_offset);
+					 const float rotation_offset,
+					 const RestraintSettings restraint_settings = RestraintSettings());
 
 	~EntityAttachment();
 
@@ -30,6 +33,7 @@ private:
 	Vector2D mPositionOffset;
 	Vector2D mDirection;
 	float mRotationOffset;
+	RestraintSettings mRestraintSettings;
 
 	Entity* mEntity;
 };
