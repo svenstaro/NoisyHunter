@@ -24,11 +24,15 @@
     <linearGradient
        id="linearGradient3757">
       <stop
-         style="stop-color:#6b96ff;stop-opacity:0.35460994;"
+         style="stop-color:#ffffff;stop-opacity:0.54385966;"
          offset="0"
          id="stop3759" />
       <stop
-         style="stop-color:#5385ff;stop-opacity:0;"
+         id="stop3756"
+         offset="0.32704404"
+         style="stop-color:#ffffff;stop-opacity:0.27058824;" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0;"
          offset="1"
          id="stop3761" />
     </linearGradient>
@@ -51,16 +55,16 @@
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="204.64286"
+     inkscape:cx="143.64286"
      inkscape:cy="200"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:snap-bbox="true"
      inkscape:window-width="1280"
-     inkscape:window-height="744"
-     inkscape:window-x="-3"
-     inkscape:window-y="-3"
+     inkscape:window-height="749"
+     inkscape:window-x="-1"
+     inkscape:window-y="0"
      inkscape:window-maximized="1">
     <inkscape:grid
        type="xygrid"
@@ -78,7 +82,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -95,7 +99,7 @@
        sodipodi:cy="200"
        sodipodi:rx="200"
        sodipodi:ry="200"
-       d="m 400,200 a 200,200 0 1 1 -400,0 200,200 0 1 1 400,0 z"
+       d="M 400,200 C 400,310.45695 310.45695,400 200,400 89.54305,400 0,310.45695 0,200 0,89.54305 89.54305,0 200,0 310.45695,0 400,89.54305 400,200 z"
        transform="translate(0,652.36218)" />
   </g>
 </svg>

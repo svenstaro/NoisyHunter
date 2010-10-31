@@ -26,6 +26,7 @@ Particle::Particle(const Vector2D& position,
 	mTimeToLive = time_to_live;
 	mBlendMode = mode;
 	mPositionType = pos_type;
+	mLifeTime = 0;
 }
 
 Particle::~Particle() {}
@@ -44,39 +45,22 @@ void Particle::Initialize() {
 }
 
 void Particle::Update(const float time_delta) {
-	mLifeTime += time_delta;
-	mPosition += mDirection * mSpeed * time_delta;
-	mScale = ( mEndScale - mStartScale ) * mLifeTime/mTimeToLive;
-	int r =  mEndColor.r-mStartColor.r;
-	int g =  mEndColor.g-mStartColor.g;
-	int b =  mEndColor.b-mStartColor.b;
-	const float f = mLifeTime/mTimeToLive;
-	mColor = sf::Color(r * f, g * f, b * f, 255) + mStartColor;
-	//std::cout << mColor.r << "|" << mColor.g << "|" << mColor.b << "|" << mColor.a << std::endl;
-	mDrawable->SetScale(mScale, mScale);
-	mDrawable->SetColor(mColor);
-	//Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_PARTICLE, boost::lexical_cast<std::string>(mScale));
-}
+	if(mTimeToLive >= 0) {
+		mLifeTime += time_delta;
+		mPosition += mDirection * mSpeed * time_delta;
+		const float f = mLifeTime / mTimeToLive;
 
-/*void Entity::Draw(sf::RenderTarget* target) const {
-	// Set screen position.
-	if(GetPositionType() == Entity::POSITIONTYPE_WORLD) {
-		// Convert to world coordinates.
-		Coordinates pos; //  = Root::get_mutable_instance().GetInputManagerPtr()->GetScreenCoordinates(mPosition.x, mPosition.y);
-		pos.SetWorldFloat(mPosition);
-		Vector2D worldPos = pos.GetWorldPixel();
-		Root::get_mutable_instance().SetRenderMode(RENDERMODE_WORLD);
-		mDrawable->SetPosition(worldPos.x, worldPos.y);
-	} else if(GetPositionType() == Entity::POSITIONTYPE_SCREEN) {
-		// Simply use screen coordinates.
-		Root::get_mutable_instance().SetRenderMode(RENDERMODE_GUI);
-		mDrawable->SetPosition(mPosition.x, mPosition.y);
+		mScale = ( mEndScale - mStartScale ) * f;
+
+		int r =  (mEndColor.r - mStartColor.r) * f + mStartColor.r;
+		int g =  (mEndColor.g - mStartColor.g) * f + mStartColor.g;
+		int b =  (mEndColor.b - mStartColor.b) * f + mStartColor.b;
+		mColor = sf::Color(r, g, b);
+		// std::cout << r << " - " << g << " - " << b << std::endl;
+		mDrawable->SetScale(mScale, mScale);
+		mDrawable->SetColor(mColor);
 	}
-
-	mDrawable->SetRotation(- Vector2D::rad2Deg( mDirection.Rotation() ));
-
-	target->Draw(*mDrawable);
-}*/
+}
 
 sf::Uint16 Particle::GetEntityId() const {
 	return 50002;

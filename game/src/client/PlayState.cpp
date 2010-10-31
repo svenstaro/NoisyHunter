@@ -15,13 +15,13 @@ void PlayState::Initialize() {
 	Engine::Vector2D position = Engine::Vector2D(0.5f, 0.5f);
 	Engine::Vector2D direction = Engine::Vector2D(1.f, 1.f);
 	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_SCREEN);
-	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter();
+	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter(Engine::Vector2D(0.f, 0.f), 0.f,60.f, 1.f);
 	part_emit->SetRate(100.f);
 	part_emit->SetTimeToLive(1.f);
 	part_emit->SetStartScale(0.5f);
-	part_emit->SetEndScale(3.f);
-	part_emit->SetStartColor(sf::Color(0,0,255,255));
-	part_emit->SetEndColor(sf::Color(255,0,0,255));
+	part_emit->SetEndScale(2.f);
+	part_emit->SetStartColor(sf::Color(255,255,255));
+	part_emit->SetEndColor(sf::Color(100,140,255));
 	part_sys->AddEmitter(part_emit);
 	AddEntity(part_sys);
 	mCursorPartSys = part_sys;
