@@ -36,6 +36,7 @@ void Submarine::Initialize() {
 	part_emit->SetTimeToLive(3.f);
 	part_emit->SetStartScale(0.5f);
 	part_emit->SetEndScale(3.f);
+	part_emit->SetEndAlpha(0);
 	part_sys->AddEmitter(part_emit);
 	part_sys->SetPosition(0.5,0.5);
 
