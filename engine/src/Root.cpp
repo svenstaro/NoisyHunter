@@ -249,6 +249,10 @@ const float Root::GetRunTime() const {
 	return mRunTimeClock.GetElapsedTime();
 }
 
+float Root::GetFps() const {
+	return 1 / mRenderWindow.GetFrameTime();
+}
+
 void Root::SetRenderMode(const RenderMode mode) {
 	if (mIsServer)
 		mLogManager.Log(LOGLEVEL_ERROR, LOGORIGIN_ROOT, "Tried to switch render mode in server.");

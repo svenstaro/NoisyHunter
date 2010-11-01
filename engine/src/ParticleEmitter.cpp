@@ -63,7 +63,8 @@ void ParticleEmitter::Update(const float time_delta,
 	mParticles.erase_if(boost::bind(&Particle::GetLifeTime, _1) >= mTimeToLive);
 
 	mTimeSinceLastParticle += time_delta;
-	// Rate is amount of particles sent per second and time_delta is msecs.
+	// Rate is amount of particles sent per second and time_delta is secs.
+	
 	while(
 		  mTimeSinceLastParticle >= 1.f / mRate) {
 		float spread = sf::Randomizer::Random(-mSpread/2, mSpread/2);
@@ -73,13 +74,15 @@ void ParticleEmitter::Update(const float time_delta,
 		Particle* particle = new Particle(mPosition, spread_vector, mSpeed, mStartColor, mEndColor, mStartAlpha, mEndAlpha, mStartScale, mEndScale, mTimeToLive, mBlendMode, mImageName, mPositionType);
 		particle->Initialize();
 		mParticles.push_back(particle);
-		mTimeSinceLastParticle = 0.f;
+		mTimeSinceLastParticle -= 1.f / mRate;
 	}
+
 
 	BOOST_FOREACH(Particle& particle, mParticles)
 		particle.Update(time_delta);
 
 	UpdateAllAttachments(time_delta);
+	std::cout << mParticles.size() << std::endl;
 }
 
 void ParticleEmitter::Draw(sf::RenderTarget* target) const {
