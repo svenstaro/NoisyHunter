@@ -13,19 +13,17 @@ void PlayState::Initialize() {
 
 	// Particle system for cursor
 	Engine::Vector2D position = Engine::Vector2D(0.5f, 0.5f);
-	Engine::Vector2D direction = Engine::Vector2D(1.f, 1.f);
+	Engine::Vector2D direction = Engine::Vector2D(0.f, -2.f);
 	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_SCREEN);
-	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter(Engine::Vector2D(0.f, 0.f), 0.f, 50.f, 360.f);
+	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter(Engine::Vector2D(0.f, 0.f), 0.f, 50.f, 10.f);
 	part_emit->SetBlendMode(sf::Blend::Add);
-	part_emit->SetRate(100.f);
-	part_emit->SetTimeToLive(1.5f);
-	part_emit->SetStartScale(0.4f);
-	part_emit->SetEndScale(1.f);
-	part_emit->SetStartColor(sf::Color(0,0,255));
-	part_emit->SetEndColor(sf::Color(255,0,0));
+	part_emit->SetRate(0.3f);
+	part_emit->SetTimeToLive(10.f);
+	part_emit->SetStartScale(0.2f);
+	part_emit->SetEndScale(0.7f);
 	part_emit->SetStartAlpha(230);
 	part_emit->SetEndAlpha(0);
-	part_emit->SetImageName("particle_cursor");
+	part_emit->SetImageName("particle_bubble");
 	part_sys->AddEmitter(part_emit);
 	AddEntity(part_sys);
 	mCursorPartSys = part_sys;
