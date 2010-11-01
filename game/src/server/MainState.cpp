@@ -18,16 +18,40 @@ void MainState::Initialize() {
 	WorldPolygon* pol1 = new WorldPolygon();
 	pol1->Initialize();
 	pol1->GrabUniqueId();
-	pol1->AddPoint(sf::Vector2f(0,100));
-	pol1->AddPoint(sf::Vector2f(100,0));
-	pol1->AddPoint(sf::Vector2f(700,0));
-	pol1->AddPoint(sf::Vector2f(800,100));
-	pol1->AddPoint(sf::Vector2f(800,500));
-	pol1->AddPoint(sf::Vector2f(700,600));
-	pol1->AddPoint(sf::Vector2f(100,600));
-	pol1->AddPoint(sf::Vector2f(0,500));
+	pol1->AddPoint(sf::Vector2f(0,0));
+	pol1->AddPoint(sf::Vector2f(0.2,0.2));
+
+	pol1->AddPoint(sf::Vector2f(0.8,0.4));
+	pol1->AddPoint(sf::Vector2f(1.8,0.2));
+	pol1->AddPoint(sf::Vector2f(1.7,0.6));
+	pol1->AddPoint(sf::Vector2f(1.5, 0.64));
+	pol1->AddPoint(sf::Vector2f(1.8,1.4));
+	pol1->AddPoint(sf::Vector2f(1.2,1.94));
+	pol1->AddPoint(sf::Vector2f(0.24,1.34));
+	pol1->AddPoint(sf::Vector2f(0.06,0.4));
+
+	pol1->AddPoint(sf::Vector2f(0.2,0.2));
+	pol1->AddPoint(sf::Vector2f(0,0));
+	pol1->AddPoint(sf::Vector2f(2,0));
+	pol1->AddPoint(sf::Vector2f(2,2));
+	pol1->AddPoint(sf::Vector2f(0,2));
+
 	pol1->SetPosition(0,0);
 	AddEntity(pol1);
+
+	// rock
+	WorldPolygon* pol2 = new WorldPolygon();
+	pol2->Initialize();
+	pol2->GrabUniqueId();
+	pol2->AddPoint(sf::Vector2f(1.2,0.95));
+	pol2->AddPoint(sf::Vector2f(1.3,1.1));
+	pol2->AddPoint(sf::Vector2f(1.1,1.05));
+	pol2->AddPoint(sf::Vector2f(1.05,0.9));
+	pol2->AddPoint(sf::Vector2f(1.12,0.86));
+
+	pol2->SetPosition(0,0);
+	AddEntity(pol2);
+
 }
 void MainState::Shutdown() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();

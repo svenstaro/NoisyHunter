@@ -223,6 +223,10 @@ const sf::View& Root::GetCurrentView() const {
 	return mRenderWindow.GetView();
 }
 
+const sf::View& Root::GetWorldView() const {
+	return mWorldView;
+}
+
 void Root::SetMouseHidden(const bool mouse_hidden) {
 	mRenderWindow.ShowMouseCursor(!mouse_hidden);
 }

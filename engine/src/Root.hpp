@@ -56,6 +56,7 @@ public:
 	void SetMouseHidden(const bool mouse_hidden);
     const Vector2D GetWindowSize() const;
 	const sf::View& GetCurrentView() const;
+	const sf::View& GetWorldView() const;
 
     Vector2D GetMousePosition() const;
     const std::string& GetClientName() const;
