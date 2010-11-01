@@ -82,7 +82,6 @@ void ParticleEmitter::Update(const float time_delta,
 		particle.Update(time_delta);
 
 	UpdateAllAttachments(time_delta);
-	std::cout << mParticles.size() << std::endl;
 }
 
 void ParticleEmitter::Draw(sf::RenderTarget* target) const {
