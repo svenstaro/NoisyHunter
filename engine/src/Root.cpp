@@ -16,9 +16,9 @@ Vector2D Root::GetMousePosition() const {
 void Root::InitializeAsServer(const sf::Uint16 server_port,
 							  bool is_verbose) {
     mIsServer = true;
-	mIsVerbose = is_verbose;
 
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->SetVerbose(is_verbose);
 	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_STATE, "Initializing Root as server.");
 
     //mStateManager = StateManager();
@@ -36,6 +36,7 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
     mIsServer = false;
 
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->SetVerbose(is_verbose);
 	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_STATE, "Initializing Root as client.");
 
     sf::ContextSettings Settings;
@@ -82,7 +83,6 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
     // Create and Initialize Network Manager
     // mNetworkManager = NetworkManager();
     mClientName = name;
-	mIsVerbose = is_verbose;
     mNetworkManager.InitializeAsClient(server_ip, server_port, name);
 }
 
