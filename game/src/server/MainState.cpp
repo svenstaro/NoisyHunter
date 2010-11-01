@@ -18,15 +18,15 @@ void MainState::Initialize() {
 	WorldPolygon* pol1 = new WorldPolygon();
 	pol1->Initialize();
 	pol1->GrabUniqueId();
-	pol1->AddPoint(sf::Vector2f(0,0));
+	pol1->AddPoint(sf::Vector2f(0,100));
 	pol1->AddPoint(sf::Vector2f(100,0));
-	pol1->AddPoint(sf::Vector2f(100,100));
-	pol1->AddPoint(sf::Vector2f(200,100));
-	pol1->AddPoint(sf::Vector2f(200,200));
-	pol1->AddPoint(sf::Vector2f(300,200));
-	pol1->AddPoint(sf::Vector2f(300,300));
-	pol1->AddPoint(sf::Vector2f(0,300));
-	pol1->SetPosition(100,100);
+	pol1->AddPoint(sf::Vector2f(700,0));
+	pol1->AddPoint(sf::Vector2f(800,100));
+	pol1->AddPoint(sf::Vector2f(800,500));
+	pol1->AddPoint(sf::Vector2f(700,600));
+	pol1->AddPoint(sf::Vector2f(100,600));
+	pol1->AddPoint(sf::Vector2f(0,500));
+	pol1->SetPosition(0,0);
 	AddEntity(pol1);
 }
 void MainState::Shutdown() {

@@ -73,7 +73,6 @@ public:
 
 private:
     bool mIsServer;
-	bool mIsVerbose;
     bool mShutdownRequested;
 
     // these members are for use in client mode only !

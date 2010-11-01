@@ -68,9 +68,9 @@ void WorldPolygon::serialize(Engine::IOPacket& packet) {
 void WorldPolygon::RebuildShape() {
 	mShape = sf::Shape();
 	BOOST_FOREACH(sf::Vector2f& p, mPoints) {
-		mShape.AddPoint(p, sf::Color(200,200,255,50), sf::Color(200,200,255));
+		mShape.AddPoint(p, sf::Color(64,128,255,50), sf::Color(0,64,255));
 	}
 	mShape.EnableFill(true);
-	mShape.SetOutlineWidth(1);
+	mShape.SetOutlineWidth(3);
 	mShape.SetPosition(mPosition.x, mPosition.y);
 }
