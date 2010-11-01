@@ -7,6 +7,7 @@
 #include <SFML/System/Vector2.hpp>
 
 #include "Entity.hpp"
+#include "Coordinates.hpp"
 
 class WorldPolygon : public Engine::Entity {
 public:
@@ -23,6 +24,9 @@ public:
 	void AddPoint(const sf::Vector2f point);
 	void ClearAllPoints();
 
+	void SetBorderWidth(const float border_width);
+	const float GetBorderWidth();
+
 	// callbacks
 	void OnCollide(const Engine::Entity& ent);
 
@@ -34,7 +38,8 @@ private:
 	void RebuildShape();
 
 	sf::Vector2f mOrigin;
-	std::list<sf::Vector2f> mPoints;
+	std::list<sf::Vector2f> mPoints;	// world float coordinates
+	float mBorderWidth;					// world float coordinates
 	sf::Shape mShape;
 };
 

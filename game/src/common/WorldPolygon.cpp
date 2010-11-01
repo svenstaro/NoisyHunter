@@ -3,6 +3,7 @@
 
 WorldPolygon::WorldPolygon() {
 	mUniqueId = 0;
+	mBorderWidth = 0.003;
 }
 
 WorldPolygon::~WorldPolygon() {}
@@ -29,6 +30,14 @@ void WorldPolygon::ClearAllPoints() {
 	RebuildShape();
 }
 
+void WorldPolygon::SetBorderWidth(const float border_width) {
+	mBorderWidth = border_width;
+}
+
+const float WorldPolygon::GetBorderWidth() {
+	return mBorderWidth;
+}
+
 void WorldPolygon::OnCollide(const Engine::Entity& ent) {
 	// TODO: Do stuff
 }
@@ -41,6 +50,7 @@ void WorldPolygon::serialize(Engine::IOPacket& packet) {
     packet & mUniqueId;
 	packet & mPosition.x;
 	packet & mPosition.y;
+	packet & mBorderWidth;
 
 	if (packet.IsStreamOut()) {
 		// Stream data from packet to list
@@ -68,9 +78,15 @@ void WorldPolygon::serialize(Engine::IOPacket& packet) {
 void WorldPolygon::RebuildShape() {
 	mShape = sf::Shape();
 	BOOST_FOREACH(sf::Vector2f& p, mPoints) {
-		mShape.AddPoint(p, sf::Color(64,128,255,50), sf::Color(0,64,255));
+		// Convert floats to pixels
+		Engine::Coordinates c;
+		c.SetWorldFloat(Engine::Vector2D(p.x, p.y));
+		Engine::Vector2D p = c.GetWorldPixel();
+		mShape.AddPoint(sf::Vector2f(p.x, p.y), sf::Color(64,128,255,50), sf::Color(100,140,255));
 	}
-	mShape.EnableFill(true);
-	mShape.SetOutlineWidth(3);
+	mShape.EnableFill(false);
+	float out_width = mBorderWidth * Engine::Root::get_mutable_instance().GetWorldPixelsPerFloat();
+	if (out_width < 1.f) out_width = 1.f;
+	mShape.SetOutlineWidth(int(out_width));
 	mShape.SetPosition(mPosition.x, mPosition.y);
 }
