@@ -68,6 +68,8 @@ public:
 
 	const float GetRunTime() const;
 
+	float GetFps() const;
+
 	void SetRenderMode(const RenderMode mode);
 	void CenterViewAt(const Vector2D center);
 
