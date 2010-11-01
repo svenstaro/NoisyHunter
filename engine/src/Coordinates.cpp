@@ -1,6 +1,8 @@
 #include "Coordinates.hpp"
 #include "Root.hpp"
 
+#include <iostream>
+
 
 namespace Engine {
 
@@ -13,11 +15,11 @@ void Coordinates::SetWorldFloat(const Vector2D coords) {
 	mWorldPixel = coords * Root::get_const_instance().GetWorldPixelsPerFloat();
 }
 void Coordinates::SetViewPixel(const Vector2D coords) {
-	const sf::View& view = Root::get_const_instance().GetCurrentView();
+	const sf::View& view = Root::get_const_instance().GetWorldView();
 	mWorldPixel = coords + Vector2D(view.GetCenter().x - view.GetSize().x / 2.f, view.GetCenter().y - view.GetSize().y / 2.f); // coords + View Offset
 }
 void Coordinates::SetScreenPixel(const Vector2D coords) {
-	const sf::View& view = Root::get_const_instance().GetCurrentView();
+	const sf::View& view = Root::get_const_instance().GetWorldView();
 	SetViewPixel(coords - Vector2D(view.GetViewport().Left, view.GetViewport().Top)); // coords - ViewPORT Offset
 }
 
@@ -30,11 +32,11 @@ const Vector2D Coordinates::GetWorldFloat() const {
 	return mWorldPixel / Root::get_const_instance().GetWorldPixelsPerFloat();
 }
 const Vector2D Coordinates::GetViewPixel() const {
-	const sf::View& view = Root::get_const_instance().GetCurrentView();
+	const sf::View& view = Root::get_const_instance().GetWorldView();
 	return mWorldPixel * -1 + Vector2D(view.GetCenter().x - view.GetSize().x / 2.f, view.GetCenter().y - view.GetSize().y / 2.f); // - mWorldPixel + View Offset
 }
 const Vector2D Coordinates::GetScreenPixel() const {
-	const sf::View& view = Root::get_const_instance().GetCurrentView();
+	const sf::View& view = Root::get_const_instance().GetWorldView();
 	return GetViewPixel() + Vector2D(view.GetViewport().Left, view.GetViewport().Top); // ViewPixel + ViewPORT Offset
 }
 
