@@ -23,6 +23,7 @@ public:
 	void Initialize();
 
     void Update(float time_delta);
+	void Draw(sf::RenderTarget *target) const;
 
     // callbacks
     void OnCollide(const Engine::Entity& ent);
@@ -52,6 +53,7 @@ public:
 
 private:
     Engine::Vector2D mTarget;
+	sf::Sprite mSprite;
 };
 
 #endif

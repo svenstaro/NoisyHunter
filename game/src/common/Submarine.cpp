@@ -9,7 +9,7 @@ Submarine::Submarine(const float pos_x,
 					 const sf::Uint16 client_id) {
 	mLayer = Engine::Entity::LAYER_REGULAR;
 	SetPosition(Engine::Vector2D(pos_x, pos_y));
-	SetSpeed(0.1);
+	SetSpeed(0.06);
 	SetDirection(Engine::Vector2D(1,0));
 	mClientId = client_id;
 	mUniqueId = 0;
@@ -24,7 +24,7 @@ Submarine* Submarine::clone() const {
 void Submarine::Initialize() {
 	sf::Sprite* d = new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("submarine"));
 	d->SetOrigin(d->GetSize().x / 2, d->GetSize().y / 2);
-	mDrawable = d;
+	mSprite = *d;
 
 
 	// Particle system for submarine
@@ -55,7 +55,7 @@ void Submarine::Update(float time_delta) {
 		else if(Engine::Vector2D::rad2Deg(angle) < -180)
 			angle += Engine::Vector2D::deg2Rad(360);
 
-		float max_angle = 2 * time_delta;
+		float max_angle = 0.5 * time_delta;
 		if(angle > max_angle)
 			angle = max_angle;
 		else if(angle < -max_angle)
@@ -63,10 +63,41 @@ void Submarine::Update(float time_delta) {
 
 		mDirection.Rotate(angle);
 		mDirection.Normalize();
-		mPosition += mDirection * mSpeed * time_delta * relative_target.Magnitude() * 5;
+		mPosition += mDirection * mSpeed * time_delta;
 	}
 
+
+	// Convert to world coordinates.
+	Engine::Coordinates pos;
+	pos.SetWorldFloat(mPosition);
+	Engine::Vector2D worldPos = pos.GetWorldPixel();
+	mSprite.SetPosition(sf::Vector2f(worldPos.x, worldPos.y));
+
+	float rot = Engine::Vector2D::rad2Deg( mDirection.Rotation());
+	bool flip_x = rot > 90 || rot < -90;
+	mSprite.FlipX(flip_x);
+	if (flip_x) {
+		if (rot > 90) rot = 180 - rot;
+		if (rot < -90) rot = - 180 - rot;
+		if (rot > 30) rot = 30;
+		if (rot < -30) rot = -30;
+		mSprite.SetRotation( rot );
+	} else {
+		if (rot > 30) rot = 30;
+		if (rot < -30) rot = -30;
+		mSprite.SetRotation(- rot );
+	}
+
+
 	UpdateAllAttachments(time_delta);
+}
+
+void Submarine::Draw(sf::RenderTarget* target) const {
+
+	Engine::Root::get_mutable_instance().SetRenderMode(Engine::RENDERMODE_WORLD);
+	target->Draw(mSprite);
+
+	DrawAllAttachments(target);
 }
 
 const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D Pos, const float time_to_live) {
@@ -124,6 +155,7 @@ void Submarine::SetTarget(const float x, const float y) {
 
 void Submarine::SetTarget(const Engine::Vector2D target) {
     mTarget = target;
+	SetSpeed(0.06);
 }
 
 void Submarine::serialize(Engine::IOPacket& packet) {
