@@ -72,7 +72,7 @@ void Torpedo::OnDeath() {
 }
 
 sf::Uint16 Torpedo::GetEntityId() const {
-	return 3;
+	return ENTITYID_TORPEDO;
 }
 
 /*template<class Archive>

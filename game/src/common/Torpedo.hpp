@@ -2,6 +2,7 @@
 #define TORPEDO_HPP
 
 #include "Entity.hpp"
+#include "EntityId.hpp"
 #include "Vector2D.hpp"
 #include "IOPacket.hpp"
 

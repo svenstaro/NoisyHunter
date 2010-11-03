@@ -2,6 +2,7 @@
 #define SONARPING_HPP
 
 #include "Entity.hpp"
+#include "EntityId.hpp"
 
 class SonarPing : public Engine::Entity {
 

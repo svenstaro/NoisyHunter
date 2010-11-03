@@ -20,5 +20,5 @@ void SonarPing::OnCollide(const Engine::Entity& ent) {
 }
 
 sf::Uint16 SonarPing::GetEntityId() const {
-	return 1;
+	return ENTITYID_SONARPING;
 }

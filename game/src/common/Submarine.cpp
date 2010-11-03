@@ -146,7 +146,7 @@ sf::Packet Submarine::PerformAction(const sf::Uint16 action_id, sf::Packet& pack
 }
 
 sf::Uint16 Submarine::GetEntityId() const {
-	return 2;
+	return ENTITYID_SUBMARINE;
 }
 
 void Submarine::SetTarget(const float x, const float y) {

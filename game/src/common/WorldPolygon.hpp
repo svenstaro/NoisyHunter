@@ -7,6 +7,7 @@
 #include <SFML/System/Vector2.hpp>
 
 #include "Entity.hpp"
+#include "EntityId.hpp"
 #include "Coordinates.hpp"
 
 class WorldPolygon : public Engine::Entity {

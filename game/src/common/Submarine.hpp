@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Entity.hpp"
+#include "EntityId.hpp"
 #include "IOPacket.hpp"
 #include "Vector2D.hpp"
 #include "Torpedo.hpp"

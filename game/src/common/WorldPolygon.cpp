@@ -43,7 +43,7 @@ void WorldPolygon::OnCollide(const Engine::Entity& ent) {
 }
 
 sf::Uint16 WorldPolygon::GetEntityId() const {
-	return 4;
+	return ENTITYID_WORLDPOLYGON;
 }
 
 void WorldPolygon::serialize(Engine::IOPacket& packet) {
