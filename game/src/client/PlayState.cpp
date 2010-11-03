@@ -14,7 +14,7 @@ void PlayState::Initialize() {
 	// Particle system for cursor
 	Engine::Vector2D position = Engine::Vector2D(0.5f, 0.5f);
 	Engine::Vector2D direction = Engine::Vector2D(0.f, -2.f);
-	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_SCREEN);
+	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_SCREENPIXEL);
 	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter(Engine::Vector2D(0.f, 0.f), 0.f, 50.f, 360.f);
 	part_emit->SetBlendMode(sf::Blend::Add);
 	part_emit->SetRate(100.f);
@@ -186,7 +186,8 @@ void PlayState::OnRightClick(Engine::MouseEventArgs args) {
 }
 
 void PlayState::OnMouseMove(Engine::MouseEventArgs args) {
-	mCursorPartSys->SetPosition(args.GetWorldPixel().x, args.GetWorldPixel().y);
+	//mCursorPartSys->SetPosition(args.GetWorldFloat().x, args.GetWorldFloat().y);
+	mCursorPartSys->SetPosition(args.GetScreenPixel().x, args.GetScreenPixel().y);
 }
 
 void PlayState::OnClientConnected(const sf::Uint16 client_id) {

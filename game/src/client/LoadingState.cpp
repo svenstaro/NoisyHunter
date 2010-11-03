@@ -8,7 +8,7 @@ LoadingState::~LoadingState() {}
 // state control
 void LoadingState::Initialize() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing PlayState.");
+	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing LoadingState.");
 
 	// load resources
 	auto resmgr = Engine::Root::get_mutable_instance().GetResourceManagerPtr();

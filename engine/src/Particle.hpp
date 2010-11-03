@@ -25,7 +25,7 @@ public:
 			 const float time_to_live,
 			 const sf::Blend::Mode mode,
 			 const std::string& image_name,
-			 const PositionType pos_type = PositionType::POSITIONTYPE_WORLD);
+			 const PositionType pos_type = PositionType::POSITIONTYPE_WORLDFLOAT);
 	
 	~Particle();
 
@@ -33,7 +33,7 @@ public:
 
 	void Initialize();
 
-    void Update(const float time_delta);
+	void Update(const float time_delta);
 
 	sf::Uint16 GetEntityId() const;
 

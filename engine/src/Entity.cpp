@@ -52,18 +52,20 @@ void Entity::UpdateAllAttachments(const float time_delta) {
 
 void Entity::Draw(sf::RenderTarget* target) const {
 	// Set screen position.
-	if(GetPositionType() == Entity::POSITIONTYPE_WORLD) {
-		// Convert to world coordinates.
-		Coordinates pos; //  = Root::get_mutable_instance().GetInputManagerPtr()->GetScreenCoordinates(mPosition.x, mPosition.y);
+	PositionType t = GetPositionType();
+	Coordinates pos;
+	if(t == Entity::POSITIONTYPE_WORLDPIXEL) {
+		pos.SetWorldPixel(mPosition);
+	} else if (t == Entity::POSITIONTYPE_SCREENPIXEL) {
+		pos.SetScreenPixel(mPosition);
+	} else if (t == Entity::POSITIONTYPE_VIEWPIXEL) {
+		pos.SetViewPixel(mPosition);
+	} else if (t == Entity::POSITIONTYPE_WORLDFLOAT) {
 		pos.SetWorldFloat(mPosition);
-		Vector2D worldPos = pos.GetWorldPixel();
-		Root::get_mutable_instance().SetRenderMode(RENDERMODE_WORLD);
-		mDrawable->SetPosition(worldPos.x, worldPos.y);
-	} else if(GetPositionType() == Entity::POSITIONTYPE_SCREEN) {
-		// Simply use screen coordinates.
-		Root::get_mutable_instance().SetRenderMode(RENDERMODE_GUI);
-		mDrawable->SetPosition(mPosition.x, mPosition.y);
 	}
+	Vector2D worldPos = pos.GetWorldPixel();
+	Root::get_mutable_instance().SetRenderMode(RENDERMODE_WORLD);
+	mDrawable->SetPosition(worldPos.x, worldPos.y);
 
 	mDrawable->SetRotation(- Vector2D::rad2Deg( mDirection.Rotation() ));
 
@@ -116,7 +118,7 @@ Entity::Layer Entity::GetLayer() const {
 }
 
 Entity::PositionType Entity::GetPositionType() const {
-	return Entity::POSITIONTYPE_WORLD;
+	return Entity::POSITIONTYPE_WORLDFLOAT;
 }
 
 void Entity::SetClientId(const sf::Uint16 client_id) {
