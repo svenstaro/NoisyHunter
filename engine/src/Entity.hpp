@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include <boost/shared_ptr.hpp>
 #include <boost/ptr_container/ptr_list.hpp>
 
 #include <SFML/Graphics.hpp>
@@ -104,7 +105,7 @@ protected:
 
     Layer mLayer;
 
-	sf::Drawable* mDrawable;
+	boost::shared_ptr<sf::Drawable> mDrawable;
 
 	boost::ptr_list<EntityAttachment> mAttachments;
 };

@@ -51,7 +51,7 @@ Particle* Particle::clone() const {
 void Particle::Initialize() {
 	mLifeTime = 0.f;
 
-	sf::Sprite* d = new sf::Sprite(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage(mImageName));
+	boost::shared_ptr<sf::Sprite> d(new sf::Sprite(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage(mImageName)));
 	d->SetOrigin(d->GetSize().x / 2, d->GetSize().y / 2);
 	d->SetBlendMode(mBlendMode);
 	mDrawable = d;

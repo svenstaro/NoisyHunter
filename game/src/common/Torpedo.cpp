@@ -22,7 +22,7 @@ Torpedo* Torpedo::clone() const {
 }
 
 void Torpedo::Initialize() {
-	sf::Sprite* d = new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("torpedo"));
+	boost::shared_ptr<sf::Sprite> d(new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("torpedo")));
 	d->SetOrigin(d->GetSize().x / 2, d->GetSize().y / 2);
 	mDrawable = d;
 }
