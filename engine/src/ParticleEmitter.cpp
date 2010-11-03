@@ -59,14 +59,14 @@ void ParticleEmitter::Update(const float time_delta,
 	mPosition = mPositionOffset + position_of_partsys;
 	mDirection = direction_of_partsys;
 	mDirection.Rotate(mRotationOffset);
-	// The following line does the job of the commented code, nice!
+
+	// Delete particles that have outlived their life time.
 	mParticles.erase_if(boost::bind(&Particle::GetLifeTime, _1) >= mTimeToLive);
 
 	mTimeSinceLastParticle += time_delta;
 	// Rate is amount of particles sent per second and time_delta is secs.
-	
-	while(
-		  mTimeSinceLastParticle >= 1.f / mRate) {
+
+	while(mTimeSinceLastParticle >= 1.f / mRate) {
 		float spread = sf::Randomizer::Random(-mSpread/2, mSpread/2);
 		Vector2D spread_vector = mDirection;
 		spread_vector.Normalize();
