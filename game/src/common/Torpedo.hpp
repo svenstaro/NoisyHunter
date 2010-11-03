@@ -5,6 +5,7 @@
 #include "EntityId.hpp"
 #include "Vector2D.hpp"
 #include "IOPacket.hpp"
+#include "ParticleSystem.hpp"
 
 class Torpedo : public Engine::Entity {
 

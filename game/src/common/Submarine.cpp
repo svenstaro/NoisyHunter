@@ -26,7 +26,6 @@ void Submarine::Initialize() {
 	d->SetOrigin(d->GetSize().x / 2, d->GetSize().y / 2);
 	mSprite = *d;
 
-
 	// Particle system for submarine
 	Engine::Vector2D position = Engine::Vector2D(0.f, 0.f);
 	Engine::Vector2D direction = Engine::Vector2D(0.f, -1.2f);

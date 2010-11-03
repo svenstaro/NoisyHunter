@@ -24,7 +24,7 @@ void PlayState::Initialize() {
 	part_emit->SetStartColor(sf::Color(255,255,255));
 	part_emit->SetEndColor(sf::Color(64,64,64));
 	part_emit->SetStartAlpha(230);
-	part_emit->SetEndAlpha(200);
+	part_emit->SetEndAlpha(0);
 	part_emit->SetImageName("particle_cursor");
 	part_sys->AddEmitter(part_emit);
 	AddEntity(part_sys);
