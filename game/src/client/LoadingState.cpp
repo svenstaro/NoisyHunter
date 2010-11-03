@@ -31,7 +31,8 @@ void LoadingState::Initialize() {
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle1.svg",			24,		24,		"particle1");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle_cursor.svg",	24,		24,		"particle_cursor");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle_bubble.svg",	24,		24,		"particle_bubble");
-	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"glow1.svg",				400,	400,	"glow");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"glow1.svg",				50,		50,	"glow1");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"torpedo_trail.svg",		24,		24,		"torpedo_trail");
 
     // load font
     sf::Font font;
