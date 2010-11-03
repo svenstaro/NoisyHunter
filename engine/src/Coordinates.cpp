@@ -33,7 +33,7 @@ const Vector2D Coordinates::GetWorldFloat() const {
 }
 const Vector2D Coordinates::GetViewPixel() const {
 	const sf::View& view = Root::get_const_instance().GetWorldView();
-	return mWorldPixel * -1 + Vector2D(view.GetCenter().x - view.GetSize().x / 2.f, view.GetCenter().y - view.GetSize().y / 2.f); // - mWorldPixel + View Offset
+	return mWorldPixel - Vector2D(view.GetCenter().x - view.GetSize().x / 2.f, view.GetCenter().y - view.GetSize().y / 2.f); // mWorldPixel - View Offset
 }
 const Vector2D Coordinates::GetScreenPixel() const {
 	const sf::View& view = Root::get_const_instance().GetWorldView();

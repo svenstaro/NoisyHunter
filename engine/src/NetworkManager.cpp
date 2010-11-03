@@ -400,7 +400,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
     }
 	// debug message
 	if (num_entity_infos > 0)
-		logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Deserialized "+boost::lexical_cast<std::string>(num_entity_infos)+" x NETCMD_ENTITYINFO.");
+		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Deserialized "+boost::lexical_cast<std::string>(num_entity_infos)+" x NETCMD_ENTITYINFO.");
 }
 
 void NetworkManager::BindOnClientConnected(const boost::signals2::signal<void (const sf::Uint16)>::slot_type& slot) {

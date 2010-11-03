@@ -120,7 +120,7 @@ void GuiControl::SetHover(bool hover) {
 }
 
 Entity::PositionType GuiControl::GetPositionType() const {
-    return Entity::POSITIONTYPE_SCREEN;
+	return Entity::PositionType::POSITIONTYPE_SCREENPIXEL;
 }
 
 const Vector2D GuiControl::GetPosition() const {

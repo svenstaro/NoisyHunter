@@ -12,7 +12,7 @@ class ParticleSystem : public Entity {
 public:
 	ParticleSystem(const Vector2D& position = Vector2D(0.f, 0.f),
 				   const Vector2D& direction = Vector2D(0.f, 0.f),
-				   const PositionType pos_type = Entity::PositionType::POSITIONTYPE_WORLD);
+				   const PositionType pos_type = Entity::PositionType::POSITIONTYPE_WORLDFLOAT);
 	
 	~ParticleSystem();
 
