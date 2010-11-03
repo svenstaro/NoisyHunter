@@ -54,7 +54,7 @@ void Torpedo::Update(const float time_delta) {
 
 	mTimeToLive -= time_delta;
 
-	if (mTimeToLive <= 0) {
+	if(mTimeToLive <= 0) {
 		// TODO: explode, yeah!
 		mSpeed = 0;
 		mReachedTargetAngle = true;

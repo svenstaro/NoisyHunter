@@ -164,6 +164,14 @@ void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position) {
 	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
 }
 
+void PlayState::OnFireSonarPing(const Engine::Coordinates& mouse_position) {
+	sf::Packet packet;
+	packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_FIRESONARPING);
+	packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
+	packet << 5.f;
+	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
+}
+
 void PlayState::OnLeaveGame() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Quitting game.");
@@ -183,10 +191,10 @@ void PlayState::OnClick(Engine::MouseEventArgs args) {
 
 void PlayState::OnRightClick(Engine::MouseEventArgs args) {
     OnFireTorpedo(args);
+	OnFireSonarPing(args);
 }
 
 void PlayState::OnMouseMove(Engine::MouseEventArgs args) {
-	//mCursorPartSys->SetPosition(args.GetWorldFloat().x, args.GetWorldFloat().y);
 	mCursorPartSys->SetPosition(args.GetScreenPixel().x, args.GetScreenPixel().y);
 }
 

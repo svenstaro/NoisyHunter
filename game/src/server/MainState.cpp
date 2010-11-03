@@ -86,6 +86,21 @@ void MainState::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uin
 				AddEntity(torpedo);
 			}
 		}
+	} else if(interaction_id == INTERACTION_FIRESONARPING) {
+		Engine::Root::get_mutable_instance().GetLogManagerPtr()->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Received INTERACTION_FIRESONARPING.");
+		float target_x, target_y, time_to_live;
+		data >> target_x >> target_y >> time_to_live;
+
+		// Get player submarine
+		BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
+			if(sub->GetClientId() == client_id) {
+				SonarPing* sonarping = (SonarPing*)sub->FireSonarPing(Engine::Vector2D(target_x, target_y), time_to_live);
+				sonarping->GrabUniqueId();
+				auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
+				netmgr->SendEntityAdd(*sonarping);
+				AddEntity(sonarping);
+			}
+		}
 	}
 }
 

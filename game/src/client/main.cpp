@@ -95,6 +95,7 @@ int main(int argc, char* argv[]) {
 	idmgr->RegisterEntityClass(new Submarine());
 	idmgr->RegisterEntityClass(new Torpedo());
 	idmgr->RegisterEntityClass(new WorldPolygon());
+	idmgr->RegisterEntityClass(new SonarPing());
 
 	// Initialize Root singleton using parsed values.
     root.InitializeAsClient(sf::VideoMode(width, height), "Noisy Hunter", fullscreen, sf::IpAddress(ip), port, name, verbose);

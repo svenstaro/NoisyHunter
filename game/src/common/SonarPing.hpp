@@ -1,13 +1,20 @@
 #ifndef SONARPING_HPP
 #define SONARPING_HPP
 
+#include <boost/shared_ptr.hpp>
+#include <SFML/Graphics/Shape.hpp>
+#include <SFML/Graphics/Shape.hpp>
+
 #include "Entity.hpp"
 #include "EntityId.hpp"
 
 class SonarPing : public Engine::Entity {
 
 public:
-	SonarPing(const float direction_angle = 0);
+	SonarPing(const Engine::Vector2D& pos = Engine::Vector2D(0,0),
+			  const Engine::Vector2D& direction = Engine::Vector2D(0, 1),
+			  const float time_to_live = 3.f,
+			  const float speed = 0.3f);
 
 	~SonarPing();
 
@@ -15,13 +22,17 @@ public:
 
 	void Initialize();
 
+	void Update(const float time_delta);
+
 	// callbacks
 	void OnCollide(const Engine::Entity& ent);
 
 	sf::Uint16 GetEntityId() const;
 
+	void serialize(Engine::IOPacket& packet);
+
 private:
-	sf::Uint16 mDirectionAngle;
+	float mTimeToLive;
 };
 
 #endif

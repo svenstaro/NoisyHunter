@@ -63,6 +63,7 @@ int main(int argc, char* argv[]) {
 	idmgr->RegisterEntityClass(new Submarine());
 	idmgr->RegisterEntityClass(new Torpedo());
 	idmgr->RegisterEntityClass(new WorldPolygon());
+	idmgr->RegisterEntityClass(new SonarPing());
 
 	// Initialize Root singleton using parsed values.
     root.InitializeAsServer(port, verbose);

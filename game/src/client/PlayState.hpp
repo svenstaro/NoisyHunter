@@ -41,6 +41,7 @@ public:
 
     void OnNavigateTo(const Engine::Coordinates& mouse_position);
     void OnFireTorpedo(const Engine::Coordinates& mouse_position);
+	void OnFireSonarPing(const Engine::Coordinates& mouse_position);
 
     void OnLeaveGame();
     void OnClick(Engine::MouseEventArgs args);

@@ -105,10 +105,10 @@ const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D Pos, const
 	return new Torpedo(mPosition, mDirection, mSpeed * 3, Pos, time_to_live);
 }
 
-const Engine::Entity* Submarine::PingTo(const Engine::Vector2D Pos) {
-	// Send a Ping into direction of pos vector
-	Engine::Vector2D diff = Pos - mPosition;
-	return new SonarPing(diff.Rotation());
+const Engine::Entity* Submarine::FireSonarPing(const Engine::Vector2D direction, const float time_to_live) {
+	Engine::Vector2D dir = direction;
+	dir.Normalize();
+	return new SonarPing(mPosition, dir, time_to_live, mSpeed * 3);
 }
 
 void Submarine::OnCollide(const Engine::Entity& ent) {
