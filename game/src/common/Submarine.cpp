@@ -105,7 +105,7 @@ const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D Pos, const
 }
 
 const Engine::Entity* Submarine::FireSonarPing(const Engine::Vector2D direction, const float time_to_live) {
-	Engine::Vector2D dir = direction;
+	Engine::Vector2D dir = direction - mPosition;
 	dir.Normalize();
 	return new SonarPing(mPosition, dir, time_to_live, mSpeed * 3);
 }
