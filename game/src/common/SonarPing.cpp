@@ -16,13 +16,12 @@ SonarPing* SonarPing::clone() const {
 }
 
 void SonarPing::Initialize() {
-	// TODO: This typcast is a very unelegant solution. Fix that.
-	boost::shared_ptr<sf::Shape> shape(new sf::Shape(sf::Shape::Circle(mPosition.x, mPosition.y, 10, sf::Color(122, 162, 255))));
+	boost::shared_ptr<sf::Shape> shape(new sf::Shape);
+	*shape = sf::Shape::Circle(mPosition.x, mPosition.y, 10, sf::Color(122, 162, 255));
 	mDrawable = shape;
 }
 
 void SonarPing::Update(const float time_delta) {
-	// TODO: Wrong calculation of the direction. The error could be at an other location.
 	mDirection.Normalize();
 	mPosition += mDirection * mSpeed * time_delta;
 
