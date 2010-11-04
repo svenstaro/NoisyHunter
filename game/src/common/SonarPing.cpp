@@ -25,7 +25,7 @@ void SonarPing::Initialize() {
 	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_WORLDFLOAT);
 	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter(Engine::Vector2D(0.f, 0.f), 0.f, 0.f, 0.f);
 	part_emit->SetTimeToLive(5.f);
-	part_emit->SetRate(20.f);
+	part_emit->SetRate(6.f);
 	part_emit->SetStartScale(1.f);
 	part_emit->SetEndScale(1.f);
 	part_emit->SetBlendMode(sf::Blend::Alpha);
