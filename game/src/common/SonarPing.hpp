@@ -7,6 +7,8 @@
 
 #include "Entity.hpp"
 #include "EntityId.hpp"
+#include "Vector2D.hpp"
+#include "ParticleSystem.hpp"
 
 class SonarPing : public Engine::Entity {
 
@@ -24,6 +26,8 @@ public:
 
 	void Update(const float time_delta);
 
+	void Draw(sf::RenderTarget* target) const;
+
 	// callbacks
 	void OnCollide(const Engine::Entity& ent);
 
@@ -33,6 +37,7 @@ public:
 
 private:
 	float mTimeToLive;
+	sf::Sprite mSprite;
 };
 
 #endif
