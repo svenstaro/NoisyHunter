@@ -43,6 +43,8 @@ public:
     void OnFireTorpedo(const Engine::Coordinates& mouse_position);
 	void OnFireSonarPing(const Engine::Coordinates& mouse_position);
 
+	void OnScreenshot();
+
     void OnLeaveGame();
     void OnClick(Engine::MouseEventArgs args);
     void OnRightClick(Engine::MouseEventArgs args);

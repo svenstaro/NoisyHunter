@@ -46,4 +46,16 @@ void ParticleSystem::AddEmitter(ParticleEmitter* emitter) {
 	mParticleEmitters.push_back(emitter);
 }
 
+void ParticleSystem::SetPosition(const Vector2D& position) {
+	mPosition = position;
+}
+
+void ParticleSystem::SetDirection(const Vector2D& direction) {
+	mDirection = direction;
+}
+
+void ParticleSystem::SetPositionType(const PositionType pos_type) {
+	mPositionType = pos_type;
+}
+
 }
