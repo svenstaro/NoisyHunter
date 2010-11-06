@@ -30,7 +30,11 @@ void Submarine::Initialize() {
 	Engine::Vector2D position = Engine::Vector2D(0.f, 0.f);
 	Engine::Vector2D direction = Engine::Vector2D(0.f, -1.2f);
 	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_WORLDFLOAT);
-	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter(Engine::Vector2D(0.f, 0.f), 0.f, 0.1f, 20.f);
+	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter();
+	part_emit->SetPosition(Engine::Vector2D(0.f, 0.f));
+	part_emit->SetRotationOffset(0.f);
+	part_emit->SetSpeed(0.1f);
+	part_emit->SetSpread(20.f);
 	part_emit->SetRate(1.7f);
 	part_emit->SetTimeToLive(5.f);
 	part_emit->SetStartScale(0.5f);

@@ -70,6 +70,17 @@ void PlayState::Initialize() {
 		f->SetFontColor(sf::Color::White);
 		mGuiSystems.begin()->AddControl(f);
 
+
+		// EntitiyCount info Label
+		Engine::GuiLabel* ec = new Engine::GuiLabel("entitycount_label");
+		ec->SetPosition(750,25);
+		ec->SetText("0");
+		ec->SetFont(sf::Font::GetDefaultFont());
+		ec->SetFontSize(12);
+		ec->SetFontStyle(sf::Text::Regular);
+		ec->SetFontColor(sf::Color::White);
+		mGuiSystems.begin()->AddControl(ec);
+
 		// Exit button
 		Engine::GuiButton* o = new Engine::GuiButton("options_button");
 		o->SetDimension(Engine::Vector2D(100,40));
@@ -146,6 +157,8 @@ void PlayState::Update(float time_delta) {
     UpdateAllEntities(time_delta);
 	mGuiSystems.begin()->GetControl<Engine::GuiLabel>("ping_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->GetPing()));
 	mGuiSystems.begin()->GetControl<Engine::GuiLabel>("fps_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetFps()));
+	mGuiSystems.begin()->GetControl<Engine::GuiLabel>("entitycount_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityCount()));
+
 	BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
 		if (sub->GetClientId() == Engine::Root::get_mutable_instance().GetClientId()) {
 			Engine::Root::get_mutable_instance().CenterViewAt(Engine::Coordinates::WorldFloatToWorldPixel(sub->GetPosition()));

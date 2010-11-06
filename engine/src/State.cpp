@@ -65,6 +65,10 @@ void State::CreateGuiSystem() {
 	mGuiSystems.push_back(new GuiSystem());
 }
 
+sf::Uint16 State::GetEntityCount() {
+	return sf::Uint16(mEntities.size());
+}
+
 void State::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data) {}
 
 void State::HandleEntityInfo(sf::Packet packet) {
