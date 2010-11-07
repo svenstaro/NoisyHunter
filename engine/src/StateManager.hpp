@@ -12,6 +12,8 @@ public:
     //StateManager(Root* root);
     ~StateManager();
 
+	void Shutdown();
+
     void Update(float time_delta);
     void HandleEvent(sf::Event e);
     void Draw(sf::RenderTarget* target);

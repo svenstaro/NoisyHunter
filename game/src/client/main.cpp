@@ -9,7 +9,7 @@
 void HandleSignal(int sig) {
 	auto logmgr =  Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_ROOT, "Raised signal: " + boost::lexical_cast<std::string>(sig) + ".");
-	Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().OnLeaveGame();
+	Engine::Root::get_mutable_instance().RequestShutdown();
 }
 
 namespace po = boost::program_options;

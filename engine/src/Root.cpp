@@ -193,6 +193,8 @@ void Root::StartMainLoop() {
             if(mShutdownRequested)
                 mRenderWindow.Close();
         }
+		// End all states
+		mStateManager.Shutdown();
     }
 }
 

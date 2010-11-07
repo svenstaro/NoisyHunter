@@ -145,12 +145,23 @@ void PlayState::Initialize() {
 	// Bind connection events
 	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
 	netmgr->BindOnClientConnected(boost::bind(&PlayState::OnClientConnected, this, _1));
+
+	// Connect To Server
+	netmgr->SetEntityState(this);
+	netmgr->ConnectToServer();
+
 }
 
 void PlayState::Shutdown() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Shutting down PlayState.");
+	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_NETWORK, "Sending packet with NETCMD_CLIENTQUIT.");
+
+	// Send NETCMD_CLIENTQUIT to server
+	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
+	netmgr->SendClientQuit();
 }
+
 
 void PlayState::Update(float time_delta) {
     UpdateAllEntities(time_delta);
@@ -202,17 +213,6 @@ void PlayState::OnScreenshot() {
 }
 
 void PlayState::OnPauseGame() {
-	/*
-	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Quitting game.");
-	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_NETWORK, "Sending packet with NETCMD_CLIENTQUIT.");
-
-	// Send NETCMD_CLIENTQUIT to server
-	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
-	netmgr->SendClientQuit();
-
-    Engine::Root::get_mutable_instance().RequestShutdown();
-	*/
 	Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new PauseState());
 }
 

@@ -14,6 +14,7 @@ void MainState::Initialize() {
     // Bind connection events
     auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
     netmgr->BindOnClientConnected(boost::bind(&MainState::OnClientConnected, this, _1));
+	netmgr->SetEntityState(this);
 
 	WorldPolygon* pol1 = new WorldPolygon();
 	pol1->Initialize();
@@ -51,7 +52,6 @@ void MainState::Initialize() {
 
 	pol2->SetPosition(0,0);
 	AddEntity(pol2);
-
 }
 void MainState::Shutdown() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();

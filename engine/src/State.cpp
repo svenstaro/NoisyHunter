@@ -11,6 +11,8 @@ State::State() {}
 
 State::~State() {}
 
+void State::Shutdown() {}
+
 void State::Update(const float time_delta) {
 	UpdateAllEntities(time_delta);
 }
@@ -82,7 +84,6 @@ void State::HandleEntityInfo(sf::Packet packet) {
 }
 
 Entity* State::GetEntityByUniqueId(const sf::Uint16 unique_id) {
-    // TODO: @Sven, mach was anderes als NULL wenn du willst, oder halt nicht
    	BOOST_FOREACH(Entity& entity, mEntities) {
 		if(entity.GetUniqueId() == unique_id) {
             return &entity;
