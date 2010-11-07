@@ -24,6 +24,8 @@ void Root::InitializeAsServer(const sf::Uint16 server_port,
     //mStateManager = StateManager();
     // mNetworkManager = NetworkManager();
 	mNetworkManager.InitializeAsServer(server_port);
+
+	mTakeScreenshot = false;
 }
 
 void Root::InitializeAsClient(const sf::VideoMode& video_mode, 
@@ -84,6 +86,8 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
     // mNetworkManager = NetworkManager();
     mClientName = name;
     mNetworkManager.InitializeAsClient(server_ip, server_port, name);
+
+	mTakeScreenshot = false;
 }
 
 void Root::StartMainLoop() {
@@ -177,6 +181,12 @@ void Root::StartMainLoop() {
 			// Render mouse cursor
 			cursor.SetPosition(GetMousePosition().x, GetMousePosition().y);
 			mRenderWindow.Draw(cursor);
+			if (mTakeScreenshot) {
+				//sf::Image shot = mRenderWindow.Capture();
+				//shot.SaveToFile("screenshot.jpg");
+				//mTakeScreenshot = false;
+				std::cout << "Take screenshot here." << std::endl;
+			}
             mRenderWindow.Display();
 
             // Check whether a shutdown has been requested.
@@ -264,6 +274,10 @@ void Root::SetRenderMode(const RenderMode mode) {
 		mRenderWindow.SetView(mWorldView);
 	else if (mode == RENDERMODE_GUI)
 		mRenderWindow.SetView(mRenderWindow.GetDefaultView());
+}
+
+void Root::SetTakeScreenshot(const bool take_screenshot) {
+	mTakeScreenshot = take_screenshot;
 }
 
 void Root::CenterViewAt(const Vector2D center) {

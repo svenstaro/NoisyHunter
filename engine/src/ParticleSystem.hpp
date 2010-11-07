@@ -30,6 +30,9 @@ public:
 
 	void AddEmitter(ParticleEmitter* emitter);
 
+	void SetPosition(const Vector2D& position);
+	void SetDirection(const Vector2D& direction);
+	void SetPositionType(const PositionType pos_type);
 private:
 	boost::ptr_list<ParticleEmitter> mParticleEmitters;
 

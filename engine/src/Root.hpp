@@ -71,6 +71,7 @@ public:
 	float GetFps() const;
 
 	void SetRenderMode(const RenderMode mode);
+	void SetTakeScreenshot(const bool take_screenshot);
 	void CenterViewAt(const Vector2D center);
 
 private:
@@ -85,7 +86,7 @@ private:
     std::string mClientName;
 	sf::Int16 mClientId;
 	float mWorldPixelsPerFloat;		// Float coordinates are multiplied by this>.
-
+	bool mTakeScreenshot;
     
 	sf::Clock mFrameTimeClock;
     sf::Clock mRunTimeClock;

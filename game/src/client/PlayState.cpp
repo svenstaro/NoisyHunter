@@ -14,8 +14,15 @@ void PlayState::Initialize() {
 	// Particle system for cursor
 	Engine::Vector2D position = Engine::Vector2D(0.5f, 0.5f);
 	Engine::Vector2D direction = Engine::Vector2D(0.f, -2.f);
-	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_SCREENPIXEL);
-	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter(Engine::Vector2D(0.f, 0.f), 0.f, 50.f, 360.f);
+	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem();
+	part_sys->SetPosition(position);
+	part_sys->SetDirection(direction);
+	part_sys->SetPositionType(Engine::Entity::PositionType::POSITIONTYPE_SCREENPIXEL);
+	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter();
+	part_emit->SetPositionOffset(Engine::Vector2D(0.f, 0.f));
+	part_emit->SetRotationOffset(0.f);
+	part_emit->SetSpeed(50.f);
+	part_emit->SetSpread(360.f);
 	part_emit->SetBlendMode(sf::Blend::Add);
 	part_emit->SetRate(100.f);
 	part_emit->SetTimeToLive(6.f);
@@ -63,6 +70,17 @@ void PlayState::Initialize() {
 		f->SetFontColor(sf::Color::White);
 		mGuiSystems.begin()->AddControl(f);
 
+
+		// EntitiyCount info Label
+		Engine::GuiLabel* ec = new Engine::GuiLabel("entitycount_label");
+		ec->SetPosition(750,25);
+		ec->SetText("0");
+		ec->SetFont(sf::Font::GetDefaultFont());
+		ec->SetFontSize(12);
+		ec->SetFontStyle(sf::Text::Regular);
+		ec->SetFontColor(sf::Color::White);
+		mGuiSystems.begin()->AddControl(ec);
+
 		// Exit button
 		Engine::GuiButton* o = new Engine::GuiButton("options_button");
 		o->SetDimension(Engine::Vector2D(100,40));
@@ -109,6 +127,9 @@ void PlayState::Initialize() {
 	// bind keys
 	Engine::KeyBindingCallback cb = boost::bind(&PlayState::OnPauseGame, this);
 	inputmgr->BindKey( cb, Engine::KEY_PRESSED, sf::Key::Escape );
+	// screenshot
+	Engine::KeyBindingCallback sscb = boost::bind(&PlayState::OnScreenshot, this);
+	inputmgr->BindKey( sscb, Engine::KEY_PRESSED, sf::Key::F5 );
 	// bind mouse
 	Engine::MouseBindingCallback mcb = boost::bind(&PlayState::OnClick, this, _1);
 	inputmgr->BindMouse(mcb, Engine::BUTTON_PRESSED, sf::Mouse::Left);
@@ -135,6 +156,8 @@ void PlayState::Update(float time_delta) {
     UpdateAllEntities(time_delta);
 	mGuiSystems.begin()->GetControl<Engine::GuiLabel>("ping_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->GetPing()));
 	mGuiSystems.begin()->GetControl<Engine::GuiLabel>("fps_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetFps()));
+	mGuiSystems.begin()->GetControl<Engine::GuiLabel>("entitycount_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityCount()));
+
 	BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
 		if (sub->GetClientId() == Engine::Root::get_mutable_instance().GetClientId()) {
 			Engine::Root::get_mutable_instance().CenterViewAt(Engine::Coordinates::WorldFloatToWorldPixel(sub->GetPosition()));
@@ -170,6 +193,12 @@ void PlayState::OnFireSonarPing(const Engine::Coordinates& mouse_position) {
 	packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
 	packet << 5.f;
 	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
+}
+
+void PlayState::OnScreenshot() {
+	// Set TakeScreenshot in the Root to true so that the main loop knows that it has to take a screenshot.
+	// We have to do it there.
+	Engine::Root::get_mutable_instance().SetTakeScreenshot(true);
 }
 
 void PlayState::OnPauseGame() {
