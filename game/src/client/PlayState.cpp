@@ -44,9 +44,6 @@ void PlayState::Initialize() {
 		Engine::GuiLabel* l = new Engine::GuiLabel("info_label");
 		l->SetPosition(5,5);
 		l->SetText("Connecting to server...");
-		l->SetFont(sf::Font::GetDefaultFont());
-		l->SetFontSize(11);
-		l->SetFontStyle(sf::Text::Regular);
 		l->SetFontColor(sf::Color::White);
 		mGuiSystems.begin()->AddControl(l);
 
@@ -54,27 +51,18 @@ void PlayState::Initialize() {
 		Engine::GuiLabel* p = new Engine::GuiLabel("ping_label");
 		p->SetPosition(5,5);
 		p->SetText("0");
-		p->SetFont(sf::Font::GetDefaultFont());
-		p->SetFontSize(12);
-		p->SetFontStyle(sf::Text::Regular);
 		p->SetFontColor(sf::Color::White);
 
 		// FPS info label
 		Engine::GuiLabel* f = new Engine::GuiLabel("fps_label");
-		f->SetPosition(5,15);
+		f->SetPosition(5,20);
 		f->SetText("0");
-		f->SetFont(sf::Font::GetDefaultFont());
-		f->SetFontSize(12);
-		f->SetFontStyle(sf::Text::Regular);
 		f->SetFontColor(sf::Color::White);
 
 		// EntitiyCount info label
 		Engine::GuiLabel* ec = new Engine::GuiLabel("entitycount_label");
-		ec->SetPosition(5,25);
+		ec->SetPosition(5,35);
 		ec->SetText("0");
-		ec->SetFont(sf::Font::GetDefaultFont());
-		ec->SetFontSize(12);
-		ec->SetFontStyle(sf::Text::Regular);
 		ec->SetFontColor(sf::Color::White);
 
 		// Group debug labels
@@ -84,50 +72,26 @@ void PlayState::Initialize() {
 		grid->AddControl(p);
 		grid->AddControl(f);
 		grid->AddControl(ec);
-		grid->Initialize();
 		mGuiSystems.begin()->AddControl(grid);
 
 		// Exit button
-		Engine::GuiButton* o = new Engine::GuiButton("options_button");
-		o->SetDimension(Engine::Vector2D(100,40));
-		o->SetPosition(Engine::Vector2D(5,520));
-		o->SetText("Options");
-		o->SetFont(sf::Font::GetDefaultFont());
-		o->SetFontSize(11);
-		o->SetFontStyle(sf::Text::Regular);
-		o->SetFontColor(sf::Color::White);
-		o->BindOnClick(boost::bind(&PlayState::ExitButton_OnClick, this, _1)); // bind test signal ;)
-		mGuiSystems.begin()->AddControl(o);
-
-		// Exit button
-		Engine::GuiButton* c = new Engine::GuiButton("exit_button");
+		Engine::GuiButton* c = new Engine::GuiButton("menu_button");
 		c->SetDimension(Engine::Vector2D(100,40));
 		c->SetPosition(Engine::Vector2D(5,555));
-		c->SetText("Exit Game");
-		c->SetFont(sf::Font::GetDefaultFont());
-		c->SetFontSize(11);
-		c->SetFontStyle(sf::Text::Regular);
+		c->SetText("Show Menu");
 		c->SetFontColor(sf::Color::White);
-		c->BindOnClick(boost::bind(&PlayState::ExitButton_OnClick, this, _1));
+		c->BindOnClick(boost::bind(&PlayState::MenuButton_OnClick, this, _1));
 		mGuiSystems.begin()->AddControl(c);
 
 		// Chat Textfield
+		/*
 		Engine::GuiTextfield* t = new Engine::GuiTextfield("chat_textfield");
 		t->SetDimension(Engine::Vector2D(400,25));
 		t->SetPosition(Engine::Vector2D(395,555));
 		t->SetText("Enter text here");
-		t->SetFont(sf::Font::GetDefaultFont());
-		t->SetFontSize(11);
 		t->SetFontColor(sf::Color::White);
 		mGuiSystems.begin()->AddControl(t);
-
-		// Test progress bar
-		Engine::GuiProgressbar* b = new Engine::GuiProgressbar("test_bar");
-		b->SetPosition(Engine::Vector2D(50,50));
-		b->SetDimension(Engine::Vector2D(300,30));
-		b->SetProgress(0.3);
-		b->SetFontSize(11);
-		mGuiSystems.begin()->AddControl(b);
+		*/
 
 	auto inputmgr = Engine::Root::get_mutable_instance().GetInputManagerPtr();
 	// bind keys
@@ -171,9 +135,9 @@ void PlayState::Shutdown() {
 
 void PlayState::Update(float time_delta) {
     UpdateAllEntities(time_delta);
-	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("ping_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->GetPing()));
-	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("fps_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetFps()));
-	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("entitycount_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityCount()));
+	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("ping_label")->SetText("Ping: " + boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->GetPing()));
+	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("fps_label")->SetText("FPS: " + boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetAverageFps()) + " / " + boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetFps()));
+	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("entitycount_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityCount()) + " Entities");
 
 	BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
 		if (sub->GetClientId() == Engine::Root::get_mutable_instance().GetClientId()) {
@@ -259,6 +223,6 @@ void PlayState::OnClientConnected(const sf::Uint16 client_id) {
     }
 }
 
-void PlayState::ExitButton_OnClick(const sf::Uint16 mouse_button) {
-	OnLeaveGame();
+void PlayState::MenuButton_OnClick(const sf::Uint16 mouse_button) {
+	Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new PauseState());
 }

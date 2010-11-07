@@ -21,7 +21,7 @@ public:
 	void SetFontStyle(unsigned long style);
 	void SetFontColor(const sf::Color& color);
 
-	virtual void Draw(sf::RenderTarget* target);
+	virtual void Draw(sf::RenderTarget* target, Vector2D offset = Vector2D(0,0));
 
 protected:
 	sf::Text mText;

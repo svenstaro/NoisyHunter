@@ -10,14 +10,16 @@ GuiTextfield::GuiTextfield(std::string name) {
     mName = name;
     mCursorPosition = 0;
     mHover = false;
-    mIsFocused = false;
-    SetFontSize(16);
-    SetFontColor(sf::Color(0,0,0));
-    SetDimension(Vector2D(200,20));
-    mMultiline = false;
+	mIsFocused = false;
+	mMultiline = false;
 	SetPassword(false);
 
-    SetFont(sf::Font::GetDefaultFont());
+	SetDimension(Vector2D(200,20));
+
+	SetFont(sf::Font::GetDefaultFont());
+	SetFontSize(12);
+	SetFontStyle(sf::Text::Regular);
+	SetFontColor(sf::Color::Black);
 }
 
 GuiTextfield::~GuiTextfield() {}
@@ -30,9 +32,9 @@ void GuiTextfield::SetPassword(bool password) {
 	mHideCharacters = password;
 }
 
-void GuiTextfield::Draw(sf::RenderTarget* target) {
+void GuiTextfield::Draw(sf::RenderTarget* target, Vector2D offset) {
     mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.textfield"));
-    mSprite.SetPosition(mPosition.x, mPosition.y);
+	mSprite.SetPosition(mPosition.x + offset.x, mPosition.y + offset.y);
 	mSprite.SetScale(mDimension.x, mDimension.y);
     target->Draw(mSprite);
 
@@ -41,15 +43,15 @@ void GuiTextfield::Draw(sf::RenderTarget* target) {
 	else
 		mText.SetString(mCaption);
 
-	mText.SetPosition(mPosition.x+8,
-					  int(mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2)); // convert to int to prevent blurry font due to half pixel coordinates
+	mText.SetPosition(mPosition.x + 8 + offset.x,
+					  offset.y + int(mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2)); // convert to int to prevent blurry font due to half pixel coordinates
     target->Draw(mText);
 
     // draw cursor
     if(mIsFocused) {
-		int xpos = mText.GetPosition().x + mText.GetCharacterPos(mCursorPosition).x + 1;
+		int xpos = mText.GetPosition().x + offset.x + mText.GetCharacterPos(mCursorPosition).x + 1;
         int h = 15;
-        int ypos = mText.GetPosition().y + mText.GetRect().Height / 2 - h / 2;
+		int ypos = mText.GetPosition().y + offset.y + mText.GetRect().Height / 2 - h / 2;
 		sf::Shape cursor = sf::Shape::Rectangle(xpos, ypos, 2, h, mText.GetColor());
         target->Draw(cursor);
     }

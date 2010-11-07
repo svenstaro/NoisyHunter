@@ -50,6 +50,9 @@ void SonarPing::Initialize() {
 void SonarPing::Update(const float time_delta) {
 	mDirection.Normalize();
 	mPosition += mDirection * mSpeed * time_delta;
+	Engine::Vector2D world_pixel = Engine::Coordinates::WorldFloatToWorldPixel(mPosition);
+	mSprite.SetPosition(world_pixel.x, world_pixel.y);
+	mSprite.SetRotation(-Engine::Vector2D::rad2Deg(mDirection.Rotation()));
 
 	mTimeToLive -= time_delta;
 	if(mTimeToLive <= 0) {

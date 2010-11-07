@@ -5,11 +5,12 @@
 #include <boost/ptr_container/ptr_list.hpp>
 
 #include "GuiControl.hpp"
+#include "GuiContainer.hpp"
 #include "TiledSprite.hpp"
 
 namespace Engine{
 
-class GuiGrid : public GuiControl {
+class GuiGrid : public GuiContainer {
 public:
 
 	GuiGrid();
@@ -20,25 +21,9 @@ public:
 
 	GuiGrid* clone() const;
 
-	void Initialize();
-
-	void AddControl(GuiControl* guicontrol);
-
-	void Draw(sf::RenderTarget* target);
-
-    template < typename T >
-    T* GetControl(const std::string& control_name) {
-        BOOST_FOREACH(GuiControl& control, mChildren){
-            if (control.GetName() == control_name){
-                return (T*)&control;
-            }
-        }
-        return NULL;
-    }
+	void Draw(sf::RenderTarget* target, Vector2D offset = Vector2D(0,0));
 
 private:
-	boost::ptr_list<GuiControl> mChildren;
-	sf::Image mImage;
 	TiledSprite mSprite;
 };
 
