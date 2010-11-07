@@ -73,16 +73,6 @@ sf::Uint16 State::GetEntityCount() {
 
 void State::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data) {}
 
-void State::HandleEntityInfo(sf::Packet packet) {
-	// Stream Entity info out of the packet.
-	sf::Uint16 uuid;
-	packet >> uuid;
-	// Get corresponding entity
-	//Entity* e = GetEntityByUniqueId(uuid);
-	// Put data into entity
-	//packet >> &e;	
-}
-
 Entity* State::GetEntityByUniqueId(const sf::Uint16 unique_id) {
    	BOOST_FOREACH(Entity& entity, mEntities) {
 		if(entity.GetUniqueId() == unique_id) {
