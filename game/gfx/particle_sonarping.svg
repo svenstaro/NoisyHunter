@@ -102,10 +102,22 @@
          stdDeviation="16.129518"
          id="feGaussianBlur3897" />
     </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter3920"
+       x="-0.24516138"
+       width="1.4903228"
+       y="-0.091945491"
+       height="1.183891">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="14.716067"
+         id="feGaussianBlur3922" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
-     pagecolor="#000000"
+     pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
      inkscape:pageopacity="1"
@@ -147,12 +159,11 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-652.36218)">
-    <rect
-       style="fill:url(#radialGradient3877);fill-opacity:1;fill-rule:nonzero;stroke:none"
-       id="rect2990"
-       width="400"
-       height="400"
-       x="0"
-       y="652.36218" />
+    <path
+       style="opacity:1;fill:#72a8fe;fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#filter3920)"
+       d="M 255.9375,7.9375 C 294.82799,51.71996 320,121.44736 320,200 320,278.55264 294.82799,348.28004 255.9375,392.0625 339.16768,367.86229 400,291.03885 400,200 400,108.96115 339.16768,32.137711 255.9375,7.9375 z"
+       transform="matrix(0.80477223,0,0,0.88512854,52.472886,675.33647)"
+       id="path3899"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>
