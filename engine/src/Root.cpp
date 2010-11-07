@@ -5,6 +5,7 @@ namespace Engine {
 Root::Root() {
     mShutdownRequested = false;
     mClientId = -1;
+	mTotalNumFrames = 0;
 }
 Root::~Root() {}
 
@@ -104,6 +105,7 @@ void Root::StartMainLoop() {
 		sf::Clock SnapClock;
         
         while(!mShutdownRequested) {
+			mTotalNumFrames++;
 			sf::Sleep(0.001f);
             float frame_time = mFrameTimeClock.GetElapsedTime();
             mFrameTimeClock.Reset();
@@ -137,6 +139,7 @@ void Root::StartMainLoop() {
 		sf::Clock PingClock;
         
         while(mRenderWindow.IsOpened()) {
+			mTotalNumFrames++;
             float time_delta = mFrameTimeClock.GetElapsedTime();
             mFrameTimeClock.Reset();
             
@@ -268,6 +271,10 @@ const float Root::GetRunTime() const {
 
 float Root::GetFps() const {
 	return floor(1 / mRenderWindow.GetFrameTime());
+}
+
+float Root::GetAverageFps() const {
+	return floor(mTotalNumFrames / GetRunTime());
 }
 
 void Root::SetRenderMode(const RenderMode mode) {

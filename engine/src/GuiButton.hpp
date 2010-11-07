@@ -18,7 +18,7 @@ public:
 	GuiButton* clone() const;
 
     // main callbacks
-    virtual void Draw(sf::RenderTarget* target);
+	virtual void Draw(sf::RenderTarget* target, Vector2D offset = Vector2D(0,0));
 
 	// Signals & slots
 	virtual void BindOnClick(const boost::signals2::signal<void (const sf::Uint16 mouse_button)>::slot_type& slot);

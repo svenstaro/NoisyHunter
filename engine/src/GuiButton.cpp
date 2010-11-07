@@ -9,9 +9,11 @@ GuiButton::GuiButton(std::string name) {
     mName = name;
     mHover = false;
     mIsFocused = false;
-	SetFontSize(10);
-    SetFontStyle(sf::Text::Bold);
-	SetFontColor(sf::Color(255,255,255));
+
+	SetFont(sf::Font::GetDefaultFont());
+	SetFontSize(12);
+	SetFontStyle(sf::Text::Regular);
+	SetFontColor(sf::Color::Black);
 }
 
 GuiButton::~GuiButton() {}
@@ -21,10 +23,10 @@ GuiButton* GuiButton::clone() const {
 }
 
 // main callbacks
-void GuiButton::Draw(sf::RenderTarget* target) {
+void GuiButton::Draw(sf::RenderTarget* target, Vector2D offset) {
 	mText.SetString(mCaption);
-	mText.SetPosition(int(mPosition.x + mDimension.x / 2 - mText.GetRect().Width  / 2),	// convert to int to prevent blurry font due to half pixel coordinates
-					  int(mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2));
+	mText.SetPosition(offset.x + int(mPosition.x + mDimension.x / 2 - mText.GetRect().Width  / 2),	// convert to int to prevent blurry font due to half pixel coordinates
+					  offset.y + int(mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2));
 
     if (mHover)
         mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button_hover"));
@@ -44,7 +46,7 @@ void GuiButton::Draw(sf::RenderTarget* target) {
                                   mPosition.y+mDimension.y,
                                   shape_color);
 */
-    mSprite.SetPosition(mPosition.x, mPosition.y);
+	mSprite.SetPosition(offset.x + mPosition.x, offset.y + mPosition.y);
 	mSprite.SetScale(mDimension.x, mDimension.y);
 
 

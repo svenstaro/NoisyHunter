@@ -5,6 +5,10 @@ namespace Engine{
 GuiLabel::GuiLabel() {}
 GuiLabel::GuiLabel(std::string name) {
 	mName = name;
+	SetFont(sf::Font::GetDefaultFont());
+	SetFontSize(12);
+	SetFontStyle(sf::Text::Regular);
+	SetFontColor(sf::Color::Black);
 }
 GuiLabel::~GuiLabel() {}
 
@@ -30,9 +34,9 @@ void GuiLabel::SetFontColor(const sf::Color& color) {
 }
 
 
-void GuiLabel::Draw(sf::RenderTarget* target) {
+void GuiLabel::Draw(sf::RenderTarget* target, Vector2D offset) {
 	mText.SetString(mCaption);
-	mText.SetPosition(mPosition.x, mPosition.y);
+	mText.SetPosition(mPosition.x + offset.x, mPosition.y + offset.y);
 
 	target->Draw(mText);
 
