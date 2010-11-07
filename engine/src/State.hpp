@@ -62,6 +62,8 @@ public:
 	virtual bool StatesBelowArePaused();
 	virtual bool StatesBelowAreHidden();
 
+	bool IsCurrentState();
+
 protected:
     // Entity list
     boost::ptr_vector<Entity> mEntities;

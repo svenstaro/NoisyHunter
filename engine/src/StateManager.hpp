@@ -21,6 +21,7 @@ public:
     void Pop(int amount = 1);
     void AppendAllEntitiesToPacket();
 	State& GetCurrentState();
+	bool IsCurrentState(State* state);
 
 private:
     //Root* mRoot;

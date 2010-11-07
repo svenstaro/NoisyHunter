@@ -97,4 +97,8 @@ bool State::StatesBelowAreHidden() {
 	return true;
 }
 
+bool State::IsCurrentState() {
+	return Root::get_mutable_instance().GetStateManagerPtr()->IsCurrentState(this);
+}
+
 }

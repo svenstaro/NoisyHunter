@@ -76,5 +76,6 @@ void PauseState::ExitButton_OnClick(const sf::Uint16 mouse_button) {
 }
 
 void PauseState::OnPressEscape() {
-	Engine::Root::get_mutable_instance().RequestShutdown();
+	if(IsCurrentState())
+		Engine::Root::get_mutable_instance().RequestShutdown();
 }

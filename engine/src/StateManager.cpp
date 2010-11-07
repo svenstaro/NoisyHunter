@@ -91,4 +91,8 @@ State& StateManager::GetCurrentState() {
 	return mStates.back();
 }
 
+bool StateManager::IsCurrentState(State* state) {
+	return &GetCurrentState() == state;
+}
+
 }
