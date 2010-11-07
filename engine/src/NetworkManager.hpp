@@ -11,6 +11,7 @@
 #include <SFML/Network.hpp>
 
 #include "Entity.hpp"
+#include "State.hpp"
 #include "ClientManager.hpp"
 #include "NetworkCommand.hpp"
 #include "LogManager.hpp"
@@ -27,6 +28,8 @@ public:
 	void InitializeAsClient(const sf::IpAddress server_ip, 
 							const sf::Uint16 server_port,
 							const std::string name);
+
+	void ConnectToServer();
 
     // Receiving methods
     void Receive();
@@ -64,8 +67,20 @@ public:
 
 	ClientManager* GetClientManagerPtr();
 
+	void SetServerIp(const sf::IpAddress server_ip);
+	const sf::IpAddress GetServerIp();
+
+	void SetServerPort(const sf::Uint16 server_port);
+	const sf::Uint16 GetServerPort();
+
+	void SetEntityState(State* entity_state);
+	State* GetEntityState();
+
+	void SetClientName(const std::string& client_name);
+	std::string GetClientName();
+
 private:
-    // General members
+	// General members
     bool mIsServer;
 	sf::UdpSocket mListener;
 	sf::Packet mPacket;
@@ -77,6 +92,8 @@ private:
     sf::IpAddress mClient_ServerIp;
     sf::Uint16 mClient_ServerPort;
     sf::Uint16 mClient_ClientPort;
+	std::string mClient_ClientName;
+	State* mEntityState;
 
     // Signals
     boost::signals2::signal<void (const sf::Uint16)> mOnClientConnectedSignal;

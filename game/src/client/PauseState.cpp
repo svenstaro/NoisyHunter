@@ -39,6 +39,11 @@ void PauseState::Initialize() {
 	b->BindOnClick(boost::bind(&PauseState::ExitButton_OnClick, this, _1));
 	mGuiSystems.begin()->AddControl(b);
 
+
+	auto inputmgr = Engine::Root::get_mutable_instance().GetInputManagerPtr();
+	// Bind Keys
+	Engine::KeyBindingCallback cb = boost::bind(&PauseState::OnPressEscape, this);
+	inputmgr->BindKey( cb, Engine::KEY_PRESSED, sf::Key::Escape );
 }
 
 void PauseState::Shutdown() {
@@ -67,13 +72,10 @@ void PauseState::ResumeButton_OnClick(const sf::Uint16 mouse_button) {
 }
 
 void PauseState::ExitButton_OnClick(const sf::Uint16 mouse_button) {
-	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Quitting game.");
-	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_NETWORK, "Sending packet with NETCMD_CLIENTQUIT.");
-
-	// Send NETCMD_CLIENTQUIT to server
-	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
-	netmgr->SendClientQuit();
-
 	Engine::Root::get_mutable_instance().RequestShutdown();
+}
+
+void PauseState::OnPressEscape() {
+	if(IsCurrentState())
+		Engine::Root::get_mutable_instance().RequestShutdown();
 }

@@ -19,6 +19,7 @@ public:
     virtual ~State() = 0;
 
     virtual void Initialize() = 0;
+	virtual void Shutdown();
 
     virtual void Update(const float time_delta);
     void UpdateAllEntities(const float time_delta); // TODO: This should 
@@ -37,7 +38,6 @@ public:
 	// Server-side handling of Interactions
 	virtual void HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data);
 
-	void HandleEntityInfo(sf::Packet packet);
     Entity* GetEntityByUniqueId(const sf::Uint16 unique_id);
 
 	virtual void OnLeaveGame();
@@ -57,10 +57,12 @@ public:
 		return entities;
 
 	}
-	void DelEntitiesByClientId(const sf::Uint16 client_id);
+	void DeleteEntitiesByClientId(const sf::Uint16 client_id);
 
 	virtual bool StatesBelowArePaused();
 	virtual bool StatesBelowAreHidden();
+
+	bool IsCurrentState();
 
 protected:
     // Entity list

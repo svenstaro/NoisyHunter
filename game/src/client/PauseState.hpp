@@ -21,6 +21,7 @@ public:
 
 	void ResumeButton_OnClick(const sf::Uint16 mouse_button);
 	void ExitButton_OnClick(const sf::Uint16 mouse_button);
+	void OnPressEscape();
 
 private:
 	sf::Shape mBackgroundShape;

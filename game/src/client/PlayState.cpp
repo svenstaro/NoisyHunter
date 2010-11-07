@@ -150,12 +150,23 @@ void PlayState::Initialize() {
 	// Bind connection events
 	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
 	netmgr->BindOnClientConnected(boost::bind(&PlayState::OnClientConnected, this, _1));
+
+	// Connect To Server
+	netmgr->SetEntityState(this);
+	netmgr->ConnectToServer();
+
 }
 
 void PlayState::Shutdown() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Shutting down PlayState.");
+	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_NETWORK, "Sending packet with NETCMD_CLIENTQUIT.");
+
+	// Send NETCMD_CLIENTQUIT to server
+	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
+	netmgr->SendClientQuit();
 }
+
 
 void PlayState::Update(float time_delta) {
     UpdateAllEntities(time_delta);
@@ -171,33 +182,41 @@ void PlayState::Update(float time_delta) {
 }
 
 void PlayState::OnSetNoisyMode() {
-    //mPlayerSubmarine->SetMode(Submarine::MODE_NOISY);
+//	if(IsCurrentState())
+		//mPlayerSubmarine->SetMode(Submarine::MODE_NOISY);
 }
 void PlayState::OnSetSilentMode() {
-    //mPlayerSubmarine->SetMode(Submarine::MODE_SILENT);
+//	if(IsCurrentState())
+		//mPlayerSubmarine->SetMode(Submarine::MODE_SILENT);
 }
 
 void PlayState::OnNavigateTo(const Engine::Coordinates& mouse_position) {	
-	sf::Packet packet;
-	packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_SETSUBMARINETARGET);
-	packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
-	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
+	if(IsCurrentState()) {
+		sf::Packet packet;
+		packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_SETSUBMARINETARGET);
+		packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
+		Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
+	}
 }
 
 void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position) {
-	sf::Packet packet;
-	packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_FIRETORPEDO);
-	packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
-	packet << 3.f; // time_to_live
-	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
+	if(IsCurrentState()) {
+		sf::Packet packet;
+		packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_FIRETORPEDO);
+		packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
+		packet << 3.f; // time_to_live
+		Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
+	}
 }
 
 void PlayState::OnFireSonarPing(const Engine::Coordinates& mouse_position) {
-	sf::Packet packet;
-	packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_FIRESONARPING);
-	packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
-	packet << 5.f;
-	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
+	if(IsCurrentState()) {
+		sf::Packet packet;
+		packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_FIRESONARPING);
+		packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
+		packet << 5.f;
+		Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
+	}
 }
 
 void PlayState::OnScreenshot() {
@@ -207,28 +226,22 @@ void PlayState::OnScreenshot() {
 }
 
 void PlayState::OnPauseGame() {
-	/*
-	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Quitting game.");
-	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_NETWORK, "Sending packet with NETCMD_CLIENTQUIT.");
-
-	// Send NETCMD_CLIENTQUIT to server
-	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
-	netmgr->SendClientQuit();
-
-    Engine::Root::get_mutable_instance().RequestShutdown();
-	*/
-	Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new PauseState());
+	if(IsCurrentState())
+		Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new PauseState());
 }
 
 void PlayState::OnClick(Engine::MouseEventArgs args) {
-    OnNavigateTo(args);
-	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendChatMessage("I am so glad I just clicked!");
+	if(IsCurrentState()) {
+		OnNavigateTo(args);
+		Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendChatMessage("I am so glad I just clicked!");
+	}
 }
 
 void PlayState::OnRightClick(Engine::MouseEventArgs args) {
-    OnFireTorpedo(args);
-	OnFireSonarPing(args);
+	if(IsCurrentState()) {
+		OnFireTorpedo(args);
+		OnFireSonarPing(args);
+	}
 }
 
 void PlayState::OnMouseMove(Engine::MouseEventArgs args) {
@@ -246,8 +259,5 @@ void PlayState::OnClientConnected(const sf::Uint16 client_id) {
 }
 
 void PlayState::ExitButton_OnClick(const sf::Uint16 mouse_button) {
-	/*auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Yeah you clicked on that nice button which will not cause anything to happen as it has been abused as a label ;)");*/
-	//Engine::Root::get_mutable_instance().RequestShutdown();
 	OnLeaveGame();
 }

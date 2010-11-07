@@ -41,11 +41,18 @@ void NetworkManager::InitializeAsClient(const sf::IpAddress server_ip,
     mClient_ServerIp = server_ip;
     mClient_ServerPort = server_port;
 
-    mClient_ClientPort = 12357;
-    mListener.Bind(mClient_ClientPort);
+	mClient_ClientPort = 12357;
+	mClient_ClientName = client_name;
+}
+
+void NetworkManager::ConnectToServer() {
+	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Connecting to server.");
+
+	mListener.Bind(mClient_ClientPort);
 	mListener.SetBlocking(0);
-    
-	SendClientAdd(client_name);
+
+	SendClientAdd(mClient_ClientName);
 
 	mReceivedPacketsCount = 0;
 	mSentPacketsCount = 0;
@@ -245,7 +252,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
                 sf::Packet packet;
                 sf::Uint16 id = mClientManager.GetId(address, port);
                 std::string client_name = mClientManager.GetName(id);
-				Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().DelEntitiesByClientId(id);
+				mEntityState->DeleteEntitiesByClientId(id);
 					
 				if(mClientManager.IsKnown(address, port)) {
 					std::string reason = "Lol just quit.";
@@ -270,7 +277,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
                 packet >> action_id;
                 packet >> unique_id;
                 
-                Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
+				Entity* e = mEntityState->GetEntityByUniqueId(unique_id);
                 if (e != NULL) {
                     sf::Packet response = e->PerformAction(action_id, packet, true);
                     // Send back to all clients.
@@ -294,8 +301,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 				// Fetch interaction ID
 				sf::Uint16 interaction_id;
 				packet >> interaction_id;
-				auto statemgr = Root::get_mutable_instance().GetStateManagerPtr();
-				statemgr->GetCurrentState().HandleInteraction(interaction_id, mClientManager.GetId(address, port), packet);
+				mEntityState->HandleInteraction(interaction_id, mClientManager.GetId(address, port), packet);
 			} else {
 				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received invalid NETCMD id: "+boost::lexical_cast<std::string>(net_cmd));
 				exit(1);
@@ -344,14 +350,14 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 				IOPacket iopacket(true, packet);
 				entity->serialize(iopacket);
 				packet = iopacket.GetPacket();
-                Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().AddEntity(entity);
+				mEntityState->AddEntity(entity);
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetUniqueId())+") added.");
             } else if(net_cmd == NETCMD_ENTITYACTION) {
                 sf::Uint16 action_id;
                 sf::Uint16 unique_id;
                 packet >> action_id;
                 packet >> unique_id;
-                Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
+				Entity* e = mEntityState->GetEntityByUniqueId(unique_id);
                 e->PerformAction(unique_id, packet, false); // false -> do not validate action, as luckily the server did that for you
 			} else if(net_cmd == NETCMD_ENTITYINFO) {
 				sf::Uint16 unique_id;
@@ -360,7 +366,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 				sf::Uint16 entity_id;
 				packet >> entity_id;
 
-                Entity* e = Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityByUniqueId(unique_id);
+				Entity* e = mEntityState->GetEntityByUniqueId(unique_id);
                 if(e != NULL) {
 					// Deserialize
 					IOPacket iopacket(true, packet);
@@ -376,7 +382,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 					IOPacket iopacket(true, packet);
 					entity->serialize(iopacket);
 					packet = iopacket.GetPacket();
-					Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().AddEntity(entity);
+					mEntityState->AddEntity(entity);
 					logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetUniqueId())+") added.");
 				}
             } else if(net_cmd == NETCMD_CHATMESSAGE) {
@@ -416,6 +422,38 @@ sf::Uint16 NetworkManager::GetPing() {
 
 ClientManager* NetworkManager::GetClientManagerPtr() {
 	return &mClientManager;
+}
+
+void NetworkManager::SetServerIp(const sf::IpAddress server_ip) {
+	mClient_ServerIp = server_ip;
+}
+
+const sf::IpAddress NetworkManager::GetServerIp() {
+	return mClient_ServerIp;
+}
+
+void NetworkManager::SetServerPort(const sf::Uint16 server_port) {
+	mClient_ServerPort = server_port;
+}
+
+const sf::Uint16 NetworkManager::GetServerPort() {
+	return mClient_ServerPort;
+}
+
+void NetworkManager::SetEntityState(State* entity_state) {
+	mEntityState = entity_state;
+}
+
+State* NetworkManager::GetEntityState() {
+	return mEntityState;
+}
+
+void NetworkManager::SetClientName(const std::string& client_name) {
+	mClient_ClientName = client_name;
+}
+
+std::string NetworkManager::GetClientName() {
+	return mClient_ClientName;
 }
 
 }

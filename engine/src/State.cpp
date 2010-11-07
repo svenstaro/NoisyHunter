@@ -11,6 +11,8 @@ State::State() {}
 
 State::~State() {}
 
+void State::Shutdown() {}
+
 void State::Update(const float time_delta) {
 	UpdateAllEntities(time_delta);
 }
@@ -71,18 +73,7 @@ sf::Uint16 State::GetEntityCount() {
 
 void State::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data) {}
 
-void State::HandleEntityInfo(sf::Packet packet) {
-	// Stream Entity info out of the packet.
-	sf::Uint16 uuid;
-	packet >> uuid;
-	// Get corresponding entity
-	//Entity* e = GetEntityByUniqueId(uuid);
-	// Put data into entity
-	//packet >> &e;	
-}
-
 Entity* State::GetEntityByUniqueId(const sf::Uint16 unique_id) {
-    // TODO: @Sven, mach was anderes als NULL wenn du willst, oder halt nicht
    	BOOST_FOREACH(Entity& entity, mEntities) {
 		if(entity.GetUniqueId() == unique_id) {
             return &entity;
@@ -91,7 +82,7 @@ Entity* State::GetEntityByUniqueId(const sf::Uint16 unique_id) {
     return NULL;
 }
 
-void State::DelEntitiesByClientId(const sf::Uint16 client_id) {
+void State::DeleteEntitiesByClientId(const sf::Uint16 client_id) {
 	mEntities.erase_if(boost::bind(&Entity::GetClientId, _1) == client_id);
 }
 
@@ -104,6 +95,10 @@ bool State::StatesBelowArePaused() {
 
 bool State::StatesBelowAreHidden() {
 	return true;
+}
+
+bool State::IsCurrentState() {
+	return Root::get_mutable_instance().GetStateManagerPtr()->IsCurrentState(this);
 }
 
 }

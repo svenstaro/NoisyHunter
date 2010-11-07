@@ -10,6 +10,14 @@ StateManager::StateManager() {}
 }*/
 StateManager::~StateManager() {}
 
+void StateManager::Shutdown() {
+	// Shutdown all states
+	while(mStates.size() > 0) {
+		GetCurrentState().Shutdown();
+		mStates.pop_back();
+	}
+}
+
 void StateManager::Update(float time_delta) {
 	if(mStates.size() > 0) {
 		// count back until you hit a state pausing the state below
@@ -30,6 +38,7 @@ void StateManager::Update(float time_delta) {
 	}
 
 	for(int i = 0; i < mAmountToPop && mStates.size() > 0; i++) {
+		GetCurrentState().Shutdown();
 		mStates.pop_back();
 	}
 	mAmountToPop = 0;
@@ -80,6 +89,10 @@ void StateManager::AppendAllEntitiesToPacket() {
 State& StateManager::GetCurrentState() {
 	// TODO: will break when there is no state (in the future)
 	return mStates.back();
+}
+
+bool StateManager::IsCurrentState(State* state) {
+	return &GetCurrentState() == state;
 }
 
 }

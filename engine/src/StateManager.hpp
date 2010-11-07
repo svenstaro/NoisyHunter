@@ -12,6 +12,8 @@ public:
     //StateManager(Root* root);
     ~StateManager();
 
+	void Shutdown();
+
     void Update(float time_delta);
     void HandleEvent(sf::Event e);
     void Draw(sf::RenderTarget* target);
@@ -19,6 +21,7 @@ public:
     void Pop(int amount = 1);
     void AppendAllEntitiesToPacket();
 	State& GetCurrentState();
+	bool IsCurrentState(State* state);
 
 private:
     //Root* mRoot;
