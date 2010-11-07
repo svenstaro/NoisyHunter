@@ -19,6 +19,7 @@
 #include "GuiButton.hpp"
 #include "GuiCheckbox.hpp"
 #include "GuiProgressbar.hpp"
+#include "GuiGrid.hpp"
 
 #include "ParticleSystem.hpp"
 #include "ParticleEmitter.hpp"

@@ -40,7 +40,7 @@ void PlayState::Initialize() {
 	// Add some GUI
 	CreateGuiSystem();
 
-		// Info Label
+		// Info label
 		Engine::GuiLabel* l = new Engine::GuiLabel("info_label");
 		l->SetPosition(5,5);
 		l->SetText("Connecting to server...");
@@ -50,36 +50,41 @@ void PlayState::Initialize() {
 		l->SetFontColor(sf::Color::White);
 		mGuiSystems.begin()->AddControl(l);
 
-		// Ping info Label
+		// Ping info label
 		Engine::GuiLabel* p = new Engine::GuiLabel("ping_label");
-		p->SetPosition(750,5);
+		p->SetPosition(5,5);
 		p->SetText("0");
 		p->SetFont(sf::Font::GetDefaultFont());
 		p->SetFontSize(12);
 		p->SetFontStyle(sf::Text::Regular);
 		p->SetFontColor(sf::Color::White);
-		mGuiSystems.begin()->AddControl(p);
 
-		// FPS info Label
+		// FPS info label
 		Engine::GuiLabel* f = new Engine::GuiLabel("fps_label");
-		f->SetPosition(750,15);
+		f->SetPosition(5,15);
 		f->SetText("0");
 		f->SetFont(sf::Font::GetDefaultFont());
 		f->SetFontSize(12);
 		f->SetFontStyle(sf::Text::Regular);
 		f->SetFontColor(sf::Color::White);
-		mGuiSystems.begin()->AddControl(f);
 
-
-		// EntitiyCount info Label
+		// EntitiyCount info label
 		Engine::GuiLabel* ec = new Engine::GuiLabel("entitycount_label");
-		ec->SetPosition(750,25);
+		ec->SetPosition(5,25);
 		ec->SetText("0");
 		ec->SetFont(sf::Font::GetDefaultFont());
 		ec->SetFontSize(12);
 		ec->SetFontStyle(sf::Text::Regular);
 		ec->SetFontColor(sf::Color::White);
-		mGuiSystems.begin()->AddControl(ec);
+
+		// Group debug labels
+		Engine::GuiGrid* grid = new Engine::GuiGrid("debug_grid");
+		grid->SetDimension(Engine::Vector2D(55, 30));
+		grid->SetPosition(740,5);
+		grid->AddControl(p);
+		grid->AddControl(f);
+		grid->AddControl(ec);
+		mGuiSystems.begin()->AddControl(grid);
 
 		// Exit button
 		Engine::GuiButton* o = new Engine::GuiButton("options_button");
@@ -154,9 +159,9 @@ void PlayState::Shutdown() {
 
 void PlayState::Update(float time_delta) {
     UpdateAllEntities(time_delta);
-	mGuiSystems.begin()->GetControl<Engine::GuiLabel>("ping_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->GetPing()));
-	mGuiSystems.begin()->GetControl<Engine::GuiLabel>("fps_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetFps()));
-	mGuiSystems.begin()->GetControl<Engine::GuiLabel>("entitycount_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityCount()));
+	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("ping_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->GetPing()));
+	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("fps_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetFps()));
+	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("entitycount_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityCount()));
 
 	BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
 		if (sub->GetClientId() == Engine::Root::get_mutable_instance().GetClientId()) {
