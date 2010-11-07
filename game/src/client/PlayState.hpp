@@ -57,7 +57,7 @@ public:
     void OnClientConnected(const sf::Uint16 client_id);
     
     // gui callbacks
-	void ExitButton_OnClick(const sf::Uint16 mouse_button);
+	void MenuButton_OnClick(const sf::Uint16 mouse_button);
 
 private:
 	Engine::Entity* mCursorPartSys; // I know this is ugly, we need a better system for this!

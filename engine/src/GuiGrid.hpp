@@ -20,11 +20,9 @@ public:
 
 	GuiGrid* clone() const;
 
-	void Initialize();
-
 	void AddControl(GuiControl* guicontrol);
 
-	void Draw(sf::RenderTarget* target);
+	void Draw(sf::RenderTarget* target, Vector2D offset = Vector2D(0,0));
 
     template < typename T >
     T* GetControl(const std::string& control_name) {
@@ -38,7 +36,6 @@ public:
 
 private:
 	boost::ptr_list<GuiControl> mChildren;
-	sf::Image mImage;
 	TiledSprite mSprite;
 };
 

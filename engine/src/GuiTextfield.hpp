@@ -17,7 +17,7 @@ public:
 	GuiTextfield* clone() const;
 
     // main callbacks
-	virtual void Draw(sf::RenderTarget* target);
+	virtual void Draw(sf::RenderTarget* target, Vector2D offset = Vector2D(0,0));
 
     void SetMultiline(bool multiline);
     void SetPassword(bool password);

@@ -18,7 +18,7 @@ public:
 	GuiCheckbox* clone() const;
 
     // main callbacks
-    void Draw(sf::RenderTarget* target);
+	void Draw(sf::RenderTarget* target, Vector2D offset = Vector2D(0,0));
     bool IsAtPoint(const Vector2D point);
 
     void SetChecked(const bool is_checked);
