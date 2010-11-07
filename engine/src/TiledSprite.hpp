@@ -18,7 +18,7 @@ public:
     explicit TiledSprite(const Image& Img,
                          const Vector2f& Position = Vector2f(0, 0),
                          const Vector2f& Scale = Vector2f(1, 1),
-                         float Rotation = 0.f,
+                         const float Rotation = 0.f,
 						 const Color& Col = Color(255, 255, 255, 255));
 protected:
 	void Render(RenderTarget&, Renderer& renderer) const;

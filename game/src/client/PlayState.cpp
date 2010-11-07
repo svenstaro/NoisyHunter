@@ -79,11 +79,12 @@ void PlayState::Initialize() {
 
 		// Group debug labels
 		Engine::GuiGrid* grid = new Engine::GuiGrid("debug_grid");
-		grid->SetDimension(Engine::Vector2D(55, 30));
-		grid->SetPosition(740,5);
+		grid->SetDimension(Engine::Vector2D(90, 70));
+		grid->SetPosition(700,10);
 		grid->AddControl(p);
 		grid->AddControl(f);
 		grid->AddControl(ec);
+		grid->Initialize();
 		mGuiSystems.begin()->AddControl(grid);
 
 		// Exit button

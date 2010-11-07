@@ -5,6 +5,7 @@
 #include <boost/ptr_container/ptr_list.hpp>
 
 #include "GuiControl.hpp"
+#include "TiledSprite.hpp"
 
 namespace Engine{
 
@@ -18,6 +19,8 @@ public:
 	~GuiGrid();
 
 	GuiGrid* clone() const;
+
+	void Initialize();
 
 	void AddControl(GuiControl* guicontrol);
 
@@ -35,6 +38,8 @@ public:
 
 private:
 	boost::ptr_list<GuiControl> mChildren;
+	sf::Image mImage;
+	TiledSprite mSprite;
 };
 
 }

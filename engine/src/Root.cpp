@@ -267,7 +267,7 @@ const float Root::GetRunTime() const {
 }
 
 float Root::GetFps() const {
-	return 1 / mRenderWindow.GetFrameTime();
+	return floor(1 / mRenderWindow.GetFrameTime());
 }
 
 void Root::SetRenderMode(const RenderMode mode) {

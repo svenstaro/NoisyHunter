@@ -13,7 +13,7 @@ TiledSprite::TiledSprite() {
 	SetSubRect(IntRect(0,0,1,1));
 }
 
-TiledSprite::TiledSprite(const Image& Img, const Vector2f& Position, const Vector2f& Scale, float Rotation, const Color& Col) {
+TiledSprite::TiledSprite(const Image& Img, const Vector2f& Position, const Vector2f& Scale, const float Rotation, const Color& Col) {
 	SetImage(Img);
 	SetPosition(Position);
 	SetScale(Scale);

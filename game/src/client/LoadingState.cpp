@@ -17,6 +17,7 @@ void LoadingState::Initialize() {
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),"button.svg",				48,		48,		"gui.button");
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),"button_hover.svg",		48,		48,		"gui.button_hover");
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),"button_focus.svg",		48,		48,		"gui.button_focus");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),"grid.svg",		48,		48,		"gui.grid");
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),"checkbox.svg",			16,		16,		"gui.checkbox");
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),"checkbox_checked.svg",	16,		16,		"gui.checkbox_checked");
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),"checkbox_hover.svg",		16,		16,		"gui.checkbox_hover");

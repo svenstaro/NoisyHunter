@@ -2,6 +2,7 @@
 #define ROOT_HPP
 
 #include <string>
+#include <math.h>
 
 #include <boost/foreach.hpp>
 #include <boost/shared_ptr.hpp>
