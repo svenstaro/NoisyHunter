@@ -55,13 +55,13 @@ void PlayState::Initialize() {
 
 		// FPS info label
 		Engine::GuiLabel* f = new Engine::GuiLabel("fps_label");
-		f->SetPosition(5,15);
+		f->SetPosition(5,20);
 		f->SetText("0");
 		f->SetFontColor(sf::Color::White);
 
 		// EntitiyCount info label
 		Engine::GuiLabel* ec = new Engine::GuiLabel("entitycount_label");
-		ec->SetPosition(5,25);
+		ec->SetPosition(5,35);
 		ec->SetText("0");
 		ec->SetFontColor(sf::Color::White);
 
@@ -135,9 +135,9 @@ void PlayState::Shutdown() {
 
 void PlayState::Update(float time_delta) {
     UpdateAllEntities(time_delta);
-	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("ping_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->GetPing()));
-	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("fps_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetFps()));
-	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("entitycount_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityCount()));
+	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("ping_label")->SetText("Ping: " + boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->GetPing()));
+	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("fps_label")->SetText("FPS: " + boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetAverageFps()) + " / " + boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetFps()));
+	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("entitycount_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityCount()) + " Entities");
 
 	BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
 		if (sub->GetClientId() == Engine::Root::get_mutable_instance().GetClientId()) {

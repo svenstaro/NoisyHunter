@@ -70,6 +70,7 @@ public:
 	const float GetRunTime() const;
 
 	float GetFps() const;
+	float GetAverageFps() const;
 
 	void SetRenderMode(const RenderMode mode);
 	void SetTakeScreenshot(const bool take_screenshot);
@@ -88,6 +89,8 @@ private:
 	sf::Int16 mClientId;
 	float mWorldPixelsPerFloat;		// Float coordinates are multiplied by this>.
 	bool mTakeScreenshot;
+	// For average FPS calculation
+	sf::Uint32 mTotalNumFrames;
     
 	sf::Clock mFrameTimeClock;
     sf::Clock mRunTimeClock;
