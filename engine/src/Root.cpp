@@ -10,8 +10,12 @@ Root::Root() {
 Root::~Root() {}
 
 Vector2D Root::GetMousePosition() const {
-    return Vector2D(mRenderWindow.GetInput().GetMouseX(),
-                    mRenderWindow.GetInput().GetMouseY());
+	return Vector2D(GetInput().GetMouseX(),
+					GetInput().GetMouseY());
+}
+
+const sf::Input& Root::GetInput() const{
+	return mRenderWindow.GetInput();
 }
 
 void Root::InitializeAsServer(const sf::Uint16 server_port,

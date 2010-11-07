@@ -34,13 +34,13 @@ void SonarPing::Initialize() {
 	part_emit->SetRotationOffset(0.f);
 	part_emit->SetSpeed(0.f);
 	part_emit->SetSpread(0.f);
-	part_emit->SetTimeToLive(5.f);
-	part_emit->SetRate(6.f);
+	part_emit->SetTimeToLive(3.f);
+	part_emit->SetRate(12.f);
 	part_emit->SetStartScale(1.f);
-	part_emit->SetEndScale(1.f);
+	part_emit->SetEndScale(0.2f);
 	part_emit->SetBlendMode(sf::Blend::Alpha);
 	part_emit->SetImageName("particle_sonarping");
-	part_emit->SetStartAlpha(255.f);
+	part_emit->SetStartAlpha(170.f);
 	part_emit->SetEndAlpha(0.f);
 	part_sys->AddEmitter(part_emit);
 

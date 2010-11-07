@@ -12,6 +12,7 @@ void PlayState::Initialize() {
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing PlayState.");
 
 	// Particle system for cursor
+	/*
 	Engine::Vector2D position = Engine::Vector2D(0.5f, 0.5f);
 	Engine::Vector2D direction = Engine::Vector2D(0.f, -2.f);
 	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem();
@@ -36,6 +37,7 @@ void PlayState::Initialize() {
 	part_sys->AddEmitter(part_emit);
 	AddEntity(part_sys);
 	mCursorPartSys = part_sys;
+	*/
 
 	// Add some GUI
 	CreateGuiSystem();
@@ -97,6 +99,8 @@ void PlayState::Initialize() {
 	// bind keys
 	Engine::KeyBindingCallback cb = boost::bind(&PlayState::OnPauseGame, this);
 	inputmgr->BindKey( cb, Engine::KEY_PRESSED, sf::Key::Escape );
+	Engine::KeyBindingCallback cb2 = boost::bind(&PlayState::TriggerFireSonarPing, this);
+	inputmgr->BindKey( cb2, Engine::KEY_PRESSED, sf::Key::Space );
 	// screenshot
 	Engine::KeyBindingCallback sscb = boost::bind(&PlayState::OnScreenshot, this);
 	inputmgr->BindKey( sscb, Engine::KEY_PRESSED, sf::Key::F5 );
@@ -143,6 +147,13 @@ void PlayState::Update(float time_delta) {
 		if (sub->GetClientId() == Engine::Root::get_mutable_instance().GetClientId()) {
 			Engine::Root::get_mutable_instance().CenterViewAt(Engine::Coordinates::WorldFloatToWorldPixel(sub->GetPosition()));
 		}
+	}
+
+	if (Engine::Root::get_mutable_instance().GetInputManagerPtr()->IsMouseButtonDown(sf::Mouse::Left)) {
+		// Send submarine to mouse position
+		Engine::Coordinates c;
+		c.SetScreenPixel(Engine::Root::get_mutable_instance().GetMousePosition());
+		OnNavigateTo(c);
 	}
 }
 
@@ -195,6 +206,15 @@ void PlayState::OnPauseGame() {
 		Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new PauseState());
 }
 
+void PlayState::TriggerFireSonarPing() {
+	if(IsCurrentState()) {
+		Engine::Coordinates c;
+		c.SetScreenPixel(Engine::Root::get_mutable_instance().GetMousePosition());
+		OnFireSonarPing(c);
+	}
+
+}
+
 void PlayState::OnClick(Engine::MouseEventArgs args) {
 	if(IsCurrentState()) {
 		OnNavigateTo(args);
@@ -205,12 +225,11 @@ void PlayState::OnClick(Engine::MouseEventArgs args) {
 void PlayState::OnRightClick(Engine::MouseEventArgs args) {
 	if(IsCurrentState()) {
 		OnFireTorpedo(args);
-		OnFireSonarPing(args);
 	}
 }
 
 void PlayState::OnMouseMove(Engine::MouseEventArgs args) {
-	mCursorPartSys->SetPosition(args.GetScreenPixel().x, args.GetScreenPixel().y);
+	//mCursorPartSys->SetPosition(args.GetScreenPixel().x, args.GetScreenPixel().y);
 }
 
 void PlayState::OnClientConnected(const sf::Uint16 client_id) {
