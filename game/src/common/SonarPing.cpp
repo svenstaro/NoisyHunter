@@ -16,7 +16,7 @@ SonarPing* SonarPing::clone() const {
 }
 
 void SonarPing::Initialize() {
-	boost::shared_ptr<sf::Sprite> d(new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("sonarping")));
+	boost::shared_ptr<sf::Sprite> d(new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("particle_sonarping")));
 	d->SetOrigin(d->GetSize().x / 2, d->GetSize().y / 2);
 	mSprite = *d;
 
@@ -34,13 +34,13 @@ void SonarPing::Initialize() {
 	part_emit->SetRotationOffset(0.f);
 	part_emit->SetSpeed(0.f);
 	part_emit->SetSpread(0.f);
-	part_emit->SetTimeToLive(5.f);
+	part_emit->SetTimeToLive(3.f);
 	part_emit->SetRate(6.f);
 	part_emit->SetStartScale(1.f);
-	part_emit->SetEndScale(1.f);
+	part_emit->SetEndScale(0.1f);
 	part_emit->SetBlendMode(sf::Blend::Alpha);
 	part_emit->SetImageName("particle_sonarping");
-	part_emit->SetStartAlpha(255.f);
+	part_emit->SetStartAlpha(100.f);
 	part_emit->SetEndAlpha(0.f);
 	part_sys->AddEmitter(part_emit);
 

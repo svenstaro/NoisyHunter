@@ -27,13 +27,14 @@ void LoadingState::Initialize() {
 
 	// IMAGES
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"submarine1.svg",			80,		53,		"submarine");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"submarine_target.svg",	32,		32,		"submarine_target");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"sonarping.svg",			20,		20,		"sonarping");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"torpedo1.svg",			30,		10,		"torpedo");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"missing.svg",			80,		53,		"missing");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle1.svg",			24,		24,		"particle1");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle_cursor.svg",	24,		24,		"particle_cursor");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle_bubble.svg",	24,		24,		"particle_bubble");
-	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle_sonarping.svg",	20,		20,		"particle_sonarping");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle_sonarping.svg",	40,		40,		"particle_sonarping");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"glow1.svg",				50,		50,	"glow1");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"torpedo_trail.svg",		24,		24,		"torpedo_trail");
 

@@ -60,6 +60,7 @@ public:
 	const sf::View& GetWorldView() const;
 
     Vector2D GetMousePosition() const;
+	const sf::Input& GetInput() const;
     const std::string& GetClientName() const;
     sf::Uint16 GetClientId() const;
     void SetClientId(const sf::Uint16 client_id);

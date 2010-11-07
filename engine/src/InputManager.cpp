@@ -69,4 +69,8 @@ void InputManager::HandleEvent(sf::Event e) {
     }
 }
 
+bool InputManager::IsMouseButtonDown(sf::Mouse::Button button) {
+	return Root::get_mutable_instance().GetInput().IsMouseButtonDown(button);
+}
+
 }
