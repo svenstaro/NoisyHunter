@@ -57,6 +57,9 @@ public:
 	}
 	void DelEntitiesByClientId(const sf::Uint16 client_id);
 
+	virtual bool StatesBelowArePaused();
+	virtual bool StatesBelowAreHidden();
+
 protected:
     // Entity list
     boost::ptr_vector<Entity> mEntities;

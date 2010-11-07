@@ -107,7 +107,7 @@ void PlayState::Initialize() {
 
 	auto inputmgr = Engine::Root::get_mutable_instance().GetInputManagerPtr();
 	// bind keys
-	Engine::KeyBindingCallback cb = boost::bind(&PlayState::OnLeaveGame, this);
+	Engine::KeyBindingCallback cb = boost::bind(&PlayState::OnPauseGame, this);
 	inputmgr->BindKey( cb, Engine::KEY_PRESSED, sf::Key::Escape );
 	// bind mouse
 	Engine::MouseBindingCallback mcb = boost::bind(&PlayState::OnClick, this, _1);
@@ -172,7 +172,8 @@ void PlayState::OnFireSonarPing(const Engine::Coordinates& mouse_position) {
 	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
 }
 
-void PlayState::OnLeaveGame() {
+void PlayState::OnPauseGame() {
+	/*
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Quitting game.");
 	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_NETWORK, "Sending packet with NETCMD_CLIENTQUIT.");
@@ -182,6 +183,8 @@ void PlayState::OnLeaveGame() {
 	netmgr->SendClientQuit();
 
     Engine::Root::get_mutable_instance().RequestShutdown();
+	*/
+	Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new PauseState());
 }
 
 void PlayState::OnClick(Engine::MouseEventArgs args) {

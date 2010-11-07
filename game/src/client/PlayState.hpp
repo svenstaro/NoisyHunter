@@ -24,6 +24,8 @@
 #include "ParticleEmitter.hpp"
 #include "Particle.hpp"
 
+#include "PauseState.hpp"
+
 class PlayState : public Engine::State {
 public:
     PlayState();
@@ -43,7 +45,7 @@ public:
     void OnFireTorpedo(const Engine::Coordinates& mouse_position);
 	void OnFireSonarPing(const Engine::Coordinates& mouse_position);
 
-    void OnLeaveGame();
+	void OnPauseGame();
     void OnClick(Engine::MouseEventArgs args);
     void OnRightClick(Engine::MouseEventArgs args);
     void OnMouseMove(Engine::MouseEventArgs args);

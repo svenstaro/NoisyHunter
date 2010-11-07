@@ -92,4 +92,14 @@ void State::DelEntitiesByClientId(const sf::Uint16 client_id) {
 }
 
 void State::OnLeaveGame() {}
+
+
+bool State::StatesBelowArePaused() {
+	return true;
+}
+
+bool State::StatesBelowAreHidden() {
+	return true;
+}
+
 }

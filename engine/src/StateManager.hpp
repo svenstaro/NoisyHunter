@@ -23,6 +23,7 @@ public:
 private:
     //Root* mRoot;
     boost::ptr_vector<State> mStates;
+	int mAmountToPop;
 };
 
 }
