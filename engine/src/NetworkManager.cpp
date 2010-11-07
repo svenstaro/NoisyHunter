@@ -252,7 +252,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
                 sf::Packet packet;
                 sf::Uint16 id = mClientManager.GetId(address, port);
                 std::string client_name = mClientManager.GetName(id);
-				mEntityState->DelEntitiesByClientId(id);
+				mEntityState->DeleteEntitiesByClientId(id);
 					
 				if(mClientManager.IsKnown(address, port)) {
 					std::string reason = "Lol just quit.";

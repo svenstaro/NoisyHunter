@@ -57,7 +57,7 @@ public:
 		return entities;
 
 	}
-	void DelEntitiesByClientId(const sf::Uint16 client_id);
+	void DeleteEntitiesByClientId(const sf::Uint16 client_id);
 
 	virtual bool StatesBelowArePaused();
 	virtual bool StatesBelowAreHidden();
