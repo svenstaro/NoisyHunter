@@ -9,7 +9,9 @@ SonarPing::SonarPing(const Engine::Vector2D& pos, const Engine::Vector2D& direct
 	mSpeed = speed;
 }
 
-SonarPing::~SonarPing() {}
+SonarPing::~SonarPing() {
+	std::cout << "SonarPing kaputt" << std::endl;
+}
 
 SonarPing* SonarPing::clone() const {
 	return new SonarPing();

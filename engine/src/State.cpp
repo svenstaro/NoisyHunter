@@ -21,6 +21,8 @@ void State::UpdateAllEntities(const float time_delta) {
 	BOOST_FOREACH(Entity& entity, mEntities) {
 		entity.Update(time_delta);
 	}
+	if(Root::get_mutable_instance().IsServer())
+		mEntities.erase_if(boost::bind(&Entity::GetTimeToLive, _1) <= 0);
 
 	if(mEntityListNeedsSorting) {
 		//mEntities.sort();

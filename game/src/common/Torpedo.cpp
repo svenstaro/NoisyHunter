@@ -15,7 +15,9 @@ Torpedo::Torpedo(const Engine::Vector2D& pos,
 	mTimeToLive = time_to_live;
 }
 
-Torpedo::~Torpedo() {}
+Torpedo::~Torpedo() {
+	Root::get_mutable_instance().GetNetworkManagerPtr()->
+}
 
 Torpedo* Torpedo::clone() const {
 	return new Torpedo();

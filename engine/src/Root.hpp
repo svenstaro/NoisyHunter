@@ -72,6 +72,7 @@ public:
 
 	float GetFps() const;
 	float GetAverageFps() const;
+	const bool IsServer() const;
 
 	void SetRenderMode(const RenderMode mode);
 	void SetTakeScreenshot(const bool take_screenshot);
