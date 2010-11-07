@@ -181,11 +181,12 @@ void Root::StartMainLoop() {
 			// Render mouse cursor
 			cursor.SetPosition(GetMousePosition().x, GetMousePosition().y);
 			mRenderWindow.Draw(cursor);
-			if (mTakeScreenshot) {
-				//sf::Image shot = mRenderWindow.Capture();
-				//shot.SaveToFile("screenshot.jpg");
-				//mTakeScreenshot = false;
-				std::cout << "Take screenshot here." << std::endl;
+			if(mTakeScreenshot) {
+				sf::Image shot;
+				shot.CopyScreen(mRenderWindow);
+				// TODO: Change this to png when it works.
+				shot.SaveToFile("screen.jpg");
+				mTakeScreenshot = false;
 			}
             mRenderWindow.Display();
 

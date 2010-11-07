@@ -22,8 +22,18 @@ void SonarPing::Initialize() {
 
 	Engine::Vector2D position = Engine::Vector2D(0.f, 0.f);
 	Engine::Vector2D direction = Engine::Vector2D(0.f, 1.f);
-	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem(position, direction, Engine::Entity::PositionType::POSITIONTYPE_WORLDFLOAT);
-	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter(Engine::Vector2D(0.f, 0.f), 0.f, 0.f, 0.f);
+	// Creating particle system
+	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem();
+	part_sys->SetPosition(position);
+	part_sys->SetDirection(direction);
+	part_sys->SetPositionType(Engine::Entity::PositionType::POSITIONTYPE_WORLDFLOAT);
+
+	// Creating particle emitter
+	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter();
+	part_emit->SetPosition(Engine::Vector2D(0.f, 0.f));
+	part_emit->SetRotationOffset(0.f);
+	part_emit->SetSpeed(0.f);
+	part_emit->SetSpread(0.f);
 	part_emit->SetTimeToLive(5.f);
 	part_emit->SetRate(6.f);
 	part_emit->SetStartScale(1.f);
