@@ -48,7 +48,7 @@ void State::Draw(sf::RenderTarget* target) {
 
 	Root::get_mutable_instance().SetRenderMode(RENDERMODE_GUI);
 	BOOST_FOREACH(GuiSystem& system, mGuiSystems) {
-		system.Draw(target);
+//		system.Draw(target);
 	}
 }
 

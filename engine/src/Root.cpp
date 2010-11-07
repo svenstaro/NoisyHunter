@@ -186,8 +186,8 @@ void Root::StartMainLoop() {
 			mRenderWindow.Clear(sf::Color(0,0,0));
             mStateManager.Draw(&mRenderWindow);
 			// Render mouse cursor
-			cursor.SetPosition(GetMousePosition().x, GetMousePosition().y);
-			mRenderWindow.Draw(cursor);
+			cursor.SetPosition(720, 450);
+			//mRenderWindow.Draw(cursor);
 			if(mTakeScreenshot) {
 				sf::Image shot;
 				shot.CopyScreen(mRenderWindow);
