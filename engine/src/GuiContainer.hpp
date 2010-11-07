@@ -10,13 +10,13 @@ namespace Engine {
 
 class GuiContainer : public GuiControl {
 public:
-	~GuiContainer() = 0;
+	~GuiContainer();
 
 	virtual GuiContainer* clone() const;
 
 	bool AddControl(GuiControl* control);
 
-	void Draw(sf::RenderTarget *target, Vector2D offset = Vector2D(0,0));
+	virtual void Draw(sf::RenderTarget *target, Vector2D offset = Vector2D(0,0));
 
 	template < typename T >
 	T* GetControl(const std::string& control_name) {

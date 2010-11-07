@@ -3,12 +3,14 @@
 
 namespace Engine {
 
-GuiContainer* GuiContainer::clone() const {
+GuiContainer::~GuiContainer() {}
 
+GuiContainer* GuiContainer::clone() const {
+	return new GuiContainer();
 }
 
 bool GuiContainer::AddControl(GuiControl* control) {
-
+	mControls.push_back(control);
 }
 
 void GuiContainer::Draw(sf::RenderTarget* target, Vector2D offset) {
