@@ -32,6 +32,7 @@ void StateManager::Update(float time_delta) {
 	for(int i = 0; i < mAmountToPop && mStates.size() > 0; i++) {
 		mStates.pop_back();
 	}
+	mAmountToPop = 0;
 	if(mStates.size() <= 0) {
 		Root::get_mutable_instance().RequestShutdown();
 	}
