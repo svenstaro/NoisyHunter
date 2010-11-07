@@ -27,6 +27,7 @@ void LoadingState::Initialize() {
 
 	// IMAGES
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"submarine1.svg",			80,		53,		"submarine");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"submarine_target.svg",	32,		32,		"submarine_target");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"sonarping.svg",			20,		20,		"sonarping");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"torpedo1.svg",			30,		10,		"torpedo");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"missing.svg",			80,		53,		"missing");
