@@ -35,6 +35,8 @@ public:
 
 	void serialize(Engine::IOPacket& packet);
 
+	void SetTimeToLive(const sf::Uint16 time_to_live);
+
 private:
 	float mTimeToLive;
 	sf::Sprite mSprite;

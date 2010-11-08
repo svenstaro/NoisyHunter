@@ -124,7 +124,8 @@ void MainState::OnClientConnected(sf::Uint16 client_id) {
 	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
 
 	float lol = sf::Randomizer::Random(0.1f, 0.9f);
-	Submarine* submarine1 = new Submarine(lol, lol, client_id);
+	Submarine* submarine1 = new Submarine();
+	submarine1->SetPosition(Engine::Vector2D(lol, lol));
 	submarine1->GrabUniqueId();
 	submarine1->SetClientId(client_id);
 

@@ -92,6 +92,14 @@ sf::Uint16 Torpedo::GetEntityId() const {
 	return ENTITYID_TORPEDO;
 }
 
+void Torpedo::SetTargetPosition(const Engine::Vector2D target_position) {
+	mTargetPosition = target_position;
+}
+
+void Torpedo::SetTimeToLive(const sf::Uint16 time_to_live) {
+	mTimeToLive = time_to_live;
+}
+
 /*template<class Archive>
 void Torpedo::serialize(Archive & ar, const unsigned int version) {
 

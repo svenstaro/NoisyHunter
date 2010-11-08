@@ -77,6 +77,10 @@ sf::Uint16 SonarPing::GetEntityId() const {
 	return ENTITYID_SONARPING;
 }
 
+void SonarPing::SetTimeToLive(const sf::Uint16 time_to_live) {
+	mTimeToLive = time_to_live;
+}
+
 void SonarPing::serialize(Engine::IOPacket& packet) {
 	packet & mClientId;
 	packet & mUniqueId;

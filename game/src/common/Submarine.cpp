@@ -114,15 +114,27 @@ void Submarine::Draw(sf::RenderTarget* target) const {
 	DrawAllAttachments(target);
 }
 
-const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D Pos, const float time_to_live) {
+const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D target_pos, const float time_to_live) {
 	mDirection.Normalize();
-	return new Torpedo(mPosition, mDirection, mSpeed * 3, Pos, time_to_live);
+	Torpedo* torpedo = new Torpedo();
+	torpedo->SetPosition(mPosition);
+	torpedo->SetDirection(mDirection);
+	torpedo->SetSpeed(mSpeed * 3);
+	torpedo->SetTargetPosition(target_pos);
+	torpedo->SetTimeToLive(time_to_live);
+
+	return torpedo;
 }
 
 const Engine::Entity* Submarine::FireSonarPing(const Engine::Vector2D direction, const float time_to_live) {
 	Engine::Vector2D dir = direction - mPosition;
 	dir.Normalize();
-	return new SonarPing(mPosition, dir, time_to_live, mSpeed * 3);
+	SonarPing* sonarping = new SonarPing();
+	sonarping->SetPosition(mPosition);
+	sonarping->SetDirection(mDirection);
+	sonarping->SetTimeToLive(time_to_live);
+	sonarping->SetSpeed(mSpeed * 3);
+	return sonarping;
 }
 
 void Submarine::OnCollide(const Engine::Entity& ent) {

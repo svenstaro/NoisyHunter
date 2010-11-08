@@ -32,6 +32,8 @@ public:
 	sf::Uint16 GetEntityId() const;
 
     void serialize(Engine::IOPacket& packet);
+	void SetTargetPosition(const Engine::Vector2D target_position);
+	void SetTimeToLive(const sf::Uint16 time_to_live);
 
 private:
   /*  friend class boost::serialization::access;
