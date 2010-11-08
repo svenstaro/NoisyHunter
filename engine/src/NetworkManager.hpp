@@ -53,6 +53,9 @@ public:
 	void SendEntityAdd(Entity& entity);
 	void SendEntityAdd(Entity& entity, const sf::Uint16 client_id);
 
+	// Sends a packet containgin NETCMD_ENTITYADD to all clients.
+	void SendEntityDel(const sf::Uint16 unique_id);
+
 	// Sends a packet which requests a ping response; In a way PONG :D
 	void SendPing();
 

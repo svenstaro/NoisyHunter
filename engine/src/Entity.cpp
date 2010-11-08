@@ -14,6 +14,10 @@ Entity* Entity::clone() const {}
 
 void Entity::Initialize() {}
 
+void Entity::Deinit() {
+	Root::get_mutable_instance().GetNetworkManagerPtr()->SendEntityDel(mUniqueId);
+}
+
 void Entity::GrabUniqueId() {
 	mUniqueId = Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
 }

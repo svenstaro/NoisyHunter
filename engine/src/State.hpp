@@ -58,6 +58,7 @@ public:
 
 	}
 	void DeleteEntitiesByClientId(const sf::Uint16 client_id);
+	void DeleteEntityByUniqueId(const sf::Uint16 unique_id);
 
 	virtual bool StatesBelowArePaused();
 	virtual bool StatesBelowAreHidden();

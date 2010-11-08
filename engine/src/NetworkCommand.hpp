@@ -84,6 +84,12 @@ enum NetworkCommand {
 	//  sf::Uint16(entity_id), Engine::Entity(entity)]
 	NETCMD_ENTITYINFO = 0x22,
 
+	// If this is sent client->server, ALL HELL BREAKS LOOSE!
+	// If this is sent server-client, the client should delete the local instance of the given entity.
+	// Packet Structure is:
+	// [sf::Uint16(NETCMD_ENTITYINFO), sf::Uint16(unique_id)]
+	NETCMD_ENTITYDEL = 0x23,
+
 	// If this is sent client->server, a client is requesting a chat message
 	// to be posted to all other clients.
 	// Packet structure is:

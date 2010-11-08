@@ -86,6 +86,10 @@ void State::DeleteEntitiesByClientId(const sf::Uint16 client_id) {
 	mEntities.erase_if(boost::bind(&Entity::GetClientId, _1) == client_id);
 }
 
+void State::DeleteEntityByUniqueId(const sf::Uint16 unique_id) {
+	mEntities.erase_if(boost::bind(&Entity::GetUniqueId, _1) == unique_id);
+}
+
 void State::OnLeaveGame() {}
 
 

@@ -44,6 +44,8 @@ public:
 
 	virtual void Initialize();
 
+	virtual void Deinit();
+
 	virtual void GrabUniqueId();
     
 	// Callbacks

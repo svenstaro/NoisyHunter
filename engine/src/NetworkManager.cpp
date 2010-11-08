@@ -157,6 +157,13 @@ void NetworkManager::SendEntityAdd(Entity& entity, const sf::Uint16 client_id) {
 	SendPacket(packet, client_id);
 }
 
+void NetworkManager::SendEntityDel(const sf::Uint16 unique_id) {
+	sf::Packet packet;
+	packet << sf::Uint16(NETCMD_ENTITYDEL);
+	packet << unique_id;
+	SendPacket(packet);
+}
+
 void NetworkManager::SendChatMessage(const std::string& chat_message, const std::string& client_name) {
     sf::Packet packet;
     packet << sf::Uint16(NETCMD_CHATMESSAGE);
@@ -385,6 +392,10 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 					mEntityState->AddEntity(entity);
 					logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetUniqueId())+") added.");
 				}
+			} else if(net_cmd == NETCMD_ENTITYDEL) {
+				sf::Uint16 unique_id;
+				packet >> unique_id;
+				Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().DeleteEntityByUniqueId(unique_id);
             } else if(net_cmd == NETCMD_CHATMESSAGE) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE.");
                 // TODO: Output into GUI
