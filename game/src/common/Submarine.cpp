@@ -131,7 +131,7 @@ const Engine::Entity* Submarine::FireSonarPing(const Engine::Vector2D direction,
 	dir.Normalize();
 	SonarPing* sonarping = new SonarPing();
 	sonarping->SetPosition(mPosition);
-	sonarping->SetDirection(mDirection);
+	sonarping->SetDirection(dir);
 	sonarping->SetTimeToLive(time_to_live);
 	sonarping->SetSpeed(mSpeed * 3);
 	return sonarping;
