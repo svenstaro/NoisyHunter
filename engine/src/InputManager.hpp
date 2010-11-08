@@ -88,7 +88,6 @@ public:
 			sf::Mouse::Button button = sf::Mouse::Left);
 
 	Vector2D GetMousePosition() const;
-	bool IsMouseButtonDown(sf::Mouse::Button button);
 
 private:
 	boost::ptr_list<KeyBinding> mKeyBindings;

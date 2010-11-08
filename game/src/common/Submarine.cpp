@@ -103,14 +103,6 @@ void Submarine::Draw(sf::RenderTarget* target) const {
 	Engine::Root::get_mutable_instance().SetRenderMode(Engine::RENDERMODE_WORLD);
 	target->Draw(mSprite);
 
-	if(mClientId == Engine::Root::get_mutable_instance().GetClientId()) {
-		// Draw the target marker
-		sf::Sprite target_marker(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("submarine_target"));
-		Engine::Vector2D target_marker_pos = Engine::Coordinates::WorldFloatToWorldPixel(mTarget);
-		target_marker.SetPosition(target_marker_pos.x, target_marker_pos.y);
-		target->Draw(target_marker);
-	}
-
 	DrawAllAttachments(target);
 }
 

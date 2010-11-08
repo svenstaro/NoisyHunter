@@ -49,7 +49,6 @@ public:
 	void OnScreenshot();
 
     void OnPauseGame();
-	void TriggerFireSonarPing();
     void OnClick(Engine::MouseEventArgs args);
     void OnRightClick(Engine::MouseEventArgs args);
     void OnMouseMove(Engine::MouseEventArgs args);
