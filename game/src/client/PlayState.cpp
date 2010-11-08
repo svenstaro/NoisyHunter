@@ -25,8 +25,8 @@ void PlayState::Initialize() {
 	part_emit->SetSpeed(50.f);
 	part_emit->SetSpread(360.f);
 	part_emit->SetBlendMode(sf::Blend::Add);
-	part_emit->SetRate(100.f);
-	part_emit->SetTimeToLive(6.f);
+	part_emit->SetRate(2000.f);
+	part_emit->SetTimeToLive(10.f);
 	part_emit->SetStartScale(0.7f);
 	part_emit->SetEndScale(1.5f);
 	part_emit->SetStartColor(sf::Color(255,255,255));
@@ -123,6 +123,8 @@ void PlayState::Initialize() {
 	// Connect To Server
 	netmgr->SetEntityState(this);
 	netmgr->ConnectToServer();
+
+	
 
 }
 

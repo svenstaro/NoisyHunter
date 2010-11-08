@@ -27,15 +27,19 @@ void LoadingState::Initialize() {
 
 	// IMAGES
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"submarine1.svg",			80,		53,		"submarine");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"submarine_target.svg",	32,		32,		"submarine_target");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"sonarping.svg",			20,		20,		"sonarping");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"torpedo1.svg",			30,		10,		"torpedo");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"missing.svg",			80,		53,		"missing");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle1.svg",			24,		24,		"particle1");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle_cursor.svg",	24,		24,		"particle_cursor");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle_bubble.svg",	24,		24,		"particle_bubble");
-	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle_sonarping.svg",	20,		20,		"particle_sonarping");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle_sonarping.svg",	40,		40,		"particle_sonarping");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"glow1.svg",				50,		50,	"glow1");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"torpedo_trail.svg",		24,		24,		"torpedo_trail");
+
+	// launch loading in background
+	resmgr->StartLoadingAllQueuedImagesInBackground();
 
     // load font
     sf::Font font;
@@ -57,7 +61,6 @@ void LoadingState::Initialize() {
 	l->SetText("Loading images...");
 	l->SetFontSize(11);
 	mGuiSystems.begin()->AddControl(l);
-
 
     // (create entities)
 
@@ -84,14 +87,13 @@ void LoadingState::Initialize() {
 }
 
 void LoadingState::Update(float time_delta) {
-	sf::Sleep(0.1);
 	auto resmgr = Engine::Root::get_mutable_instance().GetResourceManagerPtr();
 
 	if (resmgr->GetPercentageLoadingDone() >= 1) {
 		Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new PlayState());
 	} else {
-		sf::Uint16 n = resmgr->LoadNextImage();
 		sf::Uint16 m = resmgr->GetMaxImageQueueSize();
+		sf::Uint16 n = m - resmgr->GetImagesToLoadLeft();
 		mGuiSystems.begin()->GetControl<Engine::GuiProgressbar>("loading_progress")->SetProgress(resmgr->GetPercentageLoadingDone());
 		mGuiSystems.begin()->GetControl<Engine::GuiLabel>("loading_progress_label")->SetText( "Loading images ... " +
 			boost::lexical_cast<std::string>(n) +
