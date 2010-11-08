@@ -46,7 +46,7 @@ public:
 	std::string Key;
 };
 
-class ResourceManager : private sf::Thread {
+class ResourceManager {
 public:
     ResourceManager();
 
@@ -58,8 +58,6 @@ public:
 								const sf::Uint16 height,
 								const std::string& key="");
 
-	static void LoadAllQueuedImages(void* data);
-	void StartLoadingAllQueuedImagesInBackground();
 	const sf::Uint16 LoadNextImage();
 	const sf::Uint16 GetImagesToLoadLeft() const;
 	const sf::Uint16 GetMaxImageQueueSize() const;

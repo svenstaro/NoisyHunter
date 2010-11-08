@@ -72,8 +72,6 @@ public:
 
 	void SetPosition(const Vector2D position);
 
-	void SetTimeToLive(float time_to_live);
-
 	void SetSpeed(const float speed);
 
 	void SetDirection(const Vector2D direction);
@@ -83,8 +81,6 @@ public:
 	const float GetSpeed() const;
 
 	const Vector2D GetDirection() const;
-
-	const float GetTimeToLive() const;
 
 	Layer GetLayer() const;
 
@@ -114,8 +110,6 @@ protected:
 	boost::shared_ptr<sf::Drawable> mDrawable;
 
 	boost::ptr_list<EntityAttachment> mAttachments;
-
-	float mTimeToLive;
 };
 
 }

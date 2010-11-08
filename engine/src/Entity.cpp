@@ -12,9 +12,7 @@ Entity::~Entity() {}
 
 Entity* Entity::clone() const {}
 
-void Entity::Initialize() {
-	SetTimeToLive(1.f);
-}
+void Entity::Initialize() {}
 
 void Entity::GrabUniqueId() {
 	mUniqueId = Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
@@ -94,10 +92,6 @@ void Entity::SetPosition(const Vector2D position) {
 	mPosition = position;
 }
 
-void Entity::SetTimeToLive(float time_to_live) {
-	mTimeToLive = time_to_live;
-}
-
 void Entity::SetSpeed(const float speed) {
 	mSpeed = speed;
 }
@@ -121,10 +115,6 @@ const Vector2D Entity::GetDirection() const {
 
 Entity::Layer Entity::GetLayer() const {
 	return mLayer;
-}
-
-const float Entity::GetTimeToLive() const {
-	return mTimeToLive;
 }
 
 Entity::PositionType Entity::GetPositionType() const {

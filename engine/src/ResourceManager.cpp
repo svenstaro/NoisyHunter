@@ -22,19 +22,6 @@ void ResourceManager::AddImageToLoadingQueue(const boost::filesystem::path& path
 		mMaxImageQueueSize = mImagesToLoad.size();
 }
 
-void ResourceManager::LoadAllQueuedImages(void* data) {
-	sf::Context context;
-	auto resmgr = Root::get_mutable_instance().GetResourceManagerPtr();
-	while(resmgr->GetPercentageLoadingDone() < 1) {
-		resmgr->LoadNextImage();
-	}
-}
-
-void ResourceManager::StartLoadingAllQueuedImagesInBackground() {
-	sf::Thread thread(&ResourceManager::LoadAllQueuedImages);
-	thread.Launch();
-}
-
 const sf::Uint16 ResourceManager::LoadNextImage() {
 
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();

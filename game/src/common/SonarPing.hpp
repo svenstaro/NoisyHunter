@@ -36,6 +36,7 @@ public:
 	void serialize(Engine::IOPacket& packet);
 
 private:
+	float mTimeToLive;
 	sf::Sprite mSprite;
 };
 
