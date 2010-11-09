@@ -18,8 +18,15 @@ void State::Update(const float time_delta) {
 }
 
 void State::UpdateAllEntities(const float time_delta) {
+
 	BOOST_FOREACH(Entity& entity, mEntities) {
 		entity.Update(time_delta);
+		if(Root::get_mutable_instance().IsServer()) {
+			if(entity.GetLifeTime() >= entity.GetTimeToLive()) {
+				entity.Deinit();
+				mEntities.erase_if(boost::bind(&Entity::GetUniqueId, _1) == entity.GetUniqueId());
+			}
+		}
 	}
 
 	if(mEntityListNeedsSorting) {

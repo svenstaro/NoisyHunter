@@ -13,6 +13,8 @@ Submarine::Submarine(const float pos_x,
 	SetDirection(Engine::Vector2D(1,0));
 	mClientId = client_id;
 	mUniqueId = 0;
+	mTimeToLive = 1.f;
+	mLifeTime = 0.f;
 }
 
 Submarine::~Submarine() {}

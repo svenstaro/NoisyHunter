@@ -281,6 +281,10 @@ float Root::GetAverageFps() const {
 	return floor(mTotalNumFrames / GetRunTime());
 }
 
+bool Root::IsServer() const {
+	return mIsServer;
+}
+
 void Root::SetRenderMode(const RenderMode mode) {
 	if (mIsServer)
 		mLogManager.Log(LOGLEVEL_ERROR, LOGORIGIN_ROOT, "Tried to switch render mode in server.");

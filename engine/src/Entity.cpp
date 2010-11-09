@@ -125,6 +125,14 @@ Entity::PositionType Entity::GetPositionType() const {
 	return Entity::POSITIONTYPE_WORLDFLOAT;
 }
 
+const float Entity::GetTimeToLive() const {
+	return mTimeToLive;
+}
+
+const float Entity::GetLifeTime() const {
+	return mLifeTime;
+}
+
 void Entity::SetClientId(const sf::Uint16 client_id) {
     mClientId = client_id;
 }

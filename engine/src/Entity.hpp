@@ -88,6 +88,10 @@ public:
 
     virtual PositionType GetPositionType() const;
 
+	const float GetTimeToLive() const;
+
+	const float GetLifeTime() const;
+
 	bool operator<(const Entity& other);
 
     virtual void serialize(IOPacket& packet);
@@ -106,6 +110,9 @@ protected:
 	Vector2D mPosition;
 	float mSpeed;
 	Vector2D mDirection;
+
+	float mTimeToLive;
+	float mLifeTime;
 
     Layer mLayer;
 

@@ -13,6 +13,7 @@ Torpedo::Torpedo(const Engine::Vector2D& pos,
 	mUniqueId = 0;
 	mReachedTargetAngle = false;
 	mTimeToLive = time_to_live;
+	mLifeTime = 0.f;
 }
 
 Torpedo::~Torpedo() {}
@@ -69,12 +70,8 @@ void Torpedo::Update(const float time_delta) {
 	mDirection.Normalize();
 	mPosition += mDirection * mSpeed * time_delta;
 
-	mTimeToLive -= time_delta;
-
-	if(mTimeToLive <= 0) {
-		// TODO: explode, yeah!
-		mSpeed = 0;
-		mReachedTargetAngle = true;
+	if(mTimeToLive >= 0) {
+		mLifeTime += time_delta;
 	}
 
 	UpdateAllAttachments(time_delta);
@@ -96,7 +93,7 @@ void Torpedo::SetTargetPosition(const Engine::Vector2D target_position) {
 	mTargetPosition = target_position;
 }
 
-void Torpedo::SetTimeToLive(const sf::Uint16 time_to_live) {
+void Torpedo::SetTimeToLive(const float time_to_live) {
 	mTimeToLive = time_to_live;
 }
 

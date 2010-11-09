@@ -75,7 +75,6 @@ void MainState::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uin
 		Engine::Root::get_mutable_instance().GetLogManagerPtr()->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Received INTERACTION_FIRETORPEDO.");
 		float target_x, target_y, time_to_live;
 		data >> target_x >> target_y >> time_to_live;
-
 		// Get player submarine
 		BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
 			if(sub->GetClientId() == client_id) {

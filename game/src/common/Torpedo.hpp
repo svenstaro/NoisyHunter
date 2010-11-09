@@ -33,7 +33,7 @@ public:
 
     void serialize(Engine::IOPacket& packet);
 	void SetTargetPosition(const Engine::Vector2D target_position);
-	void SetTimeToLive(const sf::Uint16 time_to_live);
+	void SetTimeToLive(const float time_to_live);
 
 private:
   /*  friend class boost::serialization::access;
@@ -42,7 +42,6 @@ private:
 */
 	bool mReachedTargetAngle;
 	Engine::Vector2D mTargetPosition;
-	float mTimeToLive;
 };
 
 #endif

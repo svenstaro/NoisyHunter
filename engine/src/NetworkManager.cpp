@@ -395,6 +395,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 			} else if(net_cmd == NETCMD_ENTITYDEL) {
 				sf::Uint16 unique_id;
 				packet >> unique_id;
+				std::cout << unique_id << std::endl;
 				Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().DeleteEntityByUniqueId(unique_id);
             } else if(net_cmd == NETCMD_CHATMESSAGE) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE.");

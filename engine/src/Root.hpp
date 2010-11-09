@@ -77,6 +77,8 @@ public:
 	void SetTakeScreenshot(const bool take_screenshot);
 	void CenterViewAt(const Vector2D center);
 
+	bool IsServer() const;
+
 private:
     bool mIsServer;
     bool mShutdownRequested;

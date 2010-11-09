@@ -4,6 +4,8 @@
 WorldPolygon::WorldPolygon() {
 	mUniqueId = 0;
 	mBorderWidth = 0.003;
+	mTimeToLive = 1.f;
+	mLifeTime = 0.f;
 }
 
 WorldPolygon::~WorldPolygon() {}

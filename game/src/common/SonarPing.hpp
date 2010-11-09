@@ -38,7 +38,6 @@ public:
 	void SetTimeToLive(const sf::Uint16 time_to_live);
 
 private:
-	float mTimeToLive;
 	sf::Sprite mSprite;
 };
 

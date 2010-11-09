@@ -5,6 +5,7 @@ SonarPing::SonarPing(const Engine::Vector2D& pos, const Engine::Vector2D& direct
 	mPosition = pos;
 	mDirection= direction;
 	mTimeToLive = time_to_live;
+	mLifeTime = 0.f;
 	mUniqueId = 0;
 	mSpeed = speed;
 }
@@ -54,9 +55,8 @@ void SonarPing::Update(const float time_delta) {
 	mSprite.SetPosition(world_pixel.x, world_pixel.y);
 	mSprite.SetRotation(-Engine::Vector2D::rad2Deg(mDirection.Rotation()));
 
-	mTimeToLive -= time_delta;
-	if(mTimeToLive <= 0) {
-		mSpeed = 0;
+	if(mTimeToLive >= 0) {
+		mLifeTime += time_delta;
 	}
 
 	UpdateAllAttachments(time_delta);
