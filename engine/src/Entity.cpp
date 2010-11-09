@@ -14,7 +14,7 @@ Entity* Entity::clone() const {}
 
 void Entity::Initialize() {}
 
-void Entity::Deinit() {
+void Entity::Cleanup() {
 	Root::get_mutable_instance().GetNetworkManagerPtr()->SendEntityDel(mUniqueId);
 }
 

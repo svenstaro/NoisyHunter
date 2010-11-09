@@ -44,7 +44,7 @@ public:
 
 	virtual void Initialize();
 
-	virtual void Deinit();
+	virtual void Cleanup();
 
 	virtual void GrabUniqueId();
     

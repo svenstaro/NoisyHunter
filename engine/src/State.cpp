@@ -23,7 +23,7 @@ void State::UpdateAllEntities(const float time_delta) {
 		entity.Update(time_delta);
 		if(Root::get_mutable_instance().IsServer()) {
 			if(entity.GetLifeTime() >= entity.GetTimeToLive()) {
-				entity.Deinit();
+				entity.Cleanup();
 				mEntities.erase_if(boost::bind(&Entity::GetUniqueId, _1) == entity.GetUniqueId());
 			}
 		}
