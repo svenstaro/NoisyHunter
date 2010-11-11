@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <queue>
+#include <SFML/Audio.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <ImageMagick/Magick++.h>
@@ -67,6 +68,9 @@ public:
         const sf::Uint16 width, const sf::Uint16 height, const std::string& key="");
     const sf::Image& GetImage(const std::string& img);
 
+	bool AddMusic(const boost::filesystem::path& path, const std::string& music_name, const std::string& key="");
+	const sf::Music* GetMusic(const std::string& music);
+
     void AddFont(sf::Font& font, std::string key);
     const sf::Font& GetFont(const std::string& key);
 
@@ -76,11 +80,14 @@ public:
 	const sf::Uint16 GetCursor() const;
 private:
 	std::queue<ImageProperties> mImagesToLoad;
+	std::queue<sf::Music> mMusicToLoad;
 
 	boost::ptr_map<std::string, sf::Image> mImages;
 	boost::ptr_map<std::string, sf::Font> mFonts;
 	boost::ptr_map<sf::Uint16, AnimatedSprite> mCursors;
 	sf::Uint16 mCurrentCursor;
+
+	boost::ptr_map<std::string, sf::Music*> mMusic;
 
 	sf::Uint16 mMaxImageQueueSize;
 };
