@@ -170,7 +170,7 @@ const sf::Music* ResourceManager::GetMusic(const std::string& music) {
 	}
 }
 
-bool ResourceManager::AddSound(const boost::filesystem::path& path, const std::string& sound_name, const std::string& key) {
+bool ResourceManager::AddSoundBuffer(const boost::filesystem::path& path, const std::string& sound_name, const std::string& key) {
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 
 	if(!boost::filesystem::is_regular_file(path/sound_name)) {
@@ -191,7 +191,7 @@ bool ResourceManager::AddSound(const boost::filesystem::path& path, const std::s
     }
 
     // if a sound with that key already exists in the dictionary, return
-    if(mSounds.count(sound_key) != 0) {
+    if(mSoundBuffers.count(sound_key) != 0) {
         return true;
     }
 
@@ -201,17 +201,16 @@ bool ResourceManager::AddSound(const boost::filesystem::path& path, const std::s
 		exit(1);
 	}
 
-	sf::Sound sfsound(sound_buffer);
 
-	mSounds[sound_key] = sfsound;
+	mSoundBuffers[sound_key] = sound_buffer;
 
     return true;
 	
 }
 
-const sf::Sound& ResourceManager::GetSound(const std::string& sound) {
-	if(mSounds.count(sound) >= 1) {
-		return mSounds[sound];
+const sf::SoundBuffer& ResourceManager::GetSoundBuffer(const std::string& sound) {
+	if(mSoundBuffers.count(sound) >= 1) {
+		return mSoundBuffers[sound];
 	} else {
 		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Tried getting sound '"+(sound)+"' but this sound doesn't exist!");
