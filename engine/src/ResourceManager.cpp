@@ -11,8 +11,8 @@ ResourceManager::~ResourceManager() {}
 
 void ResourceManager::AddImageToLoadingQueue(const boost::filesystem::path& path,
 											 const std::string& imgname,
-											 const sf::Uint16 width,
-											 const sf::Uint16 height,
+											 const float width,
+											 const float height,
 											 const std::string& key) {
 
 	ImageProperties p(path, imgname, width, height, key);
@@ -55,8 +55,8 @@ const float ResourceManager::GetPercentageLoadingDone() const {
 
 bool ResourceManager::AddImage(const boost::filesystem::path& path,
 							   const std::string& imgname,
-							   const sf::Uint16 width,
-							   const sf::Uint16 height,
+							   const float width,
+							   const float height,
 							   const std::string& key) {
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 
@@ -94,10 +94,12 @@ bool ResourceManager::AddImage(const boost::filesystem::path& path,
 
 	// Load, convert and save image (originalFile > cacheFile)
 	Magick::Image mimage;
-	mimage.backgroundColor(Magick::Color(0,0,0,65535));
-	mimage.density(Magick::Geometry(144,144));
+	mimage.backgroundColor(Magick::Color(0, 0, 0, 65535));
+	mimage.density(Magick::Geometry(144, 144));
 	mimage.read(originalFile);
-	mimage.zoom(Magick::Geometry(width, height));
+	// Conver floats to view pixels so that images will always be at the same scale
+	const Vector2D vec(Coordinates::WorldFloatToWorldPixel(Vector2D(width, height)));
+	mimage.zoom(Magick::Geometry(vec.x, vec.y));
 	mimage.depth(8);
 	mimage.write(cacheFile);
 
