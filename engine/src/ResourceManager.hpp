@@ -71,6 +71,9 @@ public:
 	bool AddMusic(const boost::filesystem::path& path, const std::string& music_name, const std::string& key="");
 	const sf::Music* GetMusic(const std::string& music);
 
+	bool AddSound(const boost::filesystem::path& path, const std::string& sound, const std::string& key="");
+	const sf::Sound& GetSound(const std::string& sound);
+
     void AddFont(sf::Font& font, std::string key);
     const sf::Font& GetFont(const std::string& key);
 
@@ -88,6 +91,7 @@ private:
 	sf::Uint16 mCurrentCursor;
 
 	boost::ptr_map<std::string, sf::Music*> mMusic;
+	boost::ptr_map<std::string, sf::Sound> mSounds;
 
 	sf::Uint16 mMaxImageQueueSize;
 };

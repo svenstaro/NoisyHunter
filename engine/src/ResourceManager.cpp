@@ -143,7 +143,7 @@ bool ResourceManager::AddMusic(const boost::filesystem::path& path, const std::s
         music_key = key;
     }
 
-    // if an image with that key already exists in the dictionary, return
+    // if a music with that key already exists in the dictionary, return
     if(mMusic.count(music_key) != 0) {
         return true;
     }
@@ -166,6 +166,55 @@ const sf::Music* ResourceManager::GetMusic(const std::string& music) {
 	} else {
 		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Tried getting music '"+(music)+"' but this music doesn't exist!");
+		exit(1);
+	}
+}
+
+bool ResourceManager::AddSound(const boost::filesystem::path& path, const std::string& sound_name, const std::string& key) {
+	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+
+	if(!boost::filesystem::is_regular_file(path/sound_name)) {
+		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Tried loading sound path'"+(path/sound_name).string()+"' but this sound path doesn't exist!");
+		exit(1);
+	}
+
+    // create Original file path
+    std::string originalFile = (path / sound_name).string();
+
+
+    // if the optional param key is not given, use the basename as key
+    std::string sound_key = "";
+    if(key == "") {
+        sound_key = boost::filesystem::basename(originalFile);
+    } else {
+        sound_key = key;
+    }
+
+    // if a sound with that key already exists in the dictionary, return
+    if(mSounds.count(sound_key) != 0) {
+        return true;
+    }
+
+	sf::SoundBuffer sound_buffer;
+	if(!sound_buffer.LoadFromFile(originalFile)) {
+		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Tried loading sound '"+(originalFile)+"' but it failed hard!");
+		exit(1);
+	}
+
+	sf::Sound sfsound(sound_buffer);
+
+	mSounds[sound_key] = sfsound;
+
+    return true;
+	
+}
+
+const sf::Sound& ResourceManager::GetSound(const std::string& sound) {
+	if(mSounds.count(sound) >= 1) {
+		return mSounds[sound];
+	} else {
+		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
+		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Tried getting sound '"+(sound)+"' but this sound doesn't exist!");
 		exit(1);
 	}
 }
