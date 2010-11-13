@@ -21,10 +21,14 @@ public:
 	void SetProgress(const float progress);
 	const float GetProgress() const;
 
+	void SetTextVisible(bool visible);
+	bool GetTextVisible() const;
+
 private:
 	float mProgress;
 	TiledSprite mBackSprite;
 	TiledSprite mFrontSprite;
+	bool mTextVisible;
 };
 
 }

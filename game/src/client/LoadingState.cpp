@@ -51,12 +51,13 @@ void LoadingState::Initialize() {
     CreateGuiSystem();
 
 	Engine::GuiProgressbar* p = new Engine::GuiProgressbar("loading_progress");
-	p->SetPosition(Engine::Vector2D(300,280));
-	p->SetDimension(Engine::Vector2D(200,40));
+	p->SetPosition(Engine::Vector2D(200,575));
+	p->SetDimension(Engine::Vector2D(400,10));
+	p->SetTextVisible(false);
 	mGuiSystems.begin()->AddControl(p);
 
 	Engine::GuiLabel* l = new Engine::GuiLabel("loading_progress_label");
-	l->SetPosition(300,330);
+	l->SetPosition(200,560);
 	l->SetText("Loading images...");
 	l->SetFontColor(sf::Color::White);
 	l->SetFontSize(11);

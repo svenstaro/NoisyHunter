@@ -25,23 +25,34 @@ const float GuiProgressbar::GetProgress() const {
 	return mProgress;
 }
 
-void GuiProgressbar::Draw(sf::RenderTarget* target, Vector2D offset) {
-	mFrontSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.progressbar_front"));
-	mBackSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.progressbar_back"));
+void GuiProgressbar::SetTextVisible(bool visible) {
+	mTextVisible = visible;
+}
 
+bool GuiProgressbar::GetTextVisible() const {
+	return mTextVisible;
+}
+
+void GuiProgressbar::Draw(sf::RenderTarget* target, Vector2D offset) {
+	mBackSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.progressbar_back"));
 	mBackSprite.SetPosition(mPosition.x + offset.x, mPosition.y + offset.y);
 	mBackSprite.SetScale(mDimension.x, mDimension.y);
-
-	mFrontSprite.SetPosition(mPosition.x + offset.x, mPosition.y + offset.y);
-	mFrontSprite.SetScale(mDimension.x * mProgress, mDimension.y);
-
-	mText.SetString(boost::lexical_cast<std::string>(int(mProgress*100)) + "%");
-	mText.SetPosition(offset.x + int(mPosition.x + mDimension.x / 2 - mText.GetRect().Width / 2),
-					  offset.y + int(mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2) );
-
 	target->Draw(mBackSprite);
-	target->Draw(mFrontSprite);
-	target->Draw(mText);
+
+	if(mProgress > 0) {
+		mFrontSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.progressbar_front"));
+		mFrontSprite.SetPosition(mPosition.x + offset.x, mPosition.y + offset.y);
+		mFrontSprite.SetScale(mDimension.x * mProgress, mDimension.y);
+		target->Draw(mFrontSprite);
+	}
+
+	if(mTextVisible) {
+		mText.SetString(boost::lexical_cast<std::string>(int(mProgress*100)) + "%");
+		mText.SetPosition(offset.x + int(mPosition.x + mDimension.x / 2 - mText.GetRect().Width / 2),
+						  offset.y + int(mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2) );
+
+		target->Draw(mText);
+	}
 
 	DrawAllAttachments(target);
 }
