@@ -14,7 +14,7 @@
    id="svg3924"
    version="1.1"
    inkscape:version="0.48.0 r9654"
-   sodipodi:docname="Neues Dokument 6">
+   sodipodi:docname="submarine_target.svg">
   <defs
      id="defs3926" />
   <sodipodi:namedview
@@ -25,7 +25,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="15.839192"
-     inkscape:cx="15.547312"
+     inkscape:cx="14.221487"
      inkscape:cy="15.668229"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -51,7 +51,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -61,24 +61,28 @@
      id="layer1"
      transform="translate(0,-1020.3622)">
     <path
-       style="fill:#2dff7a;stroke:none;stroke-width:0.93750000000000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
-       d="M 5.6875,1021.3622 1,1026.0497 l 11.25,6.5625 z"
+       style="fill:#85dfff;fill-opacity:1;stroke:none"
+       d="M 5.6875,1021.3622 1,1026.0497 l 13,8.3125 z"
        id="path3934"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
     <path
-       style="fill:#2dff7a;stroke:none;stroke-width:0.93750000000000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
-       d="m 31,1026.0497 -4.6875,-4.6875 -6.5625,11.25 z"
+       style="fill:#85dfff;fill-opacity:1;stroke:none"
+       d="m 31,1026.0497 -4.6875,-4.6875 -8.3125,13 z"
        id="path3934-4"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
     <path
        inkscape:connector-curvature="0"
        id="path3966"
-       d="M 5.6875,1051.3622 1,1046.6747 l 11.25,-6.5625 z"
-       style="fill:#2dff7a;stroke:none;stroke-width:0.93750000000000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1" />
+       d="M 5.6875,1051.3622 1,1046.6747 l 13,-8.3125 z"
+       style="fill:#85dfff;fill-opacity:1;stroke:none"
+       sodipodi:nodetypes="cccc" />
     <path
        inkscape:connector-curvature="0"
        id="path3968"
-       d="m 31,1046.6747 -4.6875,4.6875 -6.5625,-11.25 z"
-       style="fill:#2dff7a;stroke:none;stroke-width:0.93750000000000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1" />
+       d="m 31,1046.6747 -4.6875,4.6875 -8.3125,-13 z"
+       style="fill:#85dfff;fill-opacity:1;stroke:none"
+       sodipodi:nodetypes="cccc" />
   </g>
 </svg>

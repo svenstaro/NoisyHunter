@@ -53,6 +53,7 @@ public:
 
 private:
     Engine::Vector2D mTarget;
+	int mTargetMarkerRotation;
 	sf::Sprite mSprite;
 };
 

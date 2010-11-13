@@ -26,6 +26,36 @@ enum MouseCursor {
 	MOUSECURSOR_SELECT	= 10006
 };
 
+struct LoadingStatus {
+public:
+	LoadingStatus() {}
+	void SetTotalImages(const int total_images) {
+		mTotalImages = total_images;
+	}
+	void SetImagesLoaded(const int images_loaded) {
+		mImagesLoaded = images_loaded;
+	}
+	void IncreaseImagesLoaded() {
+		mImagesLoaded++;
+	}
+	const int GetImagesLoaded() const {
+		return mImagesLoaded;
+	}
+	const int GetTotalImages() const {
+		return mTotalImages;
+	}
+	const float GetPercentage() const {
+		if(mTotalImages == 0) return 1.f;
+		return mImagesLoaded * 1.f / mTotalImages;
+	}
+	const bool IsFinished() const {
+		return mImagesLoaded >= mTotalImages;
+	}
+private:
+	int mImagesLoaded;
+	int mTotalImages;
+};
+
 struct ImageProperties{
 public:
 	ImageProperties(const boost::filesystem::path& path,
@@ -60,10 +90,11 @@ public:
 								const float height,
 								const std::string& key="");
 
-	const sf::Uint16 LoadNextImage();
-	const sf::Uint16 GetImagesToLoadLeft() const;
-	const sf::Uint16 GetMaxImageQueueSize() const;
-	const float GetPercentageLoadingDone() const;
+	void LoadAllQueuedImagesInBackground();
+	static void LoadAllQueuedImages(void* data);
+
+	void LoadNextImage();
+	const LoadingStatus GetLoadingStatus();
 
     bool AddImage(const boost::filesystem::path& path, const std::string& imgname,
         const float width, const float height, const std::string& key="");
@@ -90,11 +121,11 @@ private:
 	boost::ptr_map<std::string, sf::Font> mFonts;
 	boost::ptr_map<sf::Uint16, AnimatedSprite> mCursors;
 	sf::Uint16 mCurrentCursor;
+	sf::Thread* mLoadingThread;
 
 	boost::ptr_map<std::string, sf::Music*> mMusic;
 	boost::ptr_map<std::string, sf::SoundBuffer> mSoundBuffers;
-
-	sf::Uint16 mMaxImageQueueSize;
+	LoadingStatus mLoadingStatus;
 };
 
 }

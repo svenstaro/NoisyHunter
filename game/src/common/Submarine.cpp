@@ -28,6 +28,8 @@ void Submarine::Initialize() {
 	d->SetOrigin(d->GetSize().x / 2, d->GetSize().y / 2);
 	mSprite = *d;
 
+	mTargetMarkerRotation = 0;
+
 	// Particle system for submarine
 	Engine::Vector2D position = Engine::Vector2D(0.f, 0.f);
 	Engine::Vector2D direction = Engine::Vector2D(0.f, -1.2f);
@@ -96,6 +98,7 @@ void Submarine::Update(float time_delta) {
 		mSprite.SetRotation(- rot );
 	}
 
+	mTargetMarkerRotation += time_delta * 100;
 
 	UpdateAllAttachments(time_delta);
 }
@@ -110,6 +113,8 @@ void Submarine::Draw(sf::RenderTarget* target) const {
 		sf::Sprite target_marker(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("submarine_target"));
 		Engine::Vector2D target_marker_pos = Engine::Coordinates::WorldFloatToWorldPixel(mTarget);
 		target_marker.SetPosition(target_marker_pos.x, target_marker_pos.y);
+		target_marker.SetOrigin(target_marker.GetSize().x / 2, target_marker.GetSize().y / 2);
+		target_marker.Rotate(mTargetMarkerRotation);
 		target->Draw(target_marker);
 	}
 

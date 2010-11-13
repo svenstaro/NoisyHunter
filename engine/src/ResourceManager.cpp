@@ -4,10 +4,28 @@
 namespace Engine {
 
 ResourceManager::ResourceManager() {
-	mMaxImageQueueSize = 0;
+	mLoadingStatus.SetTotalImages(0);
 }
 
 ResourceManager::~ResourceManager() {}
+
+
+void ResourceManager::LoadAllQueuedImagesInBackground() {
+	mLoadingThread = new sf::Thread(&ResourceManager::LoadAllQueuedImages);
+	mLoadingThread->Launch();
+}
+
+void ResourceManager::LoadAllQueuedImages(void* data) {
+	sf::Context context;
+	auto resmgr = Root::get_mutable_instance().GetResourceManagerPtr();
+	while(!resmgr->GetLoadingStatus().IsFinished()) {
+		resmgr->LoadNextImage();
+	}
+}
+
+const LoadingStatus ResourceManager::GetLoadingStatus() {
+	return mLoadingStatus;
+}
 
 void ResourceManager::AddImageToLoadingQueue(const boost::filesystem::path& path,
 											 const std::string& imgname,
@@ -18,16 +36,17 @@ void ResourceManager::AddImageToLoadingQueue(const boost::filesystem::path& path
 	ImageProperties p(path, imgname, width, height, key);
 	mImagesToLoad.push(p);
 
-	if(mMaxImageQueueSize < mImagesToLoad.size())
-		mMaxImageQueueSize = mImagesToLoad.size();
+	int s = mImagesToLoad.size();
+	if(mLoadingStatus.GetTotalImages() < s) {
+		mLoadingStatus.SetTotalImages(s);
+	}
 }
 
-const sf::Uint16 ResourceManager::LoadNextImage() {
-
+void ResourceManager::LoadNextImage() {
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 
 	if(mImagesToLoad.size() <= 0)
-		return mMaxImageQueueSize;
+		return;
 
 	ImageProperties p = mImagesToLoad.front();
 	mImagesToLoad.pop();
@@ -35,23 +54,9 @@ const sf::Uint16 ResourceManager::LoadNextImage() {
 	if(!AddImage(p.Path, p.Name, p.Width, p.Height, p.Key))
 		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Could not load image " + p.Key);
 
-	return int(mImagesToLoad.size());
+	mLoadingStatus.SetImagesLoaded(mLoadingStatus.GetTotalImages() - mImagesToLoad.size());
 }
 
-const sf::Uint16 ResourceManager::GetImagesToLoadLeft() const {
-	return int(mImagesToLoad.size());
-}
-
-const sf::Uint16 ResourceManager::GetMaxImageQueueSize() const {
-	return mMaxImageQueueSize;
-}
-
-const float ResourceManager::GetPercentageLoadingDone() const {
-	if(mMaxImageQueueSize == 0)
-		return 1.f;
-	else
-		return 1.f - int(mImagesToLoad.size()) * 1.f / mMaxImageQueueSize;
-}
 
 bool ResourceManager::AddImage(const boost::filesystem::path& path,
 							   const std::string& imgname,
