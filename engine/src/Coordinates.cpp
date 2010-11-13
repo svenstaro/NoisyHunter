@@ -53,5 +53,10 @@ const Vector2D Coordinates::ScreenPixelToWorldFloat(const Vector2D coords) {
 	tmp.SetScreenPixel(coords);
 	return tmp.GetWorldFloat();
 }
+static const Vector2D WorldFloatToViewPixel(const Vector2D coords) {
+	Coordinates tmp;
+	tmp.SetWorldFloat(coords);
+	return tmp.GetViewPixel();
+}
 
 }

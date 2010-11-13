@@ -20,6 +20,7 @@ public:
 
 	static const Vector2D WorldFloatToWorldPixel(const Vector2D coords);
 	static const Vector2D ScreenPixelToWorldFloat(const Vector2D coords);
+	static const Vector2D WorldFloatToScreenPixel(const Vector2D coords);
 
 private:
 	Vector2D mWorldPixel;
