@@ -1,5 +1,5 @@
-#ifndef LOADINGSTATE_HPP
-#define LOADINGSTATE_HPP
+#ifndef INTROSTATE_HPP
+#define INTROSTATE_HPP
 
 #include "State.hpp"
 #include "InputManager.hpp"
@@ -10,10 +10,10 @@
 #include "GuiTextfield.hpp"
 #include "PlayState.hpp"
 
-class LoadingState : public Engine::State{
+class IntroState : public Engine::State{
 public:
-    LoadingState();
-    ~LoadingState();
+	IntroState();
+	~IntroState();
 
     // state control
     void Initialize();

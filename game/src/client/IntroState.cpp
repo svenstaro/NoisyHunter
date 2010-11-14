@@ -1,14 +1,14 @@
-#include "LoadingState.hpp"
+#include "IntroState.hpp"
 
 #include "Root.hpp"
 
-LoadingState::LoadingState() {}
-LoadingState::~LoadingState() {}
+IntroState::IntroState() {}
+IntroState::~IntroState() {}
 
 // state control
-void LoadingState::Initialize() {
+void IntroState::Initialize() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing LoadingState.");
+	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing IntroState.");
 
 	// load resources
 	auto resmgr = Engine::Root::get_mutable_instance().GetResourceManagerPtr();
@@ -90,7 +90,7 @@ void LoadingState::Initialize() {
     // bind input events
     Engine::InputManager* in = Engine::Root::get_mutable_instance().GetInputManagerPtr();
 
-    Engine::KeyBindingCallback cb = boost::bind(&LoadingState::OnAnyKeyPressed, this);
+	Engine::KeyBindingCallback cb = boost::bind(&IntroState::OnAnyKeyPressed, this);
     in->BindKey( cb, Engine::KEY_PRESSED);
 
     /*// bind mouse
@@ -109,7 +109,7 @@ void LoadingState::Initialize() {
 
 }
 
-void LoadingState::Update(float time_delta) {
+void IntroState::Update(float time_delta) {
 	auto resmgr = Engine::Root::get_mutable_instance().GetResourceManagerPtr();
 	Engine::LoadingStatus ls = resmgr->GetLoadingStatus();
 	// std::cout << "Loading ... " << ceil(ls.GetPercentage() * 100) << std::endl;
@@ -122,15 +122,15 @@ void LoadingState::Update(float time_delta) {
 	}
 }
 
-void LoadingState::Shutdown() {}
+void IntroState::Shutdown() {}
 
-void LoadingState::OnCancel() {
+void IntroState::OnCancel() {
     Engine::Root::get_mutable_instance().RequestShutdown();
 }
-void LoadingState::OnClick(Engine::MouseEventArgs args) {
+void IntroState::OnClick(Engine::MouseEventArgs args) {
     // load playstate if finished loading
 }
-void LoadingState::OnAnyKeyPressed() {
+void IntroState::OnAnyKeyPressed() {
     // load playstate if finished loading
     //std::cout << "pressed" << std::endl;
 }

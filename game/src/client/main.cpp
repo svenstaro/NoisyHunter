@@ -3,7 +3,7 @@
 #include "Root.hpp"
 
 #include "PlayState.hpp"
-#include "LoadingState.hpp"
+#include "IntroState.hpp"
 // Include entities in the appropriate state
 
 void HandleSignal(int sig) {
@@ -101,7 +101,7 @@ int main(int argc, char* argv[]) {
     root.InitializeAsClient(sf::VideoMode(width, height), "Noisy Hunter", fullscreen, sf::IpAddress(ip), port, name, verbose);
 	root.SetWorldPixelsPerFloat(1000);
 
-	root.GetStateManagerPtr()->Add(new LoadingState());
+	root.GetStateManagerPtr()->Add(new IntroState());
 	//root.GetStateManagerPtr()->Add(new PlayState());
 
     root.StartMainLoop();
