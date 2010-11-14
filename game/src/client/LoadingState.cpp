@@ -14,29 +14,50 @@ void LoadingState::Initialize() {
 	auto resmgr = Engine::Root::get_mutable_instance().GetResourceManagerPtr();
 
 	// GUI
-	resmgr->AddImage(boost::filesystem::path("../game/gui"),"button.svg",				48,		48,		"gui.button");
-	resmgr->AddImage(boost::filesystem::path("../game/gui"),"button_hover.svg",		48,		48,		"gui.button_hover");
-	resmgr->AddImage(boost::filesystem::path("../game/gui"),"button_focus.svg",		48,		48,		"gui.button_focus");
-	resmgr->AddImage(boost::filesystem::path("../game/gui"),"grid.svg",		48,		48,		"gui.grid");
-	resmgr->AddImage(boost::filesystem::path("../game/gui"),"checkbox.svg",			16,		16,		"gui.checkbox");
-	resmgr->AddImage(boost::filesystem::path("../game/gui"),"checkbox_checked.svg",	16,		16,		"gui.checkbox_checked");
-	resmgr->AddImage(boost::filesystem::path("../game/gui"),"checkbox_hover.svg",		16,		16,		"gui.checkbox_hover");
-	resmgr->AddImage(boost::filesystem::path("../game/gui"),"textfield2.svg",			24,		24,		"gui.textfield");
-	resmgr->AddImage(boost::filesystem::path("../game/gui"),"progressbar_back.svg",	24,		24,		"gui.progressbar_back");
-	resmgr->AddImage(boost::filesystem::path("../game/gui"),"progressbar_front.svg",	24,		24,		"gui.progressbar_front");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),
+			"button.svg", 0.048f, 0.048f, "gui.button");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),
+			"button_hover.svg",	0.048f,	0.048f,	"gui.button_hover");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),
+			"button_focus.svg", 0.048f, 0.048f,	"gui.button_focus");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),
+			"grid.svg", 0.048f, 0.048f, "gui.grid");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),
+			"checkbox.svg", 0.016f, 0.016f, "gui.checkbox");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),
+			"checkbox_checked.svg", 0.016f, 0.016f, "gui.checkbox_checked");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),
+			"checkbox_hover.svg", 0.016f, 0.016f, "gui.checkbox_hover");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),
+			"textfield2.svg", 0.024f, 0.024f, "gui.textfield");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),
+			"progressbar_back.svg", 0.024f, 0.024f, "gui.progressbar_back");
+	resmgr->AddImage(boost::filesystem::path("../game/gui"),
+			"progressbar_front.svg", 0.024f, 0.024f, "gui.progressbar_front");
 
 	// IMAGES
-	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"submarine1.svg",			80,		53,		"submarine");
-	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"submarine_target.svg",	20,		20,		"submarine_target");
-	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"sonarping.svg",			20,		20,		"sonarping");
-	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"torpedo1.svg",			30,		10,		"torpedo");
-	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"missing.svg",			80,		53,		"missing");
-	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle1.svg",			24,		24,		"particle1");
-	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle_cursor.svg",	24,		24,		"particle_cursor");
-	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle_bubble.svg",	24,		24,		"particle_bubble");
-	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"particle_sonarping.svg",	40,		40,		"particle_sonarping");
-	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"glow1.svg",				50,		50,	"glow1");
-	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),"torpedo_trail.svg",		24,		24,		"torpedo_trail");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
+			"submarine1.svg", 0.08f, 0.053f, "submarine");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
+			"submarine_target.svg", 0.02f,	0.02f,	"submarine_target");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
+			"sonarping.svg", 0.02f, 0.02f, "sonarping");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
+			"torpedo1.svg", 0.03f, 0.01f, "torpedo");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
+			"missing.svg", 0.08f, 0.053f, "missing");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
+			"particle1.svg", 0.024f, 0.024f, "particle1");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
+			"particle_cursor.svg", 0.024f,	0.024f, "particle_cursor");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
+			"particle_bubble.svg", 0.024f, 0.024f, "particle_bubble");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
+			"particle_sonarping.svg", 0.04f, 0.04f, "particle_sonarping");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
+			"glow1.svg", 0.05f, 0.05f, "glow1");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
+			"torpedo_trail.svg", 0.024f, 0.024f, "torpedo_trail");
 
 	resmgr->LoadAllQueuedImagesInBackground();
 

@@ -12,6 +12,7 @@
 #include <boost/filesystem.hpp>
 
 #include "AnimatedSprite.hpp"
+#include "Coordinates.hpp"
 
 namespace Engine {
 
@@ -59,8 +60,8 @@ struct ImageProperties{
 public:
 	ImageProperties(const boost::filesystem::path& path,
 					const std::string& imgname,
-					const sf::Uint16 width,
-					const sf::Uint16 height,
+					const float width,
+					const float height,
 					const std::string& key="") {
 
 		Path = path;
@@ -72,8 +73,8 @@ public:
 
 	boost::filesystem::path Path;
 	std::string Name;
-	sf::Uint16 Width;
-	sf::Uint16 Height;
+	float Width;
+	float Height;
 	std::string Key;
 };
 
@@ -85,8 +86,8 @@ public:
 
 	void AddImageToLoadingQueue(const boost::filesystem::path& path,
 								const std::string& imgname,
-								const sf::Uint16 width,
-								const sf::Uint16 height,
+								const float width,
+								const float height,
 								const std::string& key="");
 
 	void LoadAllQueuedImagesInBackground();
@@ -96,7 +97,7 @@ public:
 	const LoadingStatus GetLoadingStatus();
 
     bool AddImage(const boost::filesystem::path& path, const std::string& imgname,
-        const sf::Uint16 width, const sf::Uint16 height, const std::string& key="");
+        const float width, const float height, const std::string& key="");
     const sf::Image& GetImage(const std::string& img);
 
 	bool AddMusic(const boost::filesystem::path& path, const std::string& music_name, const std::string& key="");
