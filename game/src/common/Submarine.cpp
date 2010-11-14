@@ -107,7 +107,6 @@ void Submarine::Update(float time_delta) {
 }
 
 void Submarine::Draw(sf::RenderTarget* target) const {
-
 	Engine::Root::get_mutable_instance().SetRenderMode(Engine::RENDERMODE_WORLD);
 	target->Draw(mSprite);
 

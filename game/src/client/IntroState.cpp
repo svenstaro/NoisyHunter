@@ -59,8 +59,6 @@ void IntroState::Initialize() {
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
 			"torpedo_trail.svg", 0.024f, 0.024f, "torpedo_trail");
 
-	resmgr->LoadAllQueuedImagesInBackground();
-
     // load font
     sf::Font font;
     font.LoadFromFile("../game/fonts/kingthings_trypewriter_2.ttf");
@@ -80,7 +78,6 @@ void IntroState::Initialize() {
 	Engine::GuiLabel* l = new Engine::GuiLabel("loading_progress_label");
 	l->SetPosition(200,560);
 	l->SetText("Loading images...");
-	l->SetFontColor(sf::Color::White);
 	l->SetFontSize(11);
 	mGuiSystems.begin()->AddControl(l);
 
@@ -110,15 +107,19 @@ void IntroState::Initialize() {
 }
 
 void IntroState::Update(float time_delta) {
+	sf::Sleep(0.1);
 	auto resmgr = Engine::Root::get_mutable_instance().GetResourceManagerPtr();
-	Engine::LoadingStatus ls = resmgr->GetLoadingStatus();
-	// std::cout << "Loading ... " << ceil(ls.GetPercentage() * 100) << std::endl;
-	if (ls.GetPercentage() >= 1) {
+
+	if (resmgr->GetPercentageLoadingDone() >= 1) {
 		Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new PlayState());
 	} else {
-		mGuiSystems.begin()->GetControl<Engine::GuiProgressbar>("loading_progress")->SetProgress(ls.GetPercentage());
+		sf::Uint16 n = resmgr->LoadNextImage();
+		sf::Uint16 m = resmgr->GetMaxImageQueueSize();
+		mGuiSystems.begin()->GetControl<Engine::GuiProgressbar>("loading_progress")->SetProgress(resmgr->GetPercentageLoadingDone());
 		mGuiSystems.begin()->GetControl<Engine::GuiLabel>("loading_progress_label")->SetText( "Loading images ... " +
-			boost::lexical_cast<std::string>(ls.GetImagesLoaded()) + " / " + boost::lexical_cast<std::string>(ls.GetTotalImages()));
+			boost::lexical_cast<std::string>(n) +
+			" / " +
+			boost::lexical_cast<std::string>(m) );
 	}
 }
 

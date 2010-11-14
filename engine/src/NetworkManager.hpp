@@ -96,7 +96,6 @@ private:
     sf::Uint16 mClient_ServerPort;
     sf::Uint16 mClient_ClientPort;
 	std::string mClient_ClientName;
-	bool mClient_ConnectedToServer;
 	State* mEntityState;
 
     // Signals
