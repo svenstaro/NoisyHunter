@@ -123,7 +123,7 @@ void Submarine::Draw(sf::RenderTarget* target) const {
 	DrawAllAttachments(target);
 }
 
-const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D target_pos, const float time_to_live) {
+const Engine::Entity* const Submarine::FireTorpedoTo(const Engine::Vector2D target_pos, const float time_to_live) {
 	mDirection.Normalize();
 	Torpedo* torpedo = new Torpedo();
 	torpedo->SetPosition(mPosition);
@@ -135,7 +135,7 @@ const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D target_pos
 	return torpedo;
 }
 
-const Engine::Entity* Submarine::FireSonarPing(const Engine::Vector2D direction, const float time_to_live) {
+const Engine::Entity* const Submarine::FireSonarPing(const Engine::Vector2D direction, const float time_to_live) {
 	Engine::Vector2D dir = direction - mPosition;
 	dir.Normalize();
 	SonarPing* sonarping = new SonarPing();

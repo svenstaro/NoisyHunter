@@ -440,7 +440,7 @@ void NetworkManager::SetServerIp(const sf::IpAddress server_ip) {
 	mClient_ServerIp = server_ip;
 }
 
-const sf::IpAddress NetworkManager::GetServerIp() {
+sf::IpAddress NetworkManager::GetServerIp() {
 	return mClient_ServerIp;
 }
 
@@ -448,7 +448,7 @@ void NetworkManager::SetServerPort(const sf::Uint16 server_port) {
 	mClient_ServerPort = server_port;
 }
 
-const sf::Uint16 NetworkManager::GetServerPort() {
+sf::Uint16 NetworkManager::GetServerPort() {
 	return mClient_ServerPort;
 }
 

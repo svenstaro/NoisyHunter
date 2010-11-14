@@ -60,17 +60,17 @@ public:
 								const float height,
 								const std::string& key="");
 
-	const sf::Uint16 LoadNextImage();
-	const sf::Uint16 GetImagesToLoadLeft() const;
-	const sf::Uint16 GetMaxImageQueueSize() const;
-	const float GetPercentageLoadingDone() const;
+	sf::Uint16 LoadNextImage();
+	sf::Uint16 GetImagesToLoadLeft() const;
+	sf::Uint16 GetMaxImageQueueSize() const;
+	float GetPercentageLoadingDone() const;
 
     bool AddImage(const boost::filesystem::path& path, const std::string& imgname,
         const float width, const float height, const std::string& key="");
     const sf::Image& GetImage(const std::string& img);
 
 	bool AddMusic(const boost::filesystem::path& path, const std::string& music_name, const std::string& key="");
-	const sf::Music* GetMusic(const std::string& music);
+	const sf::Music& GetMusic(const std::string& music);
 
 	bool AddSoundBuffer(const boost::filesystem::path& path, const std::string& sound, const std::string& key="");
 	const sf::SoundBuffer& GetSoundBuffer(const std::string& sound);
@@ -81,7 +81,7 @@ public:
 	void SetCursorSprite(AnimatedSprite& sprite, const sf::Uint16 key);
 	AnimatedSprite& GetCursorSprite();
 	void SetCursor(const sf::Uint16 key);
-	const sf::Uint16 GetCursor() const;
+	sf::Uint16 GetCursor() const;
 private:
 	std::queue<ImageProperties> mImagesToLoad;
 	std::queue<sf::Music> mMusicToLoad;
@@ -91,7 +91,7 @@ private:
 	boost::ptr_map<sf::Uint16, AnimatedSprite> mCursors;
 	sf::Uint16 mCurrentCursor;
 
-	boost::ptr_map<std::string, sf::Music*> mMusic;
+	boost::ptr_map<std::string, sf::Music> mMusic;
 	boost::ptr_map<std::string, sf::SoundBuffer> mSoundBuffers;
 
 	sf::Uint16 mMaxImageQueueSize;

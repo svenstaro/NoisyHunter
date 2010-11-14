@@ -26,7 +26,7 @@ public:
 	void ClearAllPoints();
 
 	void SetBorderWidth(const float border_width);
-	const float GetBorderWidth();
+	float GetBorderWidth();
 
 	// callbacks
 	void OnCollide(const Engine::Entity& ent);

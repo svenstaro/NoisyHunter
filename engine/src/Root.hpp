@@ -66,9 +66,9 @@ public:
     void SetClientId(const sf::Uint16 client_id);
 
 	void SetWorldPixelsPerFloat(const float ppf);
-	const float GetWorldPixelsPerFloat() const;
+	float GetWorldPixelsPerFloat() const;
 
-	const float GetRunTime() const;
+	float GetRunTime() const;
 
 	float GetFps() const;
 	float GetAverageFps() const;

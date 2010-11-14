@@ -71,10 +71,10 @@ public:
 	ClientManager* GetClientManagerPtr();
 
 	void SetServerIp(const sf::IpAddress server_ip);
-	const sf::IpAddress GetServerIp();
+	sf::IpAddress GetServerIp();
 
 	void SetServerPort(const sf::Uint16 server_port);
-	const sf::Uint16 GetServerPort();
+	sf::Uint16 GetServerPort();
 
 	void SetEntityState(State* entity_state);
 	State* GetEntityState();

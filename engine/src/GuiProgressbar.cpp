@@ -21,7 +21,7 @@ void GuiProgressbar::SetProgress(const float progress) {
 	mProgress = progress;
 }
 
-const float GuiProgressbar::GetProgress() const {
+float GuiProgressbar::GetProgress() const {
 	return mProgress;
 }
 

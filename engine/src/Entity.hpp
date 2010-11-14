@@ -80,7 +80,7 @@ public:
 
 	const Vector2D GetPosition() const;
 
-	const float GetSpeed() const;
+	float GetSpeed() const;
 
 	const Vector2D GetDirection() const;
 
@@ -88,9 +88,9 @@ public:
 
     virtual PositionType GetPositionType() const;
 
-	const float GetTimeToLive() const;
+	float GetTimeToLive() const;
 
-	const float GetLifeTime() const;
+	float GetLifeTime() const;
 
 	bool operator<(const Entity& other);
 

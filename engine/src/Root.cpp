@@ -265,11 +265,11 @@ void Root::SetWorldPixelsPerFloat(const float ppf) {
 	mWorldPixelsPerFloat = ppf;
 }
 
-const float Root::GetWorldPixelsPerFloat() const {
+float Root::GetWorldPixelsPerFloat() const {
 	return mWorldPixelsPerFloat;
 }
 
-const float Root::GetRunTime() const {
+float Root::GetRunTime() const {
 	return mRunTimeClock.GetElapsedTime();
 }
 

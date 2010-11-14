@@ -19,7 +19,7 @@ public:
 	virtual void Draw(sf::RenderTarget* target, Vector2D offset = Vector2D(0,0));
 
 	void SetProgress(const float progress);
-	const float GetProgress() const;
+	float GetProgress() const;
 
 	void SetTextVisible(bool visible);
 	bool GetTextVisible() const;

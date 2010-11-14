@@ -35,7 +35,7 @@ void AnimatedSprite::SetFPS(float fps) {
 	mFPS = fps;
 }
 
-const float AnimatedSprite::GetFPS() const {
+float AnimatedSprite::GetFPS() const {
 	return mFPS;
 }
 
@@ -43,7 +43,7 @@ void AnimatedSprite::SetNumFrames(sf::Uint16 num_frames) {
 	mNumFrames = num_frames;
 }
 
-const sf::Uint16 AnimatedSprite::GetNumFrames() const {
+sf::Uint16 AnimatedSprite::GetNumFrames() const {
 	return mNumFrames;
 }
 

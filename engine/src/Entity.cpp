@@ -109,7 +109,7 @@ const Vector2D Entity::GetPosition() const {
 	return mPosition;
 }
 
-const float Entity::GetSpeed() const {
+float Entity::GetSpeed() const {
 	return mSpeed;
 }
 
@@ -125,11 +125,11 @@ Entity::PositionType Entity::GetPositionType() const {
 	return Entity::POSITIONTYPE_WORLDFLOAT;
 }
 
-const float Entity::GetTimeToLive() const {
+float Entity::GetTimeToLive() const {
 	return mTimeToLive;
 }
 
-const float Entity::GetLifeTime() const {
+float Entity::GetLifeTime() const {
 	return mLifeTime;
 }
 

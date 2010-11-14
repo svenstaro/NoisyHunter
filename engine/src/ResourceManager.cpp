@@ -22,7 +22,7 @@ void ResourceManager::AddImageToLoadingQueue(const boost::filesystem::path& path
 		mMaxImageQueueSize = mImagesToLoad.size();
 }
 
-const sf::Uint16 ResourceManager::LoadNextImage() {
+sf::Uint16 ResourceManager::LoadNextImage() {
 
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 
@@ -38,15 +38,15 @@ const sf::Uint16 ResourceManager::LoadNextImage() {
 	return int(mImagesToLoad.size());
 }
 
-const sf::Uint16 ResourceManager::GetImagesToLoadLeft() const {
+sf::Uint16 ResourceManager::GetImagesToLoadLeft() const {
 	return int(mImagesToLoad.size());
 }
 
-const sf::Uint16 ResourceManager::GetMaxImageQueueSize() const {
+sf::Uint16 ResourceManager::GetMaxImageQueueSize() const {
 	return mMaxImageQueueSize;
 }
 
-const float ResourceManager::GetPercentageLoadingDone() const {
+float ResourceManager::GetPercentageLoadingDone() const {
 	if(mMaxImageQueueSize == 0)
 		return 1.f;
 	else
@@ -150,19 +150,19 @@ bool ResourceManager::AddMusic(const boost::filesystem::path& path, const std::s
         return true;
     }
 
-	sf::Music* sfmusic = new sf::Music;
+	sf::Music* sfmusic = new sf::Music();
 	if(!sfmusic->OpenFromFile(originalFile)) {
 		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Tried loading music '"+(originalFile)+"' but it failed hard!");
 		exit(1);
 	}
 
-	mMusic[music_key] = sfmusic;
+	mMusic.insert(music_key, sfmusic);
 
     return true;
 	
 }
 
-const sf::Music* ResourceManager::GetMusic(const std::string& music) {
+const sf::Music& ResourceManager::GetMusic(const std::string& music) {
 	if(mMusic.count(music) >= 1) {
 		return mMusic[music];
 	} else {
@@ -223,6 +223,7 @@ const sf::SoundBuffer& ResourceManager::GetSoundBuffer(const std::string& sound)
 void ResourceManager::AddFont(sf::Font& font, std::string key) {
     mFonts[key] = font;
 }
+
 const sf::Font& ResourceManager::GetFont(const std::string& key) {
     return mFonts[key];
 }
@@ -235,7 +236,7 @@ void ResourceManager::SetCursor(const sf::Uint16 key) {
 	mCurrentCursor = key;
 }
 
-const sf::Uint16 ResourceManager::GetCursor() const {
+sf::Uint16 ResourceManager::GetCursor() const {
 	return mCurrentCursor;
 }
 

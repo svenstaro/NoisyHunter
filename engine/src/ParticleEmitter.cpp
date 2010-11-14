@@ -151,27 +151,27 @@ const Vector2D& ParticleEmitter::GetPositionOffset() const {
 	return mPositionOffset;
 }
 
-const float ParticleEmitter::GetRotationOffset() const {
+float ParticleEmitter::GetRotationOffset() const {
 	return mRotationOffset;
 }
 
-const float ParticleEmitter::GetSpeed() const {
+float ParticleEmitter::GetSpeed() const {
 	return mSpeed;
 }
 
-const float ParticleEmitter::GetSpread() const {
+float ParticleEmitter::GetSpread() const {
 	return mSpread;
 }
 
-const float ParticleEmitter::GetTimeToLive() const {
+float ParticleEmitter::GetTimeToLive() const {
 	return mTimeToLive;
 }
 
-const float ParticleEmitter::GetRate() const {
+float ParticleEmitter::GetRate() const {
 	return mRate;
 }
 
-const sf::Blend::Mode ParticleEmitter::GetBlendMode() const {
+sf::Blend::Mode ParticleEmitter::GetBlendMode() const {
 	return mBlendMode;
 }
 
@@ -183,19 +183,19 @@ const sf::Color& ParticleEmitter::GetEndColor() const {
 	return mEndColor;
 }
 
-const float ParticleEmitter::GetStartAlpha() const {
+float ParticleEmitter::GetStartAlpha() const {
 	return mStartAlpha;
 }
 
-const float ParticleEmitter::GetEndAlpha() const {
+float ParticleEmitter::GetEndAlpha() const {
 	return mEndAlpha;
 }
 
-const float ParticleEmitter::GetStartScale() const {
+float ParticleEmitter::GetStartScale() const {
 	return mStartScale;
 }
 
-const float ParticleEmitter::GetEndScale() const {
+float ParticleEmitter::GetEndScale() const {
 	return mEndScale;
 }
 

@@ -88,7 +88,7 @@ Entity::PositionType Particle::GetPositionType() const {
 	return mPositionType;
 }
 
-const float Particle::GetLifeTime() const {
+float Particle::GetLifeTime() const {
 	return mLifeTime;
 }
 

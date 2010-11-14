@@ -2,9 +2,10 @@
 
 #include "Root.hpp"
 
-namespace Engine{
+namespace Engine {
 
 GuiButton::GuiButton() {}
+
 GuiButton::GuiButton(std::string name) {
     mName = name;
     mHover = false;
@@ -28,9 +29,9 @@ void GuiButton::Draw(sf::RenderTarget* target, Vector2D offset) {
 	mText.SetPosition(offset.x + int(mPosition.x + mDimension.x / 2 - mText.GetRect().Width  / 2),	// convert to int to prevent blurry font due to half pixel coordinates
 					  offset.y + int(mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2));
 
-    if (mHover)
+    if(mHover)
         mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button_hover"));
-	else if (mIsFocused)
+	else if(mIsFocused)
 		mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button_focus"));
 	else
         mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button"));
@@ -49,14 +50,11 @@ void GuiButton::Draw(sf::RenderTarget* target, Vector2D offset) {
 	mSprite.SetPosition(offset.x + mPosition.x, offset.y + mPosition.y);
 	mSprite.SetScale(mDimension.x, mDimension.y);
 
-
     target->Draw(mSprite);
     target->Draw(mText);
 
 	DrawAllAttachments(target);
 }
-
-
 
 // Signals & slots
 

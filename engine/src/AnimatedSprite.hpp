@@ -20,10 +20,10 @@ public:
 						 const Color& Col = Color(255, 255, 255, 255));
 
 	void SetFPS(float fps);
-	const float GetFPS() const;
+	float GetFPS() const;
 
 	void SetNumFrames(sf::Uint16 num_frames);
-	const sf::Uint16 GetNumFrames() const;
+	sf::Uint16 GetNumFrames() const;
 
 	void SetSubRectSize(sf::Vector2f sub_rect_size);
 	const sf::Vector2f GetSubRectSize() const;

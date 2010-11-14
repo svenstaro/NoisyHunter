@@ -55,18 +55,18 @@ public:
 	void SetImageName(const std::string image_name);
 
 	const Vector2D& GetPositionOffset() const;
-	const float GetRotationOffset() const;
-	const float GetSpeed() const;
-	const float GetSpread() const;
-	const float GetTimeToLive() const;
-	const float GetRate() const;
-	const sf::Blend::Mode GetBlendMode() const;
+	float GetRotationOffset() const;
+	float GetSpeed() const;
+	float GetSpread() const;
+	float GetTimeToLive() const;
+	float GetRate() const;
+	sf::Blend::Mode GetBlendMode() const;
 	const sf::Color& GetStartColor() const;
 	const sf::Color& GetEndColor() const;
-	const float GetStartAlpha() const;
-	const float GetEndAlpha() const;
-	const float GetStartScale() const;
-	const float GetEndScale() const;
+	float GetStartAlpha() const;
+	float GetEndAlpha() const;
+	float GetStartScale() const;
+	float GetEndScale() const;
 
 	sf::Uint16 GetEntityId() const;
 

@@ -36,7 +36,7 @@ void WorldPolygon::SetBorderWidth(const float border_width) {
 	mBorderWidth = border_width;
 }
 
-const float WorldPolygon::GetBorderWidth() {
+float WorldPolygon::GetBorderWidth() {
 	return mBorderWidth;
 }
 

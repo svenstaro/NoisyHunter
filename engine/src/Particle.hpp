@@ -39,7 +39,7 @@ public:
 
 	Entity::PositionType GetPositionType() const;
 
-	const float GetLifeTime() const;
+	float GetLifeTime() const;
 
 private:
 	sf::Color mColor;
