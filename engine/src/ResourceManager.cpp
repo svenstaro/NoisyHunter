@@ -14,7 +14,6 @@ void ResourceManager::AddImageToLoadingQueue(const boost::filesystem::path& path
 											 const float width,
 											 const float height,
 											 const std::string& key) {
-
 	ImageProperties p(path, imgname, width, height, key);
 	mImagesToLoad.push(p);
 

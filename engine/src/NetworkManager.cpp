@@ -459,7 +459,7 @@ void NetworkManager::SetServerPort(const sf::Uint16 server_port) {
 	mClient_ServerPort = server_port;
 }
 
-const sf::Uint16 NetworkManager::GetServerPort() {
+sf::Uint16 NetworkManager::GetServerPort() {
 	return mClient_ServerPort;
 }
 

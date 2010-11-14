@@ -26,14 +26,13 @@ enum MouseCursor {
 	MOUSECURSOR_SELECT	= 10006
 };
 
-struct ImageProperties{
+struct ImageProperties {
 public:
 	ImageProperties(const boost::filesystem::path& path,
 					const std::string& imgname,
 					const float width,
 					const float height,
 					const std::string& key="") {
-
 		Path = path;
 		Name = imgname;
 		Width = width;

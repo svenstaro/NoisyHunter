@@ -74,7 +74,7 @@ public:
 	const sf::IpAddress GetServerIp();
 
 	void SetServerPort(const sf::Uint16 server_port);
-	const sf::Uint16 GetServerPort();
+	sf::Uint16 GetServerPort();
 
 	void SetEntityState(State* entity_state);
 	State* GetEntityState();
