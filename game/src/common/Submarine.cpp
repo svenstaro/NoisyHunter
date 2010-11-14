@@ -9,7 +9,8 @@ Submarine::Submarine(const float pos_x,
 					 const sf::Uint16 client_id) {
 	mLayer = Engine::Entity::LAYER_REGULAR;
 	SetPosition(Engine::Vector2D(pos_x, pos_y));
-	SetSpeed(0.06);
+	SetTarget(mPosition);
+	SetSpeed(0.f);
 	SetDirection(Engine::Vector2D(1,0));
 	mClientId = client_id;
 	mUniqueId = 0;
@@ -40,7 +41,7 @@ void Submarine::Initialize() {
 	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter();
 	part_emit->SetPosition(Engine::Vector2D(0.f, 0.f));
 	part_emit->SetRotationOffset(0.f);
-	part_emit->SetSpeed(0.1f);
+	part_emit->SetSpeed(0.06f);
 	part_emit->SetSpread(20.f);
 	part_emit->SetRate(1.7f);
 	part_emit->SetTimeToLive(5.f);
@@ -57,7 +58,8 @@ void Submarine::Initialize() {
 
 void Submarine::Update(float time_delta) {
     Engine::Vector2D relative_target = mTarget - mPosition;
-	if (relative_target.Magnitude() > 0.01){
+	float dist = relative_target.Magnitude();
+	if(dist > 0.01) {
 		float angle = relative_target.Rotation() - mDirection.Rotation();
 
 		if(Engine::Vector2D::rad2Deg(angle) > 180)
@@ -73,6 +75,7 @@ void Submarine::Update(float time_delta) {
 
 		mDirection.Rotate(angle);
 		mDirection.Normalize();
+
 		mPosition += mDirection * mSpeed * time_delta;
 	}
 
@@ -86,7 +89,7 @@ void Submarine::Update(float time_delta) {
 	float rot = Engine::Vector2D::rad2Deg( mDirection.Rotation());
 	bool flip_x = rot > 90 || rot < -90;
 	mSprite.FlipX(flip_x);
-	if (flip_x) {
+	if(flip_x) {
 		if (rot > 90) rot = 180 - rot;
 		if (rot < -90) rot = - 180 - rot;
 		if (rot > 30) rot = 30;
@@ -126,7 +129,7 @@ const Engine::Entity* Submarine::FireTorpedoTo(const Engine::Vector2D target_pos
 	Torpedo* torpedo = new Torpedo();
 	torpedo->SetPosition(mPosition);
 	torpedo->SetDirection(mDirection);
-	torpedo->SetSpeed(mSpeed * 3);
+	torpedo->SetSpeed(0.036 * 3); // speed of submarine * 3
 	torpedo->SetTargetPosition(target_pos);
 	torpedo->SetTimeToLive(time_to_live);
 
@@ -140,7 +143,7 @@ const Engine::Entity* Submarine::FireSonarPing(const Engine::Vector2D direction,
 	sonarping->SetPosition(mPosition);
 	sonarping->SetDirection(dir);
 	sonarping->SetTimeToLive(time_to_live);
-	sonarping->SetSpeed(mSpeed * 3);
+	sonarping->SetSpeed(0.036 * 3); // speed of submarine * 3
 	return sonarping;
 }
 
@@ -188,7 +191,7 @@ void Submarine::SetTarget(const float x, const float y) {
 
 void Submarine::SetTarget(const Engine::Vector2D target) {
     mTarget = target;
-	SetSpeed(0.06);
+	SetSpeed(0.036);
 }
 
 void Submarine::serialize(Engine::IOPacket& packet) {
