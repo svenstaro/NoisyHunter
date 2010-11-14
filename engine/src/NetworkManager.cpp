@@ -28,6 +28,8 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
 
 	mReceivedPacketsCount = 0;
 	mSentPacketsCount = 0;
+
+	mEntityState = NULL;
 }
 
 void NetworkManager::InitializeAsClient(const sf::IpAddress server_ip, 
@@ -43,6 +45,9 @@ void NetworkManager::InitializeAsClient(const sf::IpAddress server_ip,
 
 	mClient_ClientPort = 12357;
 	mClient_ClientName = client_name;
+	mClient_ConnectedToServer = false;
+
+	mEntityState = NULL;
 }
 
 void NetworkManager::ConnectToServer() {
@@ -51,6 +56,7 @@ void NetworkManager::ConnectToServer() {
 
 	mListener.Bind(mClient_ClientPort);
 	mListener.SetBlocking(0);
+	mClient_ConnectedToServer = true;
 
 	SendClientAdd(mClient_ClientName);
 
@@ -90,11 +96,15 @@ void NetworkManager::SendPacket(sf::Packet& packet) {
 			}
 		} else {
 			// We are sending from client.
-			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending packet to: "+mClient_ServerIp.ToString()+":"+boost::lexical_cast<std::string>(mClient_ServerPort));
-			mListener.Send(packet, mClient_ServerIp, mClient_ServerPort);
+			if(!mClient_ConnectedToServer) {
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Won't send packet: Client did not connect to server yet.");
+			} else {
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending packet to: "+mClient_ServerIp.ToString()+":"+boost::lexical_cast<std::string>(mClient_ServerPort));
+				mListener.Send(packet, mClient_ServerIp, mClient_ServerPort);
+			}
 		}
 		mSentPacketsCount++;
-		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sent packets count: "+boost::lexical_cast<std::string>(mSentPacketsCount));
+		//logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sent packets count: "+boost::lexical_cast<std::string>(mSentPacketsCount));
 	}
 }
 
@@ -110,7 +120,7 @@ void NetworkManager::SendPacket(sf::Packet& packet, sf::Uint16 client_id) {
 			mListener.Send(packet, mClientManager.GetIp(client_id), mClientManager.GetPort(client_id));
 		} else {
 			// WE DONT WANT THAT
-			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "ALL HELL BREAKS LOOSE");
+			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Won't send packet to a specified client_id from a client. This is the job of the server!");
 		}
 		mSentPacketsCount++;
 		//logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sent packets count: "+boost::lexical_cast<std::string>(mSentPacketsCount));
@@ -174,10 +184,12 @@ void NetworkManager::SendChatMessage(const std::string& chat_message, const std:
 }
 
 void NetworkManager::SendPing() {
-	mPingClock.Reset();
-	sf::Packet packet;
-	packet << sf::Uint16(NETCMD_SERVERPING);
-	SendPacket(packet);
+	if(mIsServer || mClient_ConnectedToServer) {
+		mPingClock.Reset();
+		sf::Packet packet;
+		packet << sf::Uint16(NETCMD_SERVERPING);
+		SendPacket(packet);
+	}
 }
 
 void NetworkManager::Receive() {
@@ -259,7 +271,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
                 sf::Packet packet;
                 sf::Uint16 id = mClientManager.GetId(address, port);
                 std::string client_name = mClientManager.GetName(id);
-				mEntityState->DeleteEntitiesByClientId(id);
+				GetEntityState()->DeleteEntitiesByClientId(id);
 					
 				if(mClientManager.IsKnown(address, port)) {
 					std::string reason = "Lol just quit.";
@@ -284,7 +296,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
                 packet >> action_id;
                 packet >> unique_id;
                 
-				Entity* e = mEntityState->GetEntityByUniqueId(unique_id);
+				Entity* e = GetEntityState()->GetEntityByUniqueId(unique_id);
                 if (e != NULL) {
                     sf::Packet response = e->PerformAction(action_id, packet, true);
                     // Send back to all clients.
@@ -308,7 +320,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 				// Fetch interaction ID
 				sf::Uint16 interaction_id;
 				packet >> interaction_id;
-				mEntityState->HandleInteraction(interaction_id, mClientManager.GetId(address, port), packet);
+				GetEntityState()->HandleInteraction(interaction_id, mClientManager.GetId(address, port), packet);
 			} else {
 				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received invalid NETCMD id: "+boost::lexical_cast<std::string>(net_cmd));
 				exit(1);
@@ -357,14 +369,14 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 				IOPacket iopacket(true, packet);
 				entity->serialize(iopacket);
 				packet = iopacket.GetPacket();
-				mEntityState->AddEntity(entity);
+				GetEntityState()->AddEntity(entity);
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetUniqueId())+") added.");
             } else if(net_cmd == NETCMD_ENTITYACTION) {
                 sf::Uint16 action_id;
                 sf::Uint16 unique_id;
                 packet >> action_id;
                 packet >> unique_id;
-				Entity* e = mEntityState->GetEntityByUniqueId(unique_id);
+				Entity* e = GetEntityState()->GetEntityByUniqueId(unique_id);
                 e->PerformAction(unique_id, packet, false); // false -> do not validate action, as luckily the server did that for you
 			} else if(net_cmd == NETCMD_ENTITYINFO) {
 				sf::Uint16 unique_id;
@@ -373,7 +385,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 				sf::Uint16 entity_id;
 				packet >> entity_id;
 
-				Entity* e = mEntityState->GetEntityByUniqueId(unique_id);
+				Entity* e = GetEntityState()->GetEntityByUniqueId(unique_id);
                 if(e != NULL) {
 					// Deserialize
 					IOPacket iopacket(true, packet);
@@ -389,13 +401,12 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 					IOPacket iopacket(true, packet);
 					entity->serialize(iopacket);
 					packet = iopacket.GetPacket();
-					mEntityState->AddEntity(entity);
+					GetEntityState()->AddEntity(entity);
 					logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetUniqueId())+") added.");
 				}
 			} else if(net_cmd == NETCMD_ENTITYDEL) {
 				sf::Uint16 unique_id;
 				packet >> unique_id;
-				std::cout << unique_id << std::endl;
 				Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().DeleteEntityByUniqueId(unique_id);
             } else if(net_cmd == NETCMD_CHATMESSAGE) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE.");
@@ -440,7 +451,7 @@ void NetworkManager::SetServerIp(const sf::IpAddress server_ip) {
 	mClient_ServerIp = server_ip;
 }
 
-sf::IpAddress NetworkManager::GetServerIp() {
+const sf::IpAddress NetworkManager::GetServerIp() {
 	return mClient_ServerIp;
 }
 
@@ -448,7 +459,7 @@ void NetworkManager::SetServerPort(const sf::Uint16 server_port) {
 	mClient_ServerPort = server_port;
 }
 
-sf::Uint16 NetworkManager::GetServerPort() {
+const sf::Uint16 NetworkManager::GetServerPort() {
 	return mClient_ServerPort;
 }
 
@@ -457,6 +468,10 @@ void NetworkManager::SetEntityState(State* entity_state) {
 }
 
 State* NetworkManager::GetEntityState() {
+	if(mEntityState == NULL) {
+		Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "No Entity State specified, but requested. Quitting.");
+		exit(1);
+	}
 	return mEntityState;
 }
 

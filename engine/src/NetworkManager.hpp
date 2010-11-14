@@ -71,10 +71,10 @@ public:
 	ClientManager* GetClientManagerPtr();
 
 	void SetServerIp(const sf::IpAddress server_ip);
-	sf::IpAddress GetServerIp();
+	const sf::IpAddress GetServerIp();
 
 	void SetServerPort(const sf::Uint16 server_port);
-	sf::Uint16 GetServerPort();
+	const sf::Uint16 GetServerPort();
 
 	void SetEntityState(State* entity_state);
 	State* GetEntityState();
@@ -96,6 +96,7 @@ private:
     sf::Uint16 mClient_ServerPort;
     sf::Uint16 mClient_ClientPort;
 	std::string mClient_ClientName;
+	bool mClient_ConnectedToServer;
 	State* mEntityState;
 
     // Signals
