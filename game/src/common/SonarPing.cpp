@@ -19,7 +19,7 @@ SonarPing* SonarPing::clone() const {
 void SonarPing::Initialize() {
 	boost::shared_ptr<sf::Sprite> d(new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("particle_sonarping")));
 	d->SetOrigin(d->GetSize().x / 2, d->GetSize().y / 2);
-	mSprite = *d;
+	mDrawable = d;
 
 	Engine::Vector2D position = Engine::Vector2D(0.f, 0.f);
 	Engine::Vector2D direction = Engine::Vector2D(0.f, 1.f);
@@ -51,9 +51,6 @@ void SonarPing::Initialize() {
 void SonarPing::Update(const float time_delta) {
 	mDirection.Normalize();
 	mPosition += mDirection * mSpeed * time_delta;
-	Engine::Vector2D world_pixel = Engine::Coordinates::WorldFloatToWorldPixel(mPosition);
-	mSprite.SetPosition(world_pixel.x, world_pixel.y);
-	mSprite.SetRotation(-Engine::Vector2D::rad2Deg(mDirection.Rotation()));
 
 	if(mTimeToLive >= 0) {
 		mLifeTime += time_delta;
@@ -61,13 +58,6 @@ void SonarPing::Update(const float time_delta) {
 
 	UpdateAllAttachments(time_delta);
 
-}
-
-void SonarPing::Draw(sf::RenderTarget* target) const {
-	Engine::Root::get_mutable_instance().SetRenderMode(Engine::RENDERMODE_WORLD);
-	target->Draw(mSprite);
-
-	DrawAllAttachments(target);
 }
 
 void SonarPing::OnCollide(const Engine::Entity& ent) {
