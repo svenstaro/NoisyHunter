@@ -78,6 +78,10 @@ void StateManager::Draw(sf::RenderTarget* target) {
 
 void StateManager::Add(State* state) {
     mStates.push_back(state);
+
+	// set arrow cursor as default when a new state is added
+	Root::get_mutable_instance().GetResourceManagerPtr()->SetCursor(Engine::MOUSECURSOR_ARROW);
+
     state->Initialize();
 }
 

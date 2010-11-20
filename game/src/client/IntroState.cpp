@@ -95,14 +95,10 @@ void IntroState::Initialize() {
     in->BindMouse(mcb, Engine::BUTTON_PRESSED, sf::Mouse::Left);
     Engine::MouseBindingCallback right = boost::bind(&PlayState::OnRightClick, this, _1);
     in->BindMouse(right, Engine::BUTTON_PRESSED, sf::Mouse::Right);
-
-    // mouse cursor
-    Engine::MouseBindingCallback mv = boost::bind(&PlayState::OnMouseMove, this, _1);
-    in->BindMouse(mv, Engine::MOUSE_MOVED);
-
     */
-    // hide cursor
-    //Engine::Root::get_mutable_instance().SetMouseHidden(true);
+
+	// set busy cursor
+	Engine::Root::get_mutable_instance().GetResourceManagerPtr()->SetCursor(Engine::MOUSECURSOR_BUSY);
 
 }
 
@@ -111,7 +107,7 @@ void IntroState::Update(float time_delta) {
 	auto resmgr = Engine::Root::get_mutable_instance().GetResourceManagerPtr();
 
 	if (resmgr->GetPercentageLoadingDone() >= 1) {
-		Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new PlayState());
+		Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new MenuState());
 	} else {
 		sf::Uint16 n = resmgr->LoadNextImage();
 		sf::Uint16 m = resmgr->GetMaxImageQueueSize();

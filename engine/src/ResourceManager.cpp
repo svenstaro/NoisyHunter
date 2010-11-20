@@ -232,6 +232,7 @@ void ResourceManager::SetCursorSprite(AnimatedSprite& sprite, const sf::Uint16 k
 }
 
 void ResourceManager::SetCursor(const sf::Uint16 key) {
+	Engine::Root::get_mutable_instance().SetMouseHidden(true);
 	mCurrentCursor = key;
 }
 

@@ -98,8 +98,8 @@ int main(int argc, char* argv[]) {
 	idmgr->RegisterEntityClass(new SonarPing());
 
 	// Initialize Root singleton using parsed values.
-    root.InitializeAsClient(sf::VideoMode(width, height), "Noisy Hunter", fullscreen, sf::IpAddress(ip), port, name, verbose);
 	root.SetWorldPixelsPerFloat(1000);
+    root.InitializeAsClient(sf::VideoMode(width, height), "Noisy Hunter", fullscreen, sf::IpAddress(ip), port, name, verbose);
 
 	root.GetStateManagerPtr()->Add(new IntroState());
 	//root.GetStateManagerPtr()->Add(new PlayState());

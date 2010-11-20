@@ -63,7 +63,7 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 
 	// Load Engine Resources (Default GUI etc.)
 	int cursor_size = 24;
-	mResourceManager.AddImage(boost::filesystem::path("../engine/gui"),"cursors.svg", cursor_size*16, cursor_size*16, "gui.default.cursors");
+	mResourceManager.AddImage(boost::filesystem::path("../engine/gui"),"cursors.svg", cursor_size*16.f/mWorldPixelsPerFloat, cursor_size*16.f/mWorldPixelsPerFloat, "gui.default.cursors");
 	AnimatedSprite arrow;
 	arrow.SetImage(mResourceManager.GetImage("gui.default.cursors"));
 	arrow.SetSubRectSize(sf::Vector2f(cursor_size,cursor_size));
