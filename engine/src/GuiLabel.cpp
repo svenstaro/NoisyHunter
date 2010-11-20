@@ -34,9 +34,9 @@ void GuiLabel::SetFontColor(const sf::Color& color) {
 }
 
 
-void GuiLabel::Draw(sf::RenderTarget* target, Vector2D offset) {
+void GuiLabel::Draw(sf::RenderTarget* target) {
 	mText.SetString(mCaption);
-	mText.SetPosition(mPosition.x + offset.x, mPosition.y + offset.y);
+	mText.SetPosition(mPosition.x, mPosition.y);
 
 	target->Draw(mText);
 

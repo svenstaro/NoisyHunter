@@ -33,23 +33,23 @@ bool GuiProgressbar::GetTextVisible() const {
 	return mTextVisible;
 }
 
-void GuiProgressbar::Draw(sf::RenderTarget* target, Vector2D offset) {
+void GuiProgressbar::Draw(sf::RenderTarget* target) {
 	mBackSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.progressbar_back"));
-	mBackSprite.SetPosition(mPosition.x + offset.x, mPosition.y + offset.y);
+	mBackSprite.SetPosition(mPosition.x, mPosition.y);
 	mBackSprite.SetScale(mDimension.x, mDimension.y);
 	target->Draw(mBackSprite);
 
 	if(mProgress > 0) {
 		mFrontSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.progressbar_front"));
-		mFrontSprite.SetPosition(mPosition.x + offset.x, mPosition.y + offset.y);
+		mFrontSprite.SetPosition(mPosition.x, mPosition.y);
 		mFrontSprite.SetScale(mDimension.x * mProgress, mDimension.y);
 		target->Draw(mFrontSprite);
 	}
 
 	if(mTextVisible) {
 		mText.SetString(boost::lexical_cast<std::string>(int(mProgress*100)) + "%");
-		mText.SetPosition(offset.x + int(mPosition.x + mDimension.x / 2 - mText.GetRect().Width / 2),
-						  offset.y + int(mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2) );
+		mText.SetPosition(int(mPosition.x + mDimension.x / 2 - mText.GetRect().Width / 2),
+						  int(mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2) );
 
 		target->Draw(mText);
 	}

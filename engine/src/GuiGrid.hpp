@@ -21,10 +21,8 @@ public:
 
 	GuiGrid* clone() const;
 
-	void Draw(sf::RenderTarget* target, Vector2D offset = Vector2D(0,0));
-
-private:
-	TiledSprite mSprite;
+	void Draw(sf::RenderTarget* target);
+	virtual void PlaceChildren();
 };
 
 }

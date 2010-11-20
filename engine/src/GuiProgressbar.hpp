@@ -16,7 +16,7 @@ public:
 	GuiProgressbar* clone() const;
 
 	// main callbacks
-	virtual void Draw(sf::RenderTarget* target, Vector2D offset = Vector2D(0,0));
+	virtual void Draw(sf::RenderTarget* target);
 
 	void SetProgress(const float progress);
 	float GetProgress() const;

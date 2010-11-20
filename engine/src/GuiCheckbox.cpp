@@ -59,15 +59,15 @@ void GuiCheckbox::SetFontColor(const sf::Color& color) {
 }
 
 // main callbacks
-void GuiCheckbox::Draw(sf::RenderTarget* target, Vector2D offset) {
+void GuiCheckbox::Draw(sf::RenderTarget* target) {
     mText.SetString(mCaption);
-	mText.SetPosition(mPosition.x + 20 + offset.x, mPosition.y + offset.y);
+	mText.SetPosition(mPosition.x + 20, mPosition.y);
 
     if (mIsChecked)  mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.checkbox_checked"));
     else if (mHover) mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.checkbox_hover"));
     else             mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.checkbox"));
 
-	mSprite.SetPosition(mPosition.x + offset.x, mPosition.y + offset.y);
+	mSprite.SetPosition(mPosition.x, mPosition.y);
     mSprite.Resize(16,16);
 
     target->Draw(mSprite);

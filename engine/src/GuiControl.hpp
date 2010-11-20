@@ -21,7 +21,7 @@ public:
 
     // Main callbacks
     virtual void Update(const float time_delta);
-	virtual void Draw(sf::RenderTarget* target, Vector2D offset = Vector2D(0,0)) = 0;
+	virtual void Draw(sf::RenderTarget* target) = 0;
 
     // Event signal binding
 	virtual void BindOnMouseDown(const boost::signals2::signal<void (const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button)>::slot_type& slot);

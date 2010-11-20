@@ -16,8 +16,8 @@ void MenuState::Initialize() {
 
 	// Gui grid for buttons
 	Engine::GuiGrid* grid = new Engine::GuiGrid("debug_grid");
-	grid->SetDimension(Engine::Vector2D(200, 280));
-	grid->SetPosition(580,300);
+	grid->SetDimension(Engine::Vector2D(160, 160));
+	grid->SetPosition(10, 10);
 
 		// Play Button
 		Engine::GuiButton* play = new Engine::GuiButton("play_button");
@@ -138,5 +138,5 @@ void MenuState::OptionsButton_OnClick(const sf::Uint16 mouse_button) {
 }
 
 void MenuState::QuitButton_OnClick(const sf::Uint16 mouse_button) {
-
+	Engine::Root::get_mutable_instance().RequestShutdown();
 }

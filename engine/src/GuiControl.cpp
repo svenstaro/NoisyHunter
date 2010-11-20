@@ -72,29 +72,17 @@ void GuiControl::TriggerOnType(const sf::Uint32 unicode_char) {
 
 // === EVENT CALLBACKS FOR INTERNAL USE ===
 
-void GuiControl::OnMouseDown(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
-	//Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "Clicked on element.");
-}
+void GuiControl::OnMouseDown(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {}
 
-void GuiControl::OnMouseUp(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
-	//Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "Clicked on element.");
-}
+void GuiControl::OnMouseUp(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {}
 
-void GuiControl::OnMouseMove(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y) {
-	//Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "Moved over element.");
-}
+void GuiControl::OnMouseMove(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y) {}
 
-void GuiControl::OnKeyDown(const sf::Key::Code key) {
-	//Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "Pressed key on element.");
-}
+void GuiControl::OnKeyDown(const sf::Key::Code key) {}
 
-void GuiControl::OnKeyUp(const sf::Key::Code key) {
-	//Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "Released key on element.");
-}
+void GuiControl::OnKeyUp(const sf::Key::Code key) {}
 
-void GuiControl::OnType(const sf::Uint32 unicode_char) {
-	//Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_GUI, "Typed into element.");
-}
+void GuiControl::OnType(const sf::Uint32 unicode_char) {}
 
 sf::Uint16 GuiControl::GetEntityId() const {
 	return 60000;

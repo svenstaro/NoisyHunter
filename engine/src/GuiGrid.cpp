@@ -14,18 +14,22 @@ GuiGrid* GuiGrid::clone() const {
 	return new GuiGrid();
 }
 
-void GuiGrid::Draw(sf::RenderTarget* target, Vector2D offset) {
-	mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.grid"));
-	mSprite.SetPosition(mPosition.x + offset.x, mPosition.y + offset.y);
-	mSprite.SetScale(mDimension.x, mDimension.y);
-
-	target->Draw(mSprite);
-
+void GuiGrid::Draw(sf::RenderTarget* target) {
+	// Draw children
 	BOOST_FOREACH(GuiControl& gc, mControls) {
-		gc.Draw(target, offset + mPosition);
+		gc.Draw(target);
 	}
 
 	DrawAllAttachments(target);
+}
+
+void GuiGrid::PlaceChildren() {
+	int i = 0;
+	BOOST_FOREACH(GuiControl& gc, mControls) {
+		gc.SetPosition(Engine::Vector2D(mPosition.x + 0, mPosition.y + i*1.f/mControls.size()*mDimension.y));
+		gc.SetDimension(Engine::Vector2D(mDimension.x, 1.f/mControls.size()*mDimension.y));
+		++i;
+	}
 }
 
 }
