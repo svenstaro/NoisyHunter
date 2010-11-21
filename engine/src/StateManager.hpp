@@ -3,6 +3,7 @@
 
 //#include "Root.hpp"
 #include "State.hpp"
+#include <queue>
 
 namespace Engine {
 
@@ -13,6 +14,8 @@ public:
     ~StateManager();
 
 	void Shutdown();
+
+	void BeginFrame();
 
     void Update(float time_delta);
     void HandleEvent(sf::Event e);
@@ -26,6 +29,7 @@ public:
 private:
     //Root* mRoot;
     boost::ptr_vector<State> mStates;
+	std::queue<State*> mStatesToAdd;
 	int mAmountToPop;
 };
 

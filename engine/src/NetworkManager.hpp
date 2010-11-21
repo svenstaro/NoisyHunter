@@ -30,6 +30,7 @@ public:
 							const std::string name);
 
 	void ConnectToServer();
+	void DisconnectFromServer();
 
     // Receiving methods
     void Receive();

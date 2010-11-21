@@ -64,6 +64,11 @@ void NetworkManager::ConnectToServer() {
 	mSentPacketsCount = 0;
 }
 
+void NetworkManager::DisconnectFromServer() {
+	mClient_ConnectedToServer = false;
+	mListener.Unbind();
+}
+
 void NetworkManager::PreparePacket() {
     mPacket.Clear();
 }
@@ -145,6 +150,11 @@ void NetworkManager::SendClientQuit(const std::string &reason, const std::string
 		packet << client_name << reason;
 	}
 	SendPacket(packet);
+
+	if(!mIsServer) {
+		// unbind socket if client
+		DisconnectFromServer();
+	}
 }
 
 void NetworkManager::SendEntityAdd(Entity& entity) {

@@ -111,6 +111,7 @@ void Root::StartMainLoop() {
         while(!mShutdownRequested) {
 			mTotalNumFrames++;
 			sf::Sleep(0.001f);
+			mStateManager.BeginFrame();
             float frame_time = mFrameTimeClock.GetElapsedTime();
             mFrameTimeClock.Reset();
             time_budget += frame_time;
@@ -135,7 +136,7 @@ void Root::StartMainLoop() {
 				}
 			}
         }
-    } else {
+	} else {
         // CLIENT MAIN LOOP
 		const float fps = 60.f;
 		const float dt = 1/fps;
@@ -144,6 +145,7 @@ void Root::StartMainLoop() {
         
         while(mRenderWindow.IsOpened()) {
 			mTotalNumFrames++;
+			mStateManager.BeginFrame();
             float time_delta = mFrameTimeClock.GetElapsedTime();
             mFrameTimeClock.Reset();
             

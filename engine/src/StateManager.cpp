@@ -18,6 +18,30 @@ void StateManager::Shutdown() {
 	}
 }
 
+void StateManager::BeginFrame() {
+
+	for(int i = 0; i < mAmountToPop && mStates.size() > 0; i++) {
+		GetCurrentState().Shutdown();
+		mStates.pop_back();
+	}
+	mAmountToPop = 0;
+
+	while(!mStatesToAdd.empty()) {
+		// Get new state from queue
+		State* state = mStatesToAdd.front();
+		mStatesToAdd.pop();
+
+		// set arrow cursor as default when a new state is added
+		Root::get_mutable_instance().GetResourceManagerPtr()->SetCursor(Engine::MOUSECURSOR_ARROW);
+		state->Initialize();
+		mStates.push_back(state);
+	}
+
+	if(mStates.size() <= 0) {
+		Root::get_mutable_instance().RequestShutdown();
+	}
+}
+
 void StateManager::Update(float time_delta) {
 	if(mStates.size() > 0) {
 		// count back until you hit a state pausing the state below
@@ -37,15 +61,6 @@ void StateManager::Update(float time_delta) {
 			mStates[i].Update(time_delta);
 			++i;
 		}
-	}
-
-	for(int i = 0; i < mAmountToPop && mStates.size() > 0; i++) {
-		GetCurrentState().Shutdown();
-		mStates.pop_back();
-	}
-	mAmountToPop = 0;
-	if(mStates.size() <= 0) {
-		Root::get_mutable_instance().RequestShutdown();
 	}
 }
 
@@ -77,12 +92,7 @@ void StateManager::Draw(sf::RenderTarget* target) {
 }
 
 void StateManager::Add(State* state) {
-    mStates.push_back(state);
-
-	// set arrow cursor as default when a new state is added
-	Root::get_mutable_instance().GetResourceManagerPtr()->SetCursor(Engine::MOUSECURSOR_ARROW);
-
-    state->Initialize();
+	mStatesToAdd.push(state);
 }
 
 void StateManager::Pop(int amount) {
