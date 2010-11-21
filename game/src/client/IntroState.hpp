@@ -25,8 +25,12 @@ public:
     void OnCancel();
     void OnClick(Engine::MouseEventArgs args);
     void OnAnyKeyPressed();
+
+	void SetShowMenu(bool show_menu);
 private:
     Engine::GuiSystem mGuiSystem;
+	bool mFinishedLoading;
+	bool mShowMenu;
 };
 
 #endif

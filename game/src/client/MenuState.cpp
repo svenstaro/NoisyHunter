@@ -150,7 +150,8 @@ void MenuState::Update(float time_delta) {
 }
 
 void MenuState::OnPressEscape() {
-	Engine::Root::get_mutable_instance().RequestShutdown();
+	if(IsCurrentState())
+		Engine::Root::get_mutable_instance().RequestShutdown();
 }
 
 void MenuState::PlayButton_OnClick(const sf::Uint16 mouse_button) {

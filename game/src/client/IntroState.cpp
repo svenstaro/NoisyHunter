@@ -10,6 +10,8 @@ void IntroState::Initialize() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing IntroState.");
 
+	mFinishedLoading = false;
+
 	// load resources
 	auto resmgr = Engine::Root::get_mutable_instance().GetResourceManagerPtr();
 
@@ -79,6 +81,7 @@ void IntroState::Initialize() {
 	l->SetPosition(200,560);
 	l->SetText("Loading images...");
 	l->SetFontSize(11);
+	l->SetFontColor(sf::Color::White);
 	mGuiSystems.begin()->AddControl(l);
 
 
@@ -90,10 +93,12 @@ void IntroState::Initialize() {
 	Engine::KeyBindingCallback cb = boost::bind(&IntroState::OnAnyKeyPressed, this);
     in->BindKey( cb, Engine::KEY_PRESSED);
 
-    /*// bind mouse
-    Engine::MouseBindingCallback mcb = boost::bind(&PlayState::OnClick, this, _1);
-    in->BindMouse(mcb, Engine::BUTTON_PRESSED, sf::Mouse::Left);
-    Engine::MouseBindingCallback right = boost::bind(&PlayState::OnRightClick, this, _1);
+
+	/*// bind mouse
+
+	Engine::MouseBindingCallback mcb = boost::bind(&IntroState::OnClick, this, _1);
+	in->BindMouse(mcb, Engine::BUTTON_PRESSED, sf::Mouse::Left);
+	Engine::MouseBindingCallback right = boost::bind(&IntroState::OnRightClick, this, _1);
     in->BindMouse(right, Engine::BUTTON_PRESSED, sf::Mouse::Right);
     */
 
@@ -103,12 +108,9 @@ void IntroState::Initialize() {
 }
 
 void IntroState::Update(float time_delta) {
-	sf::Sleep(0.1);
 	auto resmgr = Engine::Root::get_mutable_instance().GetResourceManagerPtr();
 
-	if (resmgr->GetPercentageLoadingDone() >= 1) {
-		Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new MenuState());
-	} else {
+	if (resmgr->GetPercentageLoadingDone() < 1) {
 		sf::Uint16 n = resmgr->LoadNextImage();
 		sf::Uint16 m = resmgr->GetMaxImageQueueSize();
 		mGuiSystems.begin()->GetControl<Engine::GuiProgressbar>("loading_progress")->SetProgress(resmgr->GetPercentageLoadingDone());
@@ -116,6 +118,17 @@ void IntroState::Update(float time_delta) {
 			boost::lexical_cast<std::string>(n) +
 			" / " +
 			boost::lexical_cast<std::string>(m) );
+	} else if(!mFinishedLoading) {
+		mFinishedLoading = true;
+		// pop current state (will not stop engine as it is popped at begin of next frame, when new states (see below) will be added).
+		Engine::Root::get_mutable_instance().GetStateManagerPtr()->Pop();
+		if(mShowMenu) {
+			Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new MenuState());
+		} else {
+			Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new PlayState());
+		}
+		mGuiSystems.begin()->GetControl<Engine::GuiLabel>("loading_progress_label")->SetText("Loading finished.");
+		Engine::Root::get_mutable_instance().GetResourceManagerPtr()->SetCursor(Engine::MOUSECURSOR_ARROW);
 	}
 }
 
@@ -125,9 +138,13 @@ void IntroState::OnCancel() {
     Engine::Root::get_mutable_instance().RequestShutdown();
 }
 void IntroState::OnClick(Engine::MouseEventArgs args) {
-    // load playstate if finished loading
+	// load playstate if finished loading
 }
 void IntroState::OnAnyKeyPressed() {
     // load playstate if finished loading
     //std::cout << "pressed" << std::endl;
+}
+
+void IntroState::SetShowMenu(bool show_menu) {
+	mShowMenu = show_menu;
 }

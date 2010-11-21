@@ -28,6 +28,7 @@ po::variables_map usage(int& argc, char* argv[]) {
 			("ip,i", po::value<std::string>()->default_value("localhost"), "server ip address")
 			("port,p", po::value<sf::Uint16>()->default_value(12356), "server port")
 			("verbose,v", po::value<sf::Uint16>()->implicit_value(1), "be verbose")
+			("show-menu", po::value<sf::Uint16>()->implicit_value(1), "skip main menu")
 		;
 
 		po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -86,7 +87,9 @@ int main(int argc, char* argv[]) {
 	bool verbose = false;
 	if(opts.count("verbose"))
 		verbose = true;
-	// TODO: Implement verbose.
+	bool show_menu = false;
+	if(opts.count("show-menu"))
+		show_menu= true;
 
 	// Get Root singleton.
     Engine::Root& root = Engine::Root::get_mutable_instance();
@@ -101,7 +104,9 @@ int main(int argc, char* argv[]) {
 	root.SetWorldPixelsPerFloat(1000);
     root.InitializeAsClient(sf::VideoMode(width, height), "Noisy Hunter", fullscreen, sf::IpAddress(ip), port, name, verbose);
 
-	root.GetStateManagerPtr()->Add(new IntroState());
+	IntroState* is = new IntroState();
+	is->SetShowMenu(show_menu);
+	root.GetStateManagerPtr()->Add(is);
 	//root.GetStateManagerPtr()->Add(new PlayState());
 
     root.StartMainLoop();
