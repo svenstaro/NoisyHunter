@@ -77,5 +77,6 @@ void PauseState::ExitButton_OnClick(const sf::Uint16 mouse_button) {
 
 void PauseState::OnPressEscape() {
 	if(IsCurrentState())
-		Engine::Root::get_mutable_instance().GetStateManagerPtr()->Pop(2);
+		// TODO: sometimes this is called twice ;( fix those events
+		Engine::Root::get_mutable_instance().GetStateManagerPtr()->Pop();
 }
