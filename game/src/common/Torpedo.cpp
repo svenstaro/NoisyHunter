@@ -10,7 +10,7 @@ Torpedo::Torpedo(const Engine::Vector2D& pos,
 	SetDirection(direction);
 	SetSpeed(speed);
 	mTargetPosition = target_position;
-	mUniqueId = 0;
+	mEntityUniqueId = 0;
 	mReachedTargetAngle = false;
 	mTimeToLive = time_to_live;
 	mLifeTime = 0.f;
@@ -85,8 +85,8 @@ void Torpedo::OnDeath() {
 	// TODO: Do stuff
 }
 
-sf::Uint16 Torpedo::GetEntityId() const {
-	return ENTITYID_TORPEDO;
+sf::Uint16 Torpedo::GetEntityTypeId() const {
+	return ENTITYTYPEID_TORPEDO;
 }
 
 void Torpedo::SetTargetPosition(const Engine::Vector2D target_position) {
@@ -108,7 +108,7 @@ void Torpedo::serialize(Archive & ar, const unsigned int version) {
 
 void Torpedo::serialize(Engine::IOPacket& packet) {
 	packet & mClientId;
-	packet & mUniqueId;
+	packet & mEntityUniqueId;
     packet & mPosition.x;
     packet & mPosition.y;
 	packet & mSpeed;

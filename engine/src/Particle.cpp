@@ -80,7 +80,7 @@ void Particle::Update(const float time_delta) {
 	}
 }
 
-sf::Uint16 Particle::GetEntityId() const {
+sf::Uint16 Particle::GetEntityTypeId() const {
 	return 50002;
 }
 

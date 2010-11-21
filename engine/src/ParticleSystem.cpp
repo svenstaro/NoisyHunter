@@ -33,7 +33,7 @@ void ParticleSystem::Draw(sf::RenderTarget* target) const {
 	DrawAllAttachments(target);
 }
 
-sf::Uint16 ParticleSystem::GetEntityId() const {
+sf::Uint16 ParticleSystem::GetEntityTypeId() const {
 	return 50000;
 }
 

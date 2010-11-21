@@ -1,13 +1,14 @@
 #ifndef STATE_HPP
 #define STATE_HPP
 
-#include <boost/ptr_container/ptr_vector.hpp>
+#include <boost/ptr_container/ptr_map.hpp>
 #include <boost/signals2.hpp>
 
 #include <SFML/Graphics.hpp>
 
 #include "GuiSystem.hpp"
 #include "Entity.hpp"
+#include "World.hpp"
 
 namespace Engine {
 
@@ -21,6 +22,9 @@ public:
     virtual void Initialize() = 0;
 	virtual void Shutdown();
 
+	void AddWorld(World* world);
+	void Pop(int amount);
+
     virtual void Update(const float time_delta);
     void UpdateAllEntities(const float time_delta); // TODO: This should 
 	// probably be private if it is never called from the outside.
@@ -30,35 +34,19 @@ public:
     void HandleEvent(sf::Event e);
     void Draw(sf::RenderTarget* const target);
 
-    void AddEntity(Entity* entity);
     void CreateGuiSystem();
 
-	sf::Uint16 GetEntityCount();
+	World* GetWorld(const sf::Uint16 entity_unique_id);
 
 	// Server-side handling of Interactions
 	virtual void HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data);
 
-    Entity* GetEntityByUniqueId(const sf::Uint16 unique_id);
+    Entity* GetEntityByEntityUniqueId(const sf::Uint16 entity_unique_id);
+	void DeleteWorldByEntityUniqueId(const sf::Uint16 entity_unique_id); 
 
 	virtual void OnLeaveGame();
-	template <typename T>
-			std::vector<T*> GetAllEntitiesByType() {
-
-		std::vector<T*> entities;
-
-		T t;
-		sf::Uint16 entity_id = t.GetEntityId();
-
-		BOOST_FOREACH(Entity& entity, mEntities) {
-			if(entity.GetEntityId() == entity_id) {
-				entities.push_back( (T*)&entity );
-			}
-		}
-		return entities;
-
-	}
 	void DeleteEntitiesByClientId(const sf::Uint16 client_id);
-	void DeleteEntityByUniqueId(const sf::Uint16 unique_id);
+	void DeleteEntityByEntityUniqueId(const sf::Uint16 entity_unique_id);
 
 	virtual bool StatesBelowArePaused();
 	virtual bool StatesBelowAreHidden();
@@ -66,15 +54,12 @@ public:
 	bool IsCurrentState();
 
 protected:
-    // Entity list
-    boost::ptr_vector<Entity> mEntities;
-
-    // Gui Systems
+	// Gui Systems
     boost::ptr_vector<GuiSystem> mGuiSystems;
+	boost::ptr_vector<World> mWorlds;
 
 private:
-    // Saves if there are new Entities, so the list has to be sorted for correct order while drawing.
-    bool mEntityListNeedsSorting;
+	int mAmountToPop;
 };
 
 }

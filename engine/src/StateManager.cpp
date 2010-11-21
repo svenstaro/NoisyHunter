@@ -77,8 +77,8 @@ void StateManager::Draw(sf::RenderTarget* target) {
 }
 
 void StateManager::Add(State* state) {
-    mStates.push_back(state);
     state->Initialize();
+    mStates.push_back(state);
 }
 
 void StateManager::Pop(int amount) {

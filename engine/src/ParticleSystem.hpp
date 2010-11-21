@@ -24,7 +24,7 @@ public:
 
 	void Draw(sf::RenderTarget* target) const;
 
-	sf::Uint16 GetEntityId() const;
+	sf::Uint16 GetEntityTypeId() const;
 
 	Entity::PositionType GetPositionType() const;
 

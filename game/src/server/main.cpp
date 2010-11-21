@@ -3,6 +3,7 @@
 #include "Root.hpp"
 
 #include "MainState.hpp"
+#include "MainWorld.hpp"
 // Include entities in the appropriate state
 
 void HandleSignal(int sig) {
@@ -67,7 +68,11 @@ int main(int argc, char* argv[]) {
 
 	// Initialize Root singleton using parsed values.
     root.InitializeAsServer(port, verbose);
-    root.GetStateManagerPtr()->Add(new MainState());
+	MainState* mainstate = new MainState();
+	MainWorld* mainworld = new MainWorld();
+	mainworld->GrabWorldUniqueId();
+	mainstate->AddWorld(mainworld);
+    root.GetStateManagerPtr()->Add(mainstate);
     root.StartMainLoop();
     return 0;
 }

@@ -58,7 +58,7 @@ enum NetworkCommand {
 	// If this is sent server->client, the client is being notified of a new 
 	// entity.
 	// Packet structure is:
-	// [sf::Uint16(NETCMD_ENTITYADD), sf::Uint16(entity_id), sf::Uint16(unique_id)]
+	// [sf::Uint16(NETCMD_ENTITYADD), sf::Uint16(entity_type_id), sf::Uint16(entity_unique_id), sf::Uint16(world_unique_id)]
 	NETCMD_ENTITYADD = 0x20,
 
 	// If this is sent client->server, a client is requesting an entity to 
@@ -66,12 +66,12 @@ enum NetworkCommand {
 	// EntityAction enum. This could be ENTITYMOVE or ENTITYSHOOT, for example.
 	// Packet structure is:
 	// [sf::Uint16(NETCMD_ENTITYACTION), sf::Uint16(game_entity_action_id),
-	//	sf::Uint16(unique_id), OPTIONAL_STREAMED_PARAMETERS]
+	//	sf::Uint16(entity_unique_id), OPTIONAL_STREAMED_PARAMETERS]
 	// If this is sent server->client, the client is being notified of an
 	// entity's action. This is useful for interpolating.
 	// Packet structure is:
 	// [sf::Uint16(NETCMD_ENTITYACTION), sf::Uint16(game_entity_action_id),
-	//	sf::Uint16(unique_id), OPTIONAL_STREAMED_PARAMETERS]
+	//	sf::Uint16(entity_unique_id, OPTIONAL_STREAMED_PARAMETERS]
 	NETCMD_ENTITYACTION = 0x21,
 
 	// If this is sent client->server, ALL HELL BREAKS LOOSE!
@@ -80,14 +80,14 @@ enum NetworkCommand {
 	// If this is sent server->client, the client is being notified of the
 	// complete data of an entity. This info needs to be deserialized.
 	// Packet structure is:
-	// [sf::Uint16(NETCMD_ENTITYINFO), sf::Uint16(unique_id),
-	//  sf::Uint16(entity_id), Engine::Entity(entity)]
+	// [sf::Uint16(NETCMD_ENTITYINFO), sf::Uint16(entity_unique_id),
+	//  sf::Uint16(entity_type_id), Engine::Entity(entity), sf::Uint16(world_unique_id)]
 	NETCMD_ENTITYINFO = 0x22,
 
 	// If this is sent client->server, ALL HELL BREAKS LOOSE!
 	// If this is sent server-client, the client should delete the local instance of the given entity.
 	// Packet Structure is:
-	// [sf::Uint16(NETCMD_ENTITYINFO), sf::Uint16(unique_id)]
+	// [sf::Uint16(NETCMD_ENTITYINFO), sf::Uint16(entity_unique_id)]
 	NETCMD_ENTITYDEL = 0x23,
 
 	// If this is sent client->server, a client is requesting a chat message
@@ -106,7 +106,7 @@ enum NetworkCommand {
 	// This could be WALKTOPOSITION or DELETEALLENTITIES, for example. The server should
 	// validate the interaction.
 	// Packet structure is:
-	// [sf::Uint16(NETCMD_INTERACTION), sf::Uint16(game_interaction_id),
+	// [sf::Uint16(NETCMD_INTERACTION), sf::Uint16(game_interaction_id), sf::Uint16(world_entity_unique_id),
 	// OPTIONAL_STREAMED_PARAMETERS]
 	// If this is sent server->client, ALL HELL BREAKS LOOSE!
 	NETCMD_INTERACTION = 0x31

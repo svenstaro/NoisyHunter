@@ -14,7 +14,7 @@ public:
 
     void RegisterEntityClass(Entity* default_object);
 
-    Entity* GetEntityPrototype(sf::Uint16 entity_id);
+    Entity* GetEntityPrototype(sf::Uint16 entity_type_id);
 
 	sf::Uint16 GetNewUniqueId();
 	void ResetUniqueIds();

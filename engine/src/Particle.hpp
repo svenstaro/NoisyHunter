@@ -35,7 +35,7 @@ public:
 
 	void Update(const float time_delta);
 
-	sf::Uint16 GetEntityId() const;
+	sf::Uint16 GetEntityTypeId() const;
 
 	Entity::PositionType GetPositionType() const;
 

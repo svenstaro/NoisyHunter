@@ -6,7 +6,7 @@ SonarPing::SonarPing(const Engine::Vector2D& pos, const Engine::Vector2D& direct
 	mDirection= direction;
 	mTimeToLive = time_to_live;
 	mLifeTime = 0.f;
-	mUniqueId = 0;
+	mEntityUniqueId = 0;
 	mSpeed = speed;
 }
 
@@ -63,8 +63,8 @@ void SonarPing::Update(const float time_delta) {
 void SonarPing::OnCollide(const Engine::Entity& ent) {
 }
 
-sf::Uint16 SonarPing::GetEntityId() const {
-	return ENTITYID_SONARPING;
+sf::Uint16 SonarPing::GetEntityTypeId() const {
+	return ENTITYTYPEID_SONARPING;
 }
 
 void SonarPing::SetTimeToLive(const sf::Uint16 time_to_live) {
@@ -73,7 +73,7 @@ void SonarPing::SetTimeToLive(const sf::Uint16 time_to_live) {
 
 void SonarPing::serialize(Engine::IOPacket& packet) {
 	packet & mClientId;
-	packet & mUniqueId;
+	packet & mEntityUniqueId;
 	packet & mPosition.x;
 	packet & mPosition.y;
 	packet & mSpeed;

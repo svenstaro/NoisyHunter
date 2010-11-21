@@ -11,7 +11,7 @@ IdManager::IdManager() {
 IdManager::~IdManager() {}
 
 void IdManager::RegisterEntityClass(Entity* default_object) {
-    sf::Uint16 id = default_object->GetEntityId();
+    sf::Uint16 id = default_object->GetEntityTypeId();
 
     if(mRegisteredEntityClasses.count(id) > 0) {
         // crash! you already have a class with that id registered...
@@ -24,13 +24,13 @@ void IdManager::RegisterEntityClass(Entity* default_object) {
     }
 }
 
-Entity* IdManager::GetEntityPrototype(sf::Uint16 entity_id) {
-    if(mRegisteredEntityClasses.count(entity_id) <= 0) {
+Entity* IdManager::GetEntityPrototype(sf::Uint16 entity_type_id) {
+    if(mRegisteredEntityClasses.count(entity_type_id) <= 0) {
         // there is no such prototype
-        Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_ERROR, LOGORIGIN_IDMANAGER, "GetEntityPrototype ## Entity with UID " + boost::lexical_cast<std::string>(entity_id) + " not registered.");
+        Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_ERROR, LOGORIGIN_IDMANAGER, "GetEntityPrototype ## Entity with UID " + boost::lexical_cast<std::string>(entity_type_id) + " not registered.");
         exit(1);
     }
-    return mRegisteredEntityClasses[entity_id]->clone();
+    return mRegisteredEntityClasses[entity_type_id]->clone();
 }
 
 sf::Uint16 IdManager::GetNewUniqueId() {

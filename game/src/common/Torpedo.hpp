@@ -2,7 +2,7 @@
 #define TORPEDO_HPP
 
 #include "Entity.hpp"
-#include "EntityId.hpp"
+#include "EntityTypeId.hpp"
 #include "Vector2D.hpp"
 #include "IOPacket.hpp"
 #include "ParticleSystem.hpp"
@@ -29,7 +29,7 @@ public:
 
 	void OnDeath();
 
-	sf::Uint16 GetEntityId() const;
+	sf::Uint16 GetEntityTypeId() const;
 
     void serialize(Engine::IOPacket& packet);
 	void SetTargetPosition(const Engine::Vector2D target_position);

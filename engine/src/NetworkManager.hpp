@@ -37,7 +37,7 @@ public:
 
     // Sending methods
     void PreparePacket();
-    void AppendEntityToPacket(Entity& entity);
+    void AppendEntityToPacket(Entity& entity, const sf::Uint16 world_unique_id);
     // Sends the prepared packet "mPacket" by calling SendPacket(mPacket).
     void SendPacket();
     void SendPacket(sf::Packet& packet);
@@ -50,11 +50,11 @@ public:
 	void SendClientQuit(const std::string& reason = "", const std::string& client_name = "");
 
     // Sends a packet containing NETCMD_ENTITYADD to server / all clients.
-	void SendEntityAdd(Entity& entity);
-	void SendEntityAdd(Entity& entity, const sf::Uint16 client_id);
+	void SendEntityAdd(Entity& entity, const sf::Uint16 world_unique_id);
+	void SendEntityAdd(Entity& entity, const sf::Uint16 client_id, const sf::Uint16 world_unique_id);
 
 	// Sends a packet containgin NETCMD_ENTITYADD to all clients.
-	void SendEntityDel(const sf::Uint16 unique_id);
+	void SendEntityDel(const sf::Uint16 entity_unique_id);
 
 	// Sends a packet which requests a ping response; In a way PONG :D
 	void SendPing();
@@ -63,8 +63,8 @@ public:
     void SendChatMessage(const std::string& chat_message, const std::string& client_name = "");
     
     // Signal binding & events
-    void BindOnClientConnected(const boost::signals2::signal<void (const sf::Uint16)>::slot_type& slot);
-    void TriggerOnClientConnected(const sf::Uint16 client_id);
+    void BindOnClientConnected(const boost::signals2::signal<void (const sf::Uint16, const sf::Uint16)>::slot_type& slot);
+    void TriggerOnClientConnected(const sf::Uint16 client_id, const sf::Uint16 world_unique_id);
 
 	sf::Uint16 GetPing();
 
@@ -100,7 +100,7 @@ private:
 	State* mEntityState;
 
     // Signals
-    boost::signals2::signal<void (const sf::Uint16)> mOnClientConnectedSignal;
+    boost::signals2::signal<void (const sf::Uint16, const sf::Uint16)> mOnClientConnectedSignal;
 
 	// Used for calculating pings
 	sf::Clock mPingClock;

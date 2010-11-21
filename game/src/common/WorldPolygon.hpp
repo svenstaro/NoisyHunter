@@ -7,7 +7,7 @@
 #include <SFML/System/Vector2.hpp>
 
 #include "Entity.hpp"
-#include "EntityId.hpp"
+#include "EntityTypeId.hpp"
 #include "Coordinates.hpp"
 
 class WorldPolygon : public Engine::Entity {
@@ -31,7 +31,7 @@ public:
 	// callbacks
 	void OnCollide(const Engine::Entity& ent);
 
-	sf::Uint16 GetEntityId() const;
+	sf::Uint16 GetEntityTypeId() const;
 
 	void serialize(Engine::IOPacket& packet);
 

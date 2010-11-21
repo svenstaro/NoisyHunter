@@ -99,20 +99,9 @@ void PlayState::Initialize() {
 	// bind keys
 	Engine::KeyBindingCallback cb = boost::bind(&PlayState::OnPauseGame, this);
 	inputmgr->BindKey( cb, Engine::KEY_PRESSED, sf::Key::Escape );
-	Engine::KeyBindingCallback cb2 = boost::bind(&PlayState::TriggerFireSonarPing, this);
-	inputmgr->BindKey( cb2, Engine::KEY_PRESSED, sf::Key::Space );
 	// screenshot
 	Engine::KeyBindingCallback sscb = boost::bind(&PlayState::OnScreenshot, this);
 	inputmgr->BindKey( sscb, Engine::KEY_PRESSED, sf::Key::F5 );
-	// bind mouse
-	Engine::MouseBindingCallback mcb = boost::bind(&PlayState::OnClick, this, _1);
-	inputmgr->BindMouse(mcb, Engine::BUTTON_PRESSED, sf::Mouse::Left);
-	Engine::MouseBindingCallback right = boost::bind(&PlayState::OnRightClick, this, _1);
-	inputmgr->BindMouse(right, Engine::BUTTON_PRESSED, sf::Mouse::Right);
-
-	// mouse cursor
-	Engine::MouseBindingCallback mv = boost::bind(&PlayState::OnMouseMove, this, _1);
-	inputmgr->BindMouse(mv, Engine::MOUSE_MOVED);
 	// hide original cursor
 	Engine::Root::get_mutable_instance().SetMouseHidden(true);
 
@@ -136,63 +125,12 @@ void PlayState::Shutdown() {
 	netmgr->SendClientQuit();
 }
 
-
 void PlayState::Update(float time_delta) {
     UpdateAllEntities(time_delta);
 	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("ping_label")->SetText("Ping: " + boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->GetPing()));
 	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("fps_label")->SetText("FPS: " + boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetAverageFps()) + " / " + boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetFps()));
-	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("entitycount_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityCount()) + " Entities");
-
-	BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
-		if (sub->GetClientId() == Engine::Root::get_mutable_instance().GetClientId()) {
-			Engine::Root::get_mutable_instance().CenterViewAt(Engine::Coordinates::WorldFloatToWorldPixel(sub->GetPosition()));
-		}
-	}
-
-	if (Engine::Root::get_mutable_instance().GetInputManagerPtr()->IsMouseButtonDown(sf::Mouse::Left)) {
-		// Send submarine to mouse position
-		Engine::Coordinates c;
-		c.SetScreenPixel(Engine::Root::get_mutable_instance().GetMousePosition());
-		OnNavigateTo(c);
-	}
-}
-
-void PlayState::OnSetNoisyMode() {
-//	if(IsCurrentState())
-		//mPlayerSubmarine->SetMode(Submarine::MODE_NOISY);
-}
-void PlayState::OnSetSilentMode() {
-//	if(IsCurrentState())
-		//mPlayerSubmarine->SetMode(Submarine::MODE_SILENT);
-}
-
-void PlayState::OnNavigateTo(const Engine::Coordinates& mouse_position) {	
-	if(IsCurrentState()) {
-		sf::Packet packet;
-		packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_SETSUBMARINETARGET);
-		packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
-		Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
-	}
-}
-
-void PlayState::OnFireTorpedo(const Engine::Coordinates& mouse_position) {
-	if(IsCurrentState()) {
-		sf::Packet packet;
-		packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_FIRETORPEDO);
-		packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
-		packet << 3.f; // time_to_live
-		Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
-	}
-}
-
-void PlayState::OnFireSonarPing(const Engine::Coordinates& mouse_position) {
-	if(IsCurrentState()) {
-		sf::Packet packet;
-		packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_FIRESONARPING);
-		packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
-		packet << 5.f;
-		Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
-	}
+	// TODO: Put this back. We don't know the currently active world so we need to count up all entities from all worlds.
+	// mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("entitycount_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityCount()) + " Entities");
 }
 
 void PlayState::OnScreenshot() {
@@ -204,28 +142,6 @@ void PlayState::OnScreenshot() {
 void PlayState::OnPauseGame() {
 	if(IsCurrentState())
 		Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new PauseState());
-}
-
-void PlayState::TriggerFireSonarPing() {
-	if(IsCurrentState()) {
-		Engine::Coordinates c;
-		c.SetScreenPixel(Engine::Root::get_mutable_instance().GetMousePosition());
-		OnFireSonarPing(c);
-	}
-
-}
-
-void PlayState::OnClick(Engine::MouseEventArgs args) {
-	if(IsCurrentState()) {
-		OnNavigateTo(args);
-		Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendChatMessage("I am so glad I just clicked!");
-	}
-}
-
-void PlayState::OnRightClick(Engine::MouseEventArgs args) {
-	if(IsCurrentState()) {
-		OnFireTorpedo(args);
-	}
 }
 
 void PlayState::OnMouseMove(Engine::MouseEventArgs args) {

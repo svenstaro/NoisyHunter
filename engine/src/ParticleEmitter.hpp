@@ -68,7 +68,7 @@ public:
 	float GetStartScale() const;
 	float GetEndScale() const;
 
-	sf::Uint16 GetEntityId() const;
+	sf::Uint16 GetEntityTypeId() const;
 
 	Entity::PositionType GetPositionType() const;
 
