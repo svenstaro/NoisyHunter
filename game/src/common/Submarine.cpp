@@ -32,11 +32,9 @@ void Submarine::Initialize() {
 	mTargetMarkerRotation = 0;
 
 	// Particle system for submarine
-	Engine::Vector2D position = Engine::Vector2D(0.f, 0.f);
-	Engine::Vector2D direction = Engine::Vector2D(0.f, -1.2f);
 	Engine::ParticleSystem* part_sys = new Engine::ParticleSystem();
-	part_sys->SetPosition(position);
-	part_sys->SetDirection(direction);
+	part_sys->SetPosition(Engine::Vector2D(0.f, 0.f));
+	part_sys->SetDirection(Engine::Vector2D(0.f, -1.2f));
 	part_sys->SetPositionType(Engine::Entity::PositionType::POSITIONTYPE_WORLDFLOAT);
 	Engine::ParticleEmitter* part_emit = new Engine::ParticleEmitter();
 	part_emit->SetPosition(Engine::Vector2D(0.f, 0.f));

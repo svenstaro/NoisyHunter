@@ -11,6 +11,34 @@ void MenuState::Initialize() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing MenuState.");
 
+	// NICE PARTICLES
+	Engine::ParticleSystem* part_sys;
+	part_sys = new Engine::ParticleSystem();
+	part_sys->SetPosition(Engine::Vector2D(0,650));
+	part_sys->SetDirection(Engine::Vector2D(0.f, -1.f));
+	part_sys->SetPositionType(Engine::Entity::PositionType::POSITIONTYPE_WORLDPIXEL);
+
+	Engine::ParticleEmitter* part_emit;
+
+	for(int i = 0; i <= 3; ++i) {
+		part_emit = new Engine::ParticleEmitter();
+		part_emit->SetPositionOffset(Engine::Vector2D(100.f + i * 200, 0.f));
+		part_emit->SetRotationOffset(0.f);
+		part_emit->SetSpeed(60.f);
+		part_emit->SetSpread(20.f);
+		part_emit->SetRate(1.7f);
+		part_emit->SetTimeToLive(10.f);
+		part_emit->SetStartScale(0.5f);
+		part_emit->SetEndScale(2.f);
+		part_emit->SetStartAlpha(180);
+		part_emit->SetEndAlpha(0);
+		part_emit->SetImageName("particle_bubble");
+		part_emit->SetEndColor(sf::Color(0,0,255));
+		part_sys->AddEmitter(part_emit);
+	}
+
+	AddEntity(part_sys);
+
 	// Add GUI
 	CreateGuiSystem();
 
@@ -122,7 +150,7 @@ void MenuState::Update(float time_delta) {
 }
 
 void MenuState::OnPressEscape() {
-
+	Engine::Root::get_mutable_instance().RequestShutdown();
 }
 
 void MenuState::PlayButton_OnClick(const sf::Uint16 mouse_button) {
