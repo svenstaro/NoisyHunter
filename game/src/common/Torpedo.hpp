@@ -18,7 +18,7 @@ public:
 
 	~Torpedo();
 
-	Torpedo* clone() const;
+	Torpedo* create() const;
 
 	void Initialize();
 

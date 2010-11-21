@@ -19,7 +19,7 @@ GuiCheckbox::GuiCheckbox(std::string name) {
 
 GuiCheckbox::~GuiCheckbox() {}
 
-GuiCheckbox* GuiCheckbox::clone() const {
+GuiCheckbox* GuiCheckbox::create() const {
 	return new GuiCheckbox();
 }
 

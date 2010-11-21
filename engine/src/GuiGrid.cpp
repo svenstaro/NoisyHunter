@@ -10,7 +10,7 @@ GuiGrid::GuiGrid(std::string name) {
 }
 GuiGrid::~GuiGrid() {}
 
-GuiGrid* GuiGrid::clone() const {
+GuiGrid* GuiGrid::create() const {
 	return new GuiGrid();
 }
 

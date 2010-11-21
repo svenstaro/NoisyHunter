@@ -12,7 +12,7 @@ SonarPing::SonarPing(const Engine::Vector2D& pos, const Engine::Vector2D& direct
 
 SonarPing::~SonarPing() {}
 
-SonarPing* SonarPing::clone() const {
+SonarPing* SonarPing::create() const {
 	return new SonarPing();
 }
 

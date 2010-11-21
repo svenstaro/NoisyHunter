@@ -16,7 +16,7 @@ public:
 	
 	~ParticleSystem();
 
-	ParticleSystem* clone() const;
+	ParticleSystem* create() const;
 	
 	void Initialize();
 

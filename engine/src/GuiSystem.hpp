@@ -14,7 +14,7 @@ public:
 
     ~GuiSystem();
 
-	GuiSystem* clone() const;
+	GuiSystem* create() const;
 
     void Update(const float time_delta);
     void HandleEvent(sf::Event e);

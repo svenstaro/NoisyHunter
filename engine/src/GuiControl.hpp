@@ -17,7 +17,7 @@ public:
 
     virtual ~GuiControl() = 0;
 
-	virtual GuiControl* clone() const = 0;
+	virtual GuiControl* create() const = 0;
 
     // Main callbacks
     virtual void Update(const float time_delta);

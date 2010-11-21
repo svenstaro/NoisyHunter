@@ -30,7 +30,7 @@ Entity* IdManager::GetEntityPrototype(sf::Uint16 entity_id) {
         Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_ERROR, LOGORIGIN_IDMANAGER, "GetEntityPrototype ## Entity with UID " + boost::lexical_cast<std::string>(entity_id) + " not registered.");
         exit(1);
     }
-    return mRegisteredEntityClasses[entity_id]->clone();
+	return mRegisteredEntityClasses[entity_id]->create();
 }
 
 sf::Uint16 IdManager::GetNewUniqueId() {

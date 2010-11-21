@@ -19,7 +19,7 @@ GuiButton::GuiButton(std::string name) {
 
 GuiButton::~GuiButton() {}
 
-GuiButton* GuiButton::clone() const {
+GuiButton* GuiButton::create() const {
 	return new GuiButton();
 }
 

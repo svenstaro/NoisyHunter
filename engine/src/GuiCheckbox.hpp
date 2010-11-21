@@ -15,7 +15,7 @@ public:
 
     ~GuiCheckbox();
 
-	GuiCheckbox* clone() const;
+	GuiCheckbox* create() const;
 
     // main callbacks
 	void Draw(sf::RenderTarget* target);

@@ -10,7 +10,7 @@ Entity::Entity() {}
 
 Entity::~Entity() {}
 
-Entity* Entity::clone() const {}
+Entity* Entity::create() const {}
 
 void Entity::Initialize() {}
 

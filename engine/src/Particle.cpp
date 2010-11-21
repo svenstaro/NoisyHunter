@@ -44,7 +44,7 @@ Particle::Particle(const Vector2D& position,
 
 Particle::~Particle() {}
 
-Particle* Particle::clone() const {
+Particle* Particle::create() const {
 	return new Particle();
 }
 

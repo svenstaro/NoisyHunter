@@ -13,7 +13,7 @@ GuiControl::GuiControl(const sf::Uint16 unique_id,
 
 GuiControl::~GuiControl() {}
 
-GuiControl* GuiControl::clone() const {}
+GuiControl* GuiControl::create() const {}
 
 void GuiControl::Update(const float time_delta) {
 	UpdateAllAttachments(time_delta);

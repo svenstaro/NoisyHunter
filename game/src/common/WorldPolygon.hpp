@@ -16,7 +16,7 @@ public:
 
 	~WorldPolygon();
 
-	WorldPolygon* clone() const;
+	WorldPolygon* create() const;
 
 	void Draw(sf::RenderTarget* target) const;
 

@@ -20,7 +20,7 @@ Submarine::Submarine(const float pos_x,
 
 Submarine::~Submarine() {}
 
-Submarine* Submarine::clone() const {
+Submarine* Submarine::create() const {
 	return new Submarine();
 }
 

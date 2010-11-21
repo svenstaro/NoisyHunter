@@ -14,7 +14,7 @@ public:
 
 	~GuiLabel();
 
-	GuiLabel* clone() const;
+	GuiLabel* create() const;
 
 	void SetFont(const sf::Font& font);
 	void SetFontSize(const float size);

@@ -19,7 +19,7 @@ public:
 
 	~Submarine();
 
-	Submarine* clone() const;
+	Submarine* create() const;
 
 	void Initialize();
 

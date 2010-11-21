@@ -19,7 +19,7 @@ public:
 
 	~GuiGrid();
 
-	GuiGrid* clone() const;
+	GuiGrid* create() const;
 
 	void Draw(sf::RenderTarget* target);
 	virtual void PlaceChildren();

@@ -27,7 +27,7 @@ public:
 	
 	~ParticleEmitter();
 
-	ParticleEmitter* clone() const;
+	ParticleEmitter* create() const;
 	
 	void Initialize(const Vector2D& position_of_partsys,
 					const Vector2D& direction_of_partsys,

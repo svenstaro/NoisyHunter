@@ -18,7 +18,7 @@ Torpedo::Torpedo(const Engine::Vector2D& pos,
 
 Torpedo::~Torpedo() {}
 
-Torpedo* Torpedo::clone() const {
+Torpedo* Torpedo::create() const {
 	return new Torpedo();
 }
 

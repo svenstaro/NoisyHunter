@@ -12,7 +12,7 @@ class GuiContainer : public GuiControl {
 public:
 	~GuiContainer();
 
-	virtual GuiContainer* clone() const = 0;
+	virtual GuiContainer* create() const = 0;
 
 	bool AddControl(GuiControl* control);
 

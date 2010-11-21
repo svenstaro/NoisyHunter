@@ -20,7 +20,7 @@ public:
 
 	~SonarPing();
 
-	SonarPing* clone() const;
+	SonarPing* create() const;
 
 	void Initialize();
 

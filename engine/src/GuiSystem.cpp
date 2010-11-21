@@ -9,7 +9,7 @@ GuiSystem::GuiSystem() {}
 
 GuiSystem::~GuiSystem() {}
 
-GuiSystem* GuiSystem::clone() const {
+GuiSystem* GuiSystem::create() const {
 	return new GuiSystem();
 }
 

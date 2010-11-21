@@ -12,7 +12,7 @@ ParticleSystem::ParticleSystem(const Vector2D& position,
 
 ParticleSystem::~ParticleSystem() {}
 
-ParticleSystem* ParticleSystem::clone() const {
+ParticleSystem* ParticleSystem::create() const {
 	return new ParticleSystem();
 }
 

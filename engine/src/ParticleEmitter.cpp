@@ -39,7 +39,7 @@ ParticleEmitter::ParticleEmitter(const Vector2D& position_offset,
 
 ParticleEmitter::~ParticleEmitter() {}
 
-ParticleEmitter* ParticleEmitter::clone() const {
+ParticleEmitter* ParticleEmitter::create() const {
 	return new ParticleEmitter();
 }
 

@@ -39,8 +39,8 @@ public:
 	// Virtual destructor
 	virtual ~Entity() = 0;
 
-	// Virtual constructor (clone)
-	virtual Entity* clone() const = 0;
+	// Virtual constructor (create)
+	virtual Entity* create() const = 0;
 
 	virtual void Initialize();
 

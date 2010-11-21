@@ -13,7 +13,7 @@ public:
 	GuiProgressbar();
 	GuiProgressbar(std::string name);
 	~GuiProgressbar();
-	GuiProgressbar* clone() const;
+	GuiProgressbar* create() const;
 
 	// main callbacks
 	virtual void Draw(sf::RenderTarget* target);

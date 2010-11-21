@@ -29,7 +29,7 @@ public:
 	
 	~Particle();
 
-	Particle* clone() const;
+	Particle* create() const;
 
 	void Initialize();
 

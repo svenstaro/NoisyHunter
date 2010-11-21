@@ -13,7 +13,7 @@ GuiProgressbar::GuiProgressbar(std::string name) {
 	SetFontColor(sf::Color::Black);
 }
 GuiProgressbar::~GuiProgressbar() {}
-GuiProgressbar* GuiProgressbar::clone() const {
+GuiProgressbar* GuiProgressbar::create() const {
 	return new GuiProgressbar();
 }
 

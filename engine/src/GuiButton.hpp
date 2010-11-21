@@ -15,7 +15,7 @@ public:
 
     ~GuiButton();
 
-	GuiButton* clone() const;
+	GuiButton* create() const;
 
     // main callbacks
 	virtual void Draw(sf::RenderTarget* target);

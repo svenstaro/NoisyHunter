@@ -24,7 +24,7 @@ GuiTextfield::GuiTextfield(std::string name) {
 
 GuiTextfield::~GuiTextfield() {}
 
-GuiTextfield* GuiTextfield::clone() const {
+GuiTextfield* GuiTextfield::create() const {
 	return new GuiTextfield();
 }
 

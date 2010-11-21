@@ -12,7 +12,7 @@ GuiLabel::GuiLabel(std::string name) {
 }
 GuiLabel::~GuiLabel() {}
 
-GuiLabel* GuiLabel::clone() const {
+GuiLabel* GuiLabel::create() const {
 	return new GuiLabel();
 }
 

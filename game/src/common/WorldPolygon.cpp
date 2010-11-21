@@ -10,7 +10,7 @@ WorldPolygon::WorldPolygon() {
 
 WorldPolygon::~WorldPolygon() {}
 
-WorldPolygon* WorldPolygon::clone() const {
+WorldPolygon* WorldPolygon::create() const {
 	return new WorldPolygon();
 }
 

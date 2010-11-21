@@ -14,7 +14,7 @@ public:
 
     ~GuiTextfield();
 
-	GuiTextfield* clone() const;
+	GuiTextfield* create() const;
 
     // main callbacks
 	virtual void Draw(sf::RenderTarget* target);
