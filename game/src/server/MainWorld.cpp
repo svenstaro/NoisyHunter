@@ -13,7 +13,7 @@ void MainWorld::Initialize() {
     
 	WorldPolygon* pol1 = new WorldPolygon();
 	pol1->Initialize();
-	pol1->GrabEntityEntityUniqueId();
+	pol1->GrabEntityUniqueId();
 	pol1->AddPoint(sf::Vector2f(0,0));
 	pol1->AddPoint(sf::Vector2f(0.2,0.2));
 
@@ -38,7 +38,7 @@ void MainWorld::Initialize() {
 	// rock
 	WorldPolygon* pol2 = new WorldPolygon();
 	pol2->Initialize();
-	pol2->GrabEntityEntityUniqueId();
+	pol2->GrabEntityUniqueId();
 	pol2->AddPoint(sf::Vector2f(1.2,0.95));
 	pol2->AddPoint(sf::Vector2f(1.3,1.1));
 	pol2->AddPoint(sf::Vector2f(1.1,1.05));
@@ -70,9 +70,9 @@ void MainWorld::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uin
 		BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
 			if(sub->GetClientId() == client_id) {
 				Torpedo* torpedo = (Torpedo*)sub->FireTorpedoTo(Engine::Vector2D(target_x, target_y), time_to_live);
-				torpedo->GrabEntityEntityUniqueId();
+				torpedo->GrabEntityUniqueId();
 				auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
-				netmgr->SendEntityAdd(*torpedo);
+				netmgr->SendEntityAdd(*torpedo, mWorldUniqueId);
 				AddEntity(torpedo);
 			}
 		}
@@ -85,9 +85,9 @@ void MainWorld::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uin
 		BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
 			if(sub->GetClientId() == client_id) {
 				SonarPing* sonarping = (SonarPing*)sub->FireSonarPing(Engine::Vector2D(target_x, target_y), time_to_live);
-				sonarping->GrabEntityEntityUniqueId();
+				sonarping->GrabEntityUniqueId();
 				auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
-				netmgr->SendEntityAdd(*sonarping);
+				netmgr->SendEntityAdd(*sonarping, mWorldUniqueId);
 				AddEntity(sonarping);
 			}
 		}

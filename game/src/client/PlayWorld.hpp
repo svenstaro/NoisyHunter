@@ -8,7 +8,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include "LogManager.hpp"
-#include "State.hpp"
+#include "World.hpp"
 #include "Entity.hpp"
 #include "InputManager.hpp"
 #include "Submarine.hpp"
@@ -28,7 +28,6 @@ public:
 
     // state control
     void Initialize();
-    void Shutdown();
 
     void Update(float time_delta);
 

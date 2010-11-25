@@ -31,12 +31,25 @@ void State::Update(const float time_delta) {
 	mAmountToPop = 0;
 }
 
+void State::Draw(sf::RenderTarget* target) {
+
+	BOOST_FOREACH(World& world, mWorlds) {
+		world.Draw(target);
+	}
+}
+
 void State::UpdateAllEntities(const float time_delta) {
 	BOOST_FOREACH(GuiSystem& system, mGuiSystems) {
 		system.Update(time_delta);
 	}
 	BOOST_FOREACH(World& world, mWorlds) {
 		world.UpdateAllEntities(time_delta);
+	}
+}
+
+void State::AppendAllEntitiesToPacket() {
+	BOOST_FOREACH(World& world, mWorlds) {
+		world.AppendAllEntitiesToPacket();
 	}
 }
 
@@ -50,6 +63,12 @@ void State::CreateGuiSystem() {
 	mGuiSystems.push_back(new GuiSystem());
 }
 
+void State::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data) {
+	BOOST_FOREACH(World& world, mWorlds) {
+		world.HandleInteraction(interaction_id, client_id, data);
+	}
+}
+
 World* State::GetWorld(const sf::Uint16 world_unique_id) {
 	BOOST_FOREACH(World& world, mWorlds) {
 		if(world.GetWorldUniqueId() == world_unique_id) {
@@ -61,6 +80,21 @@ World* State::GetWorld(const sf::Uint16 world_unique_id) {
 
 void State::DeleteWorldByEntityUniqueId(const sf::Uint16 world_unique_id) {
 	mWorlds.erase_if(boost::bind(&World::GetWorldUniqueId, _1) == world_unique_id);
+}
+
+void State::DeleteEntitiesByClientId(const sf::Uint16 client_id) {
+	BOOST_FOREACH(World& world, mWorlds) {
+		world.DeleteEntitiesByClientId(client_id);
+	}
+}
+
+Entity* State::GetEntityByEntityUniqueId(const sf::Uint16 entity_unique_id) {
+	BOOST_FOREACH(World& world, mWorlds) {
+		if (world.GetEntityByEntityUniqueId(entity_unique_id) != NULL) {
+			return world.GetEntityByEntityUniqueId(entity_unique_id);
+		}
+	}
+	return NULL;
 }
 
 void State::OnLeaveGame() {}

@@ -19,6 +19,8 @@ void World::InitializePhysics() {
 	dynamicsWorld->setGravity(btVector3(0, 1, 0));
 }
 
+void Initialize() {}
+
 void World::Update(const float time_delta) {
 	UpdateAllEntities(time_delta);
 }

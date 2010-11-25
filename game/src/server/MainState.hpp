@@ -16,8 +16,7 @@ public:
     void Initialize();
     void Shutdown();
 
-    void Update(float time_delta);
-	void OnClientConnected(sf::Uint16 client_id, sf::Uint16 world_unique_id);
+	void OnClientConnected(sf::Uint16 client_id);
 private:
 	// TEEEEEEST TEST
 	bool mTargetSet;

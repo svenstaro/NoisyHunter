@@ -63,8 +63,8 @@ public:
     void SendChatMessage(const std::string& chat_message, const std::string& client_name = "");
     
     // Signal binding & events
-    void BindOnClientConnected(const boost::signals2::signal<void (const sf::Uint16, const sf::Uint16)>::slot_type& slot);
-    void TriggerOnClientConnected(const sf::Uint16 client_id, const sf::Uint16 world_unique_id);
+    void BindOnClientConnected(const boost::signals2::signal<void (const sf::Uint16)>::slot_type& slot);
+    void TriggerOnClientConnected(const sf::Uint16 client_id);
 
 	sf::Uint16 GetPing();
 
@@ -100,7 +100,7 @@ private:
 	State* mEntityState;
 
     // Signals
-    boost::signals2::signal<void (const sf::Uint16, const sf::Uint16)> mOnClientConnectedSignal;
+    boost::signals2::signal<void (const sf::Uint16)> mOnClientConnectedSignal;
 
 	// Used for calculating pings
 	sf::Clock mPingClock;

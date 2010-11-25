@@ -144,10 +144,6 @@ void PlayState::OnPauseGame() {
 		Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new PauseState());
 }
 
-void PlayState::OnMouseMove(Engine::MouseEventArgs args) {
-	//mCursorPartSys->SetPosition(args.GetScreenPixel().x, args.GetScreenPixel().y);
-}
-
 void PlayState::OnClientConnected(const sf::Uint16 client_id) {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Client connected: " + boost::lexical_cast<std::string>(client_id));

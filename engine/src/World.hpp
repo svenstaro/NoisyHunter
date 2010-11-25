@@ -14,60 +14,63 @@
 
 namespace Engine {
 
-	class World {
-	public:
-		World();
-		virtual ~World() = 0;
-		void InitializePhysics();
-		virtual void Initialize();
-		virtual void Update(const float time_delta);
-		void UpdateAllEntities(const float time_delta);
-		void AppendAllEntitiesToPacket();
-		void Draw(sf::RenderTarget* const target);
-		void AddEntity(Entity* entity);
-		
-		void GrabWorldUniqueId();
-		sf::Uint16 GetWorldUniqueId();
-		sf::Uint16 GetEntityCount();
-		
-		//This isn't pure virtual because e.g. the IntroState doesn't need to handle interactions.
-		virtual void HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data);
+class Root;
 
-		Entity* GetEntityByEntityUniqueId(const sf::Uint16 entity_unique_id);
-		virtual void OnLeaveGame();
-		template <typename T>
-				std::vector<T*> GetAllEntitiesByType() {
+class World {
+public:
+	World();
+	virtual ~World() = 0;
 
-			std::vector<T*> entities;
+	void InitializePhysics();
+	virtual void Initialize();
+	virtual void Update(const float time_delta);
+	void UpdateAllEntities(const float time_delta);
+	void AppendAllEntitiesToPacket();
+	void Draw(sf::RenderTarget* const target);
+	void AddEntity(Entity* entity);
+	
+	void GrabWorldUniqueId();
+	virtual sf::Uint16 GetWorldUniqueId();
+	virtual sf::Uint16 GetEntityCount();
+	
+	//This isn't pure virtual because e.g. the IntroState doesn't need to handle interactions.
+	virtual void HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data);
 
-			T t;
-			sf::Uint16 entity_type_id = t.GetEntityTypeId();
+	Entity* GetEntityByEntityUniqueId(const sf::Uint16 entity_unique_id);
+	virtual void OnLeaveGame();
+	template <typename T>
+			std::vector<T*> GetAllEntitiesByType() {
 
-			BOOST_FOREACH(Entity& entity, mEntities) {
-				if(entity.GetEntityTypeId() == entity_type_id) {
-					entities.push_back( (T*)&entity );
-				}
+		std::vector<T*> entities;
+
+		T t;
+		sf::Uint16 entity_type_id = t.GetEntityTypeId();
+
+		BOOST_FOREACH(Entity& entity, mEntities) {
+			if(entity.GetEntityTypeId() == entity_type_id) {
+				entities.push_back( (T*)&entity );
 			}
-			return entities;
-
 		}
+		return entities;
 
-		void DeleteEntitiesByClientId(const sf::Uint16 client_id);
-		void DeleteEntityByEntityUniqueId(const sf::Uint16 entity_unique_id);
-	protected:
-		sf::Uint16 mWorldUniqueId;
+	}
 
-		boost::ptr_vector<Entity> mEntities;
-		boost::shared_ptr<btDefaultCollisionConfiguration> collisionConfiguration;
-		boost::shared_ptr<btCollisionDispatcher> dispatcher;
-		boost::shared_ptr<btDbvtBroadphase> broadphase;
-		boost::shared_ptr<btVoronoiSimplexSolver> simplex;
-		boost::shared_ptr<btMinkowskiPenetrationDepthSolver> pd_solver;
-		boost::shared_ptr<btSequentialImpulseConstraintSolver> solver;
-		boost::shared_ptr<btDiscreteDynamicsWorld> dynamicsWorld;
-		btAlignedObjectArray<btCollisionShape*> collisionShapes;
-		
-		bool mEntityListNeedsSorting;
+	void DeleteEntitiesByClientId(const sf::Uint16 client_id);
+	void DeleteEntityByEntityUniqueId(const sf::Uint16 entity_unique_id);
+protected:
+	sf::Uint16 mWorldUniqueId;
+
+	boost::ptr_vector<Entity> mEntities;
+	boost::shared_ptr<btDefaultCollisionConfiguration> collisionConfiguration;
+	boost::shared_ptr<btCollisionDispatcher> dispatcher;
+	boost::shared_ptr<btDbvtBroadphase> broadphase;
+	boost::shared_ptr<btVoronoiSimplexSolver> simplex;
+	boost::shared_ptr<btMinkowskiPenetrationDepthSolver> pd_solver;
+	boost::shared_ptr<btSequentialImpulseConstraintSolver> solver;
+	boost::shared_ptr<btDiscreteDynamicsWorld> dynamicsWorld;
+	btAlignedObjectArray<btCollisionShape*> collisionShapes;
+	
+	bool mEntityListNeedsSorting;
 	};
 }
 

@@ -22,7 +22,7 @@ void MainState::Shutdown() {
     logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Shutting down main state.");
 }
 
-void MainState::OnClientConnected(sf::Uint16 client_id, sf::Uint16 world_unique_id) {
+void MainState::OnClientConnected(sf::Uint16 client_id) {
 	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
 
 	float lol = sf::Randomizer::Random(0.1f, 0.9f);
@@ -30,6 +30,7 @@ void MainState::OnClientConnected(sf::Uint16 client_id, sf::Uint16 world_unique_
 	submarine1->SetPosition(Engine::Vector2D(lol, lol));
 	submarine1->GrabEntityUniqueId();
 	submarine1->SetClientId(client_id);
+	sf::Uint16 world_unique_id = mWorlds.back().GetWorldUniqueId();
 
 	GetWorld(world_unique_id)->AddEntity(submarine1);
 
