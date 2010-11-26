@@ -14,15 +14,13 @@
 
 namespace Engine {
 
-class Root;
-
 class World {
 public:
 	World();
 	virtual ~World() = 0;
 
 	void InitializePhysics();
-	virtual void Initialize();
+	virtual void Initialize() = 0;
 	virtual void Update(const float time_delta);
 	void UpdateAllEntities(const float time_delta);
 	void AppendAllEntitiesToPacket();
@@ -33,7 +31,7 @@ public:
 	virtual sf::Uint16 GetWorldUniqueId();
 	virtual sf::Uint16 GetEntityCount();
 	
-	//This isn't pure virtual because e.g. the IntroState doesn't need to handle interactions.
+	// This isn't pure virtual because no client world needs to handle interactions.
 	virtual void HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data);
 
 	Entity* GetEntityByEntityUniqueId(const sf::Uint16 entity_unique_id);
@@ -71,7 +69,9 @@ protected:
 	btAlignedObjectArray<btCollisionShape*> collisionShapes;
 	
 	bool mEntityListNeedsSorting;
-	};
+
+};
+
 }
 
 #endif
