@@ -137,6 +137,10 @@ void MenuState::Initialize() {
 	Engine::KeyBindingCallback cb = boost::bind(&MenuState::OnPressEscape, this);
 	inputmgr->BindKey( cb, Engine::KEY_PRESSED, sf::Key::Escape );
 
+	Radar* radar = new Radar();
+	radar->Initialize();
+	AddEntity(radar);
+
 }
 
 void MenuState::Shutdown() {

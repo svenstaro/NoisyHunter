@@ -46,10 +46,10 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 	logmgr->SetVerbose(is_verbose);
 	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_STATE, "Initializing Root as client.");
 
-    sf::ContextSettings Settings;
-    Settings.DepthBits         = 24; // Request a 24 bits depth buffer
-    Settings.StencilBits       = 8;  // Request a 8 bits stencil buffer
-	Settings.AntialiasingLevel = 8;  // Request 8 levels of antialiasing
+	// Request a 24 bits depth buffer
+	// Request a 8 bits stencil buffer
+	// Request 8 levels of antialiasing
+	sf::ContextSettings Settings(24, 8, 8);
 
     // Create Render Window
     if(is_fullscreen)

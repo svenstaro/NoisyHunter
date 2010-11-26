@@ -3,7 +3,6 @@
 
 #include <boost/shared_ptr.hpp>
 #include <SFML/Graphics/Shape.hpp>
-#include <SFML/Graphics/Shape.hpp>
 
 #include "Entity.hpp"
 #include "EntityId.hpp"

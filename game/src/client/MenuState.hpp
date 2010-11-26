@@ -8,6 +8,8 @@
 #include "InputManager.hpp"
 #include "PlayState.hpp"
 
+#include "Radar.hpp"
+
 //#include "GuiTextfield.hpp"
 #include "GuiButton.hpp"
 //#include "GuiCheckbox.hpp"

@@ -60,6 +60,8 @@ void IntroState::Initialize() {
 			"glow1.svg", 0.05f, 0.05f, "glow1");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
 			"torpedo_trail.svg", 0.024f, 0.024f, "torpedo_trail");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
+			"radar1.svg", .6f, .2f, "radar1");
 
     // load font
     sf::Font font;
