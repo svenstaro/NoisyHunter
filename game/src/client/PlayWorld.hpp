@@ -19,8 +19,6 @@
 #include "ParticleEmitter.hpp"
 #include "Particle.hpp"
 
-#include "PauseState.hpp"
-
 class PlayWorld : public Engine::World {
 public:
     PlayWorld();

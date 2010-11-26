@@ -12,8 +12,6 @@
 
 namespace Engine {
 
-class Root;
-
 class State {
 public:
     State();

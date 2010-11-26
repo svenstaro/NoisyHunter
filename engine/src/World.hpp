@@ -14,8 +14,6 @@
 
 namespace Engine {
 
-class Root;
-
 class World {
 public:
 	World();
@@ -33,11 +31,9 @@ public:
 	virtual sf::Uint16 GetWorldUniqueId();
 	virtual sf::Uint16 GetEntityCount();
 	
-	//This isn't pure virtual because e.g. the IntroState doesn't need to handle interactions.
 	virtual void HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data);
 
 	Entity* GetEntityByEntityUniqueId(const sf::Uint16 entity_unique_id);
-	virtual void OnLeaveGame();
 	template <typename T>
 			std::vector<T*> GetAllEntitiesByType() {
 
@@ -57,6 +53,7 @@ public:
 
 	void DeleteEntitiesByClientId(const sf::Uint16 client_id);
 	void DeleteEntityByEntityUniqueId(const sf::Uint16 entity_unique_id);
+	virtual void OnLeaveGame();
 protected:
 	sf::Uint16 mWorldUniqueId;
 
