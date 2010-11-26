@@ -129,9 +129,8 @@ void Root::StartMainLoop() {
 				SnapClock.Reset();
 				if(mNetworkManager.GetClientManagerPtr()->GetActiveClients() > 0) {
 					mNetworkManager.PreparePacket();
+					logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending world snapshot.");
 					mStateManager.SendWorldSnapshots();
-					logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending snapshot.");
-					mNetworkManager.SendPacket();
 				}
 			}
         }
