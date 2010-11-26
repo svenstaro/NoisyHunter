@@ -18,6 +18,7 @@ class World {
 public:
 	World();
 	virtual ~World() = 0;
+	virtual World* clone() const = 0;
 
 	void InitializePhysics();
 	virtual void Initialize() = 0;
@@ -28,7 +29,9 @@ public:
 	void AddEntity(Entity* entity);
 	
 	void GrabWorldUniqueId();
-	virtual sf::Uint16 GetWorldUniqueId();
+	sf::Uint16 GetWorldUniqueId();
+	void SetWorldUniqueId(sf::Uint16 world_unique_id);
+	virtual sf::Uint16 GetWorldTypeId() const = 0;
 	virtual sf::Uint16 GetEntityCount();
 	
 	// This isn't pure virtual because no client world needs to handle interactions.
@@ -57,6 +60,7 @@ public:
 	virtual void OnLeaveGame();
 protected:
 	sf::Uint16 mWorldUniqueId;
+	sf::Uint16 mWorldTypeId;
 
 	boost::ptr_vector<Entity> mEntities;
 	boost::shared_ptr<btDefaultCollisionConfiguration> collisionConfiguration;

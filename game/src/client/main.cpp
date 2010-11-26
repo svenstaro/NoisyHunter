@@ -4,6 +4,7 @@
 
 #include "PlayState.hpp"
 #include "IntroState.hpp"
+#include "PlayWorld.hpp"
 // Include entities in the appropriate state
 
 void HandleSignal(int sig) {
@@ -96,6 +97,8 @@ int main(int argc, char* argv[]) {
 	idmgr->RegisterEntityClass(new Torpedo());
 	idmgr->RegisterEntityClass(new WorldPolygon());
 	idmgr->RegisterEntityClass(new SonarPing());
+
+	idmgr->RegisterWorldClass(new PlayWorld());
 
 	// Initialize Root singleton using parsed values.
     root.InitializeAsClient(sf::VideoMode(width, height), "Noisy Hunter", fullscreen, sf::IpAddress(ip), port, name, verbose);

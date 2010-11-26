@@ -81,14 +81,29 @@ enum NetworkCommand {
 	// complete data of an entity. This info needs to be deserialized.
 	// Packet structure is:
 	// [sf::Uint16(NETCMD_ENTITYINFO), sf::Uint16(entity_unique_id),
-	//  sf::Uint16(entity_type_id), Engine::Entity(entity), sf::Uint16(world_unique_id)]
+	//  sf::Uint16(entity_type_id), Engine::Entity(entity)
 	NETCMD_ENTITYINFO = 0x22,
 
 	// If this is sent client->server, ALL HELL BREAKS LOOSE!
-	// If this is sent server-client, the client should delete the local instance of the given entity.
-	// Packet Structure is:
+	// If this is sent server->client, the client should delete the local instance of the given entity.
+	// Packet structure is:
 	// [sf::Uint16(NETCMD_ENTITYINFO), sf::Uint16(entity_unique_id)]
 	NETCMD_ENTITYDEL = 0x23,
+
+	// if this is sent client->server, ALL HELL BREAKS LOOSE!
+	// if this is sent server->client, the client should update the world if it 
+	// already exists or add it.
+	// Packet structure is:
+	// [sf::Uint16(NETCMD_WORLDINFO_BEGIN), sf::Uint16(world_unique_id)]
+	NETCMD_WORLDINFO_BEGIN = 0x24,
+	// Between these commands the entities from this world will be sent over the
+	// network using NETCMD_ENTITYINFO.
+
+	// If the world_unique_id doesn't match the one from NETCMD_WORLDINFO_BEGIN
+	// something wrong happened.
+	// Packet structure is:
+	// [sf::Uint16(NETCMD_WORLDINFO_END), sf::Uint16(world_unique_id)]
+	NETCMD_WORLDINFO_END = 0x25,
 
 	// If this is sent client->server, a client is requesting a chat message
 	// to be posted to all other clients.

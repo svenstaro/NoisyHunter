@@ -22,6 +22,7 @@ public:
     void AppendAllEntitiesToPacket();
 	State& GetCurrentState();
 	bool IsCurrentState(State* state);
+	void SendWorldSnapshots();
 
 private:
     //Root* mRoot;

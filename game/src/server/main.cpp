@@ -66,6 +66,8 @@ int main(int argc, char* argv[]) {
 	idmgr->RegisterEntityClass(new WorldPolygon());
 	idmgr->RegisterEntityClass(new SonarPing());
 
+	idmgr->RegisterWorldClass(new MainWorld());
+
 	// Initialize Root singleton using parsed values.
     root.InitializeAsServer(port, verbose);
 	MainState* mainstate = new MainState();

@@ -90,9 +90,7 @@ public:
 
 	float GetLifeTime() const;
 
-	sf::Uint16 GetWorldEntityUniqueId() const;
-
-	void SetWorldEntityUniqueId(const sf::Uint16 world_entity_unique_id);
+	void SetEntityUniqueId(const sf::Uint16 entity_unique_id);
 
 	bool operator<(const Entity& other);
 
@@ -108,7 +106,6 @@ public:
 protected:
 	sf::Uint16 mClientId;
 	sf::Uint16 mEntityUniqueId;
-	sf::Uint16 mWorldEntityUniqueId;
 
 	Vector2D mPosition;
 	float mSpeed;

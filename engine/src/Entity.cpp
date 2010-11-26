@@ -80,10 +80,6 @@ void Entity::DrawAllAttachments(sf::RenderTarget* target) const {
 		attachment.Draw(target);
 }
 
-sf::Uint16 Entity::GetEntityUniqueId() const {
-	return mEntityUniqueId;
-}
-
 void Entity::SetPosition(const float x, const float y) {
 	SetPosition(Vector2D(x, y));
 }
@@ -129,12 +125,12 @@ float Entity::GetLifeTime() const {
 	return mLifeTime;
 }
 
-sf::Uint16 Entity::GetWorldEntityUniqueId() const {
-	return mWorldEntityUniqueId;
+sf::Uint16 Entity::GetEntityUniqueId() const {
+	return mEntityUniqueId;
 }
 
-void Entity::SetWorldEntityUniqueId(const sf::Uint16 world_entity_unique_id) {
-	mWorldEntityUniqueId = world_entity_unique_id;
+void Entity::SetEntityUniqueId(const sf::Uint16 entity_unique_id) {
+	mEntityUniqueId = entity_unique_id;
 }
 
 void Entity::SetClientId(const sf::Uint16 client_id) {

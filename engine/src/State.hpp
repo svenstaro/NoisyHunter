@@ -49,6 +49,8 @@ public:
 	virtual bool StatesBelowArePaused();
 	virtual bool StatesBelowAreHidden();
 
+	void SendWorldSnapshots();
+
 	bool IsCurrentState();
 
 protected:

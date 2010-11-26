@@ -8,6 +8,8 @@ World::World() {}
 
 World::~World() {}
 
+World* World::clone() const {}
+
 void World::InitializePhysics() {
 	collisionConfiguration = boost::shared_ptr<btDefaultCollisionConfiguration>(new btDefaultCollisionConfiguration());
 	dispatcher = boost::shared_ptr<btCollisionDispatcher>(new btCollisionDispatcher(collisionConfiguration.get()));
@@ -46,7 +48,7 @@ void World::UpdateAllEntities(const float time_delta) {
 void World::AppendAllEntitiesToPacket() {
 	BOOST_FOREACH(Entity& entity, mEntities) {
 		Root::get_mutable_instance().GetNetworkManagerPtr()->
-			AppendEntityToPacket(entity, mWorldUniqueId);
+			AppendEntityToPacket(entity);
 	}
 }
 
@@ -69,6 +71,10 @@ void World::GrabWorldUniqueId() {
 
 sf::Uint16 World::GetWorldUniqueId() {
 	return mWorldUniqueId;
+}
+
+void World::SetWorldUniqueId(sf::Uint16 world_unique_id) {
+	mWorldUniqueId = world_unique_id;
 }
 
 sf::Uint16 World::GetEntityCount() {

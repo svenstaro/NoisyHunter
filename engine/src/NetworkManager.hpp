@@ -37,7 +37,7 @@ public:
 
     // Sending methods
     void PreparePacket();
-    void AppendEntityToPacket(Entity& entity, const sf::Uint16 world_unique_id);
+    void AppendEntityToPacket(Entity& entity);
     // Sends the prepared packet "mPacket" by calling SendPacket(mPacket).
     void SendPacket();
     void SendPacket(sf::Packet& packet);
@@ -58,6 +58,8 @@ public:
 
 	// Sends a packet which requests a ping response; In a way PONG :D
 	void SendPing();
+
+	void SendWorldInfo(sf::Uint16 world_unique_id, sf::Uint16 world_type_id);
 
     // Sends a packet containing NETCMD_CHATMESSAGE to server / all clients.
     void SendChatMessage(const std::string& chat_message, const std::string& client_name = "");
@@ -110,6 +112,9 @@ private:
 	sf::Uint32 mSentPacketsCount;
 
 	sf::Clock mTimeOutClock;
+
+	bool mDuringWorldSnapshot;
+	sf::Uint16 mWorldSnapshotWorldUniqueId;
 };
 
 }

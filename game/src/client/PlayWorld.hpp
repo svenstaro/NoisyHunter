@@ -15,6 +15,8 @@
 #include "WorldPolygon.hpp"
 #include "Interaction.hpp"
 
+#include "WorldTypeId.hpp"
+
 #include "ParticleSystem.hpp"
 #include "ParticleEmitter.hpp"
 #include "Particle.hpp"
@@ -23,6 +25,7 @@ class PlayWorld : public Engine::World {
 public:
     PlayWorld();
     ~PlayWorld();
+	PlayWorld* clone() const;
 
     // state control
     void Initialize();
@@ -41,7 +44,8 @@ public:
     void OnClick(Engine::MouseEventArgs args);
     void OnRightClick(Engine::MouseEventArgs args);
     void OnMouseMove(Engine::MouseEventArgs args);
-    
+
+	sf::Uint16 GetWorldTypeId() const;
 };
 
 #endif

@@ -99,4 +99,9 @@ bool StateManager::IsCurrentState(State* state) {
 	return &GetCurrentState() == state;
 }
 
+void StateManager::SendWorldSnapshots() {
+    if(mStates.size() > 0)
+		GetCurrentState().SendWorldSnapshots();
+}
+
 }

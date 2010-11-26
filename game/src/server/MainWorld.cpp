@@ -7,6 +7,10 @@ MainWorld::MainWorld() {
 MainWorld::~MainWorld() {
 }
 
+MainWorld* MainWorld::clone() const {
+	return new MainWorld();
+}
+
 void MainWorld::Initialize() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
     logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_WORLD, "Initializing main world.");
@@ -92,4 +96,7 @@ void MainWorld::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uin
 			}
 		}
 	}
+}
+sf::Uint16 MainWorld::GetWorldTypeId() const {
+	return WORLDTYPEID_PLAYWORLD;
 }

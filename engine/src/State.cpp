@@ -110,6 +110,12 @@ bool State::StatesBelowAreHidden() {
 	return true;
 }
 
+void State::SendWorldSnapshots() {
+	BOOST_FOREACH(World& world, mWorlds) {
+		Root::get_mutable_instance().GetNetworkManagerPtr()->SendWorldInfo(world.GetWorldUniqueId(),world.GetWorldTypeId());
+	}
+}
+
 bool State::IsCurrentState() {
 	return Root::get_mutable_instance().GetStateManagerPtr()->IsCurrentState(this);
 }

@@ -7,6 +7,10 @@ PlayWorld::PlayWorld() {}
 
 PlayWorld::~PlayWorld() {}
 
+PlayWorld* PlayWorld::clone() const {
+	return new PlayWorld();
+}
+
 void PlayWorld::Initialize() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing PlayWorld.");
@@ -94,4 +98,8 @@ void PlayWorld::OnRightClick(Engine::MouseEventArgs args) {
 
 void PlayWorld::OnMouseMove(Engine::MouseEventArgs args) {
 	//mCursorPartSys->SetPosition(args.GetScreenPixel().x, args.GetScreenPixel().y);
+}
+
+sf::Uint16 PlayWorld::GetWorldTypeId() const {
+	return WORLDTYPEID_PLAYWORLD;
 }

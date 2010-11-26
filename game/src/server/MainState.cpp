@@ -36,5 +36,5 @@ void MainState::OnClientConnected(sf::Uint16 client_id) {
 
 	GetWorld(world_unique_id)->AddEntity(submarine1);
 
-	netmgr->SendEntityAdd(*submarine1, world_unique_id);
+	//netmgr->SendEntityAdd(*submarine1, world_unique_id);
 }
