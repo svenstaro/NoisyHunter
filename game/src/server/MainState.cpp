@@ -15,6 +15,8 @@ void MainState::Initialize() {
     auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
     netmgr->BindOnClientConnected(boost::bind(&MainState::OnClientConnected, this, _1));
 	netmgr->SetEntityState(this);
+
+	mAmountToPop = 0;
 }
 
 void MainState::Shutdown() {

@@ -40,7 +40,7 @@ public:
 	virtual void HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data);
 
     Entity* GetEntityByEntityUniqueId(const sf::Uint16 entity_unique_id);
-	void DeleteWorldByEntityUniqueId(const sf::Uint16 entity_unique_id); 
+	void DeleteWorldByWorldUniqueId(const sf::Uint16 world_unique_id);
 
 	virtual void OnLeaveGame();
 	void DeleteEntitiesByClientId(const sf::Uint16 client_id);
@@ -55,8 +55,6 @@ protected:
 	// Gui Systems
     boost::ptr_vector<GuiSystem> mGuiSystems;
 	boost::ptr_vector<World> mWorlds;
-
-private:
 	int mAmountToPop;
 };
 

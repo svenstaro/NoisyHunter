@@ -25,10 +25,12 @@ void State::Pop(int amount) {
 
 void State::Update(const float time_delta) {
 	UpdateAllEntities(time_delta);
-	for(int i = 0; i < mAmountToPop && mWorlds.size() > 0; i++) {
-		mWorlds.pop_back();
+	if(Root::get_const_instance().IsServer()) {
+		for(int i = 0; i < mAmountToPop && mWorlds.size() > 0; i++) {
+			mWorlds.pop_back();
+		}
+		mAmountToPop = 0;
 	}
-	mAmountToPop = 0;
 }
 
 void State::Draw(sf::RenderTarget* target) {
@@ -78,7 +80,7 @@ World* State::GetWorld(const sf::Uint16 world_unique_id) {
 	return NULL;
 }
 
-void State::DeleteWorldByEntityUniqueId(const sf::Uint16 world_unique_id) {
+void State::DeleteWorldByWorldUniqueId(const sf::Uint16 world_unique_id) {
 	mWorlds.erase_if(boost::bind(&World::GetWorldUniqueId, _1) == world_unique_id);
 }
 
