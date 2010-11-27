@@ -65,9 +65,10 @@ void State::CreateGuiSystem() {
 	mGuiSystems.push_back(new GuiSystem());
 }
 
-void State::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data) {
+void State::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, const sf::Uint16 world_unique_id, sf::Packet& data) {
 	BOOST_FOREACH(World& world, mWorlds) {
-		world.HandleInteraction(interaction_id, client_id, data);
+		if(world.GetWorldUniqueId() == world_unique_id)
+			world.HandleInteraction(interaction_id, client_id, data);
 	}
 }
 

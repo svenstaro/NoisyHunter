@@ -17,6 +17,7 @@ void MainState::Initialize() {
 	netmgr->SetEntityState(this);
 
 	mAmountToPop = 0;
+
 }
 
 void MainState::Shutdown() {
@@ -25,9 +26,7 @@ void MainState::Shutdown() {
 }
 
 void MainState::OnClientConnected(sf::Uint16 client_id) {
-	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
-
-	float lol = sf::Randomizer::Random(0.1f, 0.9f);
+	float lol = sf::Randomizer::Random(0.1f, 0.4f);
 	Submarine* submarine1 = new Submarine();
 	submarine1->SetPosition(Engine::Vector2D(lol, lol));
 	submarine1->GrabEntityUniqueId();

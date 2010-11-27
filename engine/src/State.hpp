@@ -37,7 +37,7 @@ public:
 	World* GetWorld(const sf::Uint16 entity_unique_id);
 
 	// Server-side handling of Interactions
-	virtual void HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data);
+	virtual void HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, const sf::Uint16 world_unique_id, sf::Packet& data);
 
     Entity* GetEntityByEntityUniqueId(const sf::Uint16 entity_unique_id);
 	void DeleteWorldByWorldUniqueId(const sf::Uint16 world_unique_id);

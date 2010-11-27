@@ -338,8 +338,10 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 			} else if(net_cmd == NETCMD_INTERACTION) {
 				// Fetch interaction ID
 				sf::Uint16 interaction_id;
+				sf::Uint16 world_unique_id;
 				packet >> interaction_id;
-				GetEntityState()->HandleInteraction(interaction_id, mClientManager.GetId(address, port), packet);
+				packet >> world_unique_id;
+				GetEntityState()->HandleInteraction(interaction_id, mClientManager.GetId(address, port), world_unique_id, packet);
 			} else {
 				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received invalid NETCMD id: "+boost::lexical_cast<std::string>(net_cmd));
 				exit(1);

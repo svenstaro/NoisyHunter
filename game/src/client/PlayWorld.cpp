@@ -61,6 +61,7 @@ void PlayWorld::OnSetSilentMode() {
 void PlayWorld::OnNavigateTo(const Engine::Coordinates& mouse_position) {	
 	sf::Packet packet;
 	packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_SETSUBMARINETARGET);
+	packet << GetWorldUniqueId();
 	packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
 	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
 }
@@ -68,6 +69,7 @@ void PlayWorld::OnNavigateTo(const Engine::Coordinates& mouse_position) {
 void PlayWorld::OnFireTorpedo(const Engine::Coordinates& mouse_position) {
 	sf::Packet packet;
 	packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_FIRETORPEDO);
+	packet << GetWorldUniqueId();
 	packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
 	packet << 3.f; // time_to_live
 	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
@@ -76,6 +78,7 @@ void PlayWorld::OnFireTorpedo(const Engine::Coordinates& mouse_position) {
 void PlayWorld::OnFireSonarPing(const Engine::Coordinates& mouse_position) {
 	sf::Packet packet;
 	packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(INTERACTION_FIRESONARPING);
+	packet << GetWorldUniqueId();
 	packet << mouse_position.GetWorldFloat().x << mouse_position.GetWorldFloat().y;
 	packet << 5.f;
 	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendPacket(packet);
