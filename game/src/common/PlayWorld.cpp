@@ -35,8 +35,9 @@ void PlayWorld::Initialize() {
 	}
 }
 
-void PlayWorld::Update(float time_delta) {
+void PlayWorld::Update(const float time_delta) {
     UpdateAllEntities(time_delta);
+
 	if (! Engine::Root::get_mutable_instance().IsServer()) {
 		BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
 			if (sub->GetClientId() == Engine::Root::get_mutable_instance().GetClientId()) {
@@ -141,7 +142,7 @@ void PlayWorld::TriggerFireSonarPing() {
 }
 
 void PlayWorld::OnClick(Engine::MouseEventArgs args) {
-	OnNavigateTo(args);
+	//OnNavigateTo(args);
 	Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->SendChatMessage("I am so glad I just clicked!");
 }
 

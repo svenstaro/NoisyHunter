@@ -52,7 +52,7 @@ void State::Draw(sf::RenderTarget* target) {
 
 void State::UpdateAllEntities(const float time_delta) {
 	BOOST_FOREACH(World& world, mWorlds) {
-		world.UpdateAllEntities(time_delta);
+		world.Update(time_delta);
 	}
 	BOOST_FOREACH(Entity& entity, mLocalEntities) {
 		entity.Update(time_delta);

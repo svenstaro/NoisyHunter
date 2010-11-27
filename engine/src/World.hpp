@@ -23,7 +23,6 @@ public:
 	void InitializePhysics();
 	virtual void Initialize() = 0;
 	virtual void Update(const float time_delta);
-	void UpdateAllEntities(const float time_delta);
 	void AppendAllEntitiesToPacket();
 	void Draw(sf::RenderTarget* const target);
 	void AddEntity(Entity* entity);
@@ -59,8 +58,7 @@ public:
 	void DeleteEntityByEntityUniqueId(const sf::Uint16 entity_unique_id);
 	virtual void OnLeaveGame();
 protected:
-	sf::Uint16 mWorldUniqueId;
-	sf::Uint16 mWorldTypeId;
+	void UpdateAllEntities(const float time_delta);	sf::Uint16 mWorldUniqueId;
 
 	boost::ptr_vector<Entity> mEntities;
 	boost::shared_ptr<btDefaultCollisionConfiguration> collisionConfiguration;

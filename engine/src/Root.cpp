@@ -58,8 +58,7 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
         mRenderWindow.Create(video_mode, window_title, sf::Style::Close, Settings);
 
 	// Create & initialize world view
-	mWorldView.Reset(sf::FloatRect(0,0,800,600));
-	mWorldView.SetViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
+	ResetView();
 
 	// Load Engine Resources (Default GUI etc.)
 	int cursor_size = 24;
@@ -301,6 +300,11 @@ void Root::SetTakeScreenshot(const bool take_screenshot) {
 
 void Root::CenterViewAt(const Vector2D center) {
 	mWorldView.SetCenter(center.x, center.y);
+}
+
+void Root::ResetView() {
+	mWorldView.Reset(sf::FloatRect(0,0,800,600));
+	mWorldView.SetViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
 }
 
 }

@@ -76,6 +76,7 @@ public:
 	void SetRenderMode(const RenderMode mode);
 	void SetTakeScreenshot(const bool take_screenshot);
 	void CenterViewAt(const Vector2D center);
+	void ResetView();
 
 	bool IsServer() const;
 
@@ -90,7 +91,7 @@ private:
     ResourceManager mResourceManager;
     std::string mClientName;
 	sf::Int16 mClientId;
-	float mWorldPixelsPerFloat;		// Float coordinates are multiplied by this>.
+	float mWorldPixelsPerFloat;		// Float coordinates are multiplied by this.
 	bool mTakeScreenshot;
 	// For average FPS calculation
 	sf::Uint32 mTotalNumFrames;

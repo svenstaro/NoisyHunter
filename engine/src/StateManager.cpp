@@ -23,6 +23,7 @@ void StateManager::BeginFrame() {
 	for(int i = 0; i < mAmountToPop && mStates.size() > 0; i++) {
 		GetCurrentState().Shutdown();
 		mStates.pop_back();
+		Root::get_mutable_instance().ResetView();
 	}
 	mAmountToPop = 0;
 
@@ -35,6 +36,7 @@ void StateManager::BeginFrame() {
 		Root::get_mutable_instance().GetResourceManagerPtr()->SetCursor(Engine::MOUSECURSOR_ARROW);
 		state->Initialize();
 		mStates.push_back(state);
+		Root::get_mutable_instance().ResetView();
 	}
 
 	if(mStates.size() <= 0) {
