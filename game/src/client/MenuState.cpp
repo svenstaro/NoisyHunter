@@ -143,6 +143,7 @@ void MenuState::Initialize() {
 
 	mMusic.OpenFromFile("../game/music/The Island.ogg");
 	mMusic.Play();
+	mMusic.SetLoop(true);
 }
 
 void MenuState::Shutdown() {
@@ -152,12 +153,13 @@ void MenuState::Shutdown() {
 	mMusic.Stop();
 }
 
-
 void MenuState::Update(float time_delta) {
 	UpdateAllEntities(time_delta);
 
 	if(!IsCurrentState())
-		mMusic.Stop();
+		mMusic.Pause();
+	if(IsCurrentState() && mMusic.GetStatus() != sf::SoundSource::Playing)
+		mMusic.Play();
 }
 
 void MenuState::OnPressEscape() {

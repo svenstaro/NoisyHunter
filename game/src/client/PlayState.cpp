@@ -124,8 +124,9 @@ void PlayState::Initialize() {
 	netmgr->SetEntityState(this);
 	netmgr->ConnectToServer();
 
-	mMusic.OpenFromFile("../game/music/TheAstronomer.ogg");
+	/*mMusic.OpenFromFile("../game/music/TheAstronomer.ogg");
 	mMusic.Play();
+	mMusic.SetLoop(true);*/
 }
 
 void PlayState::Shutdown() {
@@ -139,7 +140,6 @@ void PlayState::Shutdown() {
 
 	mMusic.Stop();
 }
-
 
 void PlayState::Update(float time_delta) {
     UpdateAllEntities(time_delta);
@@ -160,8 +160,10 @@ void PlayState::Update(float time_delta) {
 		OnNavigateTo(c);
 	}
 
-	if(!IsCurrentState())
-		mMusic.Stop();
+	/*if(!IsCurrentState())
+		mMusic.Pause();
+	if(IsCurrentState() && mMusic.GetStatus() != sf::SoundSource::Playing)
+		mMusic.Play();*/
 }
 
 void PlayState::OnSetNoisyMode() {
