@@ -28,12 +28,11 @@ void World::Update(const float time_delta) {
 }
 
 void World::UpdateAllEntities(const float time_delta) {
-
 	BOOST_FOREACH(Entity& entity, mEntities) {
 		entity.Update(time_delta);
 		if(Root::get_mutable_instance().IsServer()) {
 			if(entity.GetLifeTime() >= entity.GetTimeToLive()) {
-				Root::get_mutable_instance().GetNetworkManagerPtr()->SendEntityDel(entity.GetEntityUniqueId());
+				Root::get_mutable_instance().GetNetworkManagerPtr()->SendEntityDel(entity.GetEntityUniqueId(), mWorldUniqueId);
 				mEntities.erase_if(boost::bind(&Entity::GetEntityUniqueId, _1) == entity.GetEntityUniqueId());
 			}
 		}

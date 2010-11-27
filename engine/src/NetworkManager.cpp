@@ -173,10 +173,11 @@ void NetworkManager::SendEntityAdd(Entity& entity, const sf::Uint16 client_id, c
 	SendPacket(packet, client_id);
 }
 
-void NetworkManager::SendEntityDel(const sf::Uint16 entity_unique_id) {
+void NetworkManager::SendEntityDel(const sf::Uint16 entity_unique_id, const sf::Uint16 world_unique_id) {
 	sf::Packet packet;
 	packet << sf::Uint16(NETCMD_ENTITYDEL);
 	packet << entity_unique_id;
+	packet << world_unique_id;
 	SendPacket(packet);
 }
 
@@ -452,9 +453,9 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 			} else if(net_cmd == NETCMD_ENTITYDEL) {
 				sf::Uint16 entity_unique_id;
 				packet >> entity_unique_id;
-				sf::Uint16 world_entity_unique_id;
-				packet >> world_entity_unique_id;
-				GetEntityState()->GetWorld(world_entity_unique_id)->DeleteEntityByEntityUniqueId(entity_unique_id);
+				sf::Uint16 world_unique_id;
+				packet >> world_unique_id;
+				GetEntityState()->GetWorld(world_unique_id)->DeleteEntityByEntityUniqueId(entity_unique_id);
             } else if(net_cmd == NETCMD_CHATMESSAGE) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE.");
                 // TODO: Output into GUI
