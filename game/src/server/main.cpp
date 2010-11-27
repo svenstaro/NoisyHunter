@@ -3,7 +3,7 @@
 #include "Root.hpp"
 
 #include "MainState.hpp"
-#include "MainWorld.hpp"
+#include "PlayWorld.hpp"
 // Include entities in the appropriate state
 
 void HandleSignal(int sig) {
@@ -66,12 +66,12 @@ int main(int argc, char* argv[]) {
 	idmgr->RegisterEntityClass(new WorldPolygon());
 	idmgr->RegisterEntityClass(new SonarPing());
 
-	idmgr->RegisterWorldClass(new MainWorld());
+	idmgr->RegisterWorldClass(new PlayWorld());
 
 	// Initialize Root singleton using parsed values.
     root.InitializeAsServer(port, verbose);
 	MainState* mainstate = new MainState();
-	MainWorld* mainworld = new MainWorld();
+	PlayWorld* playworld = new PlayWorld();
 
 	WorldPolygon* pol1 = new WorldPolygon();
 	pol1->Initialize();
@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) {
 	pol1->AddPoint(sf::Vector2f(0,2));
 
 	pol1->SetPosition(0,0);
-	mainworld->AddEntity(pol1);
+	playworld->AddEntity(pol1);
 
 	// rock
 	WorldPolygon* pol2 = new WorldPolygon();
@@ -108,10 +108,10 @@ int main(int argc, char* argv[]) {
 	pol2->AddPoint(sf::Vector2f(1.12,0.86));
 
 	pol2->SetPosition(0,0);
-	mainworld->AddEntity(pol2);
+	playworld->AddEntity(pol2);
 
-	mainworld->GrabWorldUniqueId();
-	mainstate->AddWorld(mainworld);
+	playworld->GrabWorldUniqueId();
+	mainstate->AddWorld(playworld);
     root.GetStateManagerPtr()->Add(mainstate);
     root.StartMainLoop();
     return 0;

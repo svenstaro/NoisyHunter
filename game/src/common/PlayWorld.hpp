@@ -32,6 +32,8 @@ public:
 
     void Update(float time_delta);
 
+	void HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data);
+
     // input callbacks
     void OnSetNoisyMode();
     void OnSetSilentMode();
