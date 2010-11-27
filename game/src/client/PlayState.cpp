@@ -124,6 +124,8 @@ void PlayState::Initialize() {
 	netmgr->SetEntityState(this);
 	netmgr->ConnectToServer();
 
+	mMusic.OpenFromFile("../game/music/TheAstronomer.ogg");
+	mMusic.Play();
 }
 
 void PlayState::Shutdown() {
@@ -134,6 +136,8 @@ void PlayState::Shutdown() {
 	// Send NETCMD_CLIENTQUIT to server
 	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
 	netmgr->SendClientQuit();
+
+	mMusic.Stop();
 }
 
 
@@ -144,17 +148,20 @@ void PlayState::Update(float time_delta) {
 	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("entitycount_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityCount()) + " Entities");
 
 	BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
-		if (sub->GetClientId() == Engine::Root::get_mutable_instance().GetClientId()) {
+		if(sub->GetClientId() == Engine::Root::get_mutable_instance().GetClientId()) {
 			Engine::Root::get_mutable_instance().CenterViewAt(Engine::Coordinates::WorldFloatToWorldPixel(sub->GetPosition()));
 		}
 	}
 
-	if (Engine::Root::get_mutable_instance().GetInputManagerPtr()->IsMouseButtonDown(sf::Mouse::Left)) {
+	if(Engine::Root::get_mutable_instance().GetInputManagerPtr()->IsMouseButtonDown(sf::Mouse::Left)) {
 		// Send submarine to mouse position
 		Engine::Coordinates c;
 		c.SetScreenPixel(Engine::Root::get_mutable_instance().GetMousePosition());
 		OnNavigateTo(c);
 	}
+
+	if(!IsCurrentState())
+		mMusic.Stop();
 }
 
 void PlayState::OnSetNoisyMode() {
@@ -212,7 +219,6 @@ void PlayState::TriggerFireSonarPing() {
 		c.SetScreenPixel(Engine::Root::get_mutable_instance().GetMousePosition());
 		OnFireSonarPing(c);
 	}
-
 }
 
 void PlayState::OnClick(Engine::MouseEventArgs args) {
