@@ -121,7 +121,7 @@ enum NetworkCommand {
 	// This could be WALKTOPOSITION or DELETEALLENTITIES, for example. The server should
 	// validate the interaction.
 	// Packet structure is:
-	// [sf::Uint16(NETCMD_INTERACTION), sf::Uint16(game_interaction_id), sf::Uint16(world_nique_id),
+	// [sf::Uint16(NETCMD_INTERACTION), sf::Uint16(game_interaction_id), sf::Uint16(world_unique_id),
 	// OPTIONAL_STREAMED_PARAMETERS]
 	// If this is sent server->client, ALL HELL BREAKS LOOSE!
 	NETCMD_INTERACTION = 0x31
