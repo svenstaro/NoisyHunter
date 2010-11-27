@@ -61,7 +61,9 @@ void IntroState::Initialize() {
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
 			"torpedo_trail.svg", 0.024f, 0.024f, "torpedo_trail");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
-			"radar1.svg", .6f, .2f, "radar1");
+			"radar1.svg", .0875f, .25f, "radar1");
+	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
+			"radar_background.svg", .5f, .5f, "radar_background");
 
     // load font
     sf::Font font;

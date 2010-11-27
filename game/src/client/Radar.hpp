@@ -19,6 +19,8 @@ public:
 
 	void Update(const float time_delta);
 
+	void Draw(sf::RenderTarget* target) const;
+
 	// callbacks
 	void OnCollide(const Engine::Entity& ent);
 
@@ -27,6 +29,8 @@ public:
 	sf::Uint16 GetEntityId() const;
 
 private:
+	sf::Sprite mBackground;
+	sf::Sprite mRay;
 };
 
 #endif

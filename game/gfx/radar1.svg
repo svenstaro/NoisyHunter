@@ -18,6 +18,32 @@
    sodipodi:docname="radar1.svg">
   <defs
      id="defs4">
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow2Lend"
+       style="overflow:visible;">
+      <path
+         id="path4605"
+         style="font-size:12.0;fill-rule:evenodd;stroke-width:0.62500000;stroke-linejoin:round;"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(1.1) rotate(180) translate(1,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path4584"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none"
+         transform="scale(0.8) translate(12.5,0)" />
+    </marker>
     <linearGradient
        id="linearGradient3847">
       <stop
@@ -80,8 +106,44 @@
        fx="-73.183556"
        fy="25.841888"
        r="10.981515"
-       gradientTransform="matrix(0.89933791,0.08900004,-0.23585307,3.2493845,-0.92711355,-47.455578)"
+       gradientTransform="matrix(0.8608644,0.31662724,-0.77118189,2.8587109,10.091166,-20.701265)"
        gradientUnits="userSpaceOnUse" />
+    <filter
+       inkscape:collect="always"
+       id="filter4489"
+       x="-0.39760191"
+       width="1.7952038"
+       y="-0.33482268"
+       height="1.6696454">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.94667124"
+         id="feGaussianBlur4491" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter5767"
+       x="-0.091529467"
+       width="1.1830589"
+       y="-0.46549528"
+       height="1.9309906">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.4746316"
+         id="feGaussianBlur5769" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter5771"
+       x="-0.1293486"
+       width="1.2586972"
+       y="-0.43479173"
+       height="1.8695835">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="9.0830517"
+         id="feGaussianBlur5773" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -90,9 +152,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.85098039"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="188.16721"
-     inkscape:cy="175.93818"
+     inkscape:zoom="1.979899"
+     inkscape:cx="35.207026"
+     inkscape:cy="-7.8806963"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -117,7 +179,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -127,9 +189,9 @@
      id="layer1"
      transform="translate(0,-752.36218)">
     <path
-       transform="matrix(7.5606086,0,0,6.4750523,534.27673,756.67351)"
-       style="opacity:0.25155281;fill:url(#radialGradient3895);fill-opacity:1;stroke:none;filter:url(#filter3891)"
-       d="m -70,45 c 0,0 0,-36 0,-45 4.292251,0.0972981 8.117518,0.71022746 11.894776,2.0231109 C -59.630723,51.329029 -67.022493,34.253908 -70,45 z"
+       transform="matrix(-7.5606086,0,0,6.4750523,-434.27673,756.67351)"
+       style="opacity:0.62111797999999996;fill:url(#radialGradient3895);fill-opacity:1;stroke:none;filter:url(#filter3891)"
+       d="m -70,45 c 0,0 0,-36 0,-45 4.292251,0.0972981 8.117518,0.71022746 11.894776,2.0231109 C -53.150769,48.910923 -61.277379,40.026162 -70,45 z"
        id="path3828"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc" />
@@ -139,6 +201,40 @@
        id="rect3755"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccc"
-       transform="matrix(1.0313531,0,0,0.98782987,0,12.807384)" />
+       transform="matrix(-1.0313531,0,0,0.98782987,100,12.807384)" />
+    <path
+       transform="matrix(0.65689433,0,0,0.67447537,-97.068303,850.50135)"
+       style="opacity:0.29813665;fill:none;stroke:#ffffff;stroke-width:3.00468658999999993;stroke-miterlimit:4;stroke-opacity:1;stroke-linecap:round;marker-start:none;marker-end:none;filter:url(#filter5767)"
+       d="M 182.6704,28.784564 C 218.73282,13.929037 258.3814,5.7142639 300,5.7142639"
+       id="path3803"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       transform="matrix(0.32360931,0,0,0.33227035,2.9172081,952.91842)"
+       style="opacity:0.29813665;fill:none;stroke:#ffffff;stroke-width:6.09921168999999974;stroke-miterlimit:4;stroke-opacity:1;stroke-linecap:round;marker-start:none;marker-end:none;filter:url(#filter5771)"
+       d="M 131.46842,55.851657 C 182.44655,22.765571 241.87274,5.9327207 300,5.7142639"
+       id="path3805"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:0.50310513;fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter4489)"
+       id="path3979"
+       sodipodi:cx="94.285713"
+       sodipodi:cy="102.67857"
+       sodipodi:rx="2.8571429"
+       sodipodi:ry="3.3928571"
+       d="m 97.142856,102.67857 a 2.8571429,3.3928571 0 1 1 -5.714286,0 2.8571429,3.3928571 0 1 1 5.714286,0 z"
+       transform="matrix(0.97481964,0,0,0.88263309,-0.4831827,864.35968)" />
+    <path
+       transform="matrix(0.97481964,0,0,0.88263309,0.7848644,763.02933)"
+       d="m 97.142856,102.67857 a 2.8571429,3.3928571 0 1 1 -5.714286,0 2.8571429,3.3928571 0 1 1 5.714286,0 z"
+       sodipodi:ry="3.3928571"
+       sodipodi:rx="2.8571429"
+       sodipodi:cy="102.67857"
+       sodipodi:cx="94.285713"
+       id="path4493"
+       style="opacity:0.50310513;fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter4489)"
+       sodipodi:type="arc" />
   </g>
 </svg>
