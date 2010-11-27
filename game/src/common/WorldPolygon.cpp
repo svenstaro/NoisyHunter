@@ -2,7 +2,7 @@
 #include "WorldPolygon.hpp"
 
 WorldPolygon::WorldPolygon() {
-	mUniqueId = 0;
+	mEntityUniqueId = 0;
 	mBorderWidth = 0.003;
 	mTimeToLive = 1.f;
 	mLifeTime = 0.f;
@@ -44,12 +44,12 @@ void WorldPolygon::OnCollide(const Engine::Entity& ent) {
 	// TODO: Do stuff
 }
 
-sf::Uint16 WorldPolygon::GetEntityId() const {
-	return ENTITYID_WORLDPOLYGON;
+sf::Uint16 WorldPolygon::GetEntityTypeId() const {
+	return ENTITYTYPEID_WORLDPOLYGON;
 }
 
 void WorldPolygon::serialize(Engine::IOPacket& packet) {
-    packet & mUniqueId;
+    packet & mEntityUniqueId;
 	packet & mPosition.x;
 	packet & mPosition.y;
 	packet & mBorderWidth;
@@ -75,7 +75,6 @@ void WorldPolygon::serialize(Engine::IOPacket& packet) {
 		}
 	}
 }
-
 
 void WorldPolygon::RebuildShape() {
 	mShape = sf::Shape();

@@ -58,7 +58,7 @@ enum NetworkCommand {
 	// If this is sent server->client, the client is being notified of a new 
 	// entity.
 	// Packet structure is:
-	// [sf::Uint16(NETCMD_ENTITYADD), sf::Uint16(entity_id), sf::Uint16(unique_id)]
+	// [sf::Uint16(NETCMD_ENTITYADD), sf::Uint16(entity_type_id), sf::Uint16(entity_unique_id), sf::Uint16(world_unique_id)]
 	NETCMD_ENTITYADD = 0x20,
 
 	// If this is sent client->server, a client is requesting an entity to 
@@ -66,12 +66,12 @@ enum NetworkCommand {
 	// EntityAction enum. This could be ENTITYMOVE or ENTITYSHOOT, for example.
 	// Packet structure is:
 	// [sf::Uint16(NETCMD_ENTITYACTION), sf::Uint16(game_entity_action_id),
-	//	sf::Uint16(unique_id), OPTIONAL_STREAMED_PARAMETERS]
+	//	sf::Uint16(entity_unique_id), OPTIONAL_STREAMED_PARAMETERS]
 	// If this is sent server->client, the client is being notified of an
 	// entity's action. This is useful for interpolating.
 	// Packet structure is:
 	// [sf::Uint16(NETCMD_ENTITYACTION), sf::Uint16(game_entity_action_id),
-	//	sf::Uint16(unique_id), OPTIONAL_STREAMED_PARAMETERS]
+	//	sf::Uint16(entity_unique_id, OPTIONAL_STREAMED_PARAMETERS]
 	NETCMD_ENTITYACTION = 0x21,
 
 	// If this is sent client->server, ALL HELL BREAKS LOOSE!
@@ -80,15 +80,31 @@ enum NetworkCommand {
 	// If this is sent server->client, the client is being notified of the
 	// complete data of an entity. This info needs to be deserialized.
 	// Packet structure is:
-	// [sf::Uint16(NETCMD_ENTITYINFO), sf::Uint16(unique_id),
-	//  sf::Uint16(entity_id), Engine::Entity(entity)]
+	// [sf::Uint16(NETCMD_ENTITYINFO), sf::Uint16(entity_unique_id),
+	//  sf::Uint16(entity_type_id), Engine::Entity(entity)
 	NETCMD_ENTITYINFO = 0x22,
 
 	// If this is sent client->server, ALL HELL BREAKS LOOSE!
-	// If this is sent server-client, the client should delete the local instance of the given entity.
-	// Packet Structure is:
-	// [sf::Uint16(NETCMD_ENTITYINFO), sf::Uint16(unique_id)]
+	// If this is sent server->client, the client should delete the local instance of the given entity.
+	// Packet structure is:
+	// [sf::Uint16(NETCMD_ENTITYDEL), sf::Uint16(entity_unique_id),
+	//  sf::Uint16(world_unique_id)]
 	NETCMD_ENTITYDEL = 0x23,
+
+	// if this is sent client->server, ALL HELL BREAKS LOOSE!
+	// if this is sent server->client, the client should update the world if it 
+	// already exists or add it.
+	// Packet structure is:
+	// [sf::Uint16(NETCMD_WORLDINFO_BEGIN), sf::Uint16(world_unique_id)]
+	NETCMD_WORLDINFO_BEGIN = 0x24,
+	// Between these commands the entities from this world will be sent over the
+	// network using NETCMD_ENTITYINFO.
+
+	// If the world_unique_id doesn't match the one from NETCMD_WORLDINFO_BEGIN
+	// something wrong happened.
+	// Packet structure is:
+	// [sf::Uint16(NETCMD_WORLDINFO_END), sf::Uint16(world_unique_id)]
+	NETCMD_WORLDINFO_END = 0x25,
 
 	// If this is sent client->server, a client is requesting a chat message
 	// to be posted to all other clients.
@@ -106,7 +122,7 @@ enum NetworkCommand {
 	// This could be WALKTOPOSITION or DELETEALLENTITIES, for example. The server should
 	// validate the interaction.
 	// Packet structure is:
-	// [sf::Uint16(NETCMD_INTERACTION), sf::Uint16(game_interaction_id),
+	// [sf::Uint16(NETCMD_INTERACTION), sf::Uint16(game_interaction_id), sf::Uint16(world_unique_id),
 	// OPTIONAL_STREAMED_PARAMETERS]
 	// If this is sent server->client, ALL HELL BREAKS LOOSE!
 	NETCMD_INTERACTION = 0x31

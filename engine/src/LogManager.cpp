@@ -39,6 +39,8 @@ void LogManager::Log(enum LogLevel log_level, enum LogOrigin log_origin, const s
 		log_message += "CLIENTMANAGER] ";
 	else if(log_origin == LOGORIGIN_ROOT)
 		log_message += "ROOT] ";
+	else if(log_origin == LOGORIGIN_WORLD)
+		log_message += "WORLD] ";
 	
 
 	log_message += NO_COLOR + text;

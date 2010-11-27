@@ -12,7 +12,7 @@ namespace Engine{
 
 class GuiControl : public Entity {
 public:
-    GuiControl(const sf::Uint16 unique_id = 0, 
+    GuiControl(const sf::Uint16 entity_unique_id = 0, 
 			   const std::string& name = "undefined");
 
     virtual ~GuiControl() = 0;
@@ -48,7 +48,7 @@ public:
     virtual void OnType(const sf::Uint32 unicode_char);
     
 
-	virtual sf::Uint16 GetEntityId() const;
+	virtual sf::Uint16 GetEntityTypeId() const;
 
     // needed for hover and mouse events
     virtual bool IsAtPoint(const Vector2D point);

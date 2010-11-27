@@ -10,16 +10,10 @@ Entity::Entity() {}
 
 Entity::~Entity() {}
 
-Entity* Entity::create() const {}
-
 void Entity::Initialize() {}
 
-void Entity::Cleanup() {
-	Root::get_mutable_instance().GetNetworkManagerPtr()->SendEntityDel(mUniqueId);
-}
-
-void Entity::GrabUniqueId() {
-	mUniqueId = Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
+void Entity::GrabEntityUniqueId() {
+	mEntityUniqueId = Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
 }
 
 void Entity::OnCollide(const Entity& ent) {}
@@ -30,7 +24,7 @@ bool Entity::operator<(const Entity& other) {
 
 void Entity::serialize(IOPacket& packet) {
 	packet & mClientId;
-    packet & mUniqueId;
+    packet & mEntityUniqueId;
     packet & mPosition.x;
     packet & mPosition.y;
 	packet & mSpeed;
@@ -84,10 +78,6 @@ void Entity::DrawAllAttachments(sf::RenderTarget* target) const {
 		attachment.Draw(target);
 }
 
-sf::Uint16 Entity::GetUniqueId() const {
-	return mUniqueId;
-}
-
 void Entity::SetPosition(const float x, const float y) {
 	SetPosition(Vector2D(x, y));
 }
@@ -131,6 +121,14 @@ float Entity::GetTimeToLive() const {
 
 float Entity::GetLifeTime() const {
 	return mLifeTime;
+}
+
+sf::Uint16 Entity::GetEntityUniqueId() const {
+	return mEntityUniqueId;
+}
+
+void Entity::SetEntityUniqueId(const sf::Uint16 entity_unique_id) {
+	mEntityUniqueId = entity_unique_id;
 }
 
 void Entity::SetClientId(const sf::Uint16 client_id) {

@@ -30,6 +30,8 @@ void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
 	mSentPacketsCount = 0;
 
 	mEntityState = NULL;
+	mDuringWorldSnapshot = false;
+	mWorldSnapshotWorldUniqueId = Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
 }
 
 void NetworkManager::InitializeAsClient(const sf::IpAddress server_ip, 
@@ -48,6 +50,9 @@ void NetworkManager::InitializeAsClient(const sf::IpAddress server_ip,
 	mClient_ConnectedToServer = false;
 
 	mEntityState = NULL;
+
+	mDuringWorldSnapshot = false;
+	mWorldSnapshotWorldUniqueId = Root::get_mutable_instance().GetIdManagerPtr()->GetNewUniqueId();
 }
 
 void NetworkManager::ConnectToServer() {
@@ -75,8 +80,8 @@ void NetworkManager::PreparePacket() {
 
 void NetworkManager::AppendEntityToPacket(Entity& entity) {
 	mPacket << sf::Uint16(NETCMD_ENTITYINFO);
-	mPacket << entity.GetUniqueId();
-	mPacket << entity.GetEntityId();
+	mPacket << entity.GetEntityUniqueId();
+	mPacket << entity.GetEntityTypeId();
 	Engine::IOPacket p(false, mPacket);
 	entity.serialize(p);
 	mPacket = p.GetPacket();
@@ -157,30 +162,32 @@ void NetworkManager::SendClientQuit(const std::string &reason, const std::string
 	}
 }
 
-void NetworkManager::SendEntityAdd(Entity& entity) {
+void NetworkManager::SendEntityAdd(Entity& entity, const sf::Uint16 world_unique_id) {
 	sf::Packet packet;
 	packet << sf::Uint16(NETCMD_ENTITYADD);
-	packet << entity.GetEntityId();
+	packet << entity.GetEntityTypeId();
 	IOPacket iopacket(false, packet);
 	entity.serialize(iopacket);
 	packet = iopacket.GetPacket();
 	SendPacket(packet);
 }
 
-void NetworkManager::SendEntityAdd(Entity& entity, const sf::Uint16 client_id) {
+void NetworkManager::SendEntityAdd(Entity& entity, const sf::Uint16 client_id, const sf::Uint16 world_unique_id) {
 	sf::Packet packet;
 	packet << sf::Uint16(NETCMD_ENTITYADD);
-	packet << entity.GetEntityId();
+	packet << entity.GetEntityTypeId();
+	packet << entity.GetEntityTypeId();
 	IOPacket iopacket(false, packet);
 	entity.serialize(iopacket);
 	packet = iopacket.GetPacket();
 	SendPacket(packet, client_id);
 }
 
-void NetworkManager::SendEntityDel(const sf::Uint16 unique_id) {
+void NetworkManager::SendEntityDel(const sf::Uint16 entity_unique_id, const sf::Uint16 world_unique_id) {
 	sf::Packet packet;
 	packet << sf::Uint16(NETCMD_ENTITYDEL);
-	packet << unique_id;
+	packet << entity_unique_id;
+	packet << world_unique_id;
 	SendPacket(packet);
 }
 
@@ -199,6 +206,19 @@ void NetworkManager::SendPing() {
 		sf::Packet packet;
 		packet << sf::Uint16(NETCMD_SERVERPING);
 		SendPacket(packet);
+	}
+}
+
+void NetworkManager::SendWorldInfo(sf::Uint16 world_unique_id, sf::Uint16 world_type_id) {
+	if(mIsServer) {
+		mPacket << sf::Uint16(NETCMD_WORLDINFO_BEGIN);
+		mPacket << world_unique_id;
+		mPacket << world_type_id;
+		mEntityState->GetWorld(world_unique_id)->AppendAllEntitiesToPacket();
+		mPacket << sf::Uint16(NETCMD_WORLDINFO_END);
+		mPacket << world_unique_id;
+		SendPacket();
+		PreparePacket();
 	}
 }
 
@@ -302,11 +322,11 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
                 SendPacket(p);
             } else if(net_cmd == NETCMD_ENTITYACTION) {
                 sf::Uint16 action_id;
-                sf::Uint16 unique_id;
+                sf::Uint16 entity_unique_id;
                 packet >> action_id;
-                packet >> unique_id;
+                packet >> entity_unique_id;
                 
-				Entity* e = GetEntityState()->GetEntityByUniqueId(unique_id);
+				Entity* e = GetEntityState()->GetEntityByEntityUniqueId(entity_unique_id);
                 if (e != NULL) {
                     sf::Packet response = e->PerformAction(action_id, packet, true);
                     // Send back to all clients.
@@ -329,8 +349,10 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 			} else if(net_cmd == NETCMD_INTERACTION) {
 				// Fetch interaction ID
 				sf::Uint16 interaction_id;
+				sf::Uint16 world_unique_id;
 				packet >> interaction_id;
-				GetEntityState()->HandleInteraction(interaction_id, mClientManager.GetId(address, port), packet);
+				packet >> world_unique_id;
+				GetEntityState()->HandleInteraction(interaction_id, mClientManager.GetId(address, port), world_unique_id, packet);
 			} else {
 				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received invalid NETCMD id: "+boost::lexical_cast<std::string>(net_cmd));
 				exit(1);
@@ -371,31 +393,55 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
                 // The server pinged back! 
 				mPing = mPingClock.GetElapsedTime() * 1000;
             } else if(net_cmd == NETCMD_ENTITYADD) {
-                sf::Uint16 entity_id;
-                packet >> entity_id;
+                sf::Uint16 entity_type_id;
+                sf::Uint16 world_unique_id;
+                packet >> entity_type_id;
+                packet >> world_unique_id;
 				Entity* entity = Root::get_mutable_instance().GetIdManagerPtr()->
-					GetEntityPrototype(entity_id);
+					GetEntityPrototype(entity_type_id);
 				entity->Initialize();
 				IOPacket iopacket(true, packet);
 				entity->serialize(iopacket);
 				packet = iopacket.GetPacket();
-				GetEntityState()->AddEntity(entity);
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetUniqueId())+") added.");
+				GetEntityState()->GetWorld(world_unique_id)->AddEntity(entity);
+				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetEntityUniqueId())+") added.");
             } else if(net_cmd == NETCMD_ENTITYACTION) {
                 sf::Uint16 action_id;
-                sf::Uint16 unique_id;
+                sf::Uint16 entity_unique_id;
                 packet >> action_id;
-                packet >> unique_id;
-				Entity* e = GetEntityState()->GetEntityByUniqueId(unique_id);
-                e->PerformAction(unique_id, packet, false); // false -> do not validate action, as luckily the server did that for you
-			} else if(net_cmd == NETCMD_ENTITYINFO) {
-				sf::Uint16 unique_id;
-                packet >> unique_id;
+                packet >> entity_unique_id;
+				Entity* e = GetEntityState()->GetEntityByEntityUniqueId(entity_unique_id);
+                e->PerformAction(entity_unique_id, packet, false); // false -> do not validate action, as luckily the server did that for you
+			} else if(net_cmd == NETCMD_WORLDINFO_BEGIN) {
+				sf::Uint16 world_unique_id;
+				packet >> world_unique_id;
+				sf::Uint16 world_type_id;
+				packet >> world_type_id;
+				mDuringWorldSnapshot = true;
+				mWorldSnapshotWorldUniqueId = world_unique_id;
+				if(GetEntityState()->GetWorld(world_unique_id) == NULL) {
+					World* world = Root::get_mutable_instance().GetIdManagerPtr()->
+						GetWorldPrototype(world_type_id);
+					world->SetWorldUniqueId(world_unique_id);
+					GetEntityState()->AddWorld(world);
+				}
+			} else if(net_cmd == NETCMD_WORLDINFO_END) {
+				sf::Uint16 world_unique_id;
+				packet >> world_unique_id;
+				if(world_unique_id != mWorldSnapshotWorldUniqueId) {
+					std::cerr << "FIIIIICK" << std::endl;
+					exit(1);
+				}
+				mDuringWorldSnapshot = false;
+				mWorldSnapshotWorldUniqueId = world_unique_id;
+			} else if(net_cmd == NETCMD_ENTITYINFO and mDuringWorldSnapshot) {
+				sf::Uint16 entity_unique_id;
+                packet >> entity_unique_id;
                 
-				sf::Uint16 entity_id;
-				packet >> entity_id;
+				sf::Uint16 entity_type_id;
+				packet >> entity_type_id;
 
-				Entity* e = GetEntityState()->GetEntityByUniqueId(unique_id);
+				Entity* e = GetEntityState()->GetWorld(mWorldSnapshotWorldUniqueId)->GetEntityByEntityUniqueId(entity_unique_id);
                 if(e != NULL) {
 					// Deserialize
 					IOPacket iopacket(true, packet);
@@ -403,21 +449,23 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
                     packet = iopacket.GetPacket();
 					num_entity_infos++;
 				} else {
-					logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Entity with UID "+boost::lexical_cast<std::string>(unique_id)+" not found. Creating new entity.");
+					logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Entity with UID "+boost::lexical_cast<std::string>(entity_unique_id)+" not found. Creating new entity.");
 					// create new entity
 					Entity* entity = Root::get_mutable_instance().GetIdManagerPtr()->
-						GetEntityPrototype(entity_id);
+						GetEntityPrototype(entity_type_id);
 					entity->Initialize();
 					IOPacket iopacket(true, packet);
 					entity->serialize(iopacket);
 					packet = iopacket.GetPacket();
-					GetEntityState()->AddEntity(entity);
-					logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetUniqueId())+") added.");
+					GetEntityState()->GetWorld(mWorldSnapshotWorldUniqueId)->AddEntity(entity);
+					logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetEntityUniqueId())+") added.");
 				}
 			} else if(net_cmd == NETCMD_ENTITYDEL) {
-				sf::Uint16 unique_id;
-				packet >> unique_id;
-				Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().DeleteEntityByUniqueId(unique_id);
+				sf::Uint16 entity_unique_id;
+				packet >> entity_unique_id;
+				sf::Uint16 world_unique_id;
+				packet >> world_unique_id;
+				GetEntityState()->GetWorld(world_unique_id)->DeleteEntityByEntityUniqueId(entity_unique_id);
             } else if(net_cmd == NETCMD_CHATMESSAGE) {
 				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE.");
                 // TODO: Output into GUI

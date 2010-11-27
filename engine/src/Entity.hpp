@@ -36,7 +36,7 @@ public:
 	// Default constructor
 	Entity();
 
-	// Virtual destructor
+	// Pure virtual destructor
 	virtual ~Entity() = 0;
 
 	// Virtual constructor (create)
@@ -44,9 +44,7 @@ public:
 
 	virtual void Initialize();
 
-	virtual void Cleanup();
-
-	virtual void GrabUniqueId();
+	virtual void GrabEntityUniqueId();
     
 	// Callbacks
     virtual void OnCollide(const Entity& ent);
@@ -66,9 +64,9 @@ public:
 
 	void DrawAllAttachments(sf::RenderTarget* target) const;
 
-	virtual sf::Uint16 GetEntityId() const = 0;
+	virtual sf::Uint16 GetEntityTypeId() const = 0;
 
-	sf::Uint16 GetUniqueId() const;
+	sf::Uint16 GetEntityUniqueId() const;
 
 	void SetPosition(const float x, const float y);
 
@@ -92,6 +90,8 @@ public:
 
 	float GetLifeTime() const;
 
+	void SetEntityUniqueId(const sf::Uint16 entity_unique_id);
+
 	bool operator<(const Entity& other);
 
     virtual void serialize(IOPacket& packet);
@@ -105,7 +105,7 @@ public:
 				RestraintSettings restraint_settings = RestraintSettings());
 protected:
 	sf::Uint16 mClientId;
-	sf::Uint16 mUniqueId;
+	sf::Uint16 mEntityUniqueId;
 
 	Vector2D mPosition;
 	float mSpeed;
@@ -119,6 +119,7 @@ protected:
 	boost::shared_ptr<sf::Drawable> mDrawable;
 
 	boost::ptr_list<EntityAttachment> mAttachments;
+
 };
 
 }

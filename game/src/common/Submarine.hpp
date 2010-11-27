@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Entity.hpp"
-#include "EntityId.hpp"
+#include "EntityTypeId.hpp"
 #include "IOPacket.hpp"
 #include "Vector2D.hpp"
 #include "Torpedo.hpp"
@@ -35,7 +35,7 @@ public:
     
     sf::Packet PerformAction(const sf::Uint16 action_id, sf::Packet& packet, const bool validate = false);
 
-	sf::Uint16 GetEntityId() const;
+	sf::Uint16 GetEntityTypeId() const;
 
     // controlling
 	void SetTarget(const float x, const float y);

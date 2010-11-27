@@ -43,6 +43,6 @@ Engine::Entity::PositionType Radar::GetPositionType() const {
 	return Engine::Entity::POSITIONTYPE_SCREENPIXEL;
 }
 
-sf::Uint16 Radar::GetEntityId() const {
-	return ENTITYID_RADAR;
+sf::Uint16 Radar::GetEntityTypeId() const {
+	return ENTITYTYPEID_RADAR;
 }

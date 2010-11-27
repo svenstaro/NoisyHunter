@@ -13,7 +13,7 @@ Submarine::Submarine(const float pos_x,
 	SetSpeed(0.f);
 	SetDirection(Engine::Vector2D(1,0));
 	mClientId = client_id;
-	mUniqueId = 0;
+	mEntityUniqueId = 0;
 	mTimeToLive = 1.f;
 	mLifeTime = 0.f;
 }
@@ -178,8 +178,8 @@ sf::Packet Submarine::PerformAction(const sf::Uint16 action_id, sf::Packet& pack
     
 }
 
-sf::Uint16 Submarine::GetEntityId() const {
-	return ENTITYID_SUBMARINE;
+sf::Uint16 Submarine::GetEntityTypeId() const {
+	return ENTITYTYPEID_SUBMARINE;
 }
 
 void Submarine::SetTarget(const float x, const float y) {
@@ -192,8 +192,8 @@ void Submarine::SetTarget(const Engine::Vector2D target) {
 }
 
 void Submarine::serialize(Engine::IOPacket& packet) {
-    packet & mUniqueId;
     packet & mClientId;
+    packet & mEntityUniqueId;
     packet & mPosition.x;
 	packet & mPosition.y;
 	packet & mSpeed;

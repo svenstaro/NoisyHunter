@@ -5,7 +5,7 @@
 #include <SFML/Graphics/Shape.hpp>
 
 #include "Entity.hpp"
-#include "EntityId.hpp"
+#include "EntityTypeId.hpp"
 
 class Radar : public Engine::Entity {
 
@@ -26,7 +26,7 @@ public:
 
 	Engine::Entity::PositionType GetPositionType() const;
 
-	sf::Uint16 GetEntityId() const;
+	sf::Uint16 GetEntityTypeId() const;
 
 private:
 	sf::Sprite mBackground;

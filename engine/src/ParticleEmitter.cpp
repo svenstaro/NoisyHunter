@@ -199,7 +199,7 @@ float ParticleEmitter::GetEndScale() const {
 	return mEndScale;
 }
 
-sf::Uint16 ParticleEmitter::GetEntityId() const {
+sf::Uint16 ParticleEmitter::GetEntityTypeId() const {
 	return 50002;
 }
 

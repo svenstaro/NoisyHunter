@@ -38,22 +38,9 @@ public:
 
     void Update(float time_delta);
 
-    // input callbacks
-    void OnSetNoisyMode();
-    void OnSetSilentMode();
-
-    void OnNavigateTo(const Engine::Coordinates& mouse_position);
-    void OnFireTorpedo(const Engine::Coordinates& mouse_position);
-	void OnFireSonarPing(const Engine::Coordinates& mouse_position);
-
 	void OnScreenshot();
 
     void OnPauseGame();
-	void TriggerFireSonarPing();
-    void OnClick(Engine::MouseEventArgs args);
-    void OnRightClick(Engine::MouseEventArgs args);
-    void OnMouseMove(Engine::MouseEventArgs args);
-    
     // network callbacks
     void OnClientConnected(const sf::Uint16 client_id);
     

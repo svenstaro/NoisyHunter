@@ -3,9 +3,9 @@
 
 namespace Engine {
 
-GuiControl::GuiControl(const sf::Uint16 unique_id, 
+GuiControl::GuiControl(const sf::Uint16 entity_unique_id, 
 					   const std::string& name) {
-	mUniqueId = unique_id;
+	mEntityUniqueId = entity_unique_id;
     mName = name;
     SetFocus(false);
     SetHover(false);
@@ -84,7 +84,7 @@ void GuiControl::OnKeyUp(const sf::Key::Code key) {}
 
 void GuiControl::OnType(const sf::Uint32 unicode_char) {}
 
-sf::Uint16 GuiControl::GetEntityId() const {
+sf::Uint16 GuiControl::GetEntityTypeId() const {
 	return 60000;
 }
 

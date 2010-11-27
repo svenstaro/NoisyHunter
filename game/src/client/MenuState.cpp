@@ -37,7 +37,7 @@ void MenuState::Initialize() {
 		part_sys->AddEmitter(part_emit);
 	}
 
-	AddEntity(part_sys);
+	AddLocalEntity(part_sys);
 
 	// Add GUI
 	CreateGuiSystem();
@@ -139,7 +139,7 @@ void MenuState::Initialize() {
 
 	Radar* radar = new Radar();
 	radar->Initialize();
-	AddEntity(radar);
+	AddLocalEntity(radar);
 
 	mMusic.OpenFromFile("../game/music/The Island.ogg");
 	mMusic.Play();

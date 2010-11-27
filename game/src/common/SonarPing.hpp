@@ -5,7 +5,7 @@
 #include <SFML/Graphics/Shape.hpp>
 
 #include "Entity.hpp"
-#include "EntityId.hpp"
+#include "EntityTypeId.hpp"
 #include "Vector2D.hpp"
 #include "ParticleSystem.hpp"
 
@@ -28,7 +28,7 @@ public:
 	// callbacks
 	void OnCollide(const Engine::Entity& ent);
 
-	sf::Uint16 GetEntityId() const;
+	sf::Uint16 GetEntityTypeId() const;
 
 	void serialize(Engine::IOPacket& packet);
 
