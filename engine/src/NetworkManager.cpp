@@ -411,8 +411,6 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 				if(GetEntityState()->GetWorld(world_unique_id) == NULL) {
 					World* world = Root::get_mutable_instance().GetIdManagerPtr()->
 						GetWorldPrototype(world_type_id);
-					world->Initialize();
-					world->InitializePhysics();
 					world->SetWorldUniqueId(world_unique_id);
 					GetEntityState()->AddWorld(world);
 				}

@@ -102,6 +102,4 @@ void World::DeleteEntityByEntityUniqueId(const sf::Uint16 entity_unique_id) {
 
 void World::OnLeaveGame() {}
 
-
 }
-
