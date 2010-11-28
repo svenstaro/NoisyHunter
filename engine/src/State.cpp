@@ -141,4 +141,19 @@ bool State::IsCurrentState() {
 	return Root::get_mutable_instance().GetStateManagerPtr()->IsCurrentState(this);
 }
 
+sf::Uint16 State::GetEntityCount() {
+	sf::Uint16 i = 0;
+	BOOST_FOREACH(World& world, mWorlds) {
+		i += world.GetEntityCount();
+	}
+	return sf::Uint16(i);
+}
+
+sf::Uint16 State::GetEntityAdded() {
+	if(mWorlds.size() > 0)
+		return sf::Uint16(mWorlds.back().GetLastEntity().GetEntityUniqueId()-1000);
+	else
+		return sf::Uint16(0);
+}
+
 }

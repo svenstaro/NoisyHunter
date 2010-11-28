@@ -101,4 +101,12 @@ void World::DeleteEntityByEntityUniqueId(const sf::Uint16 entity_unique_id) {
 
 void World::OnLeaveGame() {}
 
+sf::Uint16 World::GetEntityCount() const {
+	return mEntities.size();
+}
+
+Entity& World::GetLastEntity() {
+	return mEntities.back();
+}
+
 }

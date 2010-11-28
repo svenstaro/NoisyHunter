@@ -67,6 +67,12 @@ void PlayState::Initialize() {
 		ec->SetText("0");
 		ec->SetFontColor(sf::Color::White);
 
+		// EntitiyCount info label
+		Engine::GuiLabel* ea = new Engine::GuiLabel("entityadded_label");
+		ea->SetPosition(5,50);
+		ea->SetText("0");
+		ea->SetFontColor(sf::Color::White);
+
 		// Group debug labels
 		Engine::GuiGrid* grid = new Engine::GuiGrid("debug_grid");
 		grid->SetDimension(Engine::Vector2D(90, 70));
@@ -74,6 +80,7 @@ void PlayState::Initialize() {
 		grid->AddControl(p);
 		grid->AddControl(f);
 		grid->AddControl(ec);
+		grid->AddControl(ea);
 		mGuiSystems.begin()->AddControl(grid);
 
 		// Exit button
@@ -135,7 +142,8 @@ void PlayState::Update(float time_delta) {
 	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("ping_label")->SetText("Ping: " + boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetNetworkManagerPtr()->GetPing()));
 	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("fps_label")->SetText("FPS: " + boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetAverageFps()) + " / " + boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetFps()));
 	// TODO: Put this back. We don't know the currently active world so we need to count up all entities from all worlds.
-	// mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("entitycount_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityCount()) + " Entities");
+	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("entitycount_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityCount()) + " Entities");
+	mGuiSystems.begin()->GetControl<Engine::GuiGrid>("debug_grid")->GetControl<Engine::GuiLabel>("entityadded_label")->SetText(boost::lexical_cast<std::string>(Engine::Root::get_mutable_instance().GetStateManagerPtr()->GetCurrentState().GetEntityAdded()) + " Entities");
 }
 
 void PlayState::OnScreenshot() {

@@ -57,6 +57,9 @@ public:
 	void DeleteEntitiesByClientId(const sf::Uint16 client_id);
 	void DeleteEntityByEntityUniqueId(const sf::Uint16 entity_unique_id);
 	virtual void OnLeaveGame();
+	sf::Uint16 GetEntityCount() const;
+	Entity& GetLastEntity();
+
 protected:
 	void UpdateAllEntities(const float time_delta);	sf::Uint16 mWorldUniqueId;
 

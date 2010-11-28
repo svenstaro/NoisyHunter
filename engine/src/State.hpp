@@ -55,6 +55,9 @@ public:
 
 	bool IsCurrentState();
 
+	sf::Uint16 GetEntityCount();
+	sf::Uint16 GetEntityAdded();
+
 protected:
 	// Gui Systems
     boost::ptr_vector<GuiSystem> mGuiSystems;
