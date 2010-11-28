@@ -39,12 +39,14 @@ void State::Update(const float time_delta) {
 }
 
 void State::Draw(sf::RenderTarget* target) {
+	Root::get_mutable_instance().SetRenderMode(RENDERMODE_WORLD);
 	BOOST_FOREACH(World& world, mWorlds) {
 		world.Draw(target);
 	}
 	BOOST_FOREACH(Entity& entity, mLocalEntities) {
 		entity.Draw(target);
 	}
+	Root::get_mutable_instance().SetRenderMode(RENDERMODE_GUI);
 	BOOST_FOREACH(GuiSystem& system, mGuiSystems) {
 		system.Draw(target);
 	}
