@@ -59,7 +59,7 @@ void StateManager::Update(float time_delta) {
 			i = 0;
 
 		// from this state on, update every state above
-		while(i <= mStates.size() - 1) {
+		while(i <= int(mStates.size()) - 1) {
 			mStates[i].Update(time_delta);
 			++i;
 		}
@@ -86,7 +86,7 @@ void StateManager::Draw(sf::RenderTarget* target) {
 			i = 0;
 
 		// from this state on, update every state above
-		while(i <= mStates.size() - 1) {
+		while(i <= int(mStates.size()) - 1) {
 			mStates[i].Draw(target);
 			++i;
 		}
