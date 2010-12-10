@@ -124,53 +124,6 @@ const sf::Image& ResourceManager::GetImage(const std::string& img) {
 	}
 }
 
-bool ResourceManager::AddMusic(const boost::filesystem::path& path, const std::string& music_name, const std::string& key) {
-	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-
-	if(!boost::filesystem::is_regular_file(path/music_name)) {
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Tried loading music path'"+(path/music_name).string()+"' but this music path doesn't exist!");
-		exit(1);
-	}
-
-    // create Original file path
-    std::string originalFile = (path / music_name).string();
-
-
-    // if the optional param key is not given, use the basename as key
-    std::string music_key = "";
-    if(key == "") {
-        music_key = boost::filesystem::basename(originalFile);
-    } else {
-        music_key = key;
-    }
-
-    // if a music with that key already exists in the dictionary, return
-    if(mMusic.count(music_key) != 0) {
-        return true;
-    }
-
-	sf::Music* sfmusic = new sf::Music();
-	if(!sfmusic->OpenFromFile(originalFile)) {
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Tried loading music '"+(originalFile)+"' but it failed hard!");
-		exit(1);
-	}
-
-	mMusic.insert(music_key, sfmusic);
-
-    return true;
-	
-}
-
-const sf::Music& ResourceManager::GetMusic(const std::string& music) {
-	if(mMusic.count(music) >= 1) {
-		return mMusic[music];
-	} else {
-		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Tried getting music '"+(music)+"' but this music doesn't exist!");
-		exit(1);
-	}
-}
-
 bool ResourceManager::AddSoundBuffer(const boost::filesystem::path& path, const std::string& sound_name, const std::string& key) {
 	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 

@@ -49,7 +49,6 @@ public:
 
 private:
 	Engine::Entity* mCursorPartSys; // I know this is ugly, we need a better system for this!
-	sf::Music mMusic;
 };
 
 #endif
