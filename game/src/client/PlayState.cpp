@@ -120,9 +120,8 @@ void PlayState::Initialize() {
 	netmgr->SetEntityState(this);
 	netmgr->ConnectToServer();
 
-	/*mMusic.OpenFromFile("../game/music/TheAstronomer.ogg");
-	mMusic.Play();
-	mMusic.SetLoop(true);*/
+	auto musicmgr = Engine::Root::get_mutable_instance().GetMusicManagerPtr();
+	musicmgr->Play("The Island.flac");
 }
 
 void PlayState::Shutdown() {
@@ -134,7 +133,8 @@ void PlayState::Shutdown() {
 	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
 	netmgr->SendClientQuit();
 
-	mMusic.Stop();
+	auto musicmgr = Engine::Root::get_mutable_instance().GetMusicManagerPtr();
+	musicmgr->Stop();
 }
 
 void PlayState::Update(float time_delta) {

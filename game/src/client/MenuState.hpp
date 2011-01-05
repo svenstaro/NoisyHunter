@@ -36,7 +36,6 @@ public:
 	void OptionsButton_OnClick(const sf::Uint16 mouse_button);
 	void QuitButton_OnClick(const sf::Uint16 mouse_button);
 private:
-	sf::Music mMusic;
 };
 
 #endif

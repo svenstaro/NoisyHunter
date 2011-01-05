@@ -88,6 +88,11 @@ void IntroState::Initialize() {
 	l->SetFontColor(sf::Color::White);
 	mGuiSystems.begin()->AddControl(l);
 
+	// register music
+	auto musicmgr = Engine::Root::get_mutable_instance().GetMusicManagerPtr();
+	musicmgr->Register("../game/music", "TheAstronomer.ogg");
+	musicmgr->Register("../game/music", "The Island.flac");
+	musicmgr->Play("TheAstronomer.ogg");
 
     // (create entities)
 
@@ -108,7 +113,6 @@ void IntroState::Initialize() {
 
 	// set busy cursor
 	Engine::Root::get_mutable_instance().GetResourceManagerPtr()->SetCursor(Engine::MOUSECURSOR_BUSY);
-
 }
 
 void IntroState::Update(float time_delta) {

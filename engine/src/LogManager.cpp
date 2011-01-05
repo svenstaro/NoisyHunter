@@ -41,7 +41,8 @@ void LogManager::Log(enum LogLevel log_level, enum LogOrigin log_origin, const s
 		log_message += "ROOT] ";
 	else if(log_origin == LOGORIGIN_WORLD)
 		log_message += "WORLD] ";
-	
+	else if(log_origin == LOGORIGIN_MUSICMANAGER)
+		log_message += "MUSICMANAGER] ";
 
 	log_message += NO_COLOR + text;
 	if(log_level == LOGLEVEL_ERROR)

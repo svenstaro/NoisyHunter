@@ -235,6 +235,10 @@ IdManager* Root::GetIdManagerPtr() {
 	return &mIdManager;
 }
 
+MusicManager* Root::GetMusicManagerPtr() {
+	return &mMusicManager;
+}
+
 const Vector2D Root::GetWindowSize() const {
     return Vector2D(mRenderWindow.GetWidth(), mRenderWindow.GetHeight());
 }

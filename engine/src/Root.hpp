@@ -17,6 +17,7 @@
 #include "LogCommand.hpp"
 #include "IdManager.hpp"
 #include "AnimatedSprite.hpp"
+#include "MusicManager.hpp"
 
 namespace Engine {
 
@@ -53,6 +54,7 @@ public:
     ResourceManager* GetResourceManagerPtr();
     LogManager* GetLogManagerPtr();
 	IdManager* GetIdManagerPtr();
+	MusicManager* GetMusicManagerPtr();
 
 	void SetMouseHidden(const bool mouse_hidden);
     const Vector2D GetWindowSize() const;
@@ -102,6 +104,7 @@ private:
     NetworkManager mNetworkManager;
 	LogManager mLogManager;
 	IdManager mIdManager;
+	MusicManager mMusicManager;
 };
 
 }

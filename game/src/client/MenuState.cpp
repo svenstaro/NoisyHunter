@@ -141,25 +141,17 @@ void MenuState::Initialize() {
 	radar->Initialize();
 	AddLocalEntity(radar);
 
-	mMusic.OpenFromFile("../game/music/The Island.ogg");
-	mMusic.Play();
-	mMusic.SetLoop(true);
+	auto musicmgr = Engine::Root::get_mutable_instance().GetMusicManagerPtr();
+	musicmgr->Play("TheAstronomer.ogg");
 }
 
 void MenuState::Shutdown() {
 	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
 	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Shutting down MenuState.");
-
-	mMusic.Stop();
 }
 
 void MenuState::Update(float time_delta) {
 	UpdateAllEntities(time_delta);
-
-	if(!IsCurrentState())
-		mMusic.Pause();
-	if(IsCurrentState() && mMusic.GetStatus() != sf::SoundSource::Playing)
-		mMusic.Play();
 }
 
 void MenuState::OnPressEscape() {

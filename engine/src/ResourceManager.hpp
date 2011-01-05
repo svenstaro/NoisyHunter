@@ -68,9 +68,6 @@ public:
         const float width, const float height, const std::string& key="");
     const sf::Image& GetImage(const std::string& img);
 
-	bool AddMusic(const boost::filesystem::path& path, const std::string& music_name, const std::string& key="");
-	const sf::Music& GetMusic(const std::string& music);
-
 	bool AddSoundBuffer(const boost::filesystem::path& path, const std::string& sound, const std::string& key="");
 	const sf::SoundBuffer& GetSoundBuffer(const std::string& sound);
 
