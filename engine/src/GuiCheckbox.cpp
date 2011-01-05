@@ -11,10 +11,13 @@ GuiCheckbox::GuiCheckbox(std::string name) {
     mName = name;
     mHover = false;
     mIsFocused = false;
+
 	SetFont(sf::Font::GetDefaultFont());
 	SetFontSize(12);
 	SetFontStyle(sf::Text::Regular);
 	SetFontColor(sf::Color::Black);
+
+	SetPositionType(POSITIONTYPE_SCREENPIXEL);
 }
 
 GuiCheckbox::~GuiCheckbox() {}

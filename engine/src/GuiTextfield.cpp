@@ -20,6 +20,8 @@ GuiTextfield::GuiTextfield(std::string name) {
 	SetFontSize(12);
 	SetFontStyle(sf::Text::Regular);
 	SetFontColor(sf::Color::Black);
+
+	SetPositionType(POSITIONTYPE_SCREENPIXEL);
 }
 
 GuiTextfield::~GuiTextfield() {}

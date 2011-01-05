@@ -7,6 +7,8 @@ namespace Engine{
 GuiGrid::GuiGrid() {}
 GuiGrid::GuiGrid(std::string name) {
 	mName = name;
+
+	SetPositionType(POSITIONTYPE_SCREENPIXEL);
 }
 GuiGrid::~GuiGrid() {}
 

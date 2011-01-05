@@ -58,10 +58,7 @@ public:
 
     bool HasFocus() const;
 
-    void SetHover(bool hover = true);
-
-    // set screen position type
-    Entity::PositionType GetPositionType() const;
+	void SetHover(bool hover = true);
 
     const Vector2D GetPosition() const;
 
@@ -74,6 +71,10 @@ public:
     const std::string GetText() const;
 
     const std::string GetName() const;
+
+	Entity::PositionType GetPositionType() const;
+
+	void SetPositionType(Entity::PositionType position_type);
 
 protected:
     // signals
@@ -90,6 +91,7 @@ protected:
     bool mHover;
 
     Vector2D mDimension;
+	PositionType mPositionType;
 };
 
 }

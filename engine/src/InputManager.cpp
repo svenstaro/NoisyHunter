@@ -24,6 +24,11 @@ void InputManager::BindMouse(MouseBindingCallback callback, MouseEventType type,
 }
 
 void InputManager::HandleEvent(sf::Event e) {
+	// check for resize event and recreate view
+	if(e.Type == sf::Event::Resized) {
+		Root::get_mutable_instance().ResetView();
+	}
+
     // check for keyboard event
 	if(e.Type == sf::Event::KeyPressed or e.Type == sf::Event::KeyReleased) {
 		for(auto i = mKeyBindings.begin(); i != mKeyBindings.end(); ++i) {

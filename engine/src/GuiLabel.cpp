@@ -5,10 +5,13 @@ namespace Engine{
 GuiLabel::GuiLabel() {}
 GuiLabel::GuiLabel(std::string name) {
 	mName = name;
+
 	SetFont(sf::Font::GetDefaultFont());
 	SetFontSize(12);
 	SetFontStyle(sf::Text::Regular);
 	SetFontColor(sf::Color::Black);
+
+	SetPositionType(POSITIONTYPE_SCREENPIXEL);
 }
 GuiLabel::~GuiLabel() {}
 
