@@ -24,6 +24,8 @@ public:
 	static const Vector2D ScreenPixelToWorldFloat(const Vector2D coords);
 	static const Vector2D WorldFloatToViewPixel(const Vector2D coords);
 
+    static const float WorldFloatToWorldPixel(const float length);
+
 private:
 	Vector2D mWorldPixel;
 };

@@ -65,4 +65,10 @@ const Vector2D Coordinates::WorldFloatToViewPixel(const Vector2D coords) {
 	return tmp.GetViewPixel();
 }
 
+const float Coordinates::WorldFloatToWorldPixel(const float length) {
+    Ćoordinates tmp;
+    tmp.SetWorldFloat(new Coordinates(length, 0));
+    return tmp.GetWorldPixel().x;
+}
+
 }
