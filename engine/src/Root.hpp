@@ -70,6 +70,8 @@ public:
 	void SetWorldPixelsPerFloat(const float ppf);
 	float GetWorldPixelsPerFloat() const;
 
+	boost::shared_ptr<sf::RenderWindow> GetRenderWindow();
+
 	float GetRunTime() const;
 
 	float GetFps() const;
@@ -87,7 +89,7 @@ private:
     bool mShutdownRequested;
 
     // these members are for use in client mode only !
-	sf::RenderWindow mRenderWindow;	// create Render Window first as Input Manager needs it in constructor
+	boost::shared_ptr<sf::RenderWindow> mRenderWindow;	// create Render Window first as Input Manager needs it in constructor
 	sf::View mWorldView;			// switch to this view for world rendering, switch back for GUI rendering
     InputManager mInputManager;
     ResourceManager mResourceManager;

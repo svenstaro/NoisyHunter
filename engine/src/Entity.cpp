@@ -148,12 +148,29 @@ void Entity::Attach(Entity& entity,
 	mAttachments.push_back(attachment);
 }
 
+boost::shared_ptr<btRigidBody> mBody;
 void Entity::SetCollisionShape(const boost::shared_ptr<btCollisionShape> collision_shape) {
 	mCollisionShape = collision_shape;
 }
 
 boost::shared_ptr<btCollisionShape> Entity::GetCollisionShape() {
 	return mCollisionShape;
+}
+
+void Entity::SetBody(const boost::shared_ptr<btRigidBody> body) {
+	mBody = body;
+}
+
+boost::shared_ptr<btRigidBody> Entity::GetBody() {
+	return mBody;
+}
+
+void Entity::SetMotionState(const boost::shared_ptr<btDefaultMotionState> motion_state) {
+	mMotionState = motion_state;
+}
+
+boost::shared_ptr<btDefaultMotionState> Entity::GetMotionState() {
+	return mMotionState;
 }
 
 }

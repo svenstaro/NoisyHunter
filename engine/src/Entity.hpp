@@ -6,6 +6,8 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/ptr_container/ptr_list.hpp>
 #include <bullet/btBulletDynamicsCommon.h>
+#include <BulletCollision/CollisionShapes/btBox2dShape.h>
+#include <BulletCollision/CollisionShapes/btConvex2dShape.h>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
@@ -109,6 +111,15 @@ public:
 	void SetCollisionShape(const boost::shared_ptr<btCollisionShape> collision_shape); 
 
 	boost::shared_ptr<btCollisionShape> GetCollisionShape();
+
+	void SetBody(const boost::shared_ptr<btRigidBody> body);
+
+	boost::shared_ptr<btRigidBody> GetBody();
+
+	void SetMotionState(const boost::shared_ptr<btDefaultMotionState> motion_state);
+
+	boost::shared_ptr<btDefaultMotionState> GetMotionState();
+
 protected:
 	sf::Uint16 mClientId;
 	sf::Uint16 mEntityUniqueId;
@@ -116,7 +127,6 @@ protected:
 	Vector2D mPosition;
 	float mSpeed;
 	Vector2D mDirection;
-
 	float mTimeToLive;
 	float mLifeTime;
 
@@ -127,6 +137,10 @@ protected:
 	boost::ptr_list<EntityAttachment> mAttachments;
 
 	boost::shared_ptr<btCollisionShape> mCollisionShape;
+
+	boost::shared_ptr<btRigidBody> mBody;
+
+	boost::shared_ptr<btDefaultMotionState> mMotionState;
 
 };
 

@@ -11,24 +11,37 @@ World::~World() {}
 World* World::clone() const {}
 
 void World::InitializePhysics() {
-	collisionConfiguration = boost::shared_ptr<btDefaultCollisionConfiguration>(new btDefaultCollisionConfiguration());
-	dispatcher = boost::shared_ptr<btCollisionDispatcher>(new btCollisionDispatcher(collisionConfiguration.get()));
-	broadphase = boost::shared_ptr<btDbvtBroadphase>(new btDbvtBroadphase());
-	simplex = boost::shared_ptr<btVoronoiSimplexSolver>(new btVoronoiSimplexSolver());
-	pd_solver = boost::shared_ptr<btMinkowskiPenetrationDepthSolver>(new btMinkowskiPenetrationDepthSolver());
-	solver = boost::shared_ptr<btSequentialImpulseConstraintSolver>(new btSequentialImpulseConstraintSolver());
-//	dynamicsWorld = boost::shared_ptr<btDiscreteDynamicsWorld>(new btDiscreteDynamicsWorld(dispatcher.get(), broadphase.get(), solver.get(), collisionConfiguration.get()));
-//	dynamicsWorld->setGravity(btVector3(0, 1, 0));
+	mCollisionConfiguration = boost::shared_ptr<btDefaultCollisionConfiguration>(new btDefaultCollisionConfiguration());
+	mCollisionDispatcher = boost::shared_ptr<btCollisionDispatcher>(new btCollisionDispatcher(mCollisionConfiguration.get()));
+	mBroadphase = boost::shared_ptr<btDbvtBroadphase>(new btDbvtBroadphase());
+	mSimplex = boost::shared_ptr<btVoronoiSimplexSolver>(new btVoronoiSimplexSolver());
+	mPdSolver = boost::shared_ptr<btMinkowskiPenetrationDepthSolver>(new btMinkowskiPenetrationDepthSolver());
+	mSolver = boost::shared_ptr<btSequentialImpulseConstraintSolver>(new btSequentialImpulseConstraintSolver());
+	mDynamicsWorld = boost::shared_ptr<btDiscreteDynamicsWorld>(new btDiscreteDynamicsWorld(mCollisionDispatcher.get(), mBroadphase.get(), mSolver.get(), mCollisionConfiguration.get()));
 
-	mPixelsPerMeter = 64.f;
-	mMetersPerPixel = (1.f/mPixelsPerMeter);
+	mConvexAlgo2d = boost::shared_ptr<btConvex2dConvex2dAlgorithm::CreateFunc>(new btConvex2dConvex2dAlgorithm::CreateFunc(mSimplex.get(), mPdSolver.get()));
 
+	mCollisionDispatcher->registerCollisionCreateFunc(CONVEX_2D_SHAPE_PROXYTYPE,CONVEX_2D_SHAPE_PROXYTYPE, mConvexAlgo2d.get());
+	mCollisionDispatcher->registerCollisionCreateFunc(BOX_2D_SHAPE_PROXYTYPE,CONVEX_2D_SHAPE_PROXYTYPE, mConvexAlgo2d.get());
+	mCollisionDispatcher->registerCollisionCreateFunc(CONVEX_2D_SHAPE_PROXYTYPE,BOX_2D_SHAPE_PROXYTYPE, mConvexAlgo2d.get());
+	//mCollisionDispatcher->registerCollisionCreateFunc(BOX_2D_SHAPE_PROXYTYPE,BOX_2D_SHAPE_PROXYTYPE, new btBox2dBox2dCollisionAlgorithm::CreateFunc());
+	mCollisionDispatcher->registerCollisionCreateFunc(BOX_2D_SHAPE_PROXYTYPE,BOX_2D_SHAPE_PROXYTYPE, mBox2dAlgo2d.get());
+	mDynamicsWorld->setGravity(btVector3(0, 1, 0));
+
+	if(!Root::get_const_instance().IsServer()) {
+		mDebugDraw = boost::shared_ptr<DebugDraw>(new DebugDraw(Root::get_mutable_instance().GetRenderWindow()));
+	//mDebugDraw.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+		mDebugDraw->setDebugMode(btIDebugDraw::DBG_MAX_DEBUG_DRAW_MODE);
+
+		mDynamicsWorld->setDebugDrawer(mDebugDraw.get());
+	}
 }
 
 //void World::Initialize() {}
 
 void World::Update(const float time_delta) {
 	UpdateAllEntities(time_delta);
+
 }
 
 void World::UpdateAllEntities(const float time_delta) {
@@ -37,6 +50,7 @@ void World::UpdateAllEntities(const float time_delta) {
 		if(Root::get_mutable_instance().IsServer()) {
 			if(entity.GetLifeTime() >= entity.GetTimeToLive()) {
 				Root::get_mutable_instance().GetNetworkManagerPtr()->SendEntityDel(entity.GetEntityUniqueId(), mWorldUniqueId);
+				mDynamicsWorld->removeRigidBody(entity.GetBody().get());
 				mEntities.erase_if(boost::bind(&Entity::GetEntityUniqueId, _1) == entity.GetEntityUniqueId());
 			}
 		}
@@ -56,32 +70,31 @@ void World::AppendAllEntitiesToPacket() {
 }
 
 void World::Draw(sf::RenderTarget* target) {
-
 	Root::get_mutable_instance().SetRenderMode(RENDERMODE_WORLD);
 	BOOST_FOREACH(Entity& entity, mEntities) {
 		entity.Draw(target);
 	}
+	if(!Root::get_const_instance().IsServer())
+		mDynamicsWorld->debugDrawWorld();
 }
 
 void World::AddEntity(Entity* entity) {
+	float pixels_per_meter = Root::get_const_instance().GetWorldPixelsPerFloat();
+	float meters_per_pixel = (1.f/pixels_per_meter);
+
 	mEntities.push_back(entity);
 	mEntityListNeedsSorting = true;
-
-	// Physics stuff
-	// just create a basic block as the collision_shape for debugging.
 	
-	boost::shared_ptr<btCollisionShape> shape(new btBoxShape(btVector3(btScalar(Root::get_const_instance().GetWindowSize().x / 2 * mMetersPerPixel), btScalar(0.2), btScalar(10))));
-	entity->SetCollisionShape(shape);
-
-	collisionShapes.push_back(entity->GetCollisionShape().get());
-	btTransform transform(btQuaternion(0, 0, 0, 1), btVector3(Root::get_mutable_instance().GetWindowSize().x / 2 * mMetersPerPixel, Root::get_mutable_instance().GetWindowSize().y * mMetersPerPixel, 0));
+	btTransform transform(btQuaternion(0, 0, 0, 1), btVector3(entity->GetPosition().x, entity->GetPosition().y, 0));
 	boost::shared_ptr<btDefaultMotionState> motion_state(new btDefaultMotionState(transform));
+	entity->SetMotionState(motion_state);
 	btRigidBody::btRigidBodyConstructionInfo rb_info(0, motion_state.get(), entity->GetCollisionShape().get(), btVector3(0, 0, 0));
 	boost::shared_ptr<btRigidBody> body(new btRigidBody(rb_info));
 	body->setLinearFactor(btVector3(1,1,0));
 	body->setAngularFactor(btVector3(0,0,1));
+	entity->SetBody(body);
 
-	//dynamicsWorld->addRigidBody(body.get());
+	mDynamicsWorld->addRigidBody(body.get());
 }
 
 void World::GrabWorldUniqueId() {
@@ -112,11 +125,21 @@ Entity* World::GetEntityByEntityUniqueId(const sf::Uint16 entity_unique_id) {
 }
 
 void World::DeleteEntitiesByClientId(const sf::Uint16 client_id) {
-	mEntities.erase_if(boost::bind(&Entity::GetClientId, _1) == client_id);
+	BOOST_FOREACH(Entity& entity, mEntities) {
+		if(entity.GetClientId() == client_id) {
+			mDynamicsWorld->removeRigidBody(entity.GetBody().get());
+			mEntities.erase_if(boost::bind(&Entity::GetClientId, _1) == client_id);
+		}
+	}
 }
 
 void World::DeleteEntityByEntityUniqueId(const sf::Uint16 entity_unique_id) {
-	mEntities.erase_if(boost::bind(&Entity::GetEntityUniqueId, _1) == entity_unique_id);
+	BOOST_FOREACH(Entity& entity, mEntities) {
+		if(entity.GetEntityUniqueId() == entity_unique_id) {
+			mDynamicsWorld->removeRigidBody(entity.GetBody().get());
+			mEntities.erase_if(boost::bind(&Entity::GetEntityUniqueId, _1) == entity_unique_id);
+		}
+	}
 }
 
 void World::OnLeaveGame() {}

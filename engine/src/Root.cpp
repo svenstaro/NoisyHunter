@@ -15,7 +15,7 @@ Vector2D Root::GetMousePosition() const {
 }
 
 const sf::Input& Root::GetInput() const{
-	return mRenderWindow.GetInput();
+	return mRenderWindow->GetInput();
 }
 
 void Root::InitializeAsServer(const sf::Uint16 server_port,
@@ -50,12 +50,14 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 	// Request a 8 bits stencil buffer
 	// Request 8 levels of antialiasing
 	sf::ContextSettings Settings(24, 8, 8);
+	
+	mRenderWindow = boost::shared_ptr<sf::RenderWindow>(new sf::RenderWindow());
 
     // Create Render Window
     if(is_fullscreen)
-        mRenderWindow.Create(video_mode, window_title, sf::Style::Fullscreen, Settings);
+        mRenderWindow->Create(video_mode, window_title, sf::Style::Fullscreen, Settings);
     else
-		mRenderWindow.Create(video_mode, window_title, sf::Style::Close | sf::Style::Resize, Settings);
+		mRenderWindow->Create(video_mode, window_title, sf::Style::Close | sf::Style::Resize, Settings);
 
 	// Create & initialize world view
 	ResetView();
@@ -141,7 +143,7 @@ void Root::StartMainLoop() {
         float time_budget = 0.f;
 		sf::Clock PingClock;
         
-        while(mRenderWindow.IsOpened()) {
+        while(mRenderWindow->IsOpened()) {
 			mTotalNumFrames++;
 			mStateManager.BeginFrame();
             float time_delta = mFrameTimeClock.GetElapsedTime();
@@ -153,7 +155,7 @@ void Root::StartMainLoop() {
             
             // Handle events.
             sf::Event e;
-            while(mRenderWindow.GetEvent(e)) {
+            while(mRenderWindow->GetEvent(e)) {
                 mInputManager.HandleEvent(e);
                 mStateManager.HandleEvent(e);
             }
@@ -183,23 +185,23 @@ void Root::StartMainLoop() {
 				GetNetworkManagerPtr()->SendPing();
 			}
             // Render the image.
-			mRenderWindow.Clear(sf::Color(0,0,0));
-            mStateManager.Draw(&mRenderWindow);
+			mRenderWindow->Clear(sf::Color(0,0,0));
+            mStateManager.Draw(mRenderWindow.get());
 			// Render mouse cursor
 			cursor.SetPosition(GetMousePosition().x, GetMousePosition().y);
-			mRenderWindow.Draw(cursor);
+			mRenderWindow->Draw(cursor);
 			if(mTakeScreenshot) {
 				sf::Image shot;
-				shot.CopyScreen(mRenderWindow);
+				shot.CopyScreen(*(mRenderWindow.get()));
 				// TODO: Change this to png when it works.
 				shot.SaveToFile("screen.jpg");
 				mTakeScreenshot = false;
 			}
-            mRenderWindow.Display();
+            mRenderWindow->Display();
 
             // Check whether a shutdown has been requested.
             if(mShutdownRequested)
-                mRenderWindow.Close();
+                mRenderWindow->Close();
         }
 		// End all states
 		mStateManager.Shutdown();
@@ -240,11 +242,11 @@ MusicManager* Root::GetMusicManagerPtr() {
 }
 
 const Vector2D Root::GetWindowSize() const {
-    return Vector2D(mRenderWindow.GetWidth(), mRenderWindow.GetHeight());
+    return Vector2D(mRenderWindow->GetWidth(), mRenderWindow->GetHeight());
 }
 
 const sf::View& Root::GetCurrentView() const {
-	return mRenderWindow.GetView();
+	return mRenderWindow->GetView();
 }
 
 const sf::View& Root::GetWorldView() const {
@@ -252,7 +254,7 @@ const sf::View& Root::GetWorldView() const {
 }
 
 void Root::SetMouseHidden(const bool mouse_hidden) {
-	mRenderWindow.ShowMouseCursor(!mouse_hidden);
+	mRenderWindow->ShowMouseCursor(!mouse_hidden);
 }
 
 const std::string& Root::GetClientName() const {
@@ -273,12 +275,16 @@ float Root::GetWorldPixelsPerFloat() const {
 	return mWorldPixelsPerFloat;
 }
 
+boost::shared_ptr<sf::RenderWindow> Root::GetRenderWindow() {
+	return mRenderWindow;
+}
+
 float Root::GetRunTime() const {
 	return mRunTimeClock.GetElapsedTime();
 }
 
 float Root::GetFps() const {
-	return floor(1 / mRenderWindow.GetFrameTime());
+	return floor(1 / mRenderWindow->GetFrameTime());
 }
 
 float Root::GetAverageFps() const {
@@ -290,28 +296,32 @@ bool Root::IsServer() const {
 }
 
 void Root::SetRenderMode(const RenderMode mode) {
-	if (mIsServer)
+	if(mIsServer)
 		mLogManager.Log(LOGLEVEL_ERROR, LOGORIGIN_ROOT, "Tried to switch render mode in server.");
 	else if (mode == RENDERMODE_WORLD)
-		mRenderWindow.SetView(mWorldView);
+		mRenderWindow->SetView(mWorldView);
 	else if (mode == RENDERMODE_GUI)
-		mRenderWindow.SetView(mRenderWindow.GetDefaultView());
+		mRenderWindow->SetView(mRenderWindow->GetDefaultView());
 }
 
 void Root::SetTakeScreenshot(const bool take_screenshot) {
-	mTakeScreenshot = take_screenshot;
+	if(!mIsServer)
+		mTakeScreenshot = take_screenshot;
 }
 
 void Root::CenterViewAt(const Vector2D center) {
-	mWorldView.SetCenter(center.x, center.y);
+	if(!mIsServer)
+		mWorldView.SetCenter(center.x, center.y);
 }
 
 void Root::ResetView() {
-	float w = mRenderWindow.GetWidth();
-	float h = mRenderWindow.GetHeight();
+	if(mIsServer)
+		return;
+	float w = mRenderWindow->GetWidth();
+	float h = mRenderWindow->GetHeight();
 	mWorldView.Reset(sf::FloatRect(0,0,w,h));
 	mWorldView.SetViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
-	std::cout << "Resized to " << w <<" x " << h << std::endl;
+	mLogManager.Log(LOGLEVEL_VERBOSE, LOGORIGIN_ROOT, "Resized to " + boost::lexical_cast<std::string>(w) + " x " + boost::lexical_cast<std::string>(h));
 }
 
 }

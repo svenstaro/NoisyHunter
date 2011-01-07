@@ -4,13 +4,20 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/foreach.hpp>
-#include "btBulletDynamicsCommon.h"
-#include "BulletCollision/NarrowPhaseCollision/btMinkowskiPenetrationDepthSolver.h"
 #include <boost/signals2.hpp>
+
+#include <bullet/btBulletDynamicsCommon.h>
+#include <BulletCollision/CollisionShapes/btBox2dShape.h>
+#include <BulletCollision/CollisionDispatch/btEmptyCollisionAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btBox2dBox2dCollisionAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btConvex2dConvex2dAlgorithm.h>
+#include <BulletCollision/CollisionShapes/btConvex2dShape.h>
+#include <BulletCollision/NarrowPhaseCollision/btMinkowskiPenetrationDepthSolver.h>
 
 #include <SFML/Graphics.hpp>
 
 #include "Entity.hpp"
+#include "DebugDraw.hpp"
 
 namespace Engine {
 
@@ -64,17 +71,17 @@ protected:
 	void UpdateAllEntities(const float time_delta);	sf::Uint16 mWorldUniqueId;
 
 	boost::ptr_vector<Entity> mEntities;
-	boost::shared_ptr<btDefaultCollisionConfiguration> collisionConfiguration;
-	boost::shared_ptr<btCollisionDispatcher> dispatcher;
-	boost::shared_ptr<btDbvtBroadphase> broadphase;
-	boost::shared_ptr<btVoronoiSimplexSolver> simplex;
-	boost::shared_ptr<btMinkowskiPenetrationDepthSolver> pd_solver;
-	boost::shared_ptr<btSequentialImpulseConstraintSolver> solver;
-	boost::shared_ptr<btDiscreteDynamicsWorld> dynamicsWorld;
-	btAlignedObjectArray<btCollisionShape*> collisionShapes;
+	boost::shared_ptr<btDefaultCollisionConfiguration> mCollisionConfiguration;
+	boost::shared_ptr<btCollisionDispatcher> mCollisionDispatcher;
+	boost::shared_ptr<btDbvtBroadphase> mBroadphase;
+	boost::shared_ptr<btVoronoiSimplexSolver> mSimplex;
+	boost::shared_ptr<btMinkowskiPenetrationDepthSolver> mPdSolver;
+	boost::shared_ptr<btSequentialImpulseConstraintSolver> mSolver;
+	boost::shared_ptr<btDiscreteDynamicsWorld> mDynamicsWorld;
+	boost::shared_ptr<btConvex2dConvex2dAlgorithm::CreateFunc> mConvexAlgo2d;
+	boost::shared_ptr<btBox2dBox2dCollisionAlgorithm::CreateFunc> mBox2dAlgo2d;
 
-	float mPixelsPerMeter;
-	float mMetersPerPixel;
+	boost::shared_ptr<DebugDraw> mDebugDraw;
 
 	bool mEntityListNeedsSorting;
 
