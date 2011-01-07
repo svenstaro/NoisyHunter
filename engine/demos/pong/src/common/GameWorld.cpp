@@ -23,5 +23,6 @@ void GameWorld::OnPressUp() {}
 void GameWorld::OnPressDown() {}
 
 sf::Uint16 GameWorld::GetWorldTypeId() const {
+	std::cout << "Me is GameWorld with " << mEntities.size() << " entities." << std::endl;
     return 0x0102;
 }

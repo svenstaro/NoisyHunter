@@ -23,7 +23,7 @@ public:
 	void InitializePhysics();
 	virtual void Initialize() = 0;
 	virtual void Update(const float time_delta);
-	void AppendAllEntitiesToPacket();
+	virtual void AppendAllEntitiesToPacket();
 	void Draw(sf::RenderTarget* const target);
 	void AddEntity(Entity* entity);
 	
