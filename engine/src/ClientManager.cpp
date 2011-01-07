@@ -72,8 +72,7 @@ bool ClientManager::IsSlotAvailable() {
 std::vector<sf::Uint16> ClientManager::GetIds() {
 	if(mClients.size() == 0) {
 		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_CLIENTMANAGER, "Tried getting empty Id map.");
-		exit(1);
+		logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_CLIENTMANAGER, "There are no clients.");
 	}
 
 	std::vector<sf::Uint16> ids;

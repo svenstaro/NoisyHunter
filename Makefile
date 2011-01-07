@@ -10,6 +10,12 @@ runc:
 runs:
 	cd bin; ./server
 
+runpongs:
+	cd bin; ./pong_server
+
+runpongc:
+	cd bin; ./pong_client
+
 docs:
 	doxygen
 

@@ -214,7 +214,7 @@ void NetworkManager::SendWorldInfo(sf::Uint16 world_unique_id, sf::Uint16 world_
 		mPacket << sf::Uint16(NETCMD_WORLDINFO_BEGIN);
 		mPacket << world_unique_id;
 		mPacket << world_type_id;
-		mEntityState->GetWorld(world_unique_id)->AppendAllEntitiesToPacket();
+		GetEntityState()->GetWorld(world_unique_id)->AppendAllEntitiesToPacket();
 		mPacket << sf::Uint16(NETCMD_WORLDINFO_END);
 		mPacket << world_unique_id;
 		SendPacket();
