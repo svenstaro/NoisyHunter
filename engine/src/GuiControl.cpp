@@ -7,6 +7,7 @@ GuiControl::GuiControl(const sf::Uint16 entity_unique_id,
 					   const std::string& name) {
 	mEntityUniqueId = entity_unique_id;
     mName = name;
+	SetPositionType(Entity::PositionType::POSITIONTYPE_SCREENPIXEL);
     SetFocus(false);
     SetHover(false);
 }
@@ -107,10 +108,6 @@ void GuiControl::SetHover(bool hover) {
     mHover = hover;
 }
 
-Entity::PositionType GuiControl::GetPositionType() const {
-	return Entity::PositionType::POSITIONTYPE_SCREENPIXEL;
-}
-
 const Vector2D GuiControl::GetPosition() const {
     return mPosition;
 }
@@ -133,6 +130,14 @@ const std::string GuiControl::GetText() const {
 
 const std::string GuiControl::GetName() const {
     return mName;
+}
+
+Entity::PositionType GuiControl::GetPositionType() const {
+	return mPositionType;
+}
+
+void GuiControl::SetPositionType(Entity::PositionType position_type) {
+	mPositionType = position_type;
 }
 
 }

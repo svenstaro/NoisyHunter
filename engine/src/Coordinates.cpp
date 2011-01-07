@@ -22,6 +22,9 @@ void Coordinates::SetScreenPixel(const Vector2D coords) {
 	const sf::View& view = Root::get_const_instance().GetWorldView();
 	SetViewPixel(coords - Vector2D(view.GetViewport().Left, view.GetViewport().Top)); // coords - ViewPORT Offset
 }
+void Coordinates::SetScreenFloat(const Vector2D coords) {
+	SetScreenPixel(Vector2D(coords.x * Root::get_const_instance().GetWindowSize().x, coords.y * Root::get_const_instance().GetWindowSize().y));
+}
 
 // GETTER
 
@@ -39,6 +42,9 @@ const Vector2D Coordinates::GetScreenPixel() const {
 	const sf::View& view = Root::get_const_instance().GetWorldView();
 	return GetViewPixel() + Vector2D(view.GetViewport().Left, view.GetViewport().Top); // ViewPixel + ViewPORT Offset
 }
+const Vector2D Coordinates::GetScreenFloat() const {
+	return Vector2D(GetScreenPixel().x / Root::get_const_instance().GetWindowSize().x, GetScreenPixel().y / Root::get_const_instance().GetWindowSize().y);
+}
 
 
 // STATIC CONVERSTION FUNCTIONS
@@ -53,7 +59,7 @@ const Vector2D Coordinates::ScreenPixelToWorldFloat(const Vector2D coords) {
 	tmp.SetScreenPixel(coords);
 	return tmp.GetWorldFloat();
 }
-static const Vector2D WorldFloatToViewPixel(const Vector2D coords) {
+const Vector2D Coordinates::WorldFloatToViewPixel(const Vector2D coords) {
 	Coordinates tmp;
 	tmp.SetWorldFloat(coords);
 	return tmp.GetViewPixel();

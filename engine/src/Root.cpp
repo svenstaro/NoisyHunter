@@ -55,7 +55,7 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
     if(is_fullscreen)
         mRenderWindow.Create(video_mode, window_title, sf::Style::Fullscreen, Settings);
     else
-        mRenderWindow.Create(video_mode, window_title, sf::Style::Close, Settings);
+		mRenderWindow.Create(video_mode, window_title, sf::Style::Close | sf::Style::Resize, Settings);
 
 	// Create & initialize world view
 	ResetView();
@@ -307,8 +307,11 @@ void Root::CenterViewAt(const Vector2D center) {
 }
 
 void Root::ResetView() {
-	mWorldView.Reset(sf::FloatRect(0,0,800,600));
+	float w = mRenderWindow.GetWidth();
+	float h = mRenderWindow.GetHeight();
+	mWorldView.Reset(sf::FloatRect(0,0,w,h));
 	mWorldView.SetViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
+	std::cout << "Resized to " << w <<" x " << h << std::endl;
 }
 
 }
