@@ -17,6 +17,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Entity.hpp"
+#include "DebugDraw.hpp"
 
 namespace Engine {
 
@@ -79,6 +80,8 @@ protected:
 	boost::shared_ptr<btDiscreteDynamicsWorld> mDynamicsWorld;
 	boost::shared_ptr<btConvex2dConvex2dAlgorithm::CreateFunc> mConvexAlgo2d;
 	boost::shared_ptr<btBox2dBox2dCollisionAlgorithm::CreateFunc> mBox2dAlgo2d;
+
+	boost::shared_ptr<DebugDraw> mDebugDraw;
 
 	bool mEntityListNeedsSorting;
 

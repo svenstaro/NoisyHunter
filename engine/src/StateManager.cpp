@@ -33,7 +33,8 @@ void StateManager::BeginFrame() {
 		mStatesToAdd.pop();
 
 		// set arrow cursor as default when a new state is added
-		Root::get_mutable_instance().GetResourceManagerPtr()->SetCursor(Engine::MOUSECURSOR_ARROW);
+		if (!Root::get_const_instance().IsServer())
+			Root::get_mutable_instance().GetResourceManagerPtr()->SetCursor(Engine::MOUSECURSOR_ARROW);
 		state->Initialize();
 		mStates.push_back(state);
 		Root::get_mutable_instance().ResetView();

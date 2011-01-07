@@ -28,13 +28,20 @@ void World::InitializePhysics() {
 	mCollisionDispatcher->registerCollisionCreateFunc(BOX_2D_SHAPE_PROXYTYPE,BOX_2D_SHAPE_PROXYTYPE, mBox2dAlgo2d.get());
 	mDynamicsWorld->setGravity(btVector3(0, 1, 0));
 
+	if(!Root::get_const_instance().IsServer()) {
+		mDebugDraw = boost::shared_ptr<DebugDraw>(new DebugDraw(Root::get_mutable_instance().GetRenderWindow()));
+	//mDebugDraw.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+		mDebugDraw->setDebugMode(btIDebugDraw::DBG_MAX_DEBUG_DRAW_MODE);
 
+		mDynamicsWorld->setDebugDrawer(mDebugDraw.get());
+	}
 }
 
 //void World::Initialize() {}
 
 void World::Update(const float time_delta) {
 	UpdateAllEntities(time_delta);
+
 }
 
 void World::UpdateAllEntities(const float time_delta) {
@@ -43,6 +50,7 @@ void World::UpdateAllEntities(const float time_delta) {
 		if(Root::get_mutable_instance().IsServer()) {
 			if(entity.GetLifeTime() >= entity.GetTimeToLive()) {
 				Root::get_mutable_instance().GetNetworkManagerPtr()->SendEntityDel(entity.GetEntityUniqueId(), mWorldUniqueId);
+				mDynamicsWorld->removeRigidBody(entity.GetBody().get());
 				mEntities.erase_if(boost::bind(&Entity::GetEntityUniqueId, _1) == entity.GetEntityUniqueId());
 			}
 		}
@@ -62,11 +70,12 @@ void World::AppendAllEntitiesToPacket() {
 }
 
 void World::Draw(sf::RenderTarget* target) {
-
 	Root::get_mutable_instance().SetRenderMode(RENDERMODE_WORLD);
 	BOOST_FOREACH(Entity& entity, mEntities) {
 		entity.Draw(target);
 	}
+	if(!Root::get_const_instance().IsServer())
+		mDynamicsWorld->debugDrawWorld();
 }
 
 void World::AddEntity(Entity* entity) {
@@ -78,10 +87,12 @@ void World::AddEntity(Entity* entity) {
 	
 	btTransform transform(btQuaternion(0, 0, 0, 1), btVector3(entity->GetPosition().x, entity->GetPosition().y, 0));
 	boost::shared_ptr<btDefaultMotionState> motion_state(new btDefaultMotionState(transform));
+	entity->SetMotionState(motion_state);
 	btRigidBody::btRigidBodyConstructionInfo rb_info(0, motion_state.get(), entity->GetCollisionShape().get(), btVector3(0, 0, 0));
 	boost::shared_ptr<btRigidBody> body(new btRigidBody(rb_info));
 	body->setLinearFactor(btVector3(1,1,0));
 	body->setAngularFactor(btVector3(0,0,1));
+	entity->SetBody(body);
 
 	mDynamicsWorld->addRigidBody(body.get());
 }
@@ -114,11 +125,21 @@ Entity* World::GetEntityByEntityUniqueId(const sf::Uint16 entity_unique_id) {
 }
 
 void World::DeleteEntitiesByClientId(const sf::Uint16 client_id) {
-	mEntities.erase_if(boost::bind(&Entity::GetClientId, _1) == client_id);
+	BOOST_FOREACH(Entity& entity, mEntities) {
+		if(entity.GetClientId() == client_id) {
+			mDynamicsWorld->removeRigidBody(entity.GetBody().get());
+			mEntities.erase_if(boost::bind(&Entity::GetClientId, _1) == client_id);
+		}
+	}
 }
 
 void World::DeleteEntityByEntityUniqueId(const sf::Uint16 entity_unique_id) {
-	mEntities.erase_if(boost::bind(&Entity::GetEntityUniqueId, _1) == entity_unique_id);
+	BOOST_FOREACH(Entity& entity, mEntities) {
+		if(entity.GetEntityUniqueId() == entity_unique_id) {
+			mDynamicsWorld->removeRigidBody(entity.GetBody().get());
+			mEntities.erase_if(boost::bind(&Entity::GetEntityUniqueId, _1) == entity_unique_id);
+		}
+	}
 }
 
 void World::OnLeaveGame() {}
