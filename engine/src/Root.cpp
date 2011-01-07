@@ -311,7 +311,7 @@ void Root::ResetView() {
 	float h = mRenderWindow.GetHeight();
 	mWorldView.Reset(sf::FloatRect(0,0,w,h));
 	mWorldView.SetViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
-	std::cout << "Resized to " << w <<" x " << h << std::endl;
+	mLogManager.Log(LOGLEVEL_VERBOSE, LOGORIGIN_ROOT, "Resized to " + boost::lexical_cast<std::string>(w) + " x " + boost::lexical_cast<std::string>(h));
 }
 
 }
