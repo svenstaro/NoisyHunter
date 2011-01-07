@@ -147,6 +147,8 @@ void Entity::Attach(Entity& entity,
 	//EntityAttachment* attachment = new EntityAttachment(&entity);
 	mAttachments.push_back(attachment);
 }
+#include "btBulletDynamicsCommon.h"
+#include "BulletCollision/NarrowPhaseCollision/btMinkowskiPenetrationDepthSolver.h"
 
 void Entity::SetCollisionShape(const boost::shared_ptr<btCollisionShape> collision_shape) {
 	mCollisionShape = collision_shape;

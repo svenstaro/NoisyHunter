@@ -6,6 +6,8 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/ptr_container/ptr_list.hpp>
 #include <bullet/btBulletDynamicsCommon.h>
+#include <BulletCollision/CollisionShapes/btBox2dShape.h>
+#include <BulletCollision/CollisionShapes/btConvex2dShape.h>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>

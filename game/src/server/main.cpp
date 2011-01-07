@@ -72,7 +72,9 @@ int main(int argc, char* argv[]) {
     root.InitializeAsServer(port, verbose);
 	MainState* mainstate = new MainState();
 	PlayWorld* playworld = new PlayWorld();
-	playworld->InitializePhysics();
+	root.SetWorldPixelsPerFloat(1000);
+	playworld->GrabWorldUniqueId();
+	mainstate->AddWorld(playworld);
 
 	WorldPolygon* pol1 = new WorldPolygon();
 	pol1->Initialize();
@@ -111,8 +113,6 @@ int main(int argc, char* argv[]) {
 	pol2->SetPosition(0,0);
 	playworld->AddEntity(pol2);
 
-	playworld->GrabWorldUniqueId();
-	mainstate->AddWorld(playworld);
     root.GetStateManagerPtr()->Add(mainstate);
     root.StartMainLoop();
     return 0;

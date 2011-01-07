@@ -46,6 +46,8 @@ void SonarPing::Initialize() {
 	part_sys->AddEmitter(part_emit);
 
 	Attach(*part_sys, Engine::Vector2D(0,0), 0, Engine::RestraintSettings(false,false,false));
+
+	mCollisionShape = boost::shared_ptr<btCollisionShape>(new btBoxShape(btVector3(btScalar(1), btScalar(1), btScalar(1))));
 }
 
 void SonarPing::Update(const float time_delta) {

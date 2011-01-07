@@ -52,6 +52,8 @@ void Submarine::Initialize() {
 	part_sys->AddEmitter(part_emit);
 
 	Attach(*part_sys, Engine::Vector2D(0,0), 0, Engine::RestraintSettings(false,false,true));
+
+	mCollisionShape = boost::shared_ptr<btCollisionShape>(new btBoxShape(btVector3(btScalar(1), btScalar(1), btScalar(1))));
 }
 
 void Submarine::Update(float time_delta) {
