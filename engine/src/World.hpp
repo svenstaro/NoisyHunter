@@ -72,7 +72,10 @@ protected:
 	boost::shared_ptr<btSequentialImpulseConstraintSolver> solver;
 	boost::shared_ptr<btDiscreteDynamicsWorld> dynamicsWorld;
 	btAlignedObjectArray<btCollisionShape*> collisionShapes;
-	
+
+	float mPixelsPerMeter;
+	float mMetersPerPixel;
+
 	bool mEntityListNeedsSorting;
 
 };

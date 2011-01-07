@@ -72,6 +72,7 @@ int main(int argc, char* argv[]) {
     root.InitializeAsServer(port, verbose);
 	MainState* mainstate = new MainState();
 	PlayWorld* playworld = new PlayWorld();
+	playworld->InitializePhysics();
 
 	WorldPolygon* pol1 = new WorldPolygon();
 	pol1->Initialize();

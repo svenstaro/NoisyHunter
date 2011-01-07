@@ -65,6 +65,7 @@ bool MusicManager::Register(const boost::filesystem::path& path,
 	mMusicTracks[trackname]->SetPitch(pitch);
 	mMusicTracks[trackname]->SetVolume(volume);
 	mMusicTracks[trackname]->SetLoop(true);
+	return true;
 }
 
 }

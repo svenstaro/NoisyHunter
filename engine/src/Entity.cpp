@@ -148,4 +148,12 @@ void Entity::Attach(Entity& entity,
 	mAttachments.push_back(attachment);
 }
 
+void Entity::SetCollisionShape(const boost::shared_ptr<btCollisionShape> collision_shape) {
+	mCollisionShape = collision_shape;
+}
+
+boost::shared_ptr<btCollisionShape> Entity::GetCollisionShape() {
+	return mCollisionShape;
+}
+
 }

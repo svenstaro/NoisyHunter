@@ -5,6 +5,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/ptr_container/ptr_list.hpp>
+#include <bullet/btBulletDynamicsCommon.h>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
@@ -103,6 +104,10 @@ public:
 				const Vector2D& position_offset,
 				const float rotation_offset,
 				RestraintSettings restraint_settings = RestraintSettings());
+
+	void SetCollisionShape(const boost::shared_ptr<btCollisionShape> collision_shape); 
+
+	boost::shared_ptr<btCollisionShape> GetCollisionShape();
 protected:
 	sf::Uint16 mClientId;
 	sf::Uint16 mEntityUniqueId;
@@ -119,6 +124,8 @@ protected:
 	boost::shared_ptr<sf::Drawable> mDrawable;
 
 	boost::ptr_list<EntityAttachment> mAttachments;
+
+	boost::shared_ptr<btCollisionShape> mCollisionShape;
 
 };
 

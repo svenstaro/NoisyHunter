@@ -88,6 +88,6 @@ void WorldPolygon::RebuildShape() {
 	mShape.EnableFill(false);
 	float out_width = mBorderWidth * Engine::Root::get_mutable_instance().GetWorldPixelsPerFloat();
 	if (out_width < 1.f) out_width = 1.f;
-	mShape.SetOutlineWidth(int(out_width));
+	mShape.SetOutlineThickness(out_width);
 	mShape.SetPosition(mPosition.x, mPosition.y);
 }

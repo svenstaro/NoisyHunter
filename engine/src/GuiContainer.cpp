@@ -11,6 +11,7 @@ bool GuiContainer::AddControl(GuiControl* control) {
 	// Place children after they have changed
 	// TODO: Re-Place them when this container is moved / resized etc.
 	PlaceChildren();
+	return true;
 }
 
 
