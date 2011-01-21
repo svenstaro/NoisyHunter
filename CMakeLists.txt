@@ -12,7 +12,7 @@ find_package(Bullet REQUIRED)
 find_package(Boost COMPONENTS filesystem program_options system date_time REQUIRED)
 find_package(ImageMagick COMPONENTS Magick++ REQUIRED)
 
-add_definitions(-Wall -Wextra -g -pedantic -fPIC -std=c++0x)
+add_definitions(-Wall -Wextra -g -pedantic -fPIC -std=c++0x -DBOOST_FILESYSTEM_VERSION=3)
 set(CMAKE_BUILD_TYPE "Debug")
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
