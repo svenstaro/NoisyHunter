@@ -9,6 +9,7 @@ lib/
 *.cbp
 *.depend
 *.user
+*.user.2.1pre1
 game/gfx/cached/
 game/gui/cached/
 engine/gui/cached/
