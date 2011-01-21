@@ -21,6 +21,8 @@
 
 namespace Engine {
 
+void worldTickCallback(btDynamicsWorld *world, btScalar timeStep);
+
 class World {
 public:
 	World();
@@ -66,6 +68,8 @@ public:
 	virtual void OnLeaveGame();
 	sf::Uint16 GetEntityCount() const;
 	Entity& GetLastEntity();
+
+	void TickCallback(btScalar timestep);
 
 protected:
 	void UpdateAllEntities(const float time_delta);	sf::Uint16 mWorldUniqueId;

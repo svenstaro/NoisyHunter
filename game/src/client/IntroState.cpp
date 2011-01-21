@@ -17,53 +17,53 @@ void IntroState::Initialize() {
 
 	// GUI
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),
-			"button.svg", 0.048f, 0.048f, "gui.button");
+			"button.svg", 0.48f, 0.48f, "gui.button");
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),
-			"button_hover.svg",	0.048f,	0.048f,	"gui.button_hover");
+			"button_hover.svg",	0.48f,	0.48f,	"gui.button_hover");
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),
-			"button_focus.svg", 0.048f, 0.048f,	"gui.button_focus");
+			"button_focus.svg", 0.48f, 0.48f,	"gui.button_focus");
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),
-			"grid.svg", 0.048f, 0.048f, "gui.grid");
+			"grid.svg", 0.48f, 0.48f, "gui.grid");
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),
-			"checkbox.svg", 0.016f, 0.016f, "gui.checkbox");
+			"checkbox.svg", 0.16f, 0.16f, "gui.checkbox");
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),
-			"checkbox_checked.svg", 0.016f, 0.016f, "gui.checkbox_checked");
+			"checkbox_checked.svg", 0.16f, 0.16f, "gui.checkbox_checked");
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),
-			"checkbox_hover.svg", 0.016f, 0.016f, "gui.checkbox_hover");
+			"checkbox_hover.svg", 0.16f, 0.16f, "gui.checkbox_hover");
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),
-			"textfield2.svg", 0.024f, 0.024f, "gui.textfield");
+			"textfield2.svg", 0.24f, 0.24f, "gui.textfield");
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),
-			"progressbar_back.svg", 0.024f, 0.024f, "gui.progressbar_back");
+			"progressbar_back.svg", 0.24f, 0.24f, "gui.progressbar_back");
 	resmgr->AddImage(boost::filesystem::path("../game/gui"),
-			"progressbar_front.svg", 0.024f, 0.024f, "gui.progressbar_front");
+			"progressbar_front.svg", 0.24f, 0.24f, "gui.progressbar_front");
 
 	// IMAGES
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
-			"submarine1.svg", 0.08f, 0.053f, "submarine");
+			"submarine1.svg", 0.8f, 0.53f, "submarine");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
-			"submarine_target.svg", 0.02f,	0.02f,	"submarine_target");
+			"submarine_target.svg", 0.2f,	0.2f,	"submarine_target");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
-			"sonarping.svg", 0.02f, 0.02f, "sonarping");
+			"sonarping.svg", 0.2f, 0.2f, "sonarping");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
-			"torpedo1.svg", 0.03f, 0.01f, "torpedo");
+			"torpedo1.svg", 0.3f, 0.1f, "torpedo");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
-			"missing.svg", 0.08f, 0.053f, "missing");
+			"missing.svg", 0.8f, 0.53f, "missing");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
-			"particle1.svg", 0.024f, 0.024f, "particle1");
+			"particle1.svg", 0.24f, 0.24f, "particle1");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
-			"particle_cursor.svg", 0.024f,	0.024f, "particle_cursor");
+			"particle_cursor.svg", 0.24f,	0.24f, "particle_cursor");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
-			"particle_bubble.svg", 0.024f, 0.024f, "particle_bubble");
+			"particle_bubble.svg", 0.24f, 0.24f, "particle_bubble");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
-			"particle_sonarping.svg", 0.04f, 0.04f, "particle_sonarping");
+			"particle_sonarping.svg", 0.4f, 0.4f, "particle_sonarping");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
-			"glow1.svg", 0.05f, 0.05f, "glow1");
+			"glow1.svg", 0.5f, 0.5f, "glow1");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
-			"torpedo_trail.svg", 0.024f, 0.024f, "torpedo_trail");
+			"torpedo_trail.svg", 0.24f, 0.24f, "torpedo_trail");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
-			"radar1.svg", .0875f, .25f, "radar1");
+			"radar1.svg", 0.875f, 2.5f, "radar1");
 	resmgr->AddImageToLoadingQueue(boost::filesystem::path("../game/gfx"),
-			"radar_background.svg", .5f, .5f, "radar_background");
+			"radar_background.svg", 5.f, 5.f, "radar_background");
 
     // load font
     sf::Font font;

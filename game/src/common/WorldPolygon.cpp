@@ -21,7 +21,7 @@ void WorldPolygon::Draw(sf::RenderTarget* target) const {
 void WorldPolygon::Initialize() {
 	RebuildShape();
 
-	mCollisionShape = boost::shared_ptr<btCollisionShape>(new btBoxShape(btVector3(btScalar(1), btScalar(1), btScalar(1))));
+	mCollisionShape = boost::shared_ptr<btCollisionShape>(new btBoxShape(btVector3(btScalar(0.01), btScalar(0.01), btScalar(0.01))));
 }
 
 void WorldPolygon::AddPoint(const sf::Vector2f point) {

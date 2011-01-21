@@ -42,6 +42,21 @@ void Entity::Update(const float time_delta) {
 	mPosition += mSpeed * time_delta;
 }
 
+void Entity::UpdatePhysics(float time_delta) {
+	btTransform trans;
+	mBody->getMotionState()->getWorldTransform(trans);
+	btVector3 origin = trans.getOrigin();
+	SetPosition(Vector2D(origin.x(), origin.y()));
+
+	btMatrix3x3 rot;
+	rot.setIdentity();
+	rot = trans.getBasis();
+	float fx,fy,fz;
+	rot.getEulerZYX(fz,fy,fx);
+	mDirection = Vector2D(1,0);
+	mDirection.Rotate(PI-fz);
+}
+
 void Entity::UpdateAllAttachments(const float time_delta) {
 	// Update EntityAttachments.
 	BOOST_FOREACH(EntityAttachment attachment, mAttachments)

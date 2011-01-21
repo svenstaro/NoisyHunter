@@ -47,7 +47,7 @@ void SonarPing::Initialize() {
 
 	Attach(*part_sys, Engine::Vector2D(0,0), 0, Engine::RestraintSettings(false,false,false));
 
-	mCollisionShape = boost::shared_ptr<btCollisionShape>(new btBoxShape(btVector3(btScalar(1), btScalar(1), btScalar(1))));
+	mCollisionShape = boost::shared_ptr<btCollisionShape>(new btBoxShape(btVector3(btScalar(0.01), btScalar(0.01), btScalar(0.01))));
 }
 
 void SonarPing::Update(const float time_delta) {
@@ -58,6 +58,7 @@ void SonarPing::Update(const float time_delta) {
 		mLifeTime += time_delta;
 	}
 
+	UpdatePhysics(time_delta);
 	UpdateAllAttachments(time_delta);
 
 }

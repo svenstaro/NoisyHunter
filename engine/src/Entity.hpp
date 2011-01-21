@@ -62,6 +62,8 @@ public:
 
 	virtual void Update(const float time_delta);
 
+	virtual void UpdatePhysics(const float time_delta);
+
 	void UpdateAllAttachments(const float time_delta);
 
 	virtual void Draw(sf::RenderTarget* target) const;

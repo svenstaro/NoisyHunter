@@ -53,12 +53,20 @@ void Submarine::Initialize() {
 
 	Attach(*part_sys, Engine::Vector2D(0,0), 0, Engine::RestraintSettings(false,false,true));
 
-	mCollisionShape = boost::shared_ptr<btCollisionShape>(new btBoxShape(btVector3(btScalar(1), btScalar(1), btScalar(1))));
+	mCollisionShape = boost::shared_ptr<btCollisionShape>(new btBoxShape(btVector3(btScalar(0.01), btScalar(0.01), btScalar(0.01))));
+	//mBody->setActivationState(DISABLE_DEACTIVATION);
 }
 
 void Submarine::Update(float time_delta) {
-    Engine::Vector2D relative_target = mTarget - mPosition;
-	float dist = relative_target.Magnitude();
+	Engine::Vector2D relative_target = mTarget - mPosition;
+	float max_speed = 0.2f;
+	if(relative_target.Magnitude() > max_speed) {
+		relative_target.Normalize();
+		relative_target *= max_speed;
+	}
+	mBody->applyCentralForce(btVector3(relative_target.x, relative_target.y, 0));
+
+	/*float dist = relative_target.Magnitude();
 	if(dist > 0.01) {
 		float angle = relative_target.Rotation() - mDirection.Rotation();
 
@@ -77,16 +85,16 @@ void Submarine::Update(float time_delta) {
 		mDirection.Normalize();
 
 		mPosition += mDirection * mSpeed * time_delta;
-	}
+	}*/
 
 
 	// Convert to world coordinates.
-	Engine::Coordinates pos;
+	/*Engine::Coordinates pos;
 	pos.SetWorldFloat(mPosition);
 	Engine::Vector2D worldPos = pos.GetWorldPixel();
-	mSprite.SetPosition(sf::Vector2f(worldPos.x, worldPos.y));
+	mSprite.SetPosition(sf::Vector2f(worldPos.x, worldPos.y));*/
 
-	float rot = Engine::Vector2D::rad2Deg( mDirection.Rotation());
+	/*float rot = Engine::Vector2D::rad2Deg( mDirection.Rotation());
 	bool flip_x = rot > 90 || rot < -90;
 	mSprite.FlipX(flip_x);
 	if(flip_x) {
@@ -99,9 +107,13 @@ void Submarine::Update(float time_delta) {
 		if (rot > 30) rot = 30;
 		if (rot < -30) rot = -30;
 		mSprite.SetRotation(- rot );
-	}
+	} */
 
 	mTargetMarkerRotation += time_delta * 100;
+
+	UpdatePhysics(time_delta);
+	Engine::Vector2D p = Engine::Coordinates::WorldFloatToWorldPixel(mPosition);
+	mSprite.SetPosition(p.x, p.y);
 
 	UpdateAllAttachments(time_delta);
 }
