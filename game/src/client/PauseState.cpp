@@ -7,8 +7,7 @@ PauseState::PauseState() {}
 PauseState::~PauseState() {}
 
 void PauseState::Initialize() {
-	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing PauseState.");
+	Engine::Logger::Urgent(Engine::LogOrigin::STATE, "Initializing PauseState.");
 
 	mBackgroundShape = sf::Shape::Rectangle(0,0,800,600,sf::Color(0,0,0,128));
 
@@ -47,8 +46,7 @@ void PauseState::Initialize() {
 }
 
 void PauseState::Shutdown() {
-	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Closed PauseState.");
+	Engine::Logger::Message(Engine::LogOrigin::STATE, "Closed PauseState.");
 }
 
 void PauseState::Update(float time_delta) {

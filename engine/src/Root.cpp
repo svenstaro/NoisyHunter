@@ -22,9 +22,12 @@ void Root::InitializeAsServer(const sf::Uint16 server_port,
 							  bool is_verbose) {
     mIsServer = true;
 
-	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->SetVerbose(is_verbose);
-	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_STATE, "Initializing Root as server.");
+	if(is_verbose)
+		mLogger.SetShowLevels(0x00011111);
+	else
+		mLogger.SetShowLevels(0x00011100);
+
+	Engine::Logger::Urgent(LogOrigin::ROOT, "Initializing Root as server.");
 
     //mStateManager = StateManager();
     // mNetworkManager = NetworkManager();
@@ -42,9 +45,12 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 							  bool is_verbose) {
     mIsServer = false;
 
-	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->SetVerbose(is_verbose);
-	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_STATE, "Initializing Root as client.");
+	if(is_verbose)
+		mLogger.SetShowLevels(0x00011111);
+	else
+		mLogger.SetShowLevels(0x00011100);
+
+	Engine::Logger::Urgent(LogOrigin::ROOT, "Initializing Root as client.");
 
 	// Request a 24 bits depth buffer
 	// Request a 8 bits stencil buffer
@@ -97,8 +103,6 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 }
 
 void Root::StartMainLoop() {
-	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-
     if(mIsServer) {
         // SERVER MAIN LOOP
         
@@ -131,7 +135,7 @@ void Root::StartMainLoop() {
 				SnapClock.Reset();
 				if(mNetworkManager.GetClientManagerPtr()->GetActiveClients() > 0) {
 					mNetworkManager.PreparePacket();
-					logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending world snapshot.");
+					Engine::Logger::Debug(LogOrigin::ROOT, "Sending world snapshot.");
 					mStateManager.SendWorldSnapshots();
 				}
 			}
@@ -229,8 +233,8 @@ NetworkManager* Root::GetNetworkManagerPtr() {
     return &mNetworkManager;
 }
 
-LogManager* Root::GetLogManagerPtr() {
-	return &mLogManager;
+Logger* Root::GetLoggerPtr() {
+	return &mLogger;
 }
 
 IdManager* Root::GetIdManagerPtr() {
@@ -297,7 +301,7 @@ bool Root::IsServer() const {
 
 void Root::SetRenderMode(const RenderMode mode) {
 	if(mIsServer)
-		mLogManager.Log(LOGLEVEL_ERROR, LOGORIGIN_ROOT, "Tried to switch render mode in server.");
+		Engine::Logger::Warning(LogOrigin::ROOT, "Tried to switch render mode in server.");
 	else if (mode == RENDERMODE_WORLD)
 		mRenderWindow->SetView(mWorldView);
 	else if (mode == RENDERMODE_GUI)
@@ -321,7 +325,7 @@ void Root::ResetView() {
 	float h = mRenderWindow->GetHeight();
 	mWorldView.Reset(sf::FloatRect(0,0,w,h));
 	mWorldView.SetViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
-	mLogManager.Log(LOGLEVEL_VERBOSE, LOGORIGIN_ROOT, "Resized to " + boost::lexical_cast<std::string>(w) + " x " + boost::lexical_cast<std::string>(h));
+	Engine::Logger::Debug(LogOrigin::ROOT, "Resized to " + boost::lexical_cast<std::string>(w) + " x " + boost::lexical_cast<std::string>(h));
 }
 
 }

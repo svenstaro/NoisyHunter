@@ -3,7 +3,7 @@
 
 #include <SFML/System/Vector2.hpp>
 
-#include "LogManager.hpp"
+#include "Logger.hpp"
 #include "State.hpp"
 #include "Submarine.hpp"
 

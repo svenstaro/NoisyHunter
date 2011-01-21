@@ -13,7 +13,7 @@
 #include "StateManager.hpp"
 #include "ResourceManager.hpp"
 #include "InputManager.hpp"
-#include "LogManager.hpp"
+#include "Logger.hpp"
 #include "LogCommand.hpp"
 #include "IdManager.hpp"
 #include "AnimatedSprite.hpp"
@@ -52,7 +52,7 @@ public:
     NetworkManager* GetNetworkManagerPtr();
     StateManager* GetStateManagerPtr();
     ResourceManager* GetResourceManagerPtr();
-    LogManager* GetLogManagerPtr();
+	Logger* GetLoggerPtr();
 	IdManager* GetIdManagerPtr();
 	MusicManager* GetMusicManagerPtr();
 
@@ -104,7 +104,7 @@ private:
     sf::Clock mRunTimeClock;
     StateManager mStateManager;
     NetworkManager mNetworkManager;
-	LogManager mLogManager;
+	Logger mLogger;
 	IdManager mIdManager;
 	MusicManager mMusicManager;
 };

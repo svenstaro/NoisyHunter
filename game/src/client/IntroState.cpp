@@ -7,8 +7,7 @@ IntroState::~IntroState() {}
 
 // state control
 void IntroState::Initialize() {
-	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing IntroState.");
+	Engine::Logger::Urgent(Engine::LogOrigin::STATE, "Initializing IntroState.");
 
 	mFinishedLoading = false;
 

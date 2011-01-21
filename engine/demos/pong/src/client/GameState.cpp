@@ -6,8 +6,7 @@ GameState::GameState() {}
 GameState::~GameState() {}
 
 void GameState::Initialize() {
-    auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-    logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing PlayState.");
+	Engine::Logger::Urgent(Engine::LogOrigin::STATE, "Initializing PlayState.");
 
     // GUI
     
@@ -26,8 +25,7 @@ void GameState::Initialize() {
 }
 
 void GameState::Shutdown() {
-    auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-    logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Shutting down PlayState.");
+	Engine::Logger::Debug(Engine::LogOrigin::STATE, "Shutting down PlayState.");
 
 	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
 	netmgr->SendClientQuit();

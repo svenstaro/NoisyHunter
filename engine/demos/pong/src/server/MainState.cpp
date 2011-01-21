@@ -5,8 +5,7 @@ MainState::MainState() {}
 MainState::~MainState() {}
 
 void MainState::Initialize() {
-    auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-    logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "MainState initialized.");
+	Engine::Logger::Urgent(Engine::LogOrigin::STATE, "MainState initialized.");
 
 
 	Ball* b = new Ball();
@@ -19,6 +18,5 @@ void MainState::Initialize() {
 }
 
 void MainState::Shutdown() {
-    auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-    logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Shutting down MainState.");
+	Engine::Logger::Debug(Engine::LogOrigin::STATE, "Shutting down MainState.");
 }

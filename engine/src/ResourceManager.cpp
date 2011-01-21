@@ -22,17 +22,15 @@ void ResourceManager::AddImageToLoadingQueue(const boost::filesystem::path& path
 }
 
 sf::Uint16 ResourceManager::LoadNextImage() {
-
-	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-
 	if(mImagesToLoad.size() <= 0)
 		return mMaxImageQueueSize;
 
 	ImageProperties p = mImagesToLoad.front();
 	mImagesToLoad.pop();
-	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_RESOURCEMANAGER, "Loading image " + p.Key + " from queue.");
-	if(!AddImage(p.Path, p.Name, p.Width, p.Height, p.Key))
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Could not load image " + p.Key);
+	Engine::Logger::Debug(LogOrigin::RESOURCEMANAGER, "Loading image " + p.Key + " from queue.");
+	if(!AddImage(p.Path, p.Name, p.Width, p.Height, p.Key)) {
+		Engine::Logger::Critical(LogOrigin::RESOURCEMANAGER, "Could not load image " + p.Key);
+	}
 
 	return int(mImagesToLoad.size());
 }
@@ -57,10 +55,8 @@ bool ResourceManager::AddImage(const boost::filesystem::path& path,
 							   const float width,
 							   const float height,
 							   const std::string& key) {
-	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-
 	if(!boost::filesystem::is_regular_file(path/imgname)) {
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Tried loading image path'"+(path/imgname).string()+"' but this image path doesn't exist!");
+		Engine::Logger::Critical(LogOrigin::RESOURCEMANAGER, "Tried loading image path'"+(path/imgname).string()+"' but this image path doesn't exist!");
 		exit(1);
 	}
 
@@ -86,7 +82,7 @@ bool ResourceManager::AddImage(const boost::filesystem::path& path,
     }
 
 	// Log output
-	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_RESOURCEMANAGER, "Caching image " + originalFile);
+	Engine::Logger::Debug(LogOrigin::RESOURCEMANAGER, "Caching image " + originalFile);
 
 	// Create cache directory
 	boost::filesystem::create_directory(cacheDir.string());
@@ -118,17 +114,14 @@ const sf::Image& ResourceManager::GetImage(const std::string& img) {
 	if(mImages.count(img) >= 1) {
 		return mImages[img];
 	} else {
-		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Tried getting image '"+img+"' but this image doesn't exist!");
+		Engine::Logger::Critical(LogOrigin::RESOURCEMANAGER, "Tried getting image '"+img+"' but this image doesn't exist!");
 		exit(1);
 	}
 }
 
 bool ResourceManager::AddSoundBuffer(const boost::filesystem::path& path, const std::string& sound_name, const std::string& key) {
-	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-
 	if(!boost::filesystem::is_regular_file(path/sound_name)) {
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Tried loading sound path'"+(path/sound_name).string()+"' but this sound path doesn't exist!");
+		Engine::Logger::Critical(LogOrigin::RESOURCEMANAGER, "Tried loading sound path'"+(path/sound_name).string()+"' but this sound path doesn't exist!");
 		exit(1);
 	}
 
@@ -151,7 +144,7 @@ bool ResourceManager::AddSoundBuffer(const boost::filesystem::path& path, const 
 
 	sf::SoundBuffer sound_buffer;
 	if(!sound_buffer.LoadFromFile(originalFile)) {
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Tried loading sound '"+(originalFile)+"' but it failed hard!");
+		Engine::Logger::Critical(LogOrigin::RESOURCEMANAGER, "Tried loading sound '"+(originalFile)+"' but it failed hard!");
 		exit(1);
 	}
 
@@ -166,8 +159,7 @@ const sf::SoundBuffer& ResourceManager::GetSoundBuffer(const std::string& sound)
 	if(mSoundBuffers.count(sound) >= 1) {
 		return mSoundBuffers[sound];
 	} else {
-		auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_RESOURCEMANAGER, "Tried getting sound '"+(sound)+"' but this sound doesn't exist!");
+		Engine::Logger::Critical(LogOrigin::RESOURCEMANAGER, "Tried getting sound '"+(sound)+"' but this sound doesn't exist!");
 		exit(1);
 	}
 }

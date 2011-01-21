@@ -20,16 +20,16 @@ void MusicManager::Play(const std::string& trackname) {
 			// Do not stop music if there is no current music, i.e., if this 
 			// is the first track to play since starting the game.
 			if(!mCurrentMusic.empty()) {
-				Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_MUSICMANAGER, "Stopping music "+mCurrentMusic);
+				Engine::Logger::Debug(LogOrigin::MUSICMANAGER, "Stopping music "+mCurrentMusic);
 				mMusicTracks[mCurrentMusic]->Stop();
 			}
 
 			mCurrentMusic = trackname;
-			Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_MUSICMANAGER, "Playing music "+trackname);
+			Engine::Logger::Message(LogOrigin::MUSICMANAGER, "Playing music "+trackname);
 			mMusicTracks[mCurrentMusic]->Play();
 		}
 	} else {
-		Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_ERROR, LOGORIGIN_MUSICMANAGER, "Tried playing unregistered music track.");
+		Engine::Logger::Critical(LogOrigin::MUSICMANAGER, "Tried playing unregistered music track.");
 		exit(1);
 	}
 }
@@ -47,7 +47,7 @@ bool MusicManager::Register(const boost::filesystem::path& path,
 							const float volume,
 							const float pitch) {
 	if(!boost::filesystem::is_regular_file(path/trackname)) {
-		Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_ERROR, LOGORIGIN_MUSICMANAGER, "Tried registering music path '"+(path/trackname).string()+"' but this music path doesn't exist!");
+		Engine::Logger::Critical(LogOrigin::MUSICMANAGER, "Tried registering music path '"+(path/trackname).string()+"' but this music path doesn't exist!");
 		exit(1);
 	}
 
@@ -57,7 +57,7 @@ bool MusicManager::Register(const boost::filesystem::path& path,
     }
 
 	// log output
-	Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_VERBOSE, LOGORIGIN_MUSICMANAGER, "Registering music track '"+(path/trackname).string()+"'");
+	Engine::Logger::Debug(LogOrigin::MUSICMANAGER, "Registering music track '"+(path/trackname).string()+"'");
 
 	boost::shared_ptr<sf::Music> music(new sf::Music());
 	mMusicTracks[trackname] = music;

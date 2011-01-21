@@ -7,7 +7,7 @@
 #include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include "LogManager.hpp"
+#include "Logger.hpp"
 #include "State.hpp"
 #include "Entity.hpp"
 #include "InputManager.hpp"

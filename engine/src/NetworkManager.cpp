@@ -11,14 +11,13 @@ NetworkManager::~NetworkManager() {}
 void NetworkManager::InitializeAsServer(const sf::Uint16 server_port){
     mIsServer = true;
 
-	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Initializing NetworkManager as server.");
+	Engine::Logger::Debug(LogOrigin::NETWORK, "Initializing NetworkManager as server.");
 
     if(mListener.Bind(server_port)) {
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "NetworkManager was broken while binding the listening server socket.");
+		Engine::Logger::Critical(LogOrigin::NETWORK, "NetworkManager was broken while binding the listening server socket.");
         exit(1);
     } else {
-		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Binding to port "+boost::lexical_cast<std::string>(server_port)+" successful.");
+		Engine::Logger::Message(LogOrigin::NETWORK, "Binding to port "+boost::lexical_cast<std::string>(server_port)+" successful.");
     }
 
 	int maxplayers = 8;
@@ -39,8 +38,7 @@ void NetworkManager::InitializeAsClient(const sf::IpAddress server_ip,
 										const std::string client_name) {
     mIsServer = false;
 
-	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Initializing NetworkManager as client.");
+	Engine::Logger::Debug(LogOrigin::NETWORK, "Initializing NetworkManager as client.");
 
     mClient_ServerIp = server_ip;
     mClient_ServerPort = server_port;
@@ -56,8 +54,7 @@ void NetworkManager::InitializeAsClient(const sf::IpAddress server_ip,
 }
 
 void NetworkManager::ConnectToServer() {
-	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Connecting to server.");
+	Engine::Logger::Debug(LogOrigin::NETWORK, "Start connecting to server.");
 
 	mListener.Bind(mClient_ClientPort);
 	mListener.SetBlocking(0);
@@ -92,48 +89,43 @@ void NetworkManager::SendPacket() {
 }
 
 void NetworkManager::SendPacket(sf::Packet& packet) {
-	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
 
 	// Don't send empty packets.
 	if(packet.GetDataSize() == 0) {
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Won't send empty packet.");
+		Engine::Logger::Warning(LogOrigin::NETWORK, "Won't send empty packet.");
 	} else {
 		if(mIsServer) {
 			// We are sending from server, therefore send to all clients.
 			BOOST_FOREACH(sf::Uint16 id, mClientManager.GetIds()) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending packet to: "+mClientManager.GetIp(id).ToString()+":"+boost::lexical_cast<std::string>(mClientManager.GetPort(id)));
+				Engine::Logger::Debug(LogOrigin::NETWORK, "Sending packet to: "+mClientManager.GetIp(id).ToString()+":"+boost::lexical_cast<std::string>(mClientManager.GetPort(id)));
 				mListener.Send(packet, mClientManager.GetIp(id), mClientManager.GetPort(id));
 			}
 		} else {
 			// We are sending from client.
 			if(!mClient_ConnectedToServer) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Won't send packet: Client did not connect to server yet.");
+				Engine::Logger::Debug(LogOrigin::NETWORK, "Won't send packet: Client did not connect to server yet.");
 			} else {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending packet to: "+mClient_ServerIp.ToString()+":"+boost::lexical_cast<std::string>(mClient_ServerPort));
+				Engine::Logger::Debug(LogOrigin::NETWORK, "Sending packet to: " + mClient_ServerIp.ToString() + ":" + boost::lexical_cast<std::string>(mClient_ServerPort));
 				mListener.Send(packet, mClient_ServerIp, mClient_ServerPort);
 			}
 		}
 		mSentPacketsCount++;
-		//logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sent packets count: "+boost::lexical_cast<std::string>(mSentPacketsCount));
 	}
 }
 
 void NetworkManager::SendPacket(sf::Packet& packet, sf::Uint16 client_id) {
-	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-
 	// Don't send empty packets.
 	if(packet.GetDataSize() == 0) {
-		logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Won't send empty packet.");
+		Engine::Logger::Warning(LogOrigin::NETWORK, "Won't send empty packet.");
 	} else {
 		if(mIsServer) {
-			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sending packet to: "+mClientManager.GetIp(client_id).ToString()+":"+boost::lexical_cast<std::string>(mClientManager.GetPort(client_id)));
+			Engine::Logger::Debug(LogOrigin::NETWORK, "Sending packet to: "+mClientManager.GetIp(client_id).ToString()+":"+boost::lexical_cast<std::string>(mClientManager.GetPort(client_id)));
 			mListener.Send(packet, mClientManager.GetIp(client_id), mClientManager.GetPort(client_id));
 		} else {
 			// WE DONT WANT THAT
-			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Won't send packet to a specified client_id from a client. This is the job of the server!");
+			Engine::Logger::Warning(LogOrigin::NETWORK, "Won't send packet to a specified client_id from a client. This is the job of the server!");
 		}
 		mSentPacketsCount++;
-		//logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Sent packets count: "+boost::lexical_cast<std::string>(mSentPacketsCount));
 	}
 }
 
@@ -223,10 +215,7 @@ void NetworkManager::SendWorldInfo(sf::Uint16 world_unique_id, sf::Uint16 world_
 }
 
 void NetworkManager::Receive() {
-	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-
     if(mIsServer) {
-		//logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Receiving.");
 		sf::Packet packet;
 		sf::IpAddress client_address;
 		sf::Uint16 client_port;
@@ -235,13 +224,13 @@ void NetworkManager::Receive() {
 			if(mClientManager.IsKnown(client_address, client_port)) {
 				sf::Uint16 client_id = mClientManager.GetId(client_address, client_port);
 				std::string client_name = mClientManager.GetName(client_id);
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from known client "+client_name+"("+boost::lexical_cast<std::string>(client_address)+":"+boost::lexical_cast<std::string>(client_port)+")");
+				Engine::Logger::Debug(LogOrigin::NETWORK, "Received a packet from known client "+client_name+"("+boost::lexical_cast<std::string>(client_address)+":"+boost::lexical_cast<std::string>(client_port)+")");
 			} else {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from unknown client ("+boost::lexical_cast<std::string>(client_address)+":"+boost::lexical_cast<std::string>(client_port)+")");
+				Engine::Logger::Warning(LogOrigin::NETWORK, "Received a packet from unknown client ("+boost::lexical_cast<std::string>(client_address)+":"+boost::lexical_cast<std::string>(client_port)+")");
 				if(mClientManager.IsSlotAvailable()) {
 					mClientManager.Add(client_address, client_port, "unnamed");
 				} else {
-					logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "No slot available for ("+client_address.ToString()+":"+boost::lexical_cast<std::string>(client_port)+").");
+					Engine::Logger::Urgent(LogOrigin::NETWORK, "No slot available for ("+client_address.ToString()+":"+boost::lexical_cast<std::string>(client_port)+").");
 				}
 			}
 
@@ -255,7 +244,7 @@ void NetworkManager::Receive() {
         
 		// TODO: Implement packet queue to handle all sent packets.
 		if(mListener.Receive(packet, server_address, server_port) == sf::Socket::Done) {
-			logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received a packet from "+boost::lexical_cast<std::string>(server_address)+":"+boost::lexical_cast<std::string>(server_port));
+			Engine::Logger::Debug(LogOrigin::NETWORK, "Received a packet from " + boost::lexical_cast<std::string>(server_address) + ":" + boost::lexical_cast<std::string>(server_port));
             HandlePacket(packet, server_address, server_port);
             packet.Clear();
         }
@@ -263,13 +252,11 @@ void NetworkManager::Receive() {
 }
 
 void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& address, const sf::Uint16 port) {
-	auto logmgr = Root::get_mutable_instance().GetLogManagerPtr();
-
 	// debug message, count NETCMD_ENTITYINFO
 	int num_entity_infos = 0;
 
 	mReceivedPacketsCount++;
-	logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received packets count: "+boost::lexical_cast<std::string>(mReceivedPacketsCount));
+	Engine::Logger::Debug(LogOrigin::NETWORK, "Received packets count: "+boost::lexical_cast<std::string>(mReceivedPacketsCount));
 
     sf::Uint16 net_cmd;
     while(!packet.EndOfPacket()) {		
@@ -278,14 +265,14 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
         if(mIsServer) {
             // === SERVER PACKET HANDLING ===
 			if(net_cmd == NETCMD_EMPTY) {
-				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received NETCMD_EMPTY from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
+				Engine::Logger::Warning(LogOrigin::NETWORK, "Received NETCMD_EMPTY from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
 				exit(1);
 			} else if(net_cmd == NETCMD_CLIENTADD) {
 				// Fetch name from packet
 				std::string client_name;
 				packet >> client_name;
 
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTADD from "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");
+				Engine::Logger::Debug(LogOrigin::NETWORK, "Received NETCMD_CLIENTADD from "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");
 
                 // Add new client if unknown
 				if(mClientManager.IsKnown(address, port)) {
@@ -294,10 +281,10 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 						mClientManager.SetName(id, client_name);
 						SendClientAdd(client_name);
 						TriggerOnClientConnected(id);
-						logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Client "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+") was added successfully.");
+						Engine::Logger::Message(LogOrigin::NETWORK, "Client "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+") was added successfully.");
 				}
 			} else if(net_cmd == NETCMD_CLIENTQUIT) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTQUIT from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
+				Engine::Logger::Debug(LogOrigin::NETWORK, "Received NETCMD_CLIENTQUIT from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
                 sf::Packet packet;
                 sf::Uint16 id = mClientManager.GetId(address, port);
                 std::string client_name = mClientManager.GetName(id);
@@ -306,15 +293,15 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 				if(mClientManager.IsKnown(address, port)) {
 					std::string reason = "Lol just quit.";
 					SendClientQuit(reason, client_name);
-					logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Removing "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");
+					Engine::Logger::Debug(LogOrigin::NETWORK, "Removing "+client_name+" ("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");
 					mClientManager.Remove(id);
 				}
             } else if(net_cmd == NETCMD_CLIENTPING) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTPING from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
+				Engine::Logger::Debug(LogOrigin::NETWORK, "Received NETCMD_CLIENTPING from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
                 // The client pinged back! 
                 // TODO: Calculate the latency.
             } else if(net_cmd == NETCMD_SERVERPING) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_SERVERPING from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
+				Engine::Logger::Debug(LogOrigin::NETWORK, "Received NETCMD_SERVERPING from "+address.ToString()+":"+boost::lexical_cast<std::string>(port));
                 // OMG! You got pinged by the client!
                 // Just send it back.
                 sf::Packet p;
@@ -342,8 +329,8 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
                 sf::Uint16 id = mClientManager.GetId(address, port);
                 std::string client_name = mClientManager.GetName(id);
                 // Output the message.
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE from "+client_name+"("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");
-				logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, client_name+" says: "+message);
+				Engine::Logger::Debug(LogOrigin::NETWORK, "Received NETCMD_CHATMESSAGE from "+client_name+"("+address.ToString()+":"+boost::lexical_cast<std::string>(port)+")");
+				Engine::Logger::Message(LogOrigin::NETWORK, "<"+client_name+">: "+message);
                 // Send back to everyone
                 SendChatMessage(message, client_name);
 			} else if(net_cmd == NETCMD_INTERACTION) {
@@ -354,16 +341,16 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 				packet >> world_unique_id;
 				GetEntityState()->HandleInteraction(interaction_id, mClientManager.GetId(address, port), world_unique_id, packet);
 			} else {
-				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received invalid NETCMD id: "+boost::lexical_cast<std::string>(net_cmd));
+				Engine::Logger::Critical(LogOrigin::NETWORK, "Received invalid NETCMD id: "+boost::lexical_cast<std::string>(net_cmd));
 				exit(1);
 			}
 		} else {
             // === CLIENT PACKET HANDLING ===
 			if(net_cmd == NETCMD_EMPTY) {
-				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received NETCMD_EMPTY.");
+				Engine::Logger::Warning(LogOrigin::NETWORK, "Received NETCMD_EMPTY.");
 				exit(1);
 			} else if(net_cmd == NETCMD_CLIENTADD) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTADD.");
+				Engine::Logger::Debug(LogOrigin::NETWORK, "Received NETCMD_CLIENTADD.");
                 // Fetch client name of new client from packet
                 std::string client_name;
                 packet >> client_name;
@@ -381,7 +368,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
                 
                 TriggerOnClientConnected(client_id);
             } else if(net_cmd == NETCMD_CLIENTPING) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CLIENTPING.");
+				Engine::Logger::Debug(LogOrigin::NETWORK, "Received NETCMD_CLIENTPING.");
                 // OMG! You got pinged by the server!
                 // Just send it back.
 				mPingClock.Reset();
@@ -389,7 +376,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
                 packet << sf::Uint16(NETCMD_CLIENTPING);
                 SendPacket(packet);
             } else if(net_cmd == NETCMD_SERVERPING) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_SERVERPING.");
+				Engine::Logger::Debug(LogOrigin::NETWORK, "Received NETCMD_SERVERPING.");
                 // The server pinged back! 
 				mPing = mPingClock.GetElapsedTime() * 1000;
             } else if(net_cmd == NETCMD_ENTITYADD) {
@@ -404,7 +391,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 				entity->serialize(iopacket);
 				packet = iopacket.GetPacket();
 				GetEntityState()->GetWorld(world_unique_id)->AddEntity(entity);
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetEntityUniqueId())+") added.");
+				Engine::Logger::Debug(LogOrigin::NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetEntityUniqueId())+") added.");
             } else if(net_cmd == NETCMD_ENTITYACTION) {
                 sf::Uint16 action_id;
                 sf::Uint16 entity_unique_id;
@@ -429,7 +416,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 				sf::Uint16 world_unique_id;
 				packet >> world_unique_id;
 				if(world_unique_id != mWorldSnapshotWorldUniqueId) {
-					std::cerr << "FIIIIICK" << std::endl;
+					Engine::Logger::Critical(LogOrigin::NETWORK, "Invalid world snapshot received.");
 					exit(1);
 				}
 				mDuringWorldSnapshot = false;
@@ -449,7 +436,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
                     packet = iopacket.GetPacket();
 					num_entity_infos++;
 				} else {
-					logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Entity with UID "+boost::lexical_cast<std::string>(entity_unique_id)+" not found. Creating new entity.");
+					Engine::Logger::Warning(LogOrigin::NETWORK, "Entity with UID "+boost::lexical_cast<std::string>(entity_unique_id)+" not found. Creating new entity.");
 					// create new entity
 					Entity* entity = Root::get_mutable_instance().GetIdManagerPtr()->
 						GetEntityPrototype(entity_type_id);
@@ -458,7 +445,7 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 					entity->serialize(iopacket);
 					packet = iopacket.GetPacket();
 					GetEntityState()->GetWorld(mWorldSnapshotWorldUniqueId)->AddEntity(entity);
-					logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetEntityUniqueId())+") added.");
+					Engine::Logger::Debug(LogOrigin::NETWORK, "Entity (ID "+boost::lexical_cast<std::string>(entity->GetEntityUniqueId())+") added.");
 				}
 			} else if(net_cmd == NETCMD_ENTITYDEL) {
 				sf::Uint16 entity_unique_id;
@@ -467,27 +454,27 @@ void NetworkManager::HandlePacket(sf::Packet& packet, const sf::IpAddress& addre
 				packet >> world_unique_id;
 				GetEntityState()->GetWorld(world_unique_id)->DeleteEntityByEntityUniqueId(entity_unique_id);
             } else if(net_cmd == NETCMD_CHATMESSAGE) {
-				logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Received NETCMD_CHATMESSAGE.");
+				Engine::Logger::Debug(LogOrigin::NETWORK, "Received NETCMD_CHATMESSAGE.");
                 // TODO: Output into GUI
                 std::string client_name;
                 std::string message;
                 packet >> client_name;
                 packet >> message;
-                logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, client_name+" says: "+message);
+				Engine::Logger::Message(LogOrigin::NETWORK, "<"+client_name+">: "+message);
 			} else if(net_cmd == NETCMD_CLIENTQUIT) {
 				std::string client_name = "";
 				std::string reason = "";
 				packet >> client_name >> reason;
-				logmgr->Log(LOGLEVEL_URGENT, LOGORIGIN_NETWORK, "Client <"+client_name+"> quit - Reason: " + reason);
+				Engine::Logger::Message(LogOrigin::NETWORK, "Client <"+client_name+"> quit - Reason: " + reason);
 			} else {
-				logmgr->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "Received invalid NETCMD id: "+boost::lexical_cast<std::string>(net_cmd));
+				Engine::Logger::Critical(LogOrigin::NETWORK, "Received invalid NETCMD id: "+boost::lexical_cast<std::string>(net_cmd));
 				exit(1);
 			}
         }
     }
 	// debug message
 	if (num_entity_infos > 0)
-		logmgr->Log(LOGLEVEL_VERBOSE, LOGORIGIN_NETWORK, "Deserialized "+boost::lexical_cast<std::string>(num_entity_infos)+" x NETCMD_ENTITYINFO.");
+		Engine::Logger::Debug(LogOrigin::NETWORK, "Deserialized "+boost::lexical_cast<std::string>(num_entity_infos)+" x NETCMD_ENTITYINFO.");
 }
 
 void NetworkManager::BindOnClientConnected(const boost::signals2::signal<void (const sf::Uint16)>::slot_type& slot) {
@@ -527,7 +514,7 @@ void NetworkManager::SetEntityState(State* entity_state) {
 
 State* NetworkManager::GetEntityState() {
 	if(mEntityState == NULL) {
-		Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_ERROR, LOGORIGIN_NETWORK, "No Entity State specified, but requested. Quitting.");
+		Engine::Logger::Critical(LogOrigin::NETWORK, "No Entity State specified, but requested. Quitting.");
 		exit(1);
 	}
 	return mEntityState;

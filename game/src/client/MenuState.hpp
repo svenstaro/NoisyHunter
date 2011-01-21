@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "LogManager.hpp"
+#include "Logger.hpp"
 #include "State.hpp"
 #include "InputManager.hpp"
 #include "PlayState.hpp"

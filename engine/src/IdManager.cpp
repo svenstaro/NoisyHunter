@@ -15,7 +15,7 @@ void IdManager::RegisterEntityClass(Entity* default_object) {
 
     if(mRegisteredEntityClasses.count(id) > 0) {
         // crash! you already have a class with that id registered...
-		Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_ERROR, LOGORIGIN_IDMANAGER, "RegisterEntityClass ## Entity with TypeID " + boost::lexical_cast<std::string>(id) + " already registered.");
+		Logger::Critical(LogOrigin::IDMANAGER, "RegisterEntityClass ## Entity with TypeID " + boost::lexical_cast<std::string>(id) + " already registered.");
         exit(1);
     }
     else {
@@ -29,7 +29,7 @@ void IdManager::RegisterWorldClass(World* default_object) {
 
     if(mRegisteredWorldClasses.count(id) > 0) {
         // crash! you already have a class with that id registered...
-		Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_ERROR, LOGORIGIN_IDMANAGER, "RegisterWorldClass ## World with TypeID " + boost::lexical_cast<std::string>(id) + " already registered.");
+		Engine::Logger::Critical(LogOrigin::IDMANAGER, "RegisterWorldClass ## World with TypeID " + boost::lexical_cast<std::string>(id) + " already registered.");
         exit(1);
     }
     else {
@@ -41,7 +41,7 @@ void IdManager::RegisterWorldClass(World* default_object) {
 Entity* IdManager::GetEntityPrototype(sf::Uint16 entity_type_id) {
     if(mRegisteredEntityClasses.count(entity_type_id) <= 0) {
         // there is no such prototype
-        Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_ERROR, LOGORIGIN_IDMANAGER, "GetEntityPrototype ## Entity with TypeID " + boost::lexical_cast<std::string>(entity_type_id) + " not registered.");
+		Engine::Logger::Critical(LogOrigin::IDMANAGER, "GetEntityPrototype ## Entity with TypeID " + boost::lexical_cast<std::string>(entity_type_id) + " not registered.");
         exit(1);
     }
 	return mRegisteredEntityClasses[entity_type_id]->create();
@@ -50,7 +50,7 @@ Entity* IdManager::GetEntityPrototype(sf::Uint16 entity_type_id) {
 World* IdManager::GetWorldPrototype(sf::Uint16 world_type_id) {
     if(mRegisteredWorldClasses.count(world_type_id) <= 0) {
         // there is no such prototype
-        Root::get_mutable_instance().GetLogManagerPtr()->Log(LOGLEVEL_ERROR, LOGORIGIN_IDMANAGER, "GetWorldPrototype ## World with TypeID " + boost::lexical_cast<std::string>(world_type_id) + " not registered.");
+		Engine::Logger::Critical(LogOrigin::IDMANAGER, "GetWorldPrototype ## World with TypeID " + boost::lexical_cast<std::string>(world_type_id) + " not registered.");
         exit(1);
     }
     return mRegisteredWorldClasses[world_type_id]->clone();

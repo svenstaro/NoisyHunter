@@ -8,8 +8,7 @@ MenuState::MenuState() {}
 MenuState::~MenuState() {}
 
 void MenuState::Initialize() {
-	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing MenuState.");
+	Engine::Logger::Urgent(Engine::LogOrigin::STATE, "Initializing MenuState.");
 
 	// NICE PARTICLES
 	Engine::ParticleSystem* part_sys;
@@ -146,8 +145,7 @@ void MenuState::Initialize() {
 }
 
 void MenuState::Shutdown() {
-	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Shutting down MenuState.");
+	Engine::Logger::Debug(Engine::LogOrigin::STATE, "Shutting down MenuState.");
 }
 
 void MenuState::Update(float time_delta) {

@@ -12,8 +12,7 @@ PlayWorld* PlayWorld::clone() const {
 }
 
 void PlayWorld::Initialize() {
-	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing PlayWorld.");
+	Engine::Logger::Urgent(Engine::LogOrigin::STATE, "Initializing PlayWorld.");
 
 	// only bind events in client mode
 	if (! Engine::Root::get_mutable_instance().IsServer()) {
@@ -57,7 +56,7 @@ void PlayWorld::Update(const float time_delta) {
 void PlayWorld::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uint16 client_id, sf::Packet& data) {
 	// handle different interactions here!!
 	if(interaction_id == INTERACTION_SETSUBMARINETARGET) {
-		Engine::Root::get_mutable_instance().GetLogManagerPtr()->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_WORLD, "Received INTERACTION_SETSUBMARINETARGET.");
+		Engine::Logger::Debug(Engine::LogOrigin::WORLD, "Received INTERACTION_SETSUBMARINETARGET.");
 		float target_x, target_y;
 		data >> target_x >> target_y;
 
@@ -68,7 +67,7 @@ void PlayWorld::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uin
 		}
 
 	} else if(interaction_id == INTERACTION_FIRETORPEDO) {
-		Engine::Root::get_mutable_instance().GetLogManagerPtr()->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_WORLD, "Received INTERACTION_FIRETORPEDO.");
+		Engine::Logger::Debug(Engine::LogOrigin::WORLD, "Received INTERACTION_FIRETORPEDO.");
 		float target_x, target_y, time_to_live;
 		data >> target_x >> target_y >> time_to_live;
 		// Get player submarine
@@ -82,7 +81,7 @@ void PlayWorld::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uin
 			}
 		}
 	} else if(interaction_id == INTERACTION_FIRESONARPING) {
-		Engine::Root::get_mutable_instance().GetLogManagerPtr()->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_WORLD, "Received INTERACTION_FIRESONARPING.");
+		Engine::Logger::Debug(Engine::LogOrigin::WORLD, "Received INTERACTION_FIRESONARPING.");
 		float target_x, target_y, time_to_live;
 		data >> target_x >> target_y >> time_to_live;
 

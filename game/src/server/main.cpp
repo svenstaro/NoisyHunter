@@ -7,8 +7,7 @@
 // Include entities in the appropriate state
 
 void HandleSignal(int sig) {
-	auto logmgr =  Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_ROOT, "Raised signal: " + boost::lexical_cast<std::string>(sig) + ".");
+	Engine::Logger::Critical(Engine::LogOrigin::ROOT, "Raised signal: " + boost::lexical_cast<std::string>(sig) + ".");
 	exit(1);
 }
 

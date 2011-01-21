@@ -8,8 +8,7 @@ PlayState::PlayState() {}
 PlayState::~PlayState() {}
 
 void PlayState::Initialize() {
-	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing PlayState.");
+	Engine::Logger::Urgent(Engine::LogOrigin::STATE, "Initializing PlayState.");
 
 	// Particle system for cursor
 	/*
@@ -125,9 +124,8 @@ void PlayState::Initialize() {
 }
 
 void PlayState::Shutdown() {
-	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Shutting down PlayState.");
-	logmgr->Log(Engine::LOGLEVEL_VERBOSE, Engine::LOGORIGIN_NETWORK, "Sending packet with NETCMD_CLIENTQUIT.");
+	Engine::Logger::Urgent(Engine::LogOrigin::STATE, "Shutting down PlayState.");
+	Engine::Logger::Debug(Engine::LogOrigin::NETWORK, "Sending packet with NETCMD_CLIENTQUIT.");
 
 	// Send NETCMD_CLIENTQUIT to server
 	auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
@@ -158,10 +156,9 @@ void PlayState::OnPauseGame() {
 }
 
 void PlayState::OnClientConnected(const sf::Uint16 client_id) {
-	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-	logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Client connected: " + boost::lexical_cast<std::string>(client_id));
-    if(client_id == Engine::Root::get_mutable_instance().GetClientId()) {
-        logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "THAT'S YOU!!");
+	Engine::Logger::Urgent(Engine::LogOrigin::STATE, "Client connected: " + boost::lexical_cast<std::string>(client_id));
+	if(client_id == Engine::Root::get_mutable_instance().GetClientId()) {
+		Engine::Logger::Message(Engine::LogOrigin::STATE, "It has been found that the recently connected player is you.");
         // TODO: Unpause StateManager.
 		mGuiSystems.begin()->GetControl<Engine::GuiLabel>("info_label")->SetText("Connection successful, found the server!");
     }

@@ -6,7 +6,7 @@
 #include <string>
 #include <map>
 
-#include "LogManager.hpp"
+#include "Logger.hpp"
 
 namespace Engine {
 

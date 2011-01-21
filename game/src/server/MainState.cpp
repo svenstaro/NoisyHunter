@@ -8,8 +8,7 @@ MainState::~MainState() {
 }
 
 void MainState::Initialize() {
-	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-    logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Initializing main state.");
+	Engine::Logger::Urgent(Engine::LogOrigin::STATE, "Initializing main state.");
     
     // Bind connection events
     auto netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
@@ -21,8 +20,7 @@ void MainState::Initialize() {
 }
 
 void MainState::Shutdown() {
-	auto logmgr = Engine::Root::get_mutable_instance().GetLogManagerPtr();
-    logmgr->Log(Engine::LOGLEVEL_URGENT, Engine::LOGORIGIN_STATE, "Shutting down main state.");
+	Engine::Logger::Debug(Engine::LogOrigin::STATE, "Shutting down main state.");
 }
 
 void MainState::OnClientConnected(sf::Uint16 client_id) {
