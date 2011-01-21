@@ -134,8 +134,6 @@ protected:
 
     Layer mLayer;
 
-	boost::shared_ptr<sf::Drawable> mDrawable;
-
 	boost::ptr_list<EntityAttachment> mAttachments;
 
 	boost::shared_ptr<btCollisionShape> mCollisionShape;

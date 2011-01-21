@@ -51,10 +51,9 @@ Particle* Particle::create() const {
 void Particle::Initialize() {
 	mLifeTime = 0.f;
 
-	boost::shared_ptr<sf::Sprite> d(new sf::Sprite(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage(mImageName)));
-	d->SetOrigin(d->GetSize().x / 2, d->GetSize().y / 2);
-	d->SetBlendMode(mBlendMode);
-	mDrawable = d;
+	mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage(mImageName));
+	mSprite.SetOrigin(mSprite.GetSize().x / 2, mSprite.GetSize().y / 2);
+	mSprite.SetBlendMode(mBlendMode);
 }
 
 void Particle::Update(const float time_delta) {
@@ -75,9 +74,15 @@ void Particle::Update(const float time_delta) {
 
 		mColor = sf::Color(r, g, b, a);
 
-		mDrawable->SetScale(mScale, mScale);
-		mDrawable->SetColor(mColor);
+		mSprite.SetScale(mScale, mScale);
+		mSprite.SetColor(mColor);
 	}
+	Engine::Vector2D p = Engine::Coordinates::WorldFloatToWorldPixel(mPosition);
+	mSprite.SetPosition(p.x, p.y);
+}
+
+void Particle::Draw(sf::RenderTarget* target) const {
+	target->Draw(mSprite);
 }
 
 sf::Uint16 Particle::GetEntityTypeId() const {

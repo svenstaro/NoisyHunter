@@ -54,7 +54,7 @@ void Entity::UpdatePhysics(float time_delta) {
 	float fx,fy,fz;
 	rot.getEulerZYX(fz,fy,fx);
 	mDirection = Vector2D(1,0);
-	mDirection.Rotate(PI-fz);
+	mDirection.Rotate( (PI-fz) / 180.0 * PI );
 }
 
 void Entity::UpdateAllAttachments(const float time_delta) {
@@ -64,26 +64,6 @@ void Entity::UpdateAllAttachments(const float time_delta) {
 }
 
 void Entity::Draw(sf::RenderTarget* target) const {
-	// Set screen position.
-	PositionType t = GetPositionType();
-	Coordinates pos;
-	if(t == Entity::POSITIONTYPE_WORLDPIXEL) {
-		pos.SetWorldPixel(mPosition);
-	} else if (t == Entity::POSITIONTYPE_SCREENPIXEL) {
-		pos.SetScreenPixel(mPosition);
-	} else if (t == Entity::POSITIONTYPE_VIEWPIXEL) {
-		pos.SetViewPixel(mPosition);
-	} else if (t == Entity::POSITIONTYPE_WORLDFLOAT) {
-		pos.SetWorldFloat(mPosition);
-	}
-	Vector2D worldPos = pos.GetWorldPixel();
-	Root::get_mutable_instance().SetRenderMode(RENDERMODE_WORLD);
-	mDrawable->SetPosition(worldPos.x, worldPos.y);
-
-	mDrawable->SetRotation(- Vector2D::rad2Deg( mDirection.Rotation() ));
-
-	target->Draw(*mDrawable);
-
 	DrawAllAttachments(target);
 }
 

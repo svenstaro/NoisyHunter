@@ -25,6 +25,8 @@ public:
 
 	void Update(const float time_delta);
 
+	void Draw(sf::RenderTarget* target) const;
+
 	// callbacks
 	void OnCollide(const Engine::Entity& ent);
 
@@ -35,6 +37,7 @@ public:
 	void SetTimeToLive(const sf::Uint16 time_to_live);
 
 private:
+	sf::Sprite mSprite;
 };
 
 #endif

@@ -35,6 +35,8 @@ public:
 
 	void Update(const float time_delta);
 
+	void Draw(sf::RenderTarget* target) const;
+
 	sf::Uint16 GetEntityTypeId() const;
 
 	Entity::PositionType GetPositionType() const;
@@ -42,6 +44,8 @@ public:
 	float GetLifeTime() const;
 
 private:
+	sf::Sprite mSprite;
+
 	sf::Color mColor;
 	sf::Color mStartColor;
 	sf::Color mEndColor;

@@ -24,6 +24,8 @@ public:
 
 	void Update(const float time_delta);
 
+	void Draw(sf::RenderTarget* target) const;
+
 	// callbacks
 	void OnCollide(const Engine::Entity& ent);
 
@@ -36,6 +38,7 @@ public:
 	void SetTimeToLive(const float time_to_live);
 
 private:
+	sf::Sprite mSprite;
   /*  friend class boost::serialization::access;
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version);

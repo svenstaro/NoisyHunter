@@ -17,9 +17,8 @@ SonarPing* SonarPing::create() const {
 }
 
 void SonarPing::Initialize() {
-	boost::shared_ptr<sf::Sprite> d(new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("particle_sonarping")));
-	d->SetOrigin(d->GetSize().x / 2, d->GetSize().y / 2);
-	mDrawable = d;
+	mSprite.SetImage(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("particle_sonarping"));
+	mSprite.SetOrigin(mSprite.GetSize().x / 2, mSprite.GetSize().y / 2);
 
 	Engine::Vector2D position = Engine::Vector2D(0.f, 0.f);
 	Engine::Vector2D direction = Engine::Vector2D(0.f, 1.f);
@@ -61,6 +60,12 @@ void SonarPing::Update(const float time_delta) {
 	UpdatePhysics(time_delta);
 	UpdateAllAttachments(time_delta);
 
+	Engine::Vector2D p = Engine::Coordinates::WorldFloatToWorldPixel(mPosition);
+	mSprite.SetPosition(p.x, p.y);
+}
+
+void SonarPing::Draw(sf::RenderTarget* target) const {
+	target->Draw(mSprite);
 }
 
 void SonarPing::OnCollide(const Engine::Entity& ent) {

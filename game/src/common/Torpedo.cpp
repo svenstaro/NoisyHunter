@@ -23,9 +23,8 @@ Torpedo* Torpedo::create() const {
 }
 
 void Torpedo::Initialize() {
-	boost::shared_ptr<sf::Sprite> d(new sf::Sprite(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("torpedo")));
-	d->SetOrigin(d->GetSize().x / 2, d->GetSize().y / 2);
-	mDrawable = d;
+	mSprite.SetImage(Engine::Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("torpedo"));
+	mSprite.SetOrigin(mSprite.GetSize().x / 2, mSprite.GetSize().y / 2);
 
 	// Particle system for torpedo
 	Engine::Vector2D position = Engine::Vector2D(0.f, 0.f);
@@ -49,7 +48,11 @@ void Torpedo::Initialize() {
 
 void Torpedo::Update(const float time_delta) {
 	Engine::Vector2D relative_target = mTargetPosition - mPosition;
+	relative_target.Normalize();
+	mBody->applyTorqueImpulse(btVector3(0,0,90));
+	mBody->applyCentralForce(btVector3(relative_target.x,relative_target.y,0));
 
+	/*
 	if (!mReachedTargetAngle) {
 		float angle = relative_target.Rotation() - mDirection.Rotation();
 
@@ -71,13 +74,19 @@ void Torpedo::Update(const float time_delta) {
 
 	mDirection.Normalize();
 	mPosition += mDirection * mSpeed * time_delta;
-
+*/
 	if(mTimeToLive >= 0) {
 		mLifeTime += time_delta;
 	}
 
 	UpdatePhysics(time_delta);
+	Engine::Vector2D p = Engine::Coordinates::WorldFloatToWorldPixel(mPosition);
+	mSprite.SetPosition(p.x, p.y);
 	UpdateAllAttachments(time_delta);
+}
+
+void Torpedo::Draw(sf::RenderTarget* target) const {
+	target->Draw(mSprite);
 }
 
 void Torpedo::OnCollide(const Engine::Entity& ent) {
