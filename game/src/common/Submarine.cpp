@@ -7,7 +7,7 @@
 Submarine::Submarine(const float pos_x,
 					 const float pos_y,
 					 const sf::Uint16 client_id) {
-	mLayer = Engine::Entity::LAYER_REGULAR;
+	mLayer = 1000;
 	SetPosition(Engine::Vector2D(pos_x, pos_y));
 	SetTarget(mPosition);
 	SetSpeed(0.f);

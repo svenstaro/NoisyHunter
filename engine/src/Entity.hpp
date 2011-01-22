@@ -88,7 +88,7 @@ public:
 
 	const Vector2D GetDirection() const;
 
-	Layer GetLayer() const;
+	int GetLayer() const;
 
     virtual PositionType GetPositionType() const;
 
@@ -122,6 +122,8 @@ public:
 
 	boost::shared_ptr<btDefaultMotionState> GetMotionState();
 
+	static bool SortHelper(const Entity& l, const Entity& r);
+
 protected:
 	sf::Uint16 mClientId;
 	sf::Uint16 mEntityUniqueId;
@@ -132,7 +134,7 @@ protected:
 	float mTimeToLive;
 	float mLifeTime;
 
-    Layer mLayer;
+	int mLayer;
 
 	boost::ptr_list<EntityAttachment> mAttachments;
 

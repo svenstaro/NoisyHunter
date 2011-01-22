@@ -67,7 +67,7 @@ void World::UpdateAllEntities(const float time_delta) {
 	}
 
 	if(mEntityListNeedsSorting) {
-		//mEntities.sort();
+		mEntities.sort(Entity::SortHelper);
 		mEntityListNeedsSorting = false;
 	}
 }

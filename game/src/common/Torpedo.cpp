@@ -6,6 +6,7 @@ Torpedo::Torpedo(const Engine::Vector2D& pos,
 				 const float speed,
 				 const Engine::Vector2D& target_position,
 				 const float time_to_live) {
+	mLayer = 900;
 	SetPosition(pos);
 	SetDirection(direction);
 	SetSpeed(speed);

@@ -102,7 +102,7 @@ const Vector2D Entity::GetDirection() const {
 	return mDirection;
 }
 
-Entity::Layer Entity::GetLayer() const {
+int Entity::GetLayer() const {
 	return mLayer;
 }
 
@@ -166,6 +166,10 @@ void Entity::SetMotionState(const boost::shared_ptr<btDefaultMotionState> motion
 
 boost::shared_ptr<btDefaultMotionState> Entity::GetMotionState() {
 	return mMotionState;
+}
+
+bool Entity::SortHelper(const Entity& l, const Entity& r) {
+	return l.GetLayer() < r.GetLayer();
 }
 
 }
