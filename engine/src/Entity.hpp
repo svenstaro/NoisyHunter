@@ -22,13 +22,6 @@ namespace Engine {
 class EntityAttachment;
 class Entity {
 public:
-	enum Layer {
-		LAYER_BACKGROUND = 1000,
-		LAYER_WORLD = 1001,
-		LAYER_REGULAR = 1002,
-		LAYER_FOREGROUND = 1003
-	};
-
 	enum PositionType {
 		POSITIONTYPE_SCREENPIXEL,
 		POSITIONTYPE_SCREENFLOAT,
