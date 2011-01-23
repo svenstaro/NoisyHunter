@@ -27,9 +27,9 @@ sf::Uint16 ResourceManager::LoadNextImage() {
 
 	ImageProperties p = mImagesToLoad.front();
 	mImagesToLoad.pop();
-	Engine::Logger::Debug(LogOrigin::RESOURCEMANAGER, "Loading image " + p.Key + " from queue.");
+	Logger::Debug(LogOrigin::RESOURCEMANAGER, "Loading image " + p.Key + " from queue.");
 	if(!AddImage(p.Path, p.Name, p.Width, p.Height, p.Key)) {
-		Engine::Logger::Critical(LogOrigin::RESOURCEMANAGER, "Could not load image " + p.Key);
+		Logger::Critical(LogOrigin::RESOURCEMANAGER, "Could not load image " + p.Key);
 	}
 
 	return int(mImagesToLoad.size());
@@ -56,7 +56,7 @@ bool ResourceManager::AddImage(const boost::filesystem::path& path,
 							   const float height,
 							   const std::string& key) {
 	if(!boost::filesystem::is_regular_file(path/imgname)) {
-		Engine::Logger::Critical(LogOrigin::RESOURCEMANAGER, "Tried loading image path'"+(path/imgname).string()+"' but this image path doesn't exist!");
+		Logger::Critical(LogOrigin::RESOURCEMANAGER, "Tried loading image path'"+(path/imgname).string()+"' but this image path doesn't exist!");
 		exit(1);
 	}
 
@@ -82,7 +82,7 @@ bool ResourceManager::AddImage(const boost::filesystem::path& path,
     }
 
 	// Log output
-	Engine::Logger::Debug(LogOrigin::RESOURCEMANAGER, "Caching image " + originalFile);
+	Logger::Debug(LogOrigin::RESOURCEMANAGER, "Caching image " + originalFile);
 
 	// Create cache directory
 	boost::filesystem::create_directory(cacheDir.string());
@@ -114,14 +114,14 @@ const sf::Image& ResourceManager::GetImage(const std::string& img) {
 	if(mImages.count(img) >= 1) {
 		return mImages[img];
 	} else {
-		Engine::Logger::Critical(LogOrigin::RESOURCEMANAGER, "Tried getting image '"+img+"' but this image doesn't exist!");
+		Logger::Critical(LogOrigin::RESOURCEMANAGER, "Tried getting image '"+img+"' but this image doesn't exist!");
 		exit(1);
 	}
 }
 
 bool ResourceManager::AddSoundBuffer(const boost::filesystem::path& path, const std::string& sound_name, const std::string& key) {
 	if(!boost::filesystem::is_regular_file(path/sound_name)) {
-		Engine::Logger::Critical(LogOrigin::RESOURCEMANAGER, "Tried loading sound path'"+(path/sound_name).string()+"' but this sound path doesn't exist!");
+		Logger::Critical(LogOrigin::RESOURCEMANAGER, "Tried loading sound path'"+(path/sound_name).string()+"' but this sound path doesn't exist!");
 		exit(1);
 	}
 
@@ -144,7 +144,7 @@ bool ResourceManager::AddSoundBuffer(const boost::filesystem::path& path, const 
 
 	sf::SoundBuffer sound_buffer;
 	if(!sound_buffer.LoadFromFile(originalFile)) {
-		Engine::Logger::Critical(LogOrigin::RESOURCEMANAGER, "Tried loading sound '"+(originalFile)+"' but it failed hard!");
+		Logger::Critical(LogOrigin::RESOURCEMANAGER, "Tried loading sound '"+(originalFile)+"' but it failed hard!");
 		exit(1);
 	}
 
@@ -159,7 +159,7 @@ const sf::SoundBuffer& ResourceManager::GetSoundBuffer(const std::string& sound)
 	if(mSoundBuffers.count(sound) >= 1) {
 		return mSoundBuffers[sound];
 	} else {
-		Engine::Logger::Critical(LogOrigin::RESOURCEMANAGER, "Tried getting sound '"+(sound)+"' but this sound doesn't exist!");
+		Logger::Critical(LogOrigin::RESOURCEMANAGER, "Tried getting sound '"+(sound)+"' but this sound doesn't exist!");
 		exit(1);
 	}
 }

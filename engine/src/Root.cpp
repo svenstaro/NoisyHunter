@@ -27,7 +27,7 @@ void Root::InitializeAsServer(const sf::Uint16 server_port,
 	else
 		mLogger.SetShowLevels(0x00011100);
 
-	Engine::Logger::Urgent(LogOrigin::ROOT, "Initializing Root as server.");
+	Logger::Urgent(LogOrigin::ROOT, "Initializing Root as server.");
 
     //mStateManager = StateManager();
     // mNetworkManager = NetworkManager();
@@ -50,7 +50,7 @@ void Root::InitializeAsClient(const sf::VideoMode& video_mode,
 	else
 		mLogger.SetShowLevels(0x00011100);
 
-	Engine::Logger::Urgent(LogOrigin::ROOT, "Initializing Root as client.");
+	Logger::Urgent(LogOrigin::ROOT, "Initializing Root as client.");
 
 	// Request a 24 bits depth buffer
 	// Request a 8 bits stencil buffer
@@ -135,7 +135,7 @@ void Root::StartMainLoop() {
 				SnapClock.Reset();
 				if(mNetworkManager.GetClientManagerPtr()->GetActiveClients() > 0) {
 					mNetworkManager.PreparePacket();
-					Engine::Logger::Debug(LogOrigin::ROOT, "Sending world snapshot.");
+					Logger::Debug(LogOrigin::ROOT, "Sending world snapshot.");
 					mStateManager.SendWorldSnapshots();
 				}
 			}
@@ -301,7 +301,7 @@ bool Root::IsServer() const {
 
 void Root::SetRenderMode(const RenderMode mode) {
 	if(mIsServer)
-		Engine::Logger::Warning(LogOrigin::ROOT, "Tried to switch render mode in server.");
+		Logger::Warning(LogOrigin::ROOT, "Tried to switch render mode in server.");
 	else if (mode == RENDERMODE_WORLD)
 		mRenderWindow->SetView(mWorldView);
 	else if (mode == RENDERMODE_GUI)
@@ -325,7 +325,7 @@ void Root::ResetView() {
 	float h = mRenderWindow->GetHeight();
 	mWorldView.Reset(sf::FloatRect(0,0,w,h));
 	mWorldView.SetViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
-	Engine::Logger::Debug(LogOrigin::ROOT, "Resized to " + boost::lexical_cast<std::string>(w) + " x " + boost::lexical_cast<std::string>(h));
+	Logger::Debug(LogOrigin::ROOT, "Resized to " + boost::lexical_cast<std::string>(w) + " x " + boost::lexical_cast<std::string>(h));
 }
 
 }

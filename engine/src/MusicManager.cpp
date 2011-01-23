@@ -20,16 +20,16 @@ void MusicManager::Play(const std::string& trackname) {
 			// Do not stop music if there is no current music, i.e., if this 
 			// is the first track to play since starting the game.
 			if(!mCurrentMusic.empty()) {
-				Engine::Logger::Debug(LogOrigin::MUSICMANAGER, "Stopping music "+mCurrentMusic);
+				Logger::Debug(LogOrigin::MUSICMANAGER, "Stopping music "+mCurrentMusic);
 				mMusicTracks[mCurrentMusic]->Stop();
 			}
 
 			mCurrentMusic = trackname;
-			Engine::Logger::Message(LogOrigin::MUSICMANAGER, "Playing music "+trackname);
+			Logger::Message(LogOrigin::MUSICMANAGER, "Playing music "+trackname);
 			mMusicTracks[mCurrentMusic]->Play();
 		}
 	} else {
-		Engine::Logger::Critical(LogOrigin::MUSICMANAGER, "Tried playing unregistered music track.");
+		Logger::Critical(LogOrigin::MUSICMANAGER, "Tried playing unregistered music track.");
 		exit(1);
 	}
 }
@@ -47,7 +47,7 @@ bool MusicManager::Register(const boost::filesystem::path& path,
 							const float volume,
 							const float pitch) {
 	if(!boost::filesystem::is_regular_file(path/trackname)) {
-		Engine::Logger::Critical(LogOrigin::MUSICMANAGER, "Tried registering music path '"+(path/trackname).string()+"' but this music path doesn't exist!");
+		Logger::Critical(LogOrigin::MUSICMANAGER, "Tried registering music path '"+(path/trackname).string()+"' but this music path doesn't exist!");
 		exit(1);
 	}
 
@@ -57,7 +57,7 @@ bool MusicManager::Register(const boost::filesystem::path& path,
     }
 
 	// log output
-	Engine::Logger::Debug(LogOrigin::MUSICMANAGER, "Registering music track '"+(path/trackname).string()+"'");
+	Logger::Debug(LogOrigin::MUSICMANAGER, "Registering music track '"+(path/trackname).string()+"'");
 
 	boost::shared_ptr<sf::Music> music(new sf::Music());
 	mMusicTracks[trackname] = music;
