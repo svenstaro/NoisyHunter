@@ -79,6 +79,11 @@ void Entity::SetPosition(const float x, const float y) {
 
 void Entity::SetPosition(const Vector2D position) {
 	mPosition = position;
+	if(mBody != NULL) {
+		btTransform trans;
+		mBody->getMotionState()->getWorldTransform(trans);
+		trans.setOrigin(btVector3(position.x,position.y,0.f));
+	}
 }
 
 void Entity::SetSpeed(const float speed) {

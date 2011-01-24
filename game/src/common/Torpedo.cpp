@@ -88,6 +88,7 @@ void Torpedo::Update(const float time_delta) {
 
 void Torpedo::Draw(sf::RenderTarget* target) const {
 	target->Draw(mSprite);
+	DrawAllAttachments(target);
 }
 
 void Torpedo::OnCollide(const Engine::Entity& ent) {

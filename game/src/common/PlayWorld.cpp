@@ -37,7 +37,7 @@ void PlayWorld::Initialize() {
 void PlayWorld::Update(const float time_delta) {
     UpdateAllEntities(time_delta);
 
-	if (! Engine::Root::get_mutable_instance().IsServer()) {
+	if (!Engine::Root::get_mutable_instance().IsServer()) {
 		BOOST_FOREACH(Submarine* sub, GetAllEntitiesByType<Submarine>()) {
 			if (sub->GetClientId() == Engine::Root::get_mutable_instance().GetClientId()) {
 				Engine::Root::get_mutable_instance().CenterViewAt(Engine::Coordinates::WorldFloatToWorldPixel(sub->GetPosition()));
