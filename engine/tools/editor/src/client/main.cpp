@@ -3,6 +3,7 @@
 #include "Root.hpp"
 
 #include "EditState.hpp"
+#include "PauseState.hpp"
 #include "EditWorld.hpp"
 // Include entities in the appropriate state
 
@@ -101,6 +102,7 @@ int main(int argc, char* argv[]) {
 	root.InitializeAsClient(sf::VideoMode(width, height), "Editor", false, sf::IpAddress(ip), port, name, verbose);
 
 	root.GetStateManagerPtr()->Add(new EditState());
+	root.GetStateManagerPtr()->Add(new PauseState());
 
     root.StartMainLoop();
     return 0;

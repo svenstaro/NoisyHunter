@@ -11,6 +11,10 @@ Vector2D::Vector2D( float x, float y )
 	this->x = x;
 	this->y = y;
 }
+Vector2D::Vector2D(sf::Vector2f pos)
+{
+	Vector2D(pos.x, pos.y);
+}
 
 //-----------------------------------------------------------------------------
 // Purpose:	Rotate a vector

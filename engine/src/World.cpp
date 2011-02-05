@@ -199,4 +199,22 @@ void World::TickCallback(btScalar timestep) {
 	}
 }
 
+bool World::LoadWorld(const std::string& file) {
+	// TODO: actually load
+	if(Root::get_mutable_instance().IsServer())
+		return true;
+	else
+		return true;
+}
+
+bool World::SaveWorld(const std::string& file) {
+	// TODO: actually save
+	if(Root::get_mutable_instance().IsServer())
+		return true;
+	else {
+		// TODO: move save command from interactions to netcommands
+		return true;
+	}
+}
+
 }

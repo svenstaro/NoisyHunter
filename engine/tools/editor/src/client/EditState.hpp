@@ -27,6 +27,7 @@ public:
 	~EditState();
 
     // state control
+	void Pause();
     void Initialize();
     void Shutdown();
 
@@ -37,6 +38,7 @@ public:
     
     // gui callbacks
 	//void MenuButton_OnClick(const sf::Uint16 mouse_button);
+	void OnPressEscape();
 };
 
 #endif

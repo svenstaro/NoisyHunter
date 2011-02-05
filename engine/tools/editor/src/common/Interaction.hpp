@@ -3,7 +3,10 @@
 
 enum Interaction {
 	CREATE_TILE = 0x01,
-	REMOVE_TILE = 0x02
+	REMOVE_TILE = 0x02,
+	FILE_OPEN = 0x03,
+	FILE_SAVE = 0x04,
+	SAVE_RESULT = 0x05
 };
 
 #endif // INTERACTION_HPP
