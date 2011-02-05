@@ -29,13 +29,15 @@ void GuiGrid::Draw(sf::RenderTarget* target) {
 void GuiGrid::PlaceChildren() {
 	int i = 0;
 	int w = mColumns;
-	int h = ceil(mControls.size() / mColumns);
+	int h = ceil(1.f * mControls.size() / mColumns);
 	float wd = mDimension.x / w;
 	float hd = mDimension.y / h;
 
+	std::cout << "new new " << mName << " " <<mDimension.x << " " << mDimension.y << " ("<<w<<"x"<<h<<")"<< std::endl;
+
 	BOOST_FOREACH(GuiControl& gc, mControls) {
 		int x = i % w;
-		int y = ceil(i / w);
+		int y = i / w;
 
 		gc.SetPosition(Engine::Vector2D(mPosition.x + x * wd, mPosition.y + y * hd));
 		gc.SetDimension(Engine::Vector2D(wd, hd));

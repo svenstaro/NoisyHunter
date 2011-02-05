@@ -67,9 +67,9 @@ public:
 
 	sf::Uint16 GetEntityUniqueId() const;
 
-	void SetPosition(const float x, const float y);
+	virtual void SetPosition(const float x, const float y);
 
-	void SetPosition(const Vector2D position);
+	virtual void SetPosition(const Vector2D position);
 
 	void SetSpeed(const float speed);
 

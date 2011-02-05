@@ -1,0 +1,23 @@
+== Core ==
+* boost::ptr_vector<Entity>  --> std::vector<Entity*> ??
+
+== Physics ==
+* Collision shapes
+* Collision callbacks
+
+== Gui ==
+* GuiTextures
+* Fix Tab order
+* Fix Text boxes
+* Fix panels
+* Scroll bars
+* More Controls
+* Transitions
+
+== States ==
+* State transitions
+
+== Game ==
+* Submarine rotations
+* Collisions
+
