@@ -172,6 +172,14 @@ const sf::Font& ResourceManager::GetFont(const std::string& key) {
     return mFonts[key];
 }
 
+void ResourceManager::AddGuiTexture(GuiTexture gui_texture) {
+	mGuiTextures[gui_texture.GetName()] = gui_texture;
+}
+
+const GuiTexture& ResourceManager::GetGuiTexture(const std::string& name) {
+	return mGuiTextures[name];
+}
+
 void ResourceManager::SetCursorSprite(AnimatedSprite& sprite, const sf::Uint16 key) {
 	mCursors[key] = sprite;
 }
