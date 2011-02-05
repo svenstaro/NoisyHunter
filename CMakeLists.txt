@@ -29,3 +29,4 @@ include_directories(
 add_subdirectory("${CMAKE_SOURCE_DIR}/engine/")
 add_subdirectory("${CMAKE_SOURCE_DIR}/game/")
 add_subdirectory("${CMAKE_SOURCE_DIR}/engine/demos/pong/")
+add_subdirectory("${CMAKE_SOURCE_DIR}/engine/tools/editor/")
