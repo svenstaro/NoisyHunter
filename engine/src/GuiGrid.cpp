@@ -7,6 +7,7 @@ namespace Engine{
 GuiGrid::GuiGrid() {}
 GuiGrid::GuiGrid(std::string name) {
 	mName = name;
+	SetColumns(1);
 
 	SetPositionType(POSITIONTYPE_SCREENPIXEL);
 }
@@ -27,11 +28,29 @@ void GuiGrid::Draw(sf::RenderTarget* target) {
 
 void GuiGrid::PlaceChildren() {
 	int i = 0;
+	int w = mColumns;
+	int h = ceil(mControls.size() / mColumns);
+	float wd = mDimension.x / w;
+	float hd = mDimension.y / h;
+
 	BOOST_FOREACH(GuiControl& gc, mControls) {
-		gc.SetPosition(Engine::Vector2D(mPosition.x + 0, mPosition.y + i*1.f/mControls.size()*mDimension.y));
-		gc.SetDimension(Engine::Vector2D(mDimension.x, 1.f/mControls.size()*mDimension.y));
+		int x = i % w;
+		int y = ceil(i / w);
+
+		gc.SetPosition(Engine::Vector2D(mPosition.x + x * wd, mPosition.y + y * hd));
+		gc.SetDimension(Engine::Vector2D(wd, hd));
 		++i;
 	}
 }
+
+void GuiGrid::SetColumns(int columns) {
+	mColumns = columns;
+	PlaceChildren();
+}
+
+int GuiGrid::GetColumns() const {
+	return mColumns;
+}
+
 
 }

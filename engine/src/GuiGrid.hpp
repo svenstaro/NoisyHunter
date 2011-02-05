@@ -23,6 +23,12 @@ public:
 
 	void Draw(sf::RenderTarget* target);
 	virtual void PlaceChildren();
+
+	void SetColumns(int columns);
+	int GetColumns() const;
+
+private:
+	int mColumns;
 };
 
 }
