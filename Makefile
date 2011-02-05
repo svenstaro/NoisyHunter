@@ -16,6 +16,12 @@ runpongs:
 runpongc:
 	cd bin; ./pong_client
 
+edits:
+	cd bin; ./editor_server
+
+editc:
+	cd bin; ./editor
+
 docs:
 	doxygen
 
