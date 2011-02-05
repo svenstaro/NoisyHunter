@@ -31,6 +31,8 @@ public:
     Root();
     ~Root();
 
+	static Root& get_mutable_instance();
+
     void InitializeAsServer(const sf::Uint16 server_port,
 							bool is_verbose);
     void InitializeAsClient(const sf::VideoMode& video_mode, 

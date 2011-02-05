@@ -16,6 +16,10 @@ public:
 
 	bool AddControl(GuiControl* control);
 
+	virtual void SetPosition(const float x, const float y);
+	virtual void SetPosition(const Vector2D position);
+	virtual void SetDimension(const Vector2D dimension);
+
 	virtual void Update(float time_delta);
 	virtual void PlaceChildren() = 0;
 	virtual void Draw(sf::RenderTarget *target);

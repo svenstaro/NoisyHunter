@@ -8,10 +8,23 @@ GuiContainer::~GuiContainer() {}
 
 bool GuiContainer::AddControl(GuiControl* control) {
 	mControls.push_back(control);
-	// Place children after they have changed
-	// TODO: Re-Place them when this container is moved / resized etc.
 	PlaceChildren();
 	return true;
+}
+
+void GuiContainer::SetPosition(const float x, const float y) {
+	GuiControl::SetPosition(x,y);
+	PlaceChildren();
+}
+
+void GuiContainer::SetPosition(const Vector2D position) {
+	GuiControl::SetPosition(position);
+	PlaceChildren();
+}
+
+void GuiContainer::SetDimension(const Vector2D dimension) {
+	GuiControl::SetDimension(dimension);
+	PlaceChildren();
 }
 
 

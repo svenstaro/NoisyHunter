@@ -45,8 +45,7 @@ void GuiTextfield::Draw(sf::RenderTarget* target) {
 	else
 		mText.SetString(mCaption);
 
-	mText.SetPosition(mPosition.x + 8,
-					  int(mPosition.y + mDimension.y / 2 - mText.GetRect().Height / 2)); // convert to int to prevent blurry font due to half pixel coordinates
+	mText.SetPosition(mPosition.x + 8, round(mPosition.y + mDimension.y / 2 - mText.GetCharacterSize() / 2));
     target->Draw(mText);
 
     // draw cursor

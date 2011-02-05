@@ -9,6 +9,15 @@ Root::Root() {
 }
 Root::~Root() {}
 
+Root& Root::get_mutable_instance() {
+	if(boost::serialization::singleton<Root>::is_destroyed()) {
+		std::cout << "Fuck fuck fuck fuck megafuck. Scheiße. Damnit. Fick verhurenscheißt kackarsch Fickpenis." << std::endl;
+		exit(1);
+	}
+
+	return boost::serialization::singleton<Root>::get_mutable_instance();
+}
+
 Vector2D Root::GetMousePosition() const {
 	return Vector2D(GetInput().GetMouseX(),
 					GetInput().GetMouseY());
