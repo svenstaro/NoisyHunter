@@ -5,6 +5,9 @@
 #define PI 3.14159265358979323846
 
 #include <cmath>
+
+#include <SFML/Graphics.hpp>
+
 #include "Logger.hpp"
 
 namespace Engine {
@@ -14,6 +17,7 @@ class Vector2D
 
 public:
 	Vector2D(float x = 0, float y = 0);
+	Vector2D(sf::Vector2f pos);
 	~Vector2D() {};
 
 	void Rotate( const float angle );
