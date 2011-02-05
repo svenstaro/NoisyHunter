@@ -1,11 +1,17 @@
 #include <iostream>
 
 #include "EditState.hpp"
+#include "PauseState.hpp"
 #include "Root.hpp"
 
 EditState::EditState() {}
 
 EditState::~EditState() {}
+
+void EditState::Pause() {
+	if(IsCurrentState())
+		Engine::Root::get_mutable_instance().GetStateManagerPtr()->Add(new PauseState());
+}
 
 void EditState::Initialize() {
 	Engine::Logger::Urgent(Engine::LogOrigin::STATE, "Initializing EditState.");
@@ -72,10 +78,11 @@ void EditState::Initialize() {
 		*/
 
 
-	/*auto inputmgr = Engine::Root::get_mutable_instance().GetInputManagerPtr();
+	auto inputmgr = Engine::Root::get_mutable_instance().GetInputManagerPtr();
 	// bind keys
-	Engine::KeyBindingCallback cb = boost::bind(&PlayState::OnPauseGame, this);
+	Engine::KeyBindingCallback cb = boost::bind(&EditState::OnPressEscape, this);
 	inputmgr->BindKey( cb, Engine::KEY_PRESSED, sf::Key::Escape );
+	/*
 	// screenshot
 	Engine::KeyBindingCallback sscb = boost::bind(&PlayState::OnScreenshot, this);
 	inputmgr->BindKey( sscb, Engine::KEY_PRESSED, sf::Key::F5 );
@@ -118,6 +125,10 @@ void EditState::OnClientConnected(const sf::Uint16 client_id) {
         // TODO: Unpause StateManager.
 		mGuiSystems.begin()->GetControl<Engine::GuiLabel>("info_label")->SetText("Connection successful, found the server!");
     }
+}
+
+void EditState::OnPressEscape() {
+	Pause();
 }
 
 /*void PlayState::MenuButton_OnClick(const sf::Uint16 mouse_button) {

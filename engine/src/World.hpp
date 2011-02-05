@@ -71,6 +71,10 @@ public:
 
 	void TickCallback(btScalar timestep);
 
+	// FileOperations
+	bool LoadWorld(const std::string& file);
+	bool SaveWorld(const std::string& file);
+
 protected:
 	void UpdateAllEntities(const float time_delta);	sf::Uint16 mWorldUniqueId;
 

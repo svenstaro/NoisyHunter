@@ -59,6 +59,27 @@ void EditWorld::HandleInteraction(const sf::Uint16 interaction_id, const sf::Uin
 				}
 			}
 		}
+	} else if(interaction_id == FILE_OPEN) {
+
+	} else if(interaction_id == FILE_SAVE) {
+		std::string f;
+		data >> f;
+		bool success = SaveWorld(f);
+
+		Engine::NetworkManager* netmgr = Engine::Root::get_mutable_instance().GetNetworkManagerPtr();
+		sf::Packet packet;
+		packet << sf::Uint16(Engine::NETCMD_INTERACTION) << sf::Uint16(SAVE_RESULT);
+		packet << success;
+		netmgr->SendPacket(packet);
+	} else if(interaction_id == SAVE_RESULT) {
+		bool success;
+		data >> success;
+
+		std::string msg = "Successful.";
+		if(!success)
+			msg = "Fail!!! :P";
+
+		Engine::Logger::Critical(Engine::LogOrigin::WORLD, msg);
 	}
 }
 
