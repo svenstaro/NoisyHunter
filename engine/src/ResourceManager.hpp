@@ -13,6 +13,7 @@
 
 #include "AnimatedSprite.hpp"
 #include "Coordinates.hpp"
+#include "GuiTexture.hpp"
 
 namespace Engine {
 
@@ -74,6 +75,9 @@ public:
     void AddFont(sf::Font& font, std::string key);
     const sf::Font& GetFont(const std::string& key);
 
+	void AddGuiTexture(GuiTexture gui_texture);
+	const GuiTexture& GetGuiTexture(const std::string& name);
+
 	void SetCursorSprite(AnimatedSprite& sprite, const sf::Uint16 key);
 	AnimatedSprite& GetCursorSprite();
 	void SetCursor(const sf::Uint16 key);
@@ -89,6 +93,8 @@ private:
 
 	boost::ptr_map<std::string, sf::Music> mMusic;
 	boost::ptr_map<std::string, sf::SoundBuffer> mSoundBuffers;
+
+	boost::ptr_map<std::string, GuiTexture> mGuiTextures;
 
 	sf::Uint16 mMaxImageQueueSize;
 };

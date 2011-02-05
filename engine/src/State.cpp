@@ -150,7 +150,7 @@ sf::Uint16 State::GetEntityCount() {
 }
 
 sf::Uint16 State::GetEntityAdded() {
-	if(mWorlds.size() > 0)
+	if(mWorlds.size() > 0 && mWorlds.back().GetEntityCount() > 0)
 		return sf::Uint16(mWorlds.back().GetLastEntity().GetEntityUniqueId()-1000);
 	else
 		return sf::Uint16(0);

@@ -1,0 +1,117 @@
+default {						; layout key
+	default_gui {				; image key
+		notfound {				; element name (for elements that are not found)
+			normal {
+				type	sprite
+				left	496
+				top		0
+				width	16
+				height	16
+			}
+		}
+
+		button {				; element name
+			normal {			; state to apply settings
+				type	tiled
+				left	0
+				top		0
+				width	24
+				height	24
+			}
+			
+			hover {
+				type	tiled
+				left	24
+				top		0
+				width	24
+				height	24
+			}
+			
+			active {
+				type	tiled
+				left	48	
+				top		0
+				width	24
+				height	24
+			}
+		}
+
+		option {
+			normal {
+				type	sprite
+				left	0
+				top		24	
+				width	16
+				height	16
+			}
+			
+			hover {
+				type	sprite
+				left	16
+				top		24
+				width	16
+				height	16
+			}
+			
+			active {
+				type	sprite
+				left	32	
+				top		24
+				width	16
+				height	16
+			}
+		}
+
+		checkbox {
+			normal {
+				type	sprite
+				left	0
+				top		40	
+				width	16
+				height	16
+			}
+			
+			hover {
+				type	sprite
+				left	16
+				top		40
+				width	16
+				height	16
+			}
+			
+			active {
+				type	sprite
+				left	32	
+				top		40
+				width	16
+				height	16
+			}
+		}
+
+		textfield {
+			normal {
+				type	tiled
+				left	0
+				top		56
+				width	24
+				height	24
+			}
+			
+			hover {
+				type	tiled
+				left	24
+				top		56
+				width	24
+				height	24
+			}
+			
+			active {
+				type	tiled
+				left	48
+				top		56
+				width	24
+				height	24
+			}
+		}
+	}
+}
