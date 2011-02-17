@@ -27,11 +27,19 @@ public:
 	// Internal callback, called from input manager
 	void OnMouseDown(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button);
 
+	void SetIcon(sf::Sprite& icon);
+	void SetIconSize(float size = DefaultIconSize);
+
+	static const float DefaultIconSize = -1;
+	static const float AutoscaleIconSize = -2;
 private:
 	// Click signal
 	boost::signals2::signal<void (const sf::Uint16 mouse_button)> mOnClickSignal;
 
 	TiledSprite mSprite;
+	sf::Sprite mIconSprite;
+	float mIconSize;
+
 };
 
 

@@ -38,22 +38,35 @@ void GuiButton::Draw(sf::RenderTarget* target) {
 	else
         mSprite.SetImage(Root::get_mutable_instance().GetResourceManagerPtr()->GetImage("gui.button"));
 
-    /*sf::Color shape_color;
-    if (mHover) shape_color = sf::Color(200,200,255);
-    else if (mIsFocused) shape_color = sf::Color(255,255,255);
-    else shape_color = sf::Color(200,200,200);
-
-    mShape = sf::Shape::Rectangle(mPosition.x,
-        e                          mPosition.y,
-                                  mPosition.x+mDimension.x,
-                                  mPosition.y+mDimension.y,
-                                  shape_color);
-*/
 	mSprite.SetPosition(mPosition.x, mPosition.y);
 	mSprite.SetScale(mDimension.x, mDimension.y);
 
     target->Draw(mSprite);
     target->Draw(mText);
+
+	if(mIconSprite.GetImage() != NULL) {
+		float image_factor = 0.4f;
+
+		const sf::Image* icon_image = mIconSprite.GetImage();
+
+		if(mIconSize == DefaultIconSize) {
+			mIconSprite.SetScale(1.f, 1.f);
+		} else if(mIconSize == AutoscaleIconSize){
+			// scale to maximum
+			float scale = std::min(mDimension.x / icon_image->GetWidth() * image_factor, mDimension.y / icon_image->GetHeight() * image_factor);
+			mIconSprite.SetScale(scale, scale);
+		} else {
+			// use mIconSize as scale factor
+			mIconSprite.SetScale(mIconSize, mIconSize);
+		}
+
+		// position icon left of text
+		float margin = 5.f;
+		if(mCaption == "") margin = - icon_image->GetWidth() * mIconSprite.GetScale().x; // half sized margin if no text => centered icon
+		mIconSprite.SetPosition(mPosition.x + mDimension.x / 2 - mText.GetRect().Width / 2 - margin - icon_image->GetWidth() * mIconSprite.GetScale().x,
+						 mPosition.y + mDimension.y / 2 - icon_image->GetHeight() * mIconSprite.GetScale().y / 2);
+		target->Draw(mIconSprite);
+	}
 
 	DrawAllAttachments(target);
 }
@@ -71,6 +84,14 @@ void GuiButton::TriggerOnClick(const sf::Uint16 mouse_button) {
 // Internal callback, called from input manager
 void GuiButton::OnMouseDown(const sf::Uint16 mouse_x, const sf::Uint16 mouse_y, const sf::Uint16 mouse_button) {
 	TriggerOnClick(mouse_button);
+}
+
+void GuiButton::SetIcon(sf::Sprite& icon) {
+	mIconSprite = icon;
+}
+
+void GuiButton::SetIconSize(float size) {
+	mIconSize = size;
 }
 
 }
