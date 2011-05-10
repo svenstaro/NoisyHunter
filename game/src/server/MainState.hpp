@@ -6,6 +6,7 @@
 #include "Logger.hpp"
 #include "State.hpp"
 #include "Submarine.hpp"
+#include "Math.hpp"
 
 class MainState : public Engine::State {
 public:

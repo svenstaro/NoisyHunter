@@ -67,7 +67,7 @@ void ParticleEmitter::Update(const float time_delta,
 	// Rate is amount of particles sent per second and time_delta is secs.
 
 	while(mTimeSinceLastParticle >= 1.f / mRate) {
-		float spread = sf::Randomizer::Random(-mSpread/2, mSpread/2);
+		float spread = Math::Random(-mSpread/2, mSpread/2);
 		Vector2D spread_vector = mDirection;
 		spread_vector.Normalize();
 		spread_vector.Rotate(Vector2D::deg2Rad(spread));

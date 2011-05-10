@@ -29,9 +29,11 @@ public:
 
 	void SetIcon(sf::Sprite& icon);
 	void SetIconSize(float size = DefaultIconSize);
+	//float GetDefaultIconSize();
+	//float GetAutoscaleIconSize();
+	static const float DefaultIconSize;
+	static const float AutoscaleIconSize;
 
-	static const float DefaultIconSize = -1;
-	static const float AutoscaleIconSize = -2;
 private:
 	// Click signal
 	boost::signals2::signal<void (const sf::Uint16 mouse_button)> mOnClickSignal;

@@ -4,6 +4,9 @@
 
 namespace Engine {
 
+const float GuiButton::DefaultIconSize = -1;
+const float GuiButton::AutoscaleIconSize = -2;
+
 GuiButton::GuiButton() {}
 
 GuiButton::GuiButton(std::string name) {
@@ -93,5 +96,13 @@ void GuiButton::SetIcon(sf::Sprite& icon) {
 void GuiButton::SetIconSize(float size) {
 	mIconSize = size;
 }
+
+/*float GuiButton::GetDefaultIconSize() {
+	return DefaultIconSize;
+}
+
+float GuiButton::GetAutoscaleIconSize() {
+	return AutoscaleIconSize;
+}*/
 
 }

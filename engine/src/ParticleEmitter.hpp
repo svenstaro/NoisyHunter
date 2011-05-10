@@ -5,6 +5,7 @@
 
 #include "Entity.hpp"
 #include "Particle.hpp"
+#include "Math.hpp"
 
 namespace Engine {
 

@@ -32,7 +32,7 @@ void ClientManager::Add(const sf::IpAddress& address, const sf::Uint16 port, con
         }
     }
 	if(id_found) {
-		sf::Uint16 rnd = sf::Randomizer::Random(100,999);
+		sf::Uint16 rnd = Math::Random(100,999);
 		client.name = name + boost::lexical_cast<std::string>(rnd);
 	} else {
 	    client.name = name;

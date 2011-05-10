@@ -174,7 +174,7 @@ void Root::StartMainLoop() {
             
             // Handle events.
             sf::Event e;
-            while(mRenderWindow->GetEvent(e)) {
+            while(mRenderWindow->PollEvent(e)) {
                 mInputManager.HandleEvent(e);
                 mStateManager.HandleEvent(e);
             }

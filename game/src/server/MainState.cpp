@@ -24,7 +24,7 @@ void MainState::Shutdown() {
 }
 
 void MainState::OnClientConnected(sf::Uint16 client_id) {
-	float lol = sf::Randomizer::Random(0.1f, 0.4f);
+	float lol = Engine::Math::Random(0.1f, 0.4f);
 	Submarine* submarine1 = new Submarine();
 	submarine1->SetPosition(Engine::Vector2D(lol, lol));
 	submarine1->GrabEntityUniqueId();
