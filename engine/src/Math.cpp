@@ -108,5 +108,14 @@ namespace Math {
 	float RadToDeg(float radians) {
 		return (180.f * radians) / PI;
 	}
+
+	int Random(int begin, int end) {
+		return std::rand() % (end - begin + 1) + begin;
+	}
+
+	float Random(float begin, float end) {
+		return static_cast<float>(std::rand()) / RAND_MAX * (end - begin) + begin;
+	}
+
 } // namespace Math
 } // namespace Engine

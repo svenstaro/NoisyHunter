@@ -1,0 +1,71 @@
+== Initializable ?? ==
+	> bool mInitialized;
+	> virtual void Initialize();
+	> virtual void Deinitialize();
+	> void Reinitialize();
+
+== Root ==
+- removed
+
+== Serialziable ==
+- used by NetworkManager and World (for saves)
+	> virtual void serialize(IOPacket& data);
+	> virtual sf::Uint16 GetTypeId() = 0;
+
+== Entity ==
+- has pointer to parent
+- inherits Serializable
+	> Vector2D GetRelativePosition();
+	> Vector2D GetAbsolutePosition();
+	> etc.
+
+== RigidEntity ==
+- inherits Entity
+- does all the physics stuff
+
+
+== World ==
+- has pointer vector of all Entities
+
+== Gui ==
+- new sub-namespace Engine::Gui
+
+== Gui::Control ==
+- no more inherits Entity
+- has pointer to parent Gui::Container
+
+== Gui::System ==
+- inherits Gui::Container
+- has pointer vector of all direct and indirect children
+
+== Input ==
+- Is a singleton
+- List of FrameListeners, which have to register themselves as such
+- Registers and calls Key/Mouse callbacks (signals & slots) for buffered input
+	> bool BeforeFrame();
+	> bool HandleEvents();
+	> bool AfterFrame();
+
+=== FrameListener ===
+- for unbuffered input
+	> bool BeforeFrame();
+	> bool HandleEvent();
+	> bool AfterFrame();
+
+
+== Logger ==
+- Singleton List
+- completely independent
+	> static void Create(const std::string& name, stream? stream);
+	> static void Overwrite(const std::string& name, stream? new_stream);
+	> static void Get(const std::string& name);
+	> void Critical("Some error message.");
+	> std::vector<LogMessage> GetMessages();
+
+== RenderTarget ==
+	> sf::RenderTarget* mTarget;
+	> CoordinateConversionInfo mCoordinateConversionInfo;
+
+== StateManager ==
+- doesn't know sf::RenderTarget, gets it in Draw() from Engine::RenderTarget
+	> void Draw(RenderTarget* target);

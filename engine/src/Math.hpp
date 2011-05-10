@@ -1,4 +1,8 @@
+#ifndef MATH_HPP
+#define MATH_HPP
+
 #include <cmath>
+#include <iostream>
 #include <vector>
 
 #define PI 3.14159264
@@ -18,5 +22,9 @@ namespace Math {
 	float SmoothStep2(const float value1, const float value2, const float amount);
 	float DegToRad(const float degrees);
 	float RadToDeg(const float radians);
+	int Random(int begin, int end);
+	float Random(float begin, float end);
 } // namespace Math
 } // namespace Engine
+
+#endif
