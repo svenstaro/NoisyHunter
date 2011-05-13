@@ -6,9 +6,11 @@ bake:
 
 runc:
 	cd bin; ./client
+goc: bake runc
 
 runs:
 	cd bin; ./server
+gos: bake runs
 
 runpongs:
 	cd bin; ./pong_server

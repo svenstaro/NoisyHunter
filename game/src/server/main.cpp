@@ -7,7 +7,8 @@
 // Include entities in the appropriate state
 
 void HandleSignal(int sig) {
-	Engine::Logger::Critical(Engine::LogOrigin::ROOT, "Raised signal: " + boost::lexical_cast<std::string>(sig) + ".");
+    std::cout << "\r";
+    Engine::Logger::Critical(Engine::LogOrigin::ROOT, "Raised signal: " + boost::lexical_cast<std::string>(sig) + ".");
 	exit(1);
 }
 
